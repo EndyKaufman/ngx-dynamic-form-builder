@@ -1,0 +1,21 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "baseUrl": "./",
+    "module": "es2015",
+    "types": [
+      "jasmine",
+      "webpack"
+    ],
+    "paths": {
+      "ngx-dynamic-form-builder": [
+        "../../../libs/ngx-dynamic-form-builder/src/index.ts"
+      ]
+    }
+  },
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
+  ]
+}

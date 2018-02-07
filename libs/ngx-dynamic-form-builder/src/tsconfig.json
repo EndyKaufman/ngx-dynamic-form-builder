@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "outDir": "../dist",
+    "target": "es5",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "types": [
+      "jasmine"
+    ],
+    "typeRoots": [
+      "../../../node_modules/@types/"
+    ]
+  },
+  "files": [
+    "./index.ts"
+  ],
+  "angularCompilerOptions": {
+    "genDir": "../temp/factories",
+    "strictMetadataEmit": true,
+    "skipTemplateCodegen": true
+  }
+}
