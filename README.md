@@ -88,7 +88,7 @@ Template
 
 ## Links
 
-[Demo](https://github.com/EndyKaufman/ngx-dynamic-form-builder) - Demo application with ngx-dynamic-form-builder.
+[Demo](https://endykaufman.github.io/ngx-dynamic-form-builder) - Demo application with ngx-dynamic-form-builder.
 
 ## License
 
