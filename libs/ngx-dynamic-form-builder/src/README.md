@@ -1,4 +1,4 @@
-FormBuilder + class-transformer + class-validator = dynamic form group builder for Angular5+
+[FormBuilder](https://angular.io/api/forms/FormBuilder) + [class-transformer](https://github.com/typestack/class-transformer) + [class-validator](https://github.com/typestack/class-validator) = dynamic form group builder for [Angular5+](https://angular.io)
 
 ## Installation
 
@@ -86,7 +86,7 @@ Template
 
 ## Links
 
-[Demo](https://github.com/EndyKaufman/ngx-dynamic-form-builder) - Demo application with ngx-dynamic-form-builder.
+[Demo](https://endykaufman.github.io/ngx-dynamic-form-builder) - Demo application with ngx-dynamic-form-builder.
 
 ## License
 

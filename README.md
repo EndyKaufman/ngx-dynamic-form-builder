@@ -1,6 +1,6 @@
 # ngx-dynamic-form-builder
 
-FormBuilder + class-transformer + class-validator = dynamic form group builder for Angular5+
+[FormBuilder](https://angular.io/api/forms/FormBuilder) + [class-transformer](https://github.com/typestack/class-transformer) + [class-validator](https://github.com/typestack/class-validator) = dynamic form group builder for [Angular5+](https://angular.io)
 
 ## Installation
 
