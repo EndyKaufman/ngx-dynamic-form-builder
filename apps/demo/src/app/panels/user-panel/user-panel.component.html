@@ -15,7 +15,7 @@
   <mat-form-field class="full-width">
     <input matInput type="date" formControlName="dateOfBirth" [placeholder]="strings.dateOfBirth">
     <mat-error *ngIf="form.get('dateOfBirth').hasError('required')">
-      Email is
+      date of birth is
       <strong>required</strong>
     </mat-error>
     <mat-error *ngIf="(form?.customValidateErrors | async)?.dateOfBirth?.length">
