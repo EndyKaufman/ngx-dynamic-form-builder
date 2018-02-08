@@ -14,6 +14,10 @@
   </mat-form-field>
   <mat-form-field class="full-width">
     <input matInput type="date" formControlName="dateOfBirth" [placeholder]="strings.dateOfBirth">
+    <mat-error *ngIf="form.get('dateOfBirth').hasError('required')">
+      date of birth is
+      <strong>required</strong>
+    </mat-error>
     <mat-error *ngIf="(form?.customValidateErrors | async)?.dateOfBirth?.length">
       {{(form.customValidateErrors | async).dateOfBirth[0]}}
     </mat-error>
@@ -49,5 +53,6 @@
     <button mat-raised-button (click)="onLoadClick()">Load</button>
     <button mat-raised-button (click)="onClearClick()">Clear</button>
     <button mat-raised-button (click)="onSaveClick()" [disabled]="!form.valid" cdkFocusInitial>Save</button>
+    <a mat-button target="_blank" href="https://github.com/EndyKaufman/ngx-dynamic-form-builder/tree/master/apps/demo/src/app/panels/user-panel">View source</a>
   </div>
 </form>
