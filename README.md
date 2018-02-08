@@ -13,6 +13,10 @@
 npm install --save ngx-dynamic-form-builder class-validator class-transformer
 ```
 
+## Links
+
+[Demo](https://endykaufman.github.io/ngx-dynamic-form-builder) - Demo application with ngx-dynamic-form-builder.
+
 ## Usage
 
 Code
@@ -84,23 +88,19 @@ Template
 ```html
 <form [formGroup]="form" novalidate>
   <h3>Group form</h3>
-  <input matInput formControlName="username">
+  <input formControlName="username">
   <span *ngIf="(form?.customValidateErrors | async)?.username?.length">
     {{(form?.customValidateErrors | async).username[0]}}
   </span>
   <div formGroupName="department">
     <h3>Sub group form</h3>
-    <input matInput formControlName="name" [placeholder]="strings.department">
+    <input formControlName="name" [placeholder]="strings.department">
     <span *ngIf="(form?.customValidateErrors | async)?.department?.name?.length">
       {{(form.customValidateErrors | async).department.name[0]}}
     </span>
   </div>
 </form>
 ```
-
-## Links
-
-[Demo](https://endykaufman.github.io/ngx-dynamic-form-builder) - Demo application with ngx-dynamic-form-builder.
 
 ## License
 
