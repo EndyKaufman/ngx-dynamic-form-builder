@@ -10,7 +10,7 @@
 ## Installation
 
 ```bash
-npm install --save ngx-dynamic-form-builder
+npm install --save ngx-dynamic-form-builder class-validator class-transformer
 ```
 
 ## Usage
@@ -18,7 +18,8 @@ npm install --save ngx-dynamic-form-builder
 Code
 ```ts 
 import { DynamicFormGroup, DynamicFormBuilder } from 'ngx-dynamic-form-builder';
-import { plainToClass } from 'class-transformer';
+import { Validate, IsNotEmpty, IsEmail, ValidateNested, IsOptional } from 'class-validator';
+import { Type, plainToClass } from 'class-transformer';
 
 form: DynamicFormGroup<User>;
 fb = new DynamicFormBuilder();
