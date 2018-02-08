@@ -4,6 +4,7 @@ import { Department } from '../../shared/models/department';
 import { plainToClass } from 'class-transformer';
 import { User } from '../../shared/models/user';
 import { Input, Component } from '@angular/core';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'user-panel',
@@ -44,7 +45,7 @@ export class UserPanelComponent {
     this.form = this.fb.group(User, {
       username: '',
       email: '',
-      dateOfBirth: undefined,
+      dateOfBirth: ['', Validators.required],
       isSuperuser: false,
       isStaff: false,
       department: this.fb.group(Department, {
@@ -62,7 +63,7 @@ export class UserPanelComponent {
   }
   onClearClick(): void {
     this.savedItem = undefined;
-    this.form.reset();
+    this.form.object = new User();
     this.form.validateAllFormFields();
   }
   onSaveClick(): void {
