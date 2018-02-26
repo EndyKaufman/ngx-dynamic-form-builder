@@ -17,12 +17,12 @@ npm install --save ngx-dynamic-form-builder class-validator class-transformer
 
 [Demo](https://endykaufman.github.io/ngx-dynamic-form-builder) - Demo application with ngx-dynamic-form-builder.
 
-[Stackblitz](https://stackblitz.com/edit/ngx-repository) - Simply sample of usage on https://stackblitz.com
+[Stackblitz](https://stackblitz.com/edit/ngx-dynamic-form-builder) - Simply sample of usage on https://stackblitz.com
 
 ## Usage
 
 app.module.ts
-```ts 
+```js 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserPanelComponent } from './user-panel/user-panel.component';
 
@@ -44,7 +44,7 @@ export class AppModule {}
 ```
 
 models/user.ts
-```ts 
+```js 
 import { IsNotEmpty, IsEmail, ValidateNested, IsOptional } from 'class-validator';
 import { Type, plainToClassFromExist } from 'class-transformer';
 import { Department } from './department';
@@ -81,7 +81,7 @@ export class User {
 ```
 
 models/department.ts
-```ts 
+```js 
 import { IsNotEmpty, ValidateNested, IsOptional } from 'class-validator';
 import { Type, plainToClassFromExist } from 'class-transformer';
 
@@ -146,7 +146,7 @@ user-panel/user-panel.component.html
 ```
 
 user-panel/user-panel.component.ts
-```ts
+```js
 import { DynamicFormGroup, DynamicFormBuilder } from 'ngx-dynamic-form-builder';
 import { Department } from '../shared/models/department';
 import { User } from '../shared/models/user';

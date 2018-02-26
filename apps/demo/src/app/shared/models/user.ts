@@ -1,4 +1,4 @@
-import { Transform, Type } from 'class-transformer';
+import { Transform, Type, plainToClassFromExist } from 'class-transformer';
 import { IsNotEmpty, IsEmail, ValidateNested, IsOptional } from 'class-validator';
 import { Department } from './department';
 import { serializeModel, transformStringToDate, transformDateToString } from '../utils/custom-transforms';
@@ -41,5 +41,9 @@ export class User {
             arr.push(this.username);
         }
         return arr.join(' ');
+    }
+
+    constructor(data?: any) {
+        plainToClassFromExist(this, data);
     }
 }

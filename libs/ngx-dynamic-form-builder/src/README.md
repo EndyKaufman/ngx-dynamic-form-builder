@@ -15,7 +15,7 @@ npm install --save ngx-dynamic-form-builder class-validator class-transformer
 
 [Demo](https://endykaufman.github.io/ngx-dynamic-form-builder) - Demo application with ngx-dynamic-form-builder.
 
-[Stackblitz](https://stackblitz.com/edit/ngx-repository) - Simply sample of usage on https://stackblitz.com
+[Stackblitz](https://stackblitz.com/edit/ngx-dynamic-form-builder) - Simply sample of usage on https://stackblitz.com
 
 ## Usage
 

@@ -1,5 +1,6 @@
 import { Validate, IsNotEmpty } from 'class-validator';
-import { TextLengthMore15 } from 'app/shared/utils/custom-validators';
+import { plainToClassFromExist } from 'class-transformer';
+import { TextLengthMore15 } from '../utils/custom-validators';
 
 export class Company {
     static strings = {
@@ -21,5 +22,9 @@ export class Company {
             arr.push(this.name);
         }
         return arr.join(' ');
+    }
+
+    constructor(data?: any) {
+        plainToClassFromExist(this, data);
     }
 }

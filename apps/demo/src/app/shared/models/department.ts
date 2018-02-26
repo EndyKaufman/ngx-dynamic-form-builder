@@ -1,5 +1,5 @@
 import { IsNotEmpty, ValidateNested, IsOptional } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Type, plainToClassFromExist } from 'class-transformer';
 import { Company } from './company';
 import { serializeModel } from '../utils/custom-transforms';
 
@@ -26,5 +26,9 @@ export class Department {
             arr.push(this.name);
         }
         return arr.join(' ');
+    }
+
+    constructor(data?: any) {
+        plainToClassFromExist(this, data);
     }
 }
