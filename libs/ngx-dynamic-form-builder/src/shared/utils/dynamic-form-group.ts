@@ -28,7 +28,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
             getFromContainer(MetadataStorage).getTargetValidationMetadatas(factoryModel, '');
         const formGroupFields = {};
         const validator = new Validator();
-        Object.keys(fields).forEach(key => {
+        Object.keys(fields).filter(key => key.indexOf('__') !== 0).forEach(key => {
             let formGroupField = formGroupFields[key];
             if (formGroupField === undefined) {
                 formGroupField = Array.isArray(fields[key]) ? fields[key] : [];
