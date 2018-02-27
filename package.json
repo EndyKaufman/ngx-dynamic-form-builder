@@ -87,7 +87,7 @@
     "@types/webpack": "^3.8.5",
     "codelyzer": "^4.1.0",
     "html-loader": "^0.5.5",
-    "jasmine-core": "~3.0.0",
+    "jasmine-core": "~3.1.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~2.0.0",
     "karma-chrome-launcher": "~2.2.0",
