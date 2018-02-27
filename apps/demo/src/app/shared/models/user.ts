@@ -19,20 +19,20 @@ export class User {
 
     id: number;
     @IsNotEmpty()
-    username: string;
-    password: string;
+    username: string = undefined;
+    password: string = undefined;
     @IsEmail()
     @IsNotEmpty()
-    email: string;
-    isSuperuser: boolean;
-    isStaff: boolean;
+    email: string = undefined;
+    isSuperuser: boolean = undefined;
+    isStaff: boolean = undefined;
     @ValidateNested()
     @IsOptional()
     @Type(serializeModel(Department))
-    department: Department;
+    department: Department = new Department();
     @Transform(transformStringToDate, { toClassOnly: true })
     @Transform(transformDateToString, { toPlainOnly: true })
-    dateOfBirth: Date;
+    dateOfBirth: string = undefined;
 
     toString() {
         const arr: string[] = [];
