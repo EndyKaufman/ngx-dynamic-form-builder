@@ -33,6 +33,10 @@ export class UserPanelComponent {
   });
   @Input()
   strings = User.strings;
+  @Input()
+  departmentStrings = Department.strings;
+  @Input()
+  companyStrings = Company.strings;
 
   fb = new DynamicFormBuilder();
   savedItem: User;

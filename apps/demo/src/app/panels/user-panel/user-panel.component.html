@@ -33,7 +33,7 @@
     <div formGroupName="company">
       <h3>Sub sub group form</h3>
       <mat-form-field class="full-width">
-        <input matInput formControlName="name" [placeholder]="strings.departmentStrings.company">
+        <input matInput formControlName="name" [placeholder]="departmentStrings.company">
         <mat-error *ngIf="(form?.customValidateErrors | async)?.department?.company?.name?.length">
           {{(form.customValidateErrors | async).department.company.name[0]}}
         </mat-error>

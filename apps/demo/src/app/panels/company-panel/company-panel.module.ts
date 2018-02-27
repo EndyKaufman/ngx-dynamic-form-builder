@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { ModuleWithProviders } from '@angular/core';
-import { UserPanelComponent } from '../../panels/user-panel/user-panel.component';
+import { CompanyPanelComponent } from '../../panels/company-panel/company-panel.component';
 import { MatInputModule, MatCheckboxModule } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
@@ -17,14 +17,14 @@ import { SharedModule } from '../../shared/shared.module';
     ReactiveFormsModule,
     FlexLayoutModule
   ],
-  entryComponents: [UserPanelComponent],
-  exports: [UserPanelComponent],
-  declarations: [UserPanelComponent]
+  entryComponents: [CompanyPanelComponent],
+  exports: [CompanyPanelComponent],
+  declarations: [CompanyPanelComponent]
 })
-export class UserPanelModule {
+export class CompanyPanelModule {
   static forRoot(): ModuleWithProviders {
     return {
-      ngModule: UserPanelModule,
+      ngModule: CompanyPanelModule,
       providers: []
     };
   }

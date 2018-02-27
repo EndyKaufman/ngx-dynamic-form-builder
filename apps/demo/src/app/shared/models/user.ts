@@ -12,8 +12,7 @@ export class User {
         isStaff: 'Staff',
         email: 'Email',
         department: 'Department',
-        dateOfBirth: 'Date of birth',
-        departmentStrings: Department.strings,
+        dateOfBirth: 'Date of birth'
     };
     static fields = ['id', 'username', 'password', 'isSuperuser',
         'isStaff', 'email', 'department', 'dateOfBirth'];

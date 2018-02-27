@@ -3,7 +3,6 @@ import { MessageBoxComponent } from './message-box.component';
 import { SharedModule } from '../../shared/shared.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MessageBoxService } from './message-box.service';
-import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule, MatInputModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -11,7 +10,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
   imports: [
     SharedModule.forRoot(),
     MatDialogModule,
-    MatIconModule,
     MatButtonModule,
     MatInputModule,
     FlexLayoutModule

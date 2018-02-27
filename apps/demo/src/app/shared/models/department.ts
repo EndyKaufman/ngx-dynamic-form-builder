@@ -7,8 +7,7 @@ export class Department {
     static strings = {
         id: 'Id',
         name: 'Name',
-        company: 'Company',
-        companyStrings: Company.strings,
+        company: 'Company'
     };
     static fields = ['id', 'name', 'company'];
 
