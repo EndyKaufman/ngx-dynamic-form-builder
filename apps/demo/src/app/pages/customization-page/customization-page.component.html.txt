@@ -1,0 +1,3 @@
+<div class="customization-page">
+  <div [innerHtml]="customization | safeHtml"></div>
+</div>

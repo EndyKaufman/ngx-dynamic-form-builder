@@ -32,6 +32,12 @@ html, body {
     }
 }
 
+.ngx-docs-example {
+    .ngx-docs-example-body {
+        padding-top: 10px
+    }
+}
+
 .full-width {
     width: 100%;
 }
@@ -43,5 +49,5 @@ html, body {
     padding-left: 15px;
 }
 .padding-top-15 {
-    padding-top:15px
+    padding-top: 15px
 }

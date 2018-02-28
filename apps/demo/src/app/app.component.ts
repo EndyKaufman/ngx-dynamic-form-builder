@@ -18,5 +18,9 @@ export class AppComponent {
       'github-circle',
       sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/github-circle.svg')
     );
+    iconRegistry.addSvgIcon(
+      'shape-outline',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/shape-outline.svg')
+    );
   }
 }
