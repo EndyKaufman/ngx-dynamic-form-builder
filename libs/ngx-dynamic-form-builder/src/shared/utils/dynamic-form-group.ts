@@ -11,7 +11,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     public customValidateErrors = new BehaviorSubject<any>({});
     private _object: TModel;
     constructor(
-        public factoryModel: { new(data?: any): TModel; },
+        public factoryModel: ClassType<TModel>,
         public fields: {
             [key: string]: any
         }
@@ -20,7 +20,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         this.fields = this.onlyFields(this.fields);
     }
     static getClassValidators<TModel>(
-        factoryModel: { new(data?: any): TModel; },
+        factoryModel: ClassType<TModel>,
         fields: {
             [key: string]: any
         }
