@@ -4,8 +4,7 @@ import { SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'experimental-page',
-  templateUrl: './experimental-page.component.html',
-  styleUrls: ['./experimental-page.component.scss']
+  templateUrl: './experimental-page.component.html'
 })
 export class ExperimentalPageComponent {
 

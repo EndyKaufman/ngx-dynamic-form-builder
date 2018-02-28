@@ -4,8 +4,7 @@ import { SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'advanced-page',
-  templateUrl: './advanced-page.component.html',
-  styleUrls: ['./advanced-page.component.scss']
+  templateUrl: './advanced-page.component.html'
 })
 export class AdvancedPageComponent {
 
