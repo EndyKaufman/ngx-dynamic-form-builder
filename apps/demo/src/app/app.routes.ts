@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { HomePageRoutes } from './pages/home-page/home-page.routes';
 import { AdvancedPageRoutes } from './pages/advanced-page/advanced-page.routes';
 import { SimplePageRoutes } from './pages/simple-page/simple-page.routes';
+import { ExperimentalPageRoutes } from './pages/experimental-page/experimental-page.routes';
 
 export const AppRoutes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -19,6 +20,11 @@ export const AppRoutes: Routes = [
         path: 'advanced',
         loadChildren: './pages/advanced-page/advanced-page.module#AdvancedPageModule',
         data: AdvancedPageRoutes[0].data
+    },
+    {
+        path: 'experimental',
+        loadChildren: './pages/experimental-page/experimental-page.module#ExperimentalPageModule',
+        data: ExperimentalPageRoutes[0].data
     },
     {
         path: 'github',

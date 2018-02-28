@@ -13,11 +13,11 @@ export class Department {
 
     id: number;
     @IsNotEmpty()
-    name: string = undefined;
+    name: string;
     @ValidateNested()
     @IsOptional()
     @Type(serializeModel(Company))
-    company: Company = new Company();
+    company: Company;
 
     toString() {
         const arr: string[] = [];

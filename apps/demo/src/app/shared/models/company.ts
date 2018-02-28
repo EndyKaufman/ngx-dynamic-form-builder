@@ -14,7 +14,7 @@ export class Company {
         message: 'The company name must be longer than 15'
     })
     @IsNotEmpty()
-    name: string = undefined;
+    name: string;
 
     toString() {
         const arr: string[] = [];

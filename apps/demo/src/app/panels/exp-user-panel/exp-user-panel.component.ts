@@ -1,20 +1,20 @@
 import { DynamicFormGroup, DynamicFormBuilder } from 'ngx-dynamic-form-builder';
 import { Company } from './../../shared/models/company';
 import { Department } from '../../shared/models/department';
-import { User } from '../../shared/models/user';
+import { ExpUser } from '../../shared/models/exp-user';
 import { Input, Component } from '@angular/core';
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'user-panel',
-  templateUrl: './user-panel.component.html'
+  selector: 'exp-user-panel',
+  templateUrl: './exp-user-panel.component.html'
 })
-export class UserPanelComponent {
+export class ExpUserPanelComponent {
 
   @Input()
-  form: DynamicFormGroup<User>;
+  form: DynamicFormGroup<ExpUser>;
   @Input()
-  item = new User({
+  item = new ExpUser({
     'username': 'admin',
     'isStaff': true,
     'id': 1,
@@ -31,30 +31,12 @@ export class UserPanelComponent {
       }
     }
   });
-  @Input()
-  strings = User.strings;
-  @Input()
-  departmentStrings = Department.strings;
-  @Input()
-  companyStrings = Company.strings;
 
   fb = new DynamicFormBuilder();
-  savedItem: User;
+  savedItem: ExpUser;
 
   constructor() {
-    this.form = this.fb.group(User, {
-      username: '',
-      email: '',
-      dateOfBirth: '',
-      isSuperuser: false,
-      isStaff: false,
-      department: this.fb.group(Department, {
-        name: '',
-        company: this.fb.group(Company, {
-          name: ''
-        })
-      })
-    });
+    this.form = this.fb.group(ExpUser);
   }
   onLoadClick(): void {
     this.savedItem = undefined;
@@ -63,7 +45,7 @@ export class UserPanelComponent {
   }
   onClearClick(): void {
     this.savedItem = undefined;
-    this.form.object = new User();
+    this.form.object = new ExpUser();
     this.form.validateAllFormFields();
   }
   onSaveClick(): void {
