@@ -157,13 +157,15 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         }
     ) {
         const newFields = {};
-        Object.keys(fields).forEach(key => {
-            if (fields[key] instanceof DynamicFormGroup) {
-                newFields[key] = this.onlyFields((fields[key] as DynamicFormGroup<any>).fields);
-            } else {
-                newFields[key] = fields[key];
-            }
-        });
+        if (fields !== undefined) {
+            Object.keys(fields).forEach(key => {
+                if (fields[key] instanceof DynamicFormGroup) {
+                    newFields[key] = this.onlyFields((fields[key] as DynamicFormGroup<any>).fields);
+                } else {
+                    newFields[key] = fields[key];
+                }
+            });
+        }
         return newFields;
     }
     get object() {

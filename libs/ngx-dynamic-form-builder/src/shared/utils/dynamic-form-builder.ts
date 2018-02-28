@@ -12,31 +12,35 @@ export class DynamicFormBuilder extends FormBuilder {
             [key: string]: any;
         } | null
     ): DynamicFormGroup<TModel> {
-        const newControlsConfig = new factoryModel(
-            controlsConfig ? controlsConfig : {}
-        );
-        Object.keys(newControlsConfig).forEach(key => {
-            if (
-                newControlsConfig[key] &&
-                newControlsConfig[key].constructor &&
-                newControlsConfig[key].constructor.name &&
-                typeof newControlsConfig[key] === 'object' &&
-                newControlsConfig[key].__not_group !== true &&
-                (
-                    newControlsConfig[key].length === undefined ||
+        let newControlsConfig;
+        if (controlsConfig !== undefined) {
+            newControlsConfig = controlsConfig;
+        }
+        // experimental
+        if (controlsConfig === undefined) {
+            newControlsConfig = new factoryModel({});
+            Object.keys(newControlsConfig).forEach(key => {
+                if (
+                    newControlsConfig[key] &&
+                    newControlsConfig[key].constructor &&
+                    typeof newControlsConfig[key] === 'object' &&
+                    newControlsConfig[key].__not_group !== true &&
                     (
-                        newControlsConfig[key].length !== undefined &&
-                        Object.keys(newControlsConfig[key].length).length === newControlsConfig[key].length
+                        newControlsConfig[key].length === undefined ||
+                        (
+                            newControlsConfig[key].length !== undefined &&
+                            Object.keys(newControlsConfig[key].length).length === newControlsConfig[key].length
+                        )
                     )
-                )
-            ) {
-                newControlsConfig[key].__not_group = true;
-                newControlsConfig[key] = this.group(
-                    newControlsConfig[key].constructor,
-                    newControlsConfig[key]
-                );
-            }
-        });
+                ) {
+                    newControlsConfig[key].__not_group = true;
+                    newControlsConfig[key] = this.group(
+                        newControlsConfig[key].constructor,
+                        controlsConfig !== undefined ? newControlsConfig[key] : undefined
+                    );
+                }
+            });
+        }
         const dynamicFormGroup = new DynamicFormGroup<TModel>(factoryModel, newControlsConfig);
         const formGroup = super.group(
             DynamicFormGroup.getClassValidators<TModel>(
