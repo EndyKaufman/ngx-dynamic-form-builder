@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ValidationMetadata } from 'class-validator/metadata/ValidationMetadata';
 import { MetadataStorage, Validator, getFromContainer, ValidationTypes, validateSync, ValidationError } from 'class-validator';
 import { FormControl } from '@angular/forms';
-import { plainToClass, classToClassFromExist, plainToClassFromExist, classToClass } from 'class-transformer';
+import { classToClass } from 'class-transformer';
 import 'reflect-metadata';
 
 export class DynamicFormGroup<TModel> extends FormGroup {
@@ -169,7 +169,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         return newFields;
     }
     get object() {
-        const object = this._object ? classToClass(this._object) : new this.factoryModel();
+        const object = this._object ? classToClass(this._object, { ignoreDecorators: true }) : new this.factoryModel();
         if (object !== undefined) {
             Object.keys(this.controls).forEach(key => {
                 if (this.controls[key] instanceof DynamicFormGroup) {
@@ -179,19 +179,13 @@ export class DynamicFormGroup<TModel> extends FormGroup {
                 }
             });
         }
-        return plainToClass(
-            this.factoryModel,
-            object
-        );
+        return new this.factoryModel(object);
     }
     set object(object: TModel) {
         if (object instanceof this.factoryModel) {
-            this._object = classToClass(object);
+            this._object = classToClass(object, { ignoreDecorators: true });
         } else {
-            this._object = plainToClass(
-                this.factoryModel,
-                object as Object
-            );
+            this._object = new this.factoryModel(object as Object);
         }
         Object.keys(this.controls).forEach(key => {
             if (this.controls[key] instanceof DynamicFormGroup) {

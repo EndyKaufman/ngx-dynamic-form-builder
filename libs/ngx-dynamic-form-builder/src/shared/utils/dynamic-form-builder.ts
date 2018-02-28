@@ -1,7 +1,6 @@
 import { FormBuilder } from '@angular/forms';
 import { DynamicFormGroup } from './dynamic-form-group';
 import 'reflect-metadata';
-import { classToClassFromExist, classToClass } from 'class-transformer';
 
 export class DynamicFormBuilder extends FormBuilder {
     group<TModel>(
