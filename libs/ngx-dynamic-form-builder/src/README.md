@@ -22,7 +22,7 @@ npm install --save ngx-dynamic-form-builder class-validator class-transformer
 app.module.ts
 ```js 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UserPanelComponent } from './user-panel/user-panel.component';
+import { CompanyPanelComponent } from './company-panel.component';
 
 @NgModule({
   imports: [
@@ -33,7 +33,7 @@ import { UserPanelComponent } from './user-panel/user-panel.component';
   ],
   declarations: [
     ...
-    UserPanelComponent,
+    CompanyPanelComponent,
     ...
   ],
   ...
@@ -41,156 +41,89 @@ import { UserPanelComponent } from './user-panel/user-panel.component';
 export class AppModule {}
 ```
 
-models/user.ts
+company.ts
 ```js 
-import { IsNotEmpty, IsEmail, ValidateNested, IsOptional } from 'class-validator';
-import { Type, plainToClassFromExist } from 'class-transformer';
-import { Department } from './department';
+import { Validate, IsNotEmpty } from 'class-validator';
+import { plainToClassFromExist } from 'class-transformer';
+import { TextLengthMore15 } from '../utils/custom-validators';
 
-export class User {
-  static strings = {
-    id: 'Id',
-    username: 'Username',
-    password: 'Password',
-    isSuperuser: 'Administrator',
-    isStaff: 'Staff',
-    email: 'Email',
-    department: 'Department',
-    dateOfBirth: 'Date of birth',
-    departmentStrings: Department.strings,
-  };
-  static fields = ['id', 'username', 'password', 'isSuperuser',
-    'isStaff', 'email', 'department', 'dateOfBirth'];
-  id: number;
-  @IsNotEmpty()
-  username: string;
-  password: string;
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
-  @ValidateNested()
-  @IsOptional()
-  @Type(() => Department)
-  department: Department;
-  constructor(data?: any) {
-    plainToClassFromExist(this, data);
-  }
+export class Company {
+    static strings = {
+        id: 'Id',
+        name: 'Name'
+    };
+    static fields = ['id', 'name'];
+
+    id: number;
+    @Validate(TextLengthMore15, {
+        message: 'The company name must be longer than 15'
+    })
+    @IsNotEmpty()
+    name: string;
+
+    toString() {
+        const arr: string[] = [];
+        if (arr.length === 0 && this.name) {
+            arr.push(this.name);
+        }
+        return arr.join(' ');
+    }
+
+    constructor(data?: any) {
+        plainToClassFromExist(this, data);
+    }
 }
 ```
 
-models/department.ts
-```js 
-import { IsNotEmpty, ValidateNested, IsOptional } from 'class-validator';
-import { Type, plainToClassFromExist } from 'class-transformer';
-
-export class Department {
-  static strings = {
-    id: 'Id',
-    name: 'Name'
-  };
-  static fields = ['id', 'name'];
-  id: number;
-  @IsNotEmpty()
-  name: string;
-  constructor(data?: any) {
-    plainToClassFromExist(this, data);
-  }
-}
-
-```
-
-user-panel/user-panel.component.html
+company-panel.component.html
 ```html
 <form [formGroup]="form" novalidate>
-	<h3>Group form</h3>
-	<input formControlName="username" [placeholder]="strings.username">
-	<span *ngIf="(form?.customValidateErrors | async)?.username?.length">
-      {{(form?.customValidateErrors | async).username[0]}}
-    </span>
-	<input type="email" formControlName="email" [placeholder]="strings.email">
-	<span *ngIf="(form?.customValidateErrors | async)?.email?.length">
-      {{(form.customValidateErrors | async).email[0]}}
-    </span>
-	<input type="date" formControlName="dateOfBirth" [placeholder]="strings.dateOfBirth">
-	<span *ngIf="form.get('dateOfBirth').hasError('required')">
-      date of birth is
-      <strong>required</strong>
-    </span>
-	<span *ngIf="(form?.customValidateErrors | async)?.dateOfBirth?.length">
-      {{(form.customValidateErrors | async).dateOfBirth[0]}}
-    </span>
-	<div formGroupName="department">
-		<h3>Sub group form</h3>
-		<input formControlName="name" [placeholder]="strings.department">
-		<span *ngIf="(form?.customValidateErrors | async)?.department?.name?.length">
-        {{(form.customValidateErrors | async).department.name[0]}}
-      </span>
-	</div>
-	<div>
-		<input type="checkbox" formControlName="isSuperuser">{{strings.isSuperuser}}
-		<input type="checkbox" formControlName="isStaff">{{strings.isStaff}}
-	</div>
-	<div>
-		<p>Form status: {{ form.status | json }}</p>
-		<p *ngIf="!form.valid">Custom validation errors: {{form.customValidateErrors|async|json}}</p>
-		<p *ngIf="savedItem">Saved item: {{savedItem|json}}</p>
-	</div>
-	<div class="full-width">
-		<button (click)="onLoadClick()">Load</button>
-		<button (click)="onClearClick()">Clear</button>
-		<button (click)="onSaveClick()" [disabled]="!form.valid">Save</button>
-	</div>
+    <input formControlName="name" [placeholder]="strings.name">
+    <p *ngIf="(form?.customValidateErrors | async)?.name?.length">
+      Error: {{(form.customValidateErrors | async).name[0]}}
+    </p>
+    <p>Form status: {{ form.status | json }}</p>
+    <p *ngIf="!form.valid">
+      Custom validation errors: {{form.customValidateErrors|async|json}}
+    </p>
+    <p *ngIf="savedItem">
+      Saved item: {{savedItem|json}}
+    </p>
+    <button (click)="onLoadClick()">Load</button>
+    <button (click)="onClearClick()">Clear</button>
+    <button (click)="onSaveClick()" [disabled]="!form.valid">Save</button>
 </form>
 ```
 
-user-panel/user-panel.component.ts
+company-panel.component.ts
 ```js
 import { DynamicFormGroup, DynamicFormBuilder } from 'ngx-dynamic-form-builder';
-import { Department } from '../shared/models/department';
-import { User } from '../shared/models/user';
+import { Company } from './../../shared/models/company';
 import { Input, Component } from '@angular/core';
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'user-panel',
-  templateUrl: './user-panel.component.html',
-  styleUrls: ['./user-panel.component.scss']
+  selector: 'company-panel',
+  templateUrl: './company-panel.component.html'
 })
-export class UserPanelComponent {
+export class CompanyPanelComponent {
 
   @Input()
-  form: DynamicFormGroup<User>;
+  form: DynamicFormGroup<Company>;
   @Input()
-  item = new User(
-    {
-      'username': 'admin',
-      'isStaff': true,
-      'id': 1,
-      'isSuperuser': true,
-      'dateOfBirth': '1985-05-11T01:00:00Z',
-      'password': 'secretpassword',
-      'email': 'admin@site15.ru',
-      'department': {
-        'id': 2,
-        'name': 'department 1'
-      }
-    });
+  item = new Company({
+    'id': 11,
+    'name': '123456789012345'
+  });
   @Input()
-  strings = User.strings;
+  strings = Company.strings;
 
   fb = new DynamicFormBuilder();
-  savedItem: User;
+  savedItem: Company;
 
   constructor() {
-    this.form = this.fb.group(User, {
-      username: '',
-      email: '',
-      dateOfBirth: ['', Validators.required],
-      isSuperuser: false,
-      isStaff: false,
-      department: this.fb.group(Department, {
-        name: ''
-      })
+    this.form = this.fb.group(Company, {
+      name: ''
     });
   }
   onLoadClick(): void {
@@ -200,7 +133,7 @@ export class UserPanelComponent {
   }
   onClearClick(): void {
     this.savedItem = undefined;
-    this.form.object = new User();
+    this.form.object = new Company();
     this.form.validateAllFormFields();
   }
   onSaveClick(): void {
@@ -213,22 +146,18 @@ export class UserPanelComponent {
 }
 ```
 
-user-panel/user-panel.component.scss
+custom-validators.ts
 ```css
-input[type=text],input[type=date],input[type=email],{
-  display:block;
-}
-span{
-  color: purple;
-  display: block;
-}
-```
+import {
+    ValidatorConstraintInterface, ValidatorConstraint
+} from 'class-validator';
 
-app.component.ts
-```html
-...
-<user-panel></user-panel>
-...
+@ValidatorConstraint()
+export class TextLengthMore15 implements ValidatorConstraintInterface {
+    validate(text: string) {
+        return text ? text.length > 15 : false;
+    }
+}
 ```
 
 ## License
