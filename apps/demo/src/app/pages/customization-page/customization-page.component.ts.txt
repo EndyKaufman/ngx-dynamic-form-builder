@@ -1,0 +1,12 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'customization-page',
+  templateUrl: './customization-page.component.html'
+})
+export class CustomizationPageComponent {
+
+  customization =
+    require('html-loader!markdown-loader!./../../../../../../CUSTOMIZATION.md').
+      replace('<h1 id="customization">customization</h1>', '');
+}

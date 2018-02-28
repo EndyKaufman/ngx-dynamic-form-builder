@@ -3,14 +3,15 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ValidationMetadata } from 'class-validator/metadata/ValidationMetadata';
 import { MetadataStorage, Validator, getFromContainer, ValidationTypes, validateSync, ValidationError } from 'class-validator';
 import { FormControl } from '@angular/forms';
-import { plainToClass, classToClassFromExist, plainToClassFromExist, classToClass } from 'class-transformer';
+import { classToClass, plainToClass } from 'class-transformer';
 import 'reflect-metadata';
+import { ClassType } from 'class-transformer/ClassTransformer';
 
 export class DynamicFormGroup<TModel> extends FormGroup {
     public customValidateErrors = new BehaviorSubject<any>({});
     private _object: TModel;
     constructor(
-        public factoryModel: { new(data?: any): TModel; },
+        public factoryModel: ClassType<TModel>,
         public fields: {
             [key: string]: any
         }
@@ -19,7 +20,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         this.fields = this.onlyFields(this.fields);
     }
     static getClassValidators<TModel>(
-        factoryModel: { new(data?: any): TModel; },
+        factoryModel: ClassType<TModel>,
         fields: {
             [key: string]: any
         }
@@ -169,7 +170,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         return newFields;
     }
     get object() {
-        const object = this._object ? classToClass(this._object) : new this.factoryModel();
+        const object = this._object ? this.classToClass(this._object) : new this.factoryModel();
         if (object !== undefined) {
             Object.keys(this.controls).forEach(key => {
                 if (this.controls[key] instanceof DynamicFormGroup) {
@@ -179,19 +180,13 @@ export class DynamicFormGroup<TModel> extends FormGroup {
                 }
             });
         }
-        return plainToClass(
-            this.factoryModel,
-            object
-        );
+        return this.plainToClass(this.factoryModel, object);
     }
     set object(object: TModel) {
         if (object instanceof this.factoryModel) {
-            this._object = classToClass(object);
+            this._object = this.classToClass(object);
         } else {
-            this._object = plainToClass(
-                this.factoryModel,
-                object as Object
-            );
+            this._object = this.plainToClass(this.factoryModel, object as Object);
         }
         Object.keys(this.controls).forEach(key => {
             if (this.controls[key] instanceof DynamicFormGroup) {
@@ -223,6 +218,12 @@ export class DynamicFormGroup<TModel> extends FormGroup {
             }
         });
         return customErrors;
+    }
+    classToClass<TClassModel>(object: TClassModel) {
+        return classToClass(object, { ignoreDecorators: true });
+    }
+    plainToClass<TClassModel, Object>(cls: ClassType<TClassModel>, plain: Object) {
+        return plainToClass(cls, plain, { ignoreDecorators: true });
     }
     validate(otherErrors?: ValidationError[]) {
         if (otherErrors === undefined) {

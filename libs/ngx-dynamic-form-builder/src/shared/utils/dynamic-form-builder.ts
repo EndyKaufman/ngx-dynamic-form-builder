@@ -1,11 +1,11 @@
 import { FormBuilder } from '@angular/forms';
 import { DynamicFormGroup } from './dynamic-form-group';
 import 'reflect-metadata';
-import { classToClassFromExist, classToClass } from 'class-transformer';
+import { ClassType } from 'class-transformer/ClassTransformer';
 
 export class DynamicFormBuilder extends FormBuilder {
     group<TModel>(
-        factoryModel: { new(data?: any): TModel; },
+        factoryModel: ClassType<TModel>,
         controlsConfig?: {
             [key: string]: any;
         }, extra?: {
