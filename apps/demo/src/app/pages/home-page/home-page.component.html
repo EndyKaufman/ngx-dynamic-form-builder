@@ -1,11 +1,6 @@
-<div class="home-page" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="space-evenly stretch">
-  <mat-card fxFlex="50" fxFlex.sm="100" fxFlex.xs="100" class="margin-15">
-    <mat-card-content [innerHtml]="readme" style="height: 600px; overflow-y: auto">
-    </mat-card-content>
-  </mat-card>
-  <mat-card fxFlex="50" fxFlex.sm="100" fxFlex.xs="100" class="margin-15">
-    <mat-card-content style="height:600px; overflow-y: auto">
-      <user-panel></user-panel>
-    </mat-card-content>
-  </mat-card>
+<div class="home-page">
+  <ngx-docs-example title="Home page" [html]="source.html" [ts]="source.ts">
+    <div class="body" [innerHtml]="readme | safeHtml"></div>
+  </ngx-docs-example>
+  <source-tabs title="Other files" [files]="otherFiles"></source-tabs>
 </div>

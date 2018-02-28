@@ -28,7 +28,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
             getFromContainer(MetadataStorage).getTargetValidationMetadatas(factoryModel, '');
         const formGroupFields = {};
         const validator = new Validator();
-        Object.keys(fields).forEach(key => {
+        Object.keys(fields).filter(key => key.indexOf('__') !== 0).forEach(key => {
             let formGroupField = formGroupFields[key];
             if (formGroupField === undefined) {
                 formGroupField = Array.isArray(fields[key]) ? fields[key] : [];
@@ -157,13 +157,15 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         }
     ) {
         const newFields = {};
-        Object.keys(fields).forEach(key => {
-            if (fields[key] instanceof DynamicFormGroup) {
-                newFields[key] = this.onlyFields((fields[key] as DynamicFormGroup<any>).fields);
-            } else {
-                newFields[key] = fields[key];
-            }
-        });
+        if (fields !== undefined) {
+            Object.keys(fields).forEach(key => {
+                if (fields[key] instanceof DynamicFormGroup) {
+                    newFields[key] = this.onlyFields((fields[key] as DynamicFormGroup<any>).fields);
+                } else {
+                    newFields[key] = fields[key];
+                }
+            });
+        }
         return newFields;
     }
     get object() {

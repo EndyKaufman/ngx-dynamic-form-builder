@@ -1,0 +1,3 @@
+<div class="home-page">
+  <div [innerHtml]="readme | safeHtml"></div>
+</div>

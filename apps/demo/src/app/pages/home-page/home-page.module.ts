@@ -1,34 +1,21 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { HomePageComponent } from './home-page.component';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatCardModule } from '@angular/material/card';
+import { RouterModule } from '@angular/router';
+import { HomePageRoutes } from './home-page.routes';
+import { DocsExampleModule } from '@ngx-docs/example';
+import { SharedModule } from '../../shared/shared.module';
+import { SourceTabsModule } from '../../others/source-tabs/source-tabs.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatButtonModule } from '@angular/material/button';
-import { ModuleWithProviders } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { UserPanelComponent } from '../../panels/user-panel/user-panel.component';
-import { MatTableModule, MatIconModule, MatPaginatorModule, MatDialogModule, MatInputModule, MatCheckboxModule } from '@angular/material';
-import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
-    CommonModule,
-    MatCardModule,
-    MatTableModule,
-    MatIconModule,
-    MatButtonModule,
-    MatPaginatorModule,
-    BrowserAnimationsModule,
-    MatDialogModule,
-    MatInputModule,
-    MatCheckboxModule,
-    ReactiveFormsModule,
+    SharedModule.forRoot(),
+    RouterModule.forChild(HomePageRoutes),
+    DocsExampleModule.forRoot(),
+    SourceTabsModule.forRoot(),
     FlexLayoutModule
   ],
-  entryComponents: [UserPanelComponent, HomePageComponent],
-  exports: [UserPanelComponent, HomePageComponent],
-  declarations: [UserPanelComponent, HomePageComponent]
+  declarations: [HomePageComponent]
 })
 export class HomePageModule {
   static forRoot(): ModuleWithProviders {

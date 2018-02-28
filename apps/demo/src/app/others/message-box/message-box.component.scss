@@ -1,0 +1,12 @@
+
+    .message-box{
+        &.info-modal{
+            .mat-dialog-title{
+            }
+        }
+        &.error-modal{
+            .mat-dialog-title{
+                color: red;
+            }
+        }
+    }

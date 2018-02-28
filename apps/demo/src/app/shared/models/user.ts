@@ -1,4 +1,4 @@
-import { Transform, Type } from 'class-transformer';
+import { Transform, Type, plainToClassFromExist } from 'class-transformer';
 import { IsNotEmpty, IsEmail, ValidateNested, IsOptional } from 'class-validator';
 import { Department } from './department';
 import { serializeModel, transformStringToDate, transformDateToString } from '../utils/custom-transforms';
@@ -12,8 +12,7 @@ export class User {
         isStaff: 'Staff',
         email: 'Email',
         department: 'Department',
-        dateOfBirth: 'Date of birth',
-        departmentStrings: Department.strings,
+        dateOfBirth: 'Date of birth'
     };
     static fields = ['id', 'username', 'password', 'isSuperuser',
         'isStaff', 'email', 'department', 'dateOfBirth'];
@@ -30,10 +29,10 @@ export class User {
     @ValidateNested()
     @IsOptional()
     @Type(serializeModel(Department))
-    department: Department;
+    department: Department = new Department();
     @Transform(transformStringToDate, { toClassOnly: true })
     @Transform(transformDateToString, { toPlainOnly: true })
-    dateOfBirth: Date;
+    dateOfBirth: string;
 
     toString() {
         const arr: string[] = [];
@@ -41,5 +40,9 @@ export class User {
             arr.push(this.username);
         }
         return arr.join(' ');
+    }
+
+    constructor(data?: any) {
+        plainToClassFromExist(this, data);
     }
 }

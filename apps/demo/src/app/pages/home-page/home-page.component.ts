@@ -1,24 +1,30 @@
 import { Component, OnInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'home-page',
-  templateUrl: './home-page.component.html',
-  styleUrls: ['./home-page.component.scss']
+  templateUrl: './home-page.component.html'
 })
-export class HomePageComponent implements OnInit {
+export class HomePageComponent {
 
-  readme: SafeHtml;
-  constructor(
-    private _sanitizer: DomSanitizer
-  ) { }
+  readme =
+    require('html-loader!markdown-loader!../../../../../../README.md').
+      replace('<h1 id="ngx-dynamic-form-builder">ngx-dynamic-form-builder</h1>', '');
 
-  ngOnInit() {
-    this.readme = this._sanitizer.bypassSecurityTrustHtml(
-      require('html-loader!markdown-loader!./../../../../../../README.md').
-      replace('<h1 id="ngx-dynamic-form-builder">ngx-dynamic-form-builder</h1>', '')
-    );
-  }
+  source = {
+    html: require('!!raw-loader?lang=html!./home-page.component.html.txt'),
+    ts: require('!!raw-loader?lang=typescript!./home-page.component.ts.txt')
+  };
 
+  otherFiles: { name: string, language: string, content: string }[] = [
+    {
+      name: 'safe-html.pipe.ts',
+      language: 'javascript',
+      content: require('!!raw-loader?lang=typescript!../../shared/pipes/safe-html.pipe.ts')
+    },
+    {
+      name: 'README.md',
+      language: 'markdown',
+      content: require('!!raw-loader?lang=markdown!../../../../../../README.md')
+    }
+  ];
 }

@@ -1,4 +1,5 @@
-/* You can add global styles to this file, and also import other style files */
+@import "~@ngx-docs/example/dist/docs-example.scss";
+@import "~prismjs/themes/prism.css";
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 html, body {
@@ -9,6 +10,17 @@ html, body {
     padding: 0px;
 }
 
+.mat-menu-item{
+    .mat-icon{
+        svg{
+            padding-bottom: 10px;
+        }
+    }
+}
+.mat-button, .mat-fab, .mat-icon-button, .mat-mini-fab, .mat-raised-button, .mat-menu-item {
+    text-transform: uppercase;
+    font-weight: 700;
+}
 .mat-table {
     .mat-header-row, .mat-row{
         padding: 0;
@@ -19,13 +31,17 @@ html, body {
         max-width: 100px;
     }
 }
-.navbar-title, .mat-button, .mat-raised-button{
-    text-transform: uppercase;
-}
+
 .full-width {
     width: 100%;
 }
 
-.margin-15{
+.margin-15 {
     margin: 15px;
+}
+.padding-left-15 {
+    padding-left: 15px;
+}
+.padding-top-15 {
+    padding-top:15px
 }

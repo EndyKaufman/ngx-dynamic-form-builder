@@ -1,16 +1,22 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './navbar.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
+import { SharedModule } from '../../shared/shared.module';
+import { MatIconModule } from '@angular/material/icon';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   imports: [
-    CommonModule,
+    SharedModule.forRoot(),
     MatToolbarModule,
     MatButtonModule,
-    FlexLayoutModule
+    RouterModule,
+    MatIconModule,
+    FlexLayoutModule,
+    MatMenuModule
   ],
   entryComponents: [NavbarComponent],
   exports: [NavbarComponent],
