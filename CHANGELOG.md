@@ -1,3 +1,18 @@
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.1.0...0.2.0) (2018-02-28)
+
+
+### Bug Fixes
+
+* **dynamic-form-group:** Remove hard dependencies of class-transformer, for use alternative class mapper using the decorators ([8aff1c4](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/8aff1c4))
+
+
+### Features
+
+* **dynamic-form-group:** Added method classToClass and plainToClass to override and customize transformation algorithm ([734f9ea](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/734f9ea))
+
+
+
 <a name="0.1.0"></a>
 # 0.1.0 (2018-02-28)
 
