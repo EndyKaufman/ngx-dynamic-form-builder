@@ -8,7 +8,8 @@ export class DynamicFormBuilder extends FormBuilder {
         factoryModel: ClassType<TModel>,
         controlsConfig?: {
             [key: string]: any;
-        }, extra?: {
+        },
+        extra?: {
             [key: string]: any;
         } | null
     ): DynamicFormGroup<TModel> {
@@ -18,13 +19,12 @@ export class DynamicFormBuilder extends FormBuilder {
         }
         // experimental
         if (controlsConfig === undefined) {
-            newControlsConfig = new factoryModel({});
+            newControlsConfig = new factoryModel();
             Object.keys(newControlsConfig).forEach(key => {
                 if (
                     newControlsConfig[key] &&
                     newControlsConfig[key].constructor &&
                     typeof newControlsConfig[key] === 'object' &&
-                    newControlsConfig[key].__not_group !== true &&
                     (
                         newControlsConfig[key].length === undefined ||
                         (
@@ -33,10 +33,10 @@ export class DynamicFormBuilder extends FormBuilder {
                         )
                     )
                 ) {
-                    newControlsConfig[key].__not_group = true;
                     newControlsConfig[key] = this.group(
                         newControlsConfig[key].constructor,
-                        controlsConfig !== undefined ? newControlsConfig[key] : undefined
+                        undefined,
+                        extra
                     );
                 }
             });

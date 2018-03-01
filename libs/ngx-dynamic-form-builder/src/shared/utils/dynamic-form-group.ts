@@ -174,7 +174,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         if (object !== undefined) {
             Object.keys(this.controls).forEach(key => {
                 if (this.controls[key] instanceof DynamicFormGroup) {
-                    object[key] = (this.controls[key] as DynamicFormGroup<any>).value;
+                    object[key] = (this.controls[key] as DynamicFormGroup<any>).object;
                 } else {
                     object[key] = this.controls[key].value;
                 }

@@ -1,3 +1,13 @@
+<a name="0.2.1"></a>
+## [0.2.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.2.0...0.2.1) (2018-03-01)
+
+
+### Bug Fixes
+
+* **dynamic-form-group:** Change return object type for nested object if it type is DynamicFormGroup ([8bb303e](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/8bb303e))
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.1.0...0.2.0) (2018-02-28)
 
