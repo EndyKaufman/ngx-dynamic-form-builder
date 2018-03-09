@@ -1,7 +1,10 @@
 import { FormGroup } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ValidationMetadata } from 'class-validator/metadata/ValidationMetadata';
-import { MetadataStorage, Validator, getFromContainer, ValidationTypes, validateSync, ValidationError } from 'class-validator';
+import {
+    MetadataStorage, Validator, getFromContainer, ValidationTypes,
+    validateSync, ValidationError, ValidatorOptions
+} from 'class-validator';
 import { FormControl } from '@angular/forms';
 import { classToClass, plainToClass } from 'class-transformer';
 import 'reflect-metadata';
@@ -23,10 +26,16 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         factoryModel: ClassType<TModel>,
         fields: {
             [key: string]: any
-        }
+        },
+        targetSchema?: string,
+        groups?: string[]
     ) {
         const validationMetadatas: ValidationMetadata[] =
-            getFromContainer(MetadataStorage).getTargetValidationMetadatas(factoryModel, '');
+            getFromContainer(MetadataStorage).getTargetValidationMetadatas(
+                factoryModel,
+                targetSchema ? targetSchema : '',
+                groups ? groups : undefined
+            );
         const formGroupFields = {};
         const validator = new Validator();
         Object.keys(fields).filter(key => key.indexOf('__') !== 0).forEach(key => {
@@ -225,11 +234,11 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     plainToClass<TClassModel, Object>(cls: ClassType<TClassModel>, plain: Object) {
         return plainToClass(cls, plain, { ignoreDecorators: true });
     }
-    validate(otherErrors?: ValidationError[]) {
+    validate(otherErrors?: ValidationError[], validatorOptions?: ValidatorOptions) {
         if (otherErrors === undefined) {
             otherErrors = [];
         }
-        const errors = validateSync(this.object, { validationError: { target: false } });
+        const errors = validateSync(this.object, validatorOptions);
         this.customValidateErrors.next(
             this.transformValidationErrors(
                 [...errors, ...otherErrors]

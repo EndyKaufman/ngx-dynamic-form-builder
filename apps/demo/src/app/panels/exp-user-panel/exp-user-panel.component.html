@@ -7,6 +7,12 @@
     </mat-error>
   </mat-form-field>
   <mat-form-field class="full-width">
+    <input matInput type="password" formControlName="password" placeholder="Password">
+    <mat-error *ngIf="(form?.customValidateErrors | async)?.password?.length">
+      {{(form.customValidateErrors | async).password[0]}}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="full-width">
     <input matInput type="email" formControlName="email" placeholder="Email">
     <mat-error *ngIf="(form?.customValidateErrors | async)?.email?.length">
       {{(form.customValidateErrors | async).email[0]}}

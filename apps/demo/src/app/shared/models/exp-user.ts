@@ -4,16 +4,29 @@ import { ExpDepartment } from './exp-department';
 export class ExpUser {
 
     id: number;
-    @IsNotEmpty()
+    @IsNotEmpty({
+        groups: ['user', 'guest']
+    })
     username: string;
+    @IsNotEmpty({
+        groups: ['guest']
+    })
     password: string;
-    @IsEmail()
-    @IsNotEmpty()
+    @IsEmail(undefined, {
+        groups: ['user']
+    })
+    @IsNotEmpty({
+        groups: ['user']
+    })
     email: string;
     isSuperuser: boolean;
     isStaff: boolean;
-    @ValidateNested()
-    @IsOptional()
+    @ValidateNested({
+        groups: ['user']
+    })
+    @IsOptional({
+        groups: ['user']
+    })
     department: ExpDepartment;
     dateOfBirth: string;
 

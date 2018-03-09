@@ -1,3 +1,13 @@
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.2.1...0.3.0) (2018-03-09)
+
+
+### Features
+
+* **dynamic-form-builder:** Add support use ValidatorOptions ([57ac15a](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/57ac15a))
+
+
+
 <a name="0.2.1"></a>
 ## [0.2.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.2.0...0.2.1) (2018-03-01)
 
