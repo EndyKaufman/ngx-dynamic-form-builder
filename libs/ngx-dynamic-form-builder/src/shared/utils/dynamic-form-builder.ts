@@ -51,12 +51,7 @@ export class DynamicFormBuilder extends FormBuilder {
             DynamicFormGroup.getClassValidators<TModel>(
                 factoryModel,
                 newControlsConfig,
-                '',
-                (extra &&
-                    extra.customValidatorOptions &&
-                    extra.customValidatorOptions.groups) ?
-                    extra.customValidatorOptions.groups :
-                    undefined
+                (extra && extra.customValidatorOptions) ? extra.customValidatorOptions : undefined
             )
             , extra
         );
@@ -64,7 +59,10 @@ export class DynamicFormBuilder extends FormBuilder {
             dynamicFormGroup.addControl(key, formGroup.controls[key]);
         });
         dynamicFormGroup.valueChanges.subscribe(data => {
-            dynamicFormGroup.validate();
+            dynamicFormGroup.validate(
+                undefined,
+                (extra && extra.customValidatorOptions) ? extra.customValidatorOptions : undefined
+            );
         });
         return dynamicFormGroup;
     }

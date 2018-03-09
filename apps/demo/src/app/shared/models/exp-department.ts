@@ -3,10 +3,16 @@ import { ExpCompany } from './exp-company';
 
 export class ExpDepartment {
     id: number;
-    @IsNotEmpty()
+    @IsNotEmpty({
+        groups: ['user']
+    })
     name: string;
-    @ValidateNested()
-    @IsOptional()
+    @ValidateNested({
+        groups: ['user']
+    })
+    @IsOptional({
+        groups: ['user']
+    })
     company: ExpCompany;
 
     constructor(data?: any) {

@@ -11,6 +11,7 @@ import 'reflect-metadata';
 import { ClassType } from 'class-transformer/ClassTransformer';
 
 export class DynamicFormGroup<TModel> extends FormGroup {
+    public otherErrors: ValidationError[] = [];
     public customValidateErrors = new BehaviorSubject<any>({});
     private _object: TModel;
     constructor(
@@ -27,14 +28,13 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         fields: {
             [key: string]: any
         },
-        targetSchema?: string,
-        groups?: string[]
+        validatorOptions?: ValidatorOptions
     ) {
         const validationMetadatas: ValidationMetadata[] =
             getFromContainer(MetadataStorage).getTargetValidationMetadatas(
                 factoryModel,
-                targetSchema ? targetSchema : '',
-                groups ? groups : undefined
+                '',
+                validatorOptions && validatorOptions.groups ? validatorOptions.groups : undefined
             );
         const formGroupFields = {};
         const validator = new Validator();
@@ -78,7 +78,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
                                             const isValid = (c.parent && c.parent.value) ?
                                                 validateSync(
                                                     c.value,
-                                                    { validationError: { target: false } }
+                                                    validatorOptions
                                                 ).length === 0 : true;
                                             return isValid ? null : {
                                                 nestedValidate: {
@@ -106,7 +106,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
                                             const validateErrors = (c.parent && c.parent.value) ?
                                                 validateSync(
                                                     object,
-                                                    { validationError: { target: false } }
+                                                    validatorOptions
                                                 ) : [];
                                             const isValid = validateErrors.filter((error: ValidationError) => {
                                                 if (error.children.length &&
@@ -236,7 +236,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     }
     validate(otherErrors?: ValidationError[], validatorOptions?: ValidatorOptions) {
         if (otherErrors === undefined) {
-            otherErrors = [];
+            otherErrors = this.otherErrors;
         }
         const errors = validateSync(this.object, validatorOptions);
         this.customValidateErrors.next(
