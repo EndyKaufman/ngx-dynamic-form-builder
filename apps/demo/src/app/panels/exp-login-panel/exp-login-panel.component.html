@@ -13,6 +13,11 @@
     </mat-error>
   </mat-form-field>
   <div class="full-width">
+    <p>Form status: {{ form.status | json }}</p>
+    <p *ngIf="!form.valid">Custom validation errors: {{form.customValidateErrors|async|json}}</p>
+    <p *ngIf="savedItem">Saved item: {{savedItem|json}}</p>
+  </div>
+  <div class="full-width">
     <button mat-raised-button (click)="onLoginClick()" [disabled]="!form.valid" cdkFocusInitial>Login</button>
   </div>
 </form>
