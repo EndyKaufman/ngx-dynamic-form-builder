@@ -1,0 +1,18 @@
+<form [formGroup]="form" novalidate>
+  <h3>Group form</h3>
+  <mat-form-field class="full-width">
+    <input matInput formControlName="username" placeholder="Username">
+    <mat-error *ngIf="(form?.customValidateErrors | async)?.username?.length">
+      {{(form?.customValidateErrors | async).username[0]}}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <input matInput type="password" formControlName="password" placeholder="Password">
+    <mat-error *ngIf="(form?.customValidateErrors | async)?.password?.length">
+      {{(form.customValidateErrors | async).password[0]}}
+    </mat-error>
+  </mat-form-field>
+  <div class="full-width">
+    <button mat-raised-button (click)="onLoginClick()" [disabled]="!form.valid" cdkFocusInitial>Login</button>
+  </div>
+</form>

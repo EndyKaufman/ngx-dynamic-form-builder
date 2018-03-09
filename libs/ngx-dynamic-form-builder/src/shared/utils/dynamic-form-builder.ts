@@ -2,6 +2,7 @@ import { FormBuilder } from '@angular/forms';
 import { DynamicFormGroup } from './dynamic-form-group';
 import 'reflect-metadata';
 import { ClassType } from 'class-transformer/ClassTransformer';
+import { ValidatorOptions } from 'class-validator';
 
 export class DynamicFormBuilder extends FormBuilder {
     group<TModel>(
@@ -11,8 +12,12 @@ export class DynamicFormBuilder extends FormBuilder {
         },
         extra?: {
             [key: string]: any;
+            customValidatorOptions?: ValidatorOptions;
         } | null
     ): DynamicFormGroup<TModel> {
+        if (extra !== undefined && extra.customValidatorOptions === undefined) {
+            extra.customValidatorOptions = { validationError: { target: false } };
+        }
         let newControlsConfig;
         if (controlsConfig !== undefined) {
             newControlsConfig = controlsConfig;
@@ -45,7 +50,13 @@ export class DynamicFormBuilder extends FormBuilder {
         const formGroup = super.group(
             DynamicFormGroup.getClassValidators<TModel>(
                 factoryModel,
-                newControlsConfig
+                newControlsConfig,
+                '',
+                (extra &&
+                    extra.customValidatorOptions &&
+                    extra.customValidatorOptions.groups) ?
+                    extra.customValidatorOptions.groups :
+                    undefined
             )
             , extra
         );

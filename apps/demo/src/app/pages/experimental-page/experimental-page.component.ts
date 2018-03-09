@@ -14,6 +14,15 @@ export class ExperimentalPageComponent {
     launch: { location: 'https://stackblitz.com/edit/ngx-dynamic-form-builder-experimental', tooltip: `Edit in http://stackblitz.com` }
   };
 
+  loginSource = {
+    html: require('!!raw-loader?lang=html!./../../panels/exp-login-panel/exp-login-panel.component.html'),
+    ts: require('!!raw-loader?lang=typescript!./../../panels/exp-login-panel/exp-login-panel.component.ts'),
+    launch: {
+      location: 'https://stackblitz.com/edit/ngx-dynamic-form-builder-experimental-login',
+      tooltip: `Edit in http://stackblitz.com`
+    }
+  };
+
   otherFiles: { name: string, language: string, content: string }[] = [
     {
       name: 'exp-user.ts',

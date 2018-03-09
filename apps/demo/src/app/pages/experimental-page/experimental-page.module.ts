@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { ExperimentalPageRoutes } from './experimental-page.routes';
 import { SourceTabsModule } from '../../others/source-tabs/source-tabs.module';
 import { ExpUserPanelModule } from '../../panels/exp-user-panel/exp-user-panel.module';
+import { ExpLoginPanelModule } from '../../panels/exp-login-panel/exp-login-panel.module';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { ExpUserPanelModule } from '../../panels/exp-user-panel/exp-user-panel.m
     FlexLayoutModule,
     DocsExampleModule.forRoot(),
     ExpUserPanelModule.forRoot(),
+    ExpLoginPanelModule.forRoot(),
     RouterModule.forChild(ExperimentalPageRoutes),
     SourceTabsModule.forRoot()
   ],
