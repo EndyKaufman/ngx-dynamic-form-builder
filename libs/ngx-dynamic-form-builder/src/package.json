@@ -1,6 +1,6 @@
 {
     "name": "ngx-dynamic-form-builder",
-    "version": "0.3.1",
+    "version": "0.3.2",
     "description": "FormBuilder + class-transformer + class-validator = dynamic form group builder for Angular5+",
     "keywords": [
         "FormBuilder",
@@ -30,14 +30,16 @@
         }
     ],
     "peerDependencies": {
-        "@angular/forms": "^5.2.7",
-        "@angular/common": "^5.2.7",
-        "@angular/compiler": "^5.2.7",
-        "@angular/core": "^5.2.7"
+        "@angular/forms": "^5.2.9",
+        "@angular/common": "^5.2.9",
+        "@angular/compiler": "^5.2.9",
+        "@angular/core": "^5.2.9"
     },
     "dependencies": {
         "reflect-metadata": "^0.1.12",
         "class-transformer": "^0.1.9",
-        "class-validator": "^0.8.1"
+        "class-validator": "^0.8.4",
+        "@types/lodash-es": "^4.17.0",
+        "lodash-es": "^4.17.7"
     }
 }

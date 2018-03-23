@@ -1,3 +1,13 @@
+<a name="0.3.2"></a>
+## [0.3.2](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.3.1...0.3.2) (2018-03-23)
+
+
+### Bug Fixes
+
+* **dynamic-form-group:** Change code for correct work with externalErrors (renamed from otherErrors) ([087772b](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/087772b))
+
+
+
 <a name="0.3.1"></a>
 ## [0.3.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.3.0...0.3.1) (2018-03-09)
 

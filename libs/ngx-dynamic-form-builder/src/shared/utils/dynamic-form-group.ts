@@ -1,4 +1,4 @@
-import { FormGroup } from '@angular/forms';
+import { FormGroup, AbstractControl } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ValidationMetadata } from 'class-validator/metadata/ValidationMetadata';
 import {
@@ -9,11 +9,27 @@ import { FormControl } from '@angular/forms';
 import { classToClass, plainToClass } from 'class-transformer';
 import 'reflect-metadata';
 import { ClassType } from 'class-transformer/ClassTransformer';
-
+import { mergeWith, cloneDeep } from 'lodash-es';
+export interface IShortValidationErrors { [key: string]: string[] | IShortValidationErrors; }
 export class DynamicFormGroup<TModel> extends FormGroup {
-    public otherErrors: ValidationError[] = [];
-    public customValidateErrors = new BehaviorSubject<any>({});
+    set externalErrors(externalErrors: IShortValidationErrors) {
+        this._externalErrors = externalErrors;
+        this.validate();
+    }
+    get externalErrors(): IShortValidationErrors {
+        return this._externalErrors;
+    }
+    set validatorOptions(validatorOptions: ValidatorOptions) {
+        this._validatorOptions = validatorOptions;
+        this.validate();
+    }
+    get validatorOptions(): ValidatorOptions {
+        return this._validatorOptions;
+    }
+    customValidateErrors = new BehaviorSubject<IShortValidationErrors>({});
     private _object: TModel;
+    private _externalErrors: IShortValidationErrors;
+    private _validatorOptions: ValidatorOptions;
     constructor(
         public factoryModel: ClassType<TModel>,
         public fields: {
@@ -207,17 +223,17 @@ export class DynamicFormGroup<TModel> extends FormGroup {
             }
         });
     }
-    private transformValidationErrors(errors: ValidationError[]) {
-        const customErrors = {};
+    private transformValidationErrors(errors: ValidationError[]): IShortValidationErrors {
+        const customErrors: IShortValidationErrors = {};
         errors.forEach((error: ValidationError) => {
-            if (error.constraints !== undefined) {
+            if (error && error.constraints !== undefined) {
                 Object.keys(error.constraints).forEach(
                     (key: string) => {
                         if (!customErrors[error.property]) {
                             customErrors[error.property] = [];
                         }
-                        if (customErrors[error.property].indexOf(error.constraints[key]) === -1) {
-                            customErrors[error.property].push(error.constraints[key]);
+                        if ((customErrors[error.property] as string[]).indexOf(error.constraints[key]) === -1) {
+                            (customErrors[error.property] as string[]).push(error.constraints[key]);
                         }
                     }
                 );
@@ -234,16 +250,53 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     plainToClass<TClassModel, Object>(cls: ClassType<TClassModel>, plain: Object) {
         return plainToClass(cls, plain, { ignoreDecorators: true });
     }
-    validate(otherErrors?: ValidationError[], validatorOptions?: ValidatorOptions) {
-        if (otherErrors === undefined) {
-            otherErrors = this.otherErrors;
+    private mergeErrors(errors?: IShortValidationErrors, externalErrors?: IShortValidationErrors) {
+        return mergeWith(errors, externalErrors, (objValue, srcValue) => {
+            if (
+                Array.isArray(objValue) &&
+                Array.isArray(srcValue) &&
+                objValue.filter(objItem => srcValue.indexOf(objItem) !== -1).length === 0
+            ) {
+                return objValue.concat(srcValue);
+            }
+        });
+    }
+    validate(externalErrors?: IShortValidationErrors, validatorOptions?: ValidatorOptions) {
+        if (externalErrors === undefined) {
+            externalErrors = cloneDeep(this.externalErrors);
+        }
+        if (validatorOptions === undefined) {
+            validatorOptions = cloneDeep(this.validatorOptions);
+        }
+        if (!externalErrors) {
+            externalErrors = {};
         }
         const errors = validateSync(this.object, validatorOptions);
-        this.customValidateErrors.next(
-            this.transformValidationErrors(
-                [...errors, ...otherErrors]
-            )
-        );
+        const transformedErrors = this.transformValidationErrors(errors);
+        const allErrors = this.mergeErrors(externalErrors, transformedErrors);
+        this.markAsInvalidForExternalErrors(externalErrors, this.controls);
+        this.customValidateErrors.next(allErrors);
+    }
+    private markAsInvalidForExternalErrors(errors: IShortValidationErrors, controls: {
+        [key: string]: AbstractControl;
+    }) {
+        Object.keys(controls).forEach(field => {
+            const control = controls[field];
+            if (control instanceof FormControl) {
+                if (errors && errors[field]) {
+                    control.setErrors({ 'externalError': true });
+                } else {
+                    if (control.errors && control.errors.externalError === true) {
+                        control.setErrors(null);
+                    }
+                }
+            } else if (control instanceof DynamicFormGroup) {
+                control.markAsInvalidForExternalErrors(
+                    errors && errors[field] ? errors[field] as IShortValidationErrors : {},
+                    control.controls
+                );
+            }
+        });
     }
     validateAllFormFields() {
         Object.keys(this.controls).forEach(field => {
