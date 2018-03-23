@@ -38,6 +38,8 @@
     "dependencies": {
         "reflect-metadata": "^0.1.12",
         "class-transformer": "^0.1.9",
-        "class-validator": "^0.8.4"
+        "class-validator": "^0.8.4",
+        "@types/lodash-es": "^4.17.0",
+        "lodash-es": "^4.17.7"
     }
 }
