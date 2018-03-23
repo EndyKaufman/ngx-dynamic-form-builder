@@ -1,6 +1,6 @@
 {
   "name": "ngx-dynamic-form-builder",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "FormBuilder + class-transformer + class-validator = dynamic form group builder for Angular5+",
   "keywords": [
     "FormBuilder",
