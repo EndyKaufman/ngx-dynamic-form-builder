@@ -1,9 +1,8 @@
-import { DynamicFormGroup, DynamicFormBuilder } from 'ngx-dynamic-form-builder';
-import { Company } from './../../shared/models/company';
+import { Component, Input } from '@angular/core';
+import { DynamicFormBuilder, DynamicFormGroup } from 'ngx-dynamic-form-builder';
 import { Department } from '../../shared/models/department';
 import { User } from '../../shared/models/user';
-import { Input, Component } from '@angular/core';
-import { Validators } from '@angular/forms';
+import { Company } from './../../shared/models/company';
 
 @Component({
   selector: 'user-panel',

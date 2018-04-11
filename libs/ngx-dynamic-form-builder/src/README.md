@@ -62,11 +62,7 @@ export class Company {
     name: string;
 
     toString() {
-        const arr: string[] = [];
-        if (arr.length === 0 && this.name) {
-            arr.push(this.name);
-        }
-        return arr.join(' ');
+        return this.name;
     }
 
     constructor(data?: any) {

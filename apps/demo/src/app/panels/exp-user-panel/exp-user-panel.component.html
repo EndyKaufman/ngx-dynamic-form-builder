@@ -29,17 +29,17 @@
     </mat-error>
   </mat-form-field>
   <div formGroupName="department">
-    <h3>Sub group form</h3>
+    <h3>Department of user</h3>
     <mat-form-field class="full-width">
-      <input matInput formControlName="name" placeholder="Department">
+      <input matInput formControlName="name" placeholder="Department name">
       <mat-error *ngIf="(form?.customValidateErrors | async)?.department?.name?.length">
         {{(form.customValidateErrors | async).department.name[0]}}
       </mat-error>
     </mat-form-field>
     <div formGroupName="company">
-      <h3>Sub sub group form</h3>
+      <h3>Company of department</h3>
       <mat-form-field class="full-width">
-        <input matInput formControlName="name" placeholder="Company">
+        <input matInput formControlName="name" placeholder="Company name">
         <mat-error *ngIf="(form?.customValidateErrors | async)?.department?.company?.name?.length">
           {{(form.customValidateErrors | async).department.company.name[0]}}
         </mat-error>
