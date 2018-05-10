@@ -102,7 +102,7 @@
     "karma-chrome-launcher": "2.2.0",
     "karma-coverage-istanbul-reporter": "1.4.2",
     "karma-jasmine": "1.1.1",
-    "karma-jasmine-html-reporter": "1.0.0",
+    "karma-jasmine-html-reporter": "1.1.0",
     "lite-server": "2.3.0",
     "markdown-loader": "2.0.2",
     "npm-run-all": "4.1.2",
