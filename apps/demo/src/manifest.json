@@ -1,11 +1,11 @@
 {
-  "name": "demo",
-  "short_name": "demo",
+  "name": "ngx-dynamic-form-builder",
+  "short_name": "ngx-dynamic-form-builder",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "/",
-  "start_url": "/",
+  "start_url": "index.html",
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",
