@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -14,6 +15,14 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ngx-dynamic-form-builder": [
+        "dist/ngx-dynamic-form-builder"
+      ],
+      "ngx-dynamic-form-builder/*": [
+        "dist/ngx-dynamic-form-builder/*"
+      ]
+    }
   }
 }
