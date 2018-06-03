@@ -1,7 +1,7 @@
-import { IsNotEmpty, ValidateNested, IsOptional } from 'class-validator';
 import { Type, plainToClassFromExist } from 'class-transformer';
-import { Company } from './company';
+import { IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
 import { serializeModel } from '../utils/custom-transforms';
+import { Company } from './company';
 
 export class Department {
     static strings = {
@@ -20,11 +20,7 @@ export class Department {
     company: Company;
 
     toString() {
-        const arr: string[] = [];
-        if (arr.length === 0 && this.name) {
-            arr.push(this.name);
-        }
-        return arr.join(' ');
+        return this.name;
     }
 
     constructor(data?: any) {

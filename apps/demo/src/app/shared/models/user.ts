@@ -1,7 +1,7 @@
 import { Transform, Type, plainToClassFromExist } from 'class-transformer';
-import { IsNotEmpty, IsEmail, ValidateNested, IsOptional } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
+import { serializeModel, transformDateToString, transformStringToDate } from '../utils/custom-transforms';
 import { Department } from './department';
-import { serializeModel, transformStringToDate, transformDateToString } from '../utils/custom-transforms';
 
 export class User {
     static strings = {
@@ -35,11 +35,7 @@ export class User {
     dateOfBirth: string;
 
     toString() {
-        const arr: string[] = [];
-        if (arr.length === 0 && this.username) {
-            arr.push(this.username);
-        }
-        return arr.join(' ');
+        return this.username;
     }
 
     constructor(data?: any) {

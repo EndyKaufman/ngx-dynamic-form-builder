@@ -16,6 +16,8 @@ import { AppRoutes } from './app.routes';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { MessageBoxModule } from './others/message-box/message-box.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 @NgModule({
@@ -29,7 +31,8 @@ import { MessageBoxModule } from './others/message-box/message-box.module';
     BrowserAnimationsModule,
     BrowserModule.withServerTransition({ appId: 'demo' }),
     NavbarModule.forRoot(),
-    RouterModule.forRoot(AppRoutes, { preloadingStrategy: PreloadAllModules, initialNavigation: 'enabled' })
+    RouterModule.forRoot(AppRoutes, { preloadingStrategy: PreloadAllModules, initialNavigation: 'enabled' }),
+    ServiceWorkerModule.register('/ngx-dynamic-form-builder/ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     { provide: ErrorStateMatcher, useClass: MyErrorStateMatcher },

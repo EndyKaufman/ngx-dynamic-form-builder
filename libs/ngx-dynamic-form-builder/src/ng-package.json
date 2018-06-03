@@ -1,7 +1,0 @@
-{
-    "lib": {
-        "entryFile": "index.ts"
-    },
-    "dest": "../dist",
-    "workingDirectory": "../.tmp"
-}

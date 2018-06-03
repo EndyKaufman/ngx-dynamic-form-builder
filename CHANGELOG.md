@@ -1,3 +1,18 @@
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.3.2...0.4.0) (2018-06-03)
+
+
+### Bug Fixes
+
+* **sw:** Update path for ngsw-worker.js ([0491271](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/0491271))
+
+
+### Features
+
+* Update to Angular 6 and Rx 6 ([f600e3c](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/f600e3c))
+
+
+
 <a name="0.3.2"></a>
 ## [0.3.2](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.3.1...0.3.2) (2018-03-23)
 
