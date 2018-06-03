@@ -1,2 +1,2 @@
 #!/bin/bash
-npm publish ./libs/dist/ngx-dynamic-form-builder
+npm publish ./dist/ngx-dynamic-form-builder
