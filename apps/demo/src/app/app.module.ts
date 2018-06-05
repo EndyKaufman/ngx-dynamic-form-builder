@@ -32,7 +32,7 @@ import { environment } from '../environments/environment';
     BrowserModule.withServerTransition({ appId: 'demo' }),
     NavbarModule.forRoot(),
     RouterModule.forRoot(AppRoutes, { preloadingStrategy: PreloadAllModules, initialNavigation: 'enabled' }),
-    ServiceWorkerModule.register('/ngx-dynamic-form-builder/ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     { provide: ErrorStateMatcher, useClass: MyErrorStateMatcher },

@@ -1,3 +1,13 @@
+<a name="0.4.1"></a>
+## [0.4.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.4.0...0.4.1) (2018-06-05)
+
+
+### Bug Fixes
+
+* Add needed deps to devDependencies ([540e775](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/540e775))
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.3.2...0.4.0) (2018-06-03)
 
