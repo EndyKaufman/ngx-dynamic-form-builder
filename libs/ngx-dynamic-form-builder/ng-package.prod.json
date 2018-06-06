@@ -3,5 +3,8 @@
   "dest": "../../dist/ngx-dynamic-form-builder",
   "lib": {
     "entryFile": "src/public_api.ts"
-  }
+  },
+  "whitelistedNonPeerDependencies": [
+    "."
+  ]
 }
