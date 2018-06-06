@@ -88,7 +88,7 @@
     "codelyzer": "~4.2.1",
     "conventional-changelog-cli": "^2.0.0",
     "conventional-commits-detector": "^0.1.1",
-    "conventional-recommended-bump": "^3.0.0",
+    "conventional-recommended-bump": "^4.0.0",
     "cp-cli": "^1.1.2",
     "gh-pages": "^1.2.0",
     "html-loader": "^0.5.5",
