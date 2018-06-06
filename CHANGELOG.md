@@ -1,3 +1,13 @@
+<a name="0.4.2"></a>
+## [0.4.2](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.4.1...0.4.2) (2018-06-06)
+
+
+### Bug Fixes
+
+* Add whitelistedNonPeerDependencies in ng-package.json ([06fdac7](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/06fdac7))
+
+
+
 <a name="0.4.1"></a>
 ## [0.4.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.4.0...0.4.1) (2018-06-05)
 
