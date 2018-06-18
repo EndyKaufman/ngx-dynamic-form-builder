@@ -69,8 +69,14 @@ export class DynamicFormGroup<TModel> extends FormGroup {
                     formGroupField.push(fields[key]);
                 }
             }
+            const conditionalValidations: ValidationMetadata[] = [];
             validationMetadatas.forEach(validationMetadata => {
-                if (validationMetadata.propertyName === key) {
+                if (validationMetadata.propertyName === key && validationMetadata.type === 'conditionalValidation') {
+                    conditionalValidations.push(validationMetadata);
+                }
+            });
+            validationMetadatas.forEach(validationMetadata => {
+                if (validationMetadata.propertyName === key && validationMetadata.type !== 'conditionalValidation') {
                     switch (validationMetadata.type) {
                         /*
                         case ValidationTypes.IS_NOT_EMPTY: {
@@ -148,7 +154,27 @@ export class DynamicFormGroup<TModel> extends FormGroup {
                                             if (!c) {
                                                 return null;
                                             }
-                                            const isValid = c.parent && c.parent.value ? validator[validationMetadata.type](c.value) : true;
+                                            let isValid = c.parent && c.parent.value ? validator.validateValueByMetadata(c.value, validationMetadata) : true;
+                                            if (!isValid && conditionalValidations.length > 0) {
+                                                // todo: refactor
+                                                const object = (c.parent instanceof DynamicFormGroup) ?
+                                                    (c.parent as DynamicFormGroup<any>).object :
+                                                    (c.parent ? c.parent.value : {});
+                                                if (object) {
+                                                    object[key] = c.value;
+                                                }
+                                                const validateErrors = (c.parent && c.parent.value) ?
+                                                    validateSync(
+                                                        object,
+                                                        validatorOptions
+                                                    ) : [];
+                                                isValid = validateErrors.filter((error: ValidationError) => {
+                                                    if (error.property === key) {
+                                                        return true;
+                                                    }
+                                                    return false;
+                                                }).length === 0;
+                                            }
                                             return isValid ? null : {
                                                 customValidate: {
                                                     valid: false,
