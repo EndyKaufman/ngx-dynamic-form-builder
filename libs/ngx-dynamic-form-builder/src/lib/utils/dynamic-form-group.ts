@@ -147,7 +147,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
                                             if (!c) {
                                                 return null;
                                             }
-                                            const isValid = c.parent && c.parent.value ? validator[validationMetadata.type](c.value) : true;
+                                            const isValid = c.parent && c.parent.value ? validator.validateValueByMetadata(c.value, validationMetadata) : true;
                                             return isValid ? null : {
                                                 customValidate: {
                                                     valid: false,
