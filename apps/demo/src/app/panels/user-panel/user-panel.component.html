@@ -1,63 +1,128 @@
-<form [formGroup]="form" novalidate>
-  <h3>Group form</h3>
-  <mat-form-field class="full-width">
-    <input matInput formControlName="username" [placeholder]="strings.username">
-    <mat-error *ngIf="(form?.customValidateErrors | async)?.username?.length">
-      {{(form?.customValidateErrors | async).username.join('. ')}}
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field class="full-width">
-    <input matInput type="email" formControlName="email" [placeholder]="strings.email">
-    <mat-error *ngIf="(form?.customValidateErrors | async)?.email?.length">
-      {{(form.customValidateErrors | async).email.join('. ')}}
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field class="full-width">
-    <input matInput type="date" formControlName="dateOfBirth" [placeholder]="strings.dateOfBirth">
-    <mat-error *ngIf="form.get('dateOfBirth').hasError('required')">
-      date of birth is
-      <strong>required</strong>
-    </mat-error>
-    <mat-error *ngIf="(form?.customValidateErrors | async)?.dateOfBirth?.length">
-      {{(form.customValidateErrors | async).dateOfBirth.join('. ')}}
-    </mat-error>
-  </mat-form-field>
-  <div formGroupName="department">
-    <h3>Department of user</h3>
+<form
+    [formGroup]="form"
+    novalidate>
+    <h3>Group form</h3>
     <mat-form-field class="full-width">
-      <input matInput formControlName="name" [placeholder]="strings.department">
-      <mat-error *ngIf="(form?.customValidateErrors | async)?.department?.name?.length">
-        {{(form.customValidateErrors | async).department.name.join('. ')}}
-      </mat-error>
-    </mat-form-field>
-    <div formGroupName="company">
-      <h3>Company of department</h3>
-      <mat-form-field class="full-width">
-        <input matInput formControlName="name" [placeholder]="departmentStrings.company">
-        <mat-error *ngIf="(form?.customValidateErrors | async)?.department?.company?.name?.length">
-          {{(form.customValidateErrors | async).department.company.name.join('. ')}}
+        <input
+            matInput
+            formControlName="username"
+            [placeholder]="strings.username">
+        <mat-error *ngIf="(form?.customValidateErrors | async)?.username?.length">
+            {{(form?.customValidateErrors | async).username.join('. ')}}
         </mat-error>
-      </mat-form-field>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <input
+            matInput
+            type="email"
+            formControlName="email"
+            [placeholder]="strings.email">
+        <mat-error *ngIf="(form?.customValidateErrors | async)?.email?.length">
+            {{(form.customValidateErrors | async).email.join('. ')}}
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <input
+            matInput
+            type="date"
+            formControlName="dateOfBirth"
+            [placeholder]="strings.dateOfBirth">
+        <mat-error *ngIf="form.get('dateOfBirth').hasError('required')">
+            date of birth is
+            <strong>required</strong>
+        </mat-error>
+        <mat-error *ngIf="(form?.customValidateErrors | async)?.dateOfBirth?.length">
+            {{(form.customValidateErrors | async).dateOfBirth.join('. ')}}
+        </mat-error>
+    </mat-form-field>
+    <div formGroupName="department">
+        <h3>Department of user</h3>
+        <mat-form-field class="full-width">
+            <input
+                matInput
+                formControlName="name"
+                [placeholder]="strings.department">
+            <mat-error *ngIf="(form?.customValidateErrors | async)?.department?.name?.length">
+                {{(form.customValidateErrors | async).department.name.join('. ')}}
+            </mat-error>
+        </mat-form-field>
+        <div formGroupName="company">
+            <h3>Company of department</h3>
+            <mat-form-field class="full-width">
+                <input
+                    matInput
+                    formControlName="name"
+                    [placeholder]="departmentStrings.company">
+                <mat-error *ngIf="(form?.customValidateErrors | async)?.department?.company?.name?.length">
+                    {{(form.customValidateErrors | async).department.company.name.join('. ')}}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <input
+                    matInput
+                    formControlName="regionNum"
+                    type="number"
+                    [placeholder]="companyStrings.regionNum">
+                <mat-error *ngIf="(form?.customValidateErrors | async)?.department?.company?.regionNum?.length">
+                    {{(form.customValidateErrors | async).department.company.regionNum.join('. ')}}
+                </mat-error>
+            </mat-form-field>
+        </div>
     </div>
-  </div>
-  <div class="full-width">
-    <mat-checkbox formControlName="isSuperuser">{{strings.isSuperuser}}</mat-checkbox>
-    <mat-checkbox formControlName="isStaff">{{strings.isStaff}}</mat-checkbox>
-  </div>
-  <div class="full-width">
-    <p>Form status: {{ form.status | json }}</p>
-    <p *ngIf="!form.valid">Custom validation errors: {{form.customValidateErrors|async|json}}</p>
-    <p *ngIf="savedItem">Saved item: {{savedItem|json}}</p>
-  </div>
-  <div class="full-width" fxLayout.gt-md="row" fxLayout.lt-md="column" fxLayoutAlign="space-evenly stretch">
-    <div fxFlex.gt-sm="50" fxFlex.lt-sm="100" fxLayout="row" fxLayoutAlign="start center">
-      <button mat-raised-button (click)="onLoadClick()">Load</button>
-      <button mat-raised-button (click)="onClearClick()">Clear</button>
-      <button mat-raised-button (click)="onSaveClick()" [disabled]="!form.valid" cdkFocusInitial>Save</button>
+    <div class="full-width">
+        <mat-checkbox formControlName="isSuperuser">{{strings.isSuperuser}}</mat-checkbox>
+        <mat-checkbox formControlName="isStaff">{{strings.isStaff}}</mat-checkbox>
     </div>
-    <div fxFlex.gt-sm="50" fxFlex.lt-sm="100" fxLayout="row" fxLayoutAlign="end center">
-      <button mat-raised-button (click)="onLoadExternalClick()">Load external</button>
-      <button mat-raised-button (click)="onClearExternalClick()">Clear external</button>
+    <div class="full-width">
+        <p>Form status: {{ form.status | json }}</p>
+        <p *ngIf="!form.valid">
+            Custom validation errors: {{form.customValidateErrors|async|json}}
+        </p>
+        <p *ngIf="savedItem">Saved item: {{savedItem|json}}</p>
     </div>
-  </div>
+    <div
+        class="full-width"
+        fxLayout.gt-md="row"
+        fxLayout.lt-md="column"
+        fxLayoutAlign="space-evenly stretch">
+        <div
+            fxFlex.gt-sm="50"
+            fxFlex.lt-sm="100"
+            fxLayout="row"
+            fxLayoutAlign="start center">
+            <button
+                mat-raised-button
+                (click)="onLoadClick()">
+                Load
+            </button>
+            <button
+                mat-raised-button
+                (click)="onClearClick()">
+                Clear
+            </button>
+            <button
+                mat-raised-button
+                (click)="onSaveClick()"
+                [disabled]="!form.valid"
+                cdkFocusInitial>
+                Save
+            </button>
+        </div>
+        <div
+            fxFlex.gt-sm="50"
+            fxFlex.lt-sm="100"
+            fxLayout="row"
+            fxLayoutAlign="end center">
+            <button
+                mat-raised-button
+                (click)="onLoadExternalClick()">
+                Load external
+            </button>
+            <button
+                mat-raised-button
+                (click)="onClearExternalClick()">
+                Clear external
+            </button>
+        </div>
+    </div>
 </form>

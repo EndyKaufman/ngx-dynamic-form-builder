@@ -14,7 +14,8 @@ export class CompanyPanelComponent {
   @Input()
   item = new Company({
     'id': 11,
-    'name': '123456789012345'
+    'name': '123456789012345',
+    'regionNum': 1
   });
   @Input()
   strings = Company.strings;
@@ -24,7 +25,8 @@ export class CompanyPanelComponent {
 
   constructor() {
     this.form = this.fb.group(Company, {
-      name: ''
+      name: '',
+      regionNum: 0
     });
   }
   onLoadClick(): void {

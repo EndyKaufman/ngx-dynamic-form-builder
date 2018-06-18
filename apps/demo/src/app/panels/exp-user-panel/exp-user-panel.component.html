@@ -1,63 +1,112 @@
-<form [formGroup]="form" novalidate>
-  <h3>Group form</h3>
-  <mat-form-field class="full-width">
-    <input matInput formControlName="username" placeholder="Username">
-    <mat-error *ngIf="(form?.customValidateErrors | async)?.username?.length">
-      {{(form?.customValidateErrors | async).username[0]}}
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field class="full-width">
-    <input matInput type="password" formControlName="password" placeholder="Password">
-    <mat-error *ngIf="(form?.customValidateErrors | async)?.password?.length">
-      {{(form.customValidateErrors | async).password[0]}}
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field class="full-width">
-    <input matInput type="email" formControlName="email" placeholder="Email">
-    <mat-error *ngIf="(form?.customValidateErrors | async)?.email?.length">
-      {{(form.customValidateErrors | async).email[0]}}
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field class="full-width">
-    <input matInput type="date" formControlName="dateOfBirth" placeholder="Date of birth">
-    <mat-error *ngIf="form.get('dateOfBirth').hasError('required')">
-      date of birth is
-      <strong>required</strong>
-    </mat-error>
-    <mat-error *ngIf="(form?.customValidateErrors | async)?.dateOfBirth?.length">
-      {{(form.customValidateErrors | async).dateOfBirth[0]}}
-    </mat-error>
-  </mat-form-field>
-  <div formGroupName="department">
-    <h3>Department of user</h3>
+<form
+    [formGroup]="form"
+    novalidate>
+    <h3>Group form</h3>
     <mat-form-field class="full-width">
-      <input matInput formControlName="name" placeholder="Department name">
-      <mat-error *ngIf="(form?.customValidateErrors | async)?.department?.name?.length">
-        {{(form.customValidateErrors | async).department.name[0]}}
-      </mat-error>
-    </mat-form-field>
-    <div formGroupName="company">
-      <h3>Company of department</h3>
-      <mat-form-field class="full-width">
-        <input matInput formControlName="name" placeholder="Company name">
-        <mat-error *ngIf="(form?.customValidateErrors | async)?.department?.company?.name?.length">
-          {{(form.customValidateErrors | async).department.company.name[0]}}
+        <input
+            matInput
+            formControlName="username"
+            placeholder="Username">
+        <mat-error *ngIf="(form?.customValidateErrors | async)?.username?.length">
+            {{(form?.customValidateErrors | async).username[0]}}
         </mat-error>
-      </mat-form-field>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <input
+            matInput
+            type="password"
+            formControlName="password"
+            placeholder="Password">
+        <mat-error *ngIf="(form?.customValidateErrors | async)?.password?.length">
+            {{(form.customValidateErrors | async).password[0]}}
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <input
+            matInput
+            type="email"
+            formControlName="email"
+            placeholder="Email">
+        <mat-error *ngIf="(form?.customValidateErrors | async)?.email?.length">
+            {{(form.customValidateErrors | async).email[0]}}
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <input
+            matInput
+            type="date"
+            formControlName="dateOfBirth"
+            placeholder="Date of birth">
+        <mat-error *ngIf="form.get('dateOfBirth').hasError('required')">
+            date of birth is
+            <strong>required</strong>
+        </mat-error>
+        <mat-error *ngIf="(form?.customValidateErrors | async)?.dateOfBirth?.length">
+            {{(form.customValidateErrors | async).dateOfBirth[0]}}
+        </mat-error>
+    </mat-form-field>
+    <div formGroupName="department">
+        <h3>Department of user</h3>
+        <mat-form-field class="full-width">
+            <input
+                matInput
+                formControlName="name"
+                placeholder="Department name">
+            <mat-error *ngIf="(form?.customValidateErrors | async)?.department?.name?.length">
+                {{(form.customValidateErrors | async).department.name[0]}}
+            </mat-error>
+        </mat-form-field>
+        <div formGroupName="company">
+            <h3>Company of department</h3>
+            <mat-form-field class="full-width">
+                <input
+                    matInput
+                    formControlName="name"
+                    placeholder="Company name">
+                <mat-error *ngIf="(form?.customValidateErrors | async)?.department?.company?.name?.length">
+                    {{(form.customValidateErrors | async).department.company.name[0]}}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <input
+                    matInput
+                    formControlName="regionNum"
+                    type="number"
+                    placeholder="Company region num">
+                <mat-error *ngIf="(form?.customValidateErrors | async)?.department?.company?.regionNum?.length">
+                    {{(form.customValidateErrors | async).department?.company?.regionNum[0]}}
+                </mat-error>
+            </mat-form-field>
+        </div>
     </div>
-  </div>
-  <div class="full-width">
-    <mat-checkbox formControlName="isSuperuser">Administrator</mat-checkbox>
-    <mat-checkbox formControlName="isStaff">Staff</mat-checkbox>
-  </div>
-  <div class="full-width">
-    <p>Form status: {{ form.status | json }}</p>
-    <p *ngIf="!form.valid">Custom validation errors: {{form.customValidateErrors|async|json}}</p>
-    <p *ngIf="savedItem">Saved item: {{savedItem|json}}</p>
-  </div>
-  <div class="full-width">
-    <button mat-raised-button (click)="onLoadClick()">Load</button>
-    <button mat-raised-button (click)="onClearClick()">Clear</button>
-    <button mat-raised-button (click)="onSaveClick()" [disabled]="!form.valid" cdkFocusInitial>Save</button>
-  </div>
+    <div class="full-width">
+        <mat-checkbox formControlName="isSuperuser">Administrator</mat-checkbox>
+        <mat-checkbox formControlName="isStaff">Staff</mat-checkbox>
+    </div>
+    <div class="full-width">
+        <p>Form status: {{ form.status | json }}</p>
+        <p *ngIf="!form.valid">
+            Custom validation errors: {{form.customValidateErrors|async|json}}
+        </p>
+        <p *ngIf="savedItem">Saved item: {{savedItem|json}}</p>
+    </div>
+    <div class="full-width">
+        <button
+            mat-raised-button
+            (click)="onLoadClick()">
+            Load
+        </button>
+        <button
+            mat-raised-button
+            (click)="onClearClick()">
+            Clear
+        </button>
+        <button
+            mat-raised-button
+            (click)="onSaveClick()"
+            [disabled]="!form.valid"
+            cdkFocusInitial>
+            Save
+        </button>
+    </div>
 </form>
