@@ -1,3 +1,13 @@
+<a name="0.3.3"></a>
+## [0.3.3](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.3.2...0.3.3) (2018-06-18)
+
+
+### Bug Fixes
+
+* **dynamic-form-group:** Fix validators that expect more than one argument and fix work with conditional validations [#36](https://github.com/EndyKaufman/ngx-dynamic-form-builder/issues/36) ([5f26bb3](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/5f26bb3))
+
+
+
 <a name="0.3.2"></a>
 ## [0.3.2](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.3.1...0.3.2) (2018-03-23)
 
