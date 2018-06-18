@@ -18,10 +18,10 @@
     ],
     "paths": {
       "ngx-dynamic-form-builder": [
-        "libs/ngx-dynamic-form-builder/src"
+        "dist/ngx-dynamic-form-builder"
       ],
       "ngx-dynamic-form-builder/*": [
-        "libs/ngx-dynamic-form-builder/src/*"
+        "dist/ngx-dynamic-form-builder/*"
       ]
     }
   }
