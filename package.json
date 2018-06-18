@@ -84,7 +84,7 @@
     "@rucken/cli": "^2.0.6",
     "@types/jasmine": "~2.8.6",
     "@types/jasminewd2": "~2.0.3",
-    "@types/node": "~8.9.4",
+    "@types/node": "~10.3.4",
     "codelyzer": "~4.2.1",
     "conventional-changelog-cli": "^2.0.1",
     "conventional-commits-detector": "^0.1.1",
