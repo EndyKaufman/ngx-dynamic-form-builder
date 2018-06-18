@@ -9,7 +9,6 @@ export class Department {
         name: 'Name',
         company: 'Company'
     };
-    static fields = ['id', 'name', 'company'];
 
     id: number;
     @IsNotEmpty()

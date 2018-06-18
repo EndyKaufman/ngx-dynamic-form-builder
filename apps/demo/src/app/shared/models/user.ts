@@ -14,8 +14,6 @@ export class User {
         department: 'Department',
         dateOfBirth: 'Date of birth'
     };
-    static fields = ['id', 'username', 'password', 'isSuperuser',
-        'isStaff', 'email', 'department', 'dateOfBirth'];
 
     id: number;
     @IsNotEmpty()

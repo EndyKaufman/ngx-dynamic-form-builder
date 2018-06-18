@@ -27,7 +27,8 @@ export class ExpUserPanelComponent {
       'name': 'department 1',
       'company': {
         'id': 3,
-        'name': 'company 2'
+        'name': 'company 2',
+        'regionNum': 1
       }
     }
   });

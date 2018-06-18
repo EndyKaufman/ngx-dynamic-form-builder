@@ -6,7 +6,6 @@ export class Group {
         id: 'Id',
         name: 'Name'
     };
-    static fields = ['id', 'name'];
 
     id: number;
     @IsNotEmpty()

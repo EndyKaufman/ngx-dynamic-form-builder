@@ -26,7 +26,8 @@ export class UserPanelComponent {
       'name': 'department 1',
       'company': {
         'id': 3,
-        'name': 'company 2'
+        'name': 'company 2',
+        'regionNum': 1
       }
     }
   });
@@ -50,7 +51,8 @@ export class UserPanelComponent {
       department: this.fb.group(Department, {
         name: '',
         company: this.fb.group(Company, {
-          name: ''
+          name: '',
+          regionNum: ''
         })
       })
     });
