@@ -1,4 +1,4 @@
-@angular/material@6.2.0
+@angular/material@6.2.1
 MIT
 The MIT License
 
@@ -120,7 +120,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-@angular/cdk@6.2.0
+@angular/cdk@6.2.1
 MIT
 The MIT License
 
@@ -167,7 +167,7 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-prismjs@1.14.0
+prismjs@1.15.0
 MIT
 MIT LICENSE
 
@@ -222,7 +222,7 @@ class-validator@0.8.5
 MIT
 MIT
 
-@angular/forms@6.0.3
+@angular/forms@6.0.5
 MIT
 MIT
 
@@ -534,7 +534,7 @@ Apache License
  See the License for the specific language governing permissions and
  limitations under the License.
 
-@angular/platform-browser@6.0.3
+@angular/platform-browser@6.0.5
 MIT
 MIT
 
@@ -596,11 +596,15 @@ If the Work includes a "NOTICE" text file as part of its distribution, then any 
 
 END OF TERMS AND CONDITIONS
 
-@angular/common@6.0.3
+@angular/common@6.0.5
 MIT
 MIT
 
-@angular/flex-layout@6.0.0-beta.15
+@angular/router@6.0.5
+MIT
+MIT
+
+@angular/flex-layout@6.0.0-beta.16
 MIT
 The MIT License
 
@@ -624,14 +628,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-@angular/animations@6.0.3
+@angular/animations@6.0.5
 MIT
 MIT
 
-@angular/core@6.0.3
-MIT
-MIT
-
-@angular/router@6.0.3
+@angular/core@6.0.5
 MIT
 MIT
