@@ -1,11 +1,19 @@
-<div class="message-box" [ngClass]="{'info-modal': isInfo, 'error-modal': isError}">
-  <h1 mat-dialog-title>
-    {{title}}
-  </h1>
-  <div mat-dialog-content>
-    <p *ngIf="message">{{message}}</p>
-  </div>
-  <div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center">
-    <a mat-raised-button (click)="onYesClick()" cdkFocusInitial>{{yesTitle}}</a>
-  </div>
+<div
+    class="message-box"
+    [ngClass]="{'info-modal': isInfo, 'error-modal': isError}">
+    <h1 mat-dialog-title>{{title}}</h1>
+    <div mat-dialog-content>
+        <p *ngIf="message">{{message}}</p>
+    </div>
+    <div
+        mat-dialog-actions
+        fxLayout="row"
+        fxLayoutAlign="center center">
+        <a
+            mat-raised-button
+            (click)="onYesClick()"
+            cdkFocusInitial>
+            {{yesTitle}}
+        </a>
+    </div>
 </div>
