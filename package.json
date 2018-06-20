@@ -103,7 +103,7 @@
     "markdown-loader": "^3.0.0",
     "ng-packagr": "^3.0.2",
     "protractor": "~5.3.0",
-    "ts-node": "~5.0.1",
+    "ts-node": "~6.1.2",
     "tsickle": ">=0.25.5",
     "tslib": "^1.7.1",
     "tslint": "~5.9.1",
