@@ -59,7 +59,7 @@
     "@angular/material": "^6.2.1",
     "@angular/platform-browser": "^6.0.5",
     "@angular/platform-browser-dynamic": "^6.0.5",
-    "@angular/pwa": "^0.7.0-beta.1",
+    "@angular/pwa": "^0.8.0",
     "@angular/router": "^6.0.5",
     "@angular/service-worker": "^6.0.5",
     "@ngx-docs/example": "^0.1.6",
