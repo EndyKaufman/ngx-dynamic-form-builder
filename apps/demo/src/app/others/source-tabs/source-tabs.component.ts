@@ -1,8 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'source-tabs',
-  templateUrl: './source-tabs.component.html'
+  templateUrl: './source-tabs.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SourceTabsComponent {
 

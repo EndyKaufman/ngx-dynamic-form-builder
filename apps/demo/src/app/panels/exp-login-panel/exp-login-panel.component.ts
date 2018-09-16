@@ -1,13 +1,11 @@
-import { DynamicFormGroup, DynamicFormBuilder } from 'ngx-dynamic-form-builder';
-import { Company } from './../../shared/models/company';
-import { Department } from '../../shared/models/department';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { DynamicFormBuilder, DynamicFormGroup } from 'ngx-dynamic-form-builder';
 import { ExpUser } from '../../shared/models/exp-user';
-import { Input, Component, OnInit } from '@angular/core';
-import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'exp-login-panel',
-  templateUrl: './exp-login-panel.component.html'
+  templateUrl: './exp-login-panel.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExpLoginPanelComponent implements OnInit {
 

@@ -1,51 +1,51 @@
 {
-    "name": "ngx-dynamic-form-builder",
-    "version": "0.4.3",
-    "description": "FormBuilder + class-transformer + class-validator = dynamic form group builder for Angular6+",
-    "keywords": [
-        "FormBuilder",
-        "class-transformer",
-        "class-validator",
-        "dynamic",
-        "angular6"
-    ],
-    "license": "MIT",
-    "author": "EndyKaufman <admin@site15.ru>",
-    "engines": {
-        "node": ">=8",
-        "npm": ">=6.1.0"
-    },
-    "bugs": {
-        "url": "https://github.com/EndyKaufman/ngx-dynamic-form-builder/issues"
-    },
-    "homepage": "https://github.com/EndyKaufman/ngx-dynamic-form-builder",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/EndyKaufman/ngx-dynamic-form-builder.git"
-    },
-    "maintainers": [
-        {
-            "name": "EndyKaufman",
-            "email": "admin@site15.ru"
-        }
-    ],
-    "peerDependencies": {
-        "rxjs": ">=6.0.0",
-        "@angular/forms": ">=6.0.3",
-        "@angular/common": ">=6.0.3",
-        "@angular/compiler": ">=6.0.3",
-        "@angular/core": ">=6.0.3",
-        "class-transformer": ">=0.1.9",
-        "class-validator": ">=0.8.5",
-        "@types/lodash-es": ">=4.17.0",
-        "lodash-es": ">=4.17.10",
-        "immutable": ">=3.8.2"
-    },
-    "dependencies": {
-        "class-transformer": "^0.1.9",
-        "class-validator": "^0.8.5",
-        "@types/lodash-es": "^4.17.0",
-        "lodash-es": "^4.17.10",
-        "immutable": "^3.8.2"
+  "name": "ngx-dynamic-form-builder",
+  "version": "0.4.4",
+  "description": "FormBuilder + class-transformer + class-validator = dynamic form group builder for Angular6+",
+  "keywords": [
+    "FormBuilder",
+    "class-transformer",
+    "class-validator",
+    "dynamic",
+    "angular6"
+  ],
+  "license": "MIT",
+  "author": "EndyKaufman <admin@site15.ru>",
+  "engines": {
+    "node": ">=10",
+    "npm": ">=6.4.0"
+  },
+  "bugs": {
+    "url": "https://github.com/EndyKaufman/ngx-dynamic-form-builder/issues"
+  },
+  "homepage": "https://github.com/EndyKaufman/ngx-dynamic-form-builder",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EndyKaufman/ngx-dynamic-form-builder.git"
+  },
+  "maintainers": [
+    {
+      "name": "EndyKaufman",
+      "email": "admin@site15.ru"
     }
+  ],
+  "peerDependencies": {
+    "rxjs": "^6.3.2",
+    "@angular/forms": "^6.1.7",
+    "@angular/common": "^6.1.7",
+    "@angular/compiler": "^6.1.7",
+    "@angular/core": "^6.1.7",
+    "class-transformer": "^0.1.9",
+    "class-validator": "^0.9.1",
+    "@types/lodash-es": "^4.17.1",
+    "lodash-es": "^4.17.11",
+    "immutable": "^3.8.2"
+  },
+  "dependencies": {
+    "class-transformer": "^0.1.9",
+    "class-validator": "^0.9.1",
+    "@types/lodash-es": "^4.17.1",
+    "lodash-es": "^4.17.11",
+    "immutable": "^3.8.2"
+  }
 }

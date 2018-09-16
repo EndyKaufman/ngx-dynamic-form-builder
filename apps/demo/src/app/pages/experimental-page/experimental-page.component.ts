@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { SafeHtml } from '@angular/platform-browser';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'experimental-page',
-  templateUrl: './experimental-page.component.html'
+  templateUrl: './experimental-page.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExperimentalPageComponent {
 

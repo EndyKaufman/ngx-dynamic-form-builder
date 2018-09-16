@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { SafeHtml } from '@angular/platform-browser';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'advanced-page',
-  templateUrl: './advanced-page.component.html'
+  templateUrl: './advanced-page.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AdvancedPageComponent {
 

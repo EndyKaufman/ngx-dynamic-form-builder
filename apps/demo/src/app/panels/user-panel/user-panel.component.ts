@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DynamicFormBuilder, DynamicFormGroup } from 'ngx-dynamic-form-builder';
 import { Department } from '../../shared/models/department';
 import { User } from '../../shared/models/user';
@@ -6,7 +6,8 @@ import { Company } from './../../shared/models/company';
 
 @Component({
   selector: 'user-panel',
-  templateUrl: './user-panel.component.html'
+  templateUrl: './user-panel.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserPanelComponent {
 
