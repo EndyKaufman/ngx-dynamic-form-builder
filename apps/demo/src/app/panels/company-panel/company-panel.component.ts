@@ -1,11 +1,11 @@
-import { DynamicFormGroup, DynamicFormBuilder } from 'ngx-dynamic-form-builder';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { DynamicFormBuilder, DynamicFormGroup } from 'ngx-dynamic-form-builder';
 import { Company } from './../../shared/models/company';
-import { Input, Component } from '@angular/core';
-import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'company-panel',
-  templateUrl: './company-panel.component.html'
+  templateUrl: './company-panel.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CompanyPanelComponent {
 

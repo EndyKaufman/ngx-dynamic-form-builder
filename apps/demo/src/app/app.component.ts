@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
-import { AppRoutes } from './app.routes';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
+import { AppRoutes } from './app.routes';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
   title = 'app';

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'customization-page',
-  templateUrl: './customization-page.component.html'
+  templateUrl: './customization-page.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CustomizationPageComponent {
 

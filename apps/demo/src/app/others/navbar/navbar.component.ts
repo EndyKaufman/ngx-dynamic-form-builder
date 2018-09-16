@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Routes, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Router, Routes } from '@angular/router';
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'navbar',
-  templateUrl: './navbar.component.html'
+  templateUrl: './navbar.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavbarComponent implements OnInit {
 

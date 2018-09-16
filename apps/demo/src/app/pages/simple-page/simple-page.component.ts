@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { SafeHtml } from '@angular/platform-browser';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'simple-page',
   templateUrl: './simple-page.component.html',
-  styleUrls: ['./simple-page.component.scss']
+  styleUrls: ['./simple-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SimplePageComponent {
 
