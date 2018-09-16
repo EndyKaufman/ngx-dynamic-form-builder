@@ -90,7 +90,7 @@
     "conventional-commits-detector": "^0.1.1",
     "conventional-recommended-bump": "^4.0.0",
     "cp-cli": "^1.1.2",
-    "gh-pages": "^1.2.0",
+    "gh-pages": "^2.0.0",
     "html-loader": "^0.5.5",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
