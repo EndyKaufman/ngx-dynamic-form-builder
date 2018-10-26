@@ -92,7 +92,7 @@
     "@types/node": "~10.9.4",
     "codelyzer": "~4.4.4",
     "conventional-changelog-cli": "^2.0.5",
-    "conventional-commits-detector": "^0.1.1",
+    "conventional-commits-detector": "^1.0.0",
     "conventional-recommended-bump": "^4.0.1",
     "cp-cli": "^1.1.2",
     "gh-pages": "^2.0.0",
