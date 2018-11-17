@@ -1,3 +1,12 @@
+# [0.5.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.4.4...0.5.0) (2018-11-17)
+
+
+### Features
+
+* **deps:** Update dependencies ([65913d1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/65913d1))
+
+
+
 <a name="0.4.4"></a>
 ## [0.4.4](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.4.3...0.4.4) (2018-09-16)
 
