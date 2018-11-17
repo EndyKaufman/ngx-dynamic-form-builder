@@ -1,13 +1,13 @@
 {
   "name": "ngx-dynamic-form-builder",
-  "version": "0.4.4",
-  "description": "FormBuilder + class-transformer + class-validator = dynamic form group builder for Angular6+",
+  "version": "0.5.0",
+  "description": "FormBuilder + class-transformer + class-validator = dynamic form group builder for Angular7+",
   "keywords": [
     "FormBuilder",
     "class-transformer",
     "class-validator",
     "dynamic",
-    "angular6"
+    "angular7"
   ],
   "license": "MIT",
   "author": "EndyKaufman <admin@site15.ru>",
@@ -30,22 +30,22 @@
     }
   ],
   "peerDependencies": {
-    "rxjs": "^6.3.2",
-    "@angular/forms": "^6.1.7",
-    "@angular/common": "^6.1.7",
-    "@angular/compiler": "^6.1.7",
-    "@angular/core": "^6.1.7",
-    "class-transformer": "^0.1.9",
+    "rxjs": "^6.3.3",
+    "@angular/forms": "^7.0.4",
+    "@angular/common": "^7.0.4",
+    "@angular/compiler": "^7.0.4",
+    "@angular/core": "^7.0.4",
+    "class-transformer": "^0.2.0",
     "class-validator": "^0.9.1",
     "@types/lodash-es": "^4.17.1",
     "lodash-es": "^4.17.11",
-    "immutable": "^3.8.2"
+    "immutable": "^4.0.0-rc.12"
   },
   "dependencies": {
-    "class-transformer": "^0.1.9",
+    "class-transformer": "^0.2.0",
     "class-validator": "^0.9.1",
     "@types/lodash-es": "^4.17.1",
     "lodash-es": "^4.17.11",
-    "immutable": "^3.8.2"
+    "immutable": "^4.0.0-rc.12"
   }
 }
