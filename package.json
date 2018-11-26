@@ -64,7 +64,7 @@
     "@angular/material": "^7.0.4",
     "@angular/platform-browser": "^7.0.4",
     "@angular/platform-browser-dynamic": "^7.0.4",
-    "@angular/pwa": "^0.10.6",
+    "@angular/pwa": "^0.11.0",
     "@angular/router": "^7.0.4",
     "@angular/service-worker": "^7.0.4",
     "@ngx-docs/example": "^0.1.6",
