@@ -87,7 +87,7 @@
     "@angular/compiler-cli": "^7.0.4",
     "@angular/language-service": "^7.0.4",
     "@rucken/cli": "^3.2.3",
-    "@types/jasmine": "~2.8.11",
+    "@types/jasmine": "~3.3.1",
     "@types/jasminewd2": "~2.0.6",
     "@types/node": "~10.12.9",
     "codelyzer": "~4.5.0",
