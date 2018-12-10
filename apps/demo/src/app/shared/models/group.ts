@@ -2,20 +2,20 @@ import { plainToClassFromExist } from 'class-transformer';
 import { IsNotEmpty } from 'class-validator';
 
 export class Group {
-    static strings = {
-        id: 'Id',
-        name: 'Name'
-    };
+  static strings = {
+    id: 'Id',
+    name: 'Name'
+  };
 
-    id: number;
-    @IsNotEmpty()
-    name: string;
+  id: number;
+  @IsNotEmpty()
+  name: string;
 
-    toString() {
-        return this.name;
-    }
+  toString() {
+    return this.name;
+  }
 
-    constructor(data?: any) {
-        plainToClassFromExist(this, data);
-    }
+  constructor(data?: any) {
+    plainToClassFromExist(this, data);
+  }
 }

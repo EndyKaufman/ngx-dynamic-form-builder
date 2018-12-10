@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output
+} from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 
 @Component({
@@ -8,7 +16,6 @@ import { MatDialogRef } from '@angular/material';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MessageBoxComponent implements OnInit {
-
   @Input()
   isInfo?: boolean;
   @Input()
@@ -30,11 +37,7 @@ export class MessageBoxComponent implements OnInit {
   @Output()
   yes = new EventEmitter<MessageBoxComponent>();
 
-  constructor(
-    public dialogRef: MatDialogRef<MessageBoxComponent>,
-    public changeDetectorRef: ChangeDetectorRef
-  ) {
-  }
+  constructor(public dialogRef: MatDialogRef<MessageBoxComponent>, public changeDetectorRef: ChangeDetectorRef) {}
   ngOnInit() {
     this.changeDetectorRef.detectChanges();
   }
@@ -50,5 +53,4 @@ export class MessageBoxComponent implements OnInit {
       this.dialogRef.close();
     }
   }
-
 }

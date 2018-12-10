@@ -7,14 +7,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
-  imports: [
-    SharedModule.forRoot(),
-    PrismModule,
-    MatTabsModule,
-    MatIconModule,
-    MatButtonModule,
-    FlexLayoutModule
-  ],
+  imports: [SharedModule.forRoot(), PrismModule, MatTabsModule, MatIconModule, MatButtonModule, FlexLayoutModule],
   entryComponents: [SourceTabsComponent],
   exports: [SourceTabsComponent],
   declarations: [SourceTabsComponent]

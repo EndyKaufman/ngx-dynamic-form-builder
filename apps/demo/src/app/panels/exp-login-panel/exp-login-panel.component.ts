@@ -8,7 +8,6 @@ import { ExpUser } from '../../shared/models/exp-user';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExpLoginPanelComponent implements OnInit {
-
   @Input()
   form: DynamicFormGroup<ExpUser>;
 

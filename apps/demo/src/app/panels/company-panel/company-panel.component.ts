@@ -8,14 +8,13 @@ import { Company } from './../../shared/models/company';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CompanyPanelComponent {
-
   @Input()
   form: DynamicFormGroup<Company>;
   @Input()
   item = new Company({
-    'id': 11,
-    'name': '123456789012345',
-    'regionNum': 1
+    id: 11,
+    name: '123456789012345',
+    regionNum: 1
   });
   @Input()
   strings = Company.strings;

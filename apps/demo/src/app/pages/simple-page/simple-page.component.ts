@@ -7,13 +7,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SimplePageComponent {
-
   source = {
     html: require('!!raw-loader?lang=html!./../../panels/company-panel/company-panel.component.html'),
     ts: require('!!raw-loader?lang=typescript!./../../panels/company-panel/company-panel.component.ts')
   };
 
-  otherFiles: { name: string, language: string, content: string }[] = [
+  otherFiles: { name: string; language: string; content: string }[] = [
     {
       name: 'company.ts',
       language: 'javascript',

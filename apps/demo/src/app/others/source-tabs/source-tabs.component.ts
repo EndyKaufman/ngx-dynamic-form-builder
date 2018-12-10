@@ -6,11 +6,9 @@ import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SourceTabsComponent {
-
   @Input()
   title: string;
 
   @Input()
-  files: { name: string, language: string, content: string }[];
-
+  files: { name: string; language: string; content: string }[];
 }
