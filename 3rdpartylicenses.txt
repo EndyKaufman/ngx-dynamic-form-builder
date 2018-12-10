@@ -73,6 +73,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
+@angular/material/checkbox
+
 lodash-es
 MIT
 Copyright JS Foundation and other contributors <https://js.foundation/>
@@ -433,8 +435,6 @@ THE SOFTWARE.
 
 @angular/material/tooltip
 
-@angular/material/checkbox
-
 validator
 MIT
 Copyright (c) 2018 Chris O'Hara <cohara87@gmail.com>
@@ -531,7 +531,7 @@ END OF TERMS AND CONDITIONS
 google-libphonenumber
 SEE LICENSE IN LICENSE
 
-@angular/core
+@angular/router
 MIT
 
 tslib
@@ -596,7 +596,11 @@ END OF TERMS AND CONDITIONS
 @angular/common
 MIT
 
-@angular/animations
+@angular/material/button
+
+@angular/material/icon
+
+@angular/core
 MIT
 
 @angular/flex-layout
@@ -829,14 +833,10 @@ THE SOFTWARE.
 >>>>>>> Initial commit
 
 
-@angular/material/button
-
 @angular/platform-browser
 MIT
 
-@angular/material/icon
-
-@angular/router
+@angular/animations
 MIT
 
 @angular/material/dialog

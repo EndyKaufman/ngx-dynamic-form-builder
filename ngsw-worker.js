@@ -1778,8 +1778,8 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
     const IDLE_THRESHOLD = 5000;
     const SUPPORTED_CONFIG_VERSION = 1;
     const NOTIFICATION_OPTION_NAMES = [
-        'actions', 'badge', 'body', 'dir', 'icon', 'lang', 'renotify', 'requireInteraction', 'tag',
-        'vibrate', 'data'
+        'actions', 'badge', 'body', 'data', 'dir', 'icon', 'image', 'lang', 'renotify',
+        'requireInteraction', 'silent', 'tag', 'timestamp', 'title', 'vibrate'
     ];
     var DriverReadyState;
     (function (DriverReadyState) {
@@ -1882,6 +1882,7 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
             this.scope.addEventListener('fetch', (event) => this.onFetch(event));
             this.scope.addEventListener('message', (event) => this.onMessage(event));
             this.scope.addEventListener('push', (event) => this.onPush(event));
+            this.scope.addEventListener('notificationclick', (event) => this.onClick(event));
             // The debugger generates debug pages in response to debugging requests.
             this.debugger = new DebugHandler(this, this.adapter);
             // The IdleScheduler will execute idle tasks after a given delay.
@@ -1979,6 +1980,10 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
             // Handle the push and keep the SW alive until it's handled.
             msg.waitUntil(this.handlePush(msg.data.json()));
         }
+        onClick(event) {
+            // Handle the click event and keep the SW alive until it's handled.
+            event.waitUntil(this.handleClick(event.notification, event.action));
+        }
         handleMessage(msg, from) {
             return __awaiter$5(this, void 0, void 0, function* () {
                 if (isMsgCheckForUpdates(msg)) {
@@ -2004,6 +2009,20 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
                 NOTIFICATION_OPTION_NAMES.filter(name => desc.hasOwnProperty(name))
                     .forEach(name => options[name] = desc[name]);
                 yield this.scope.registration.showNotification(desc['title'], options);
+            });
+        }
+        handleClick(notification, action) {
+            return __awaiter$5(this, void 0, void 0, function* () {
+                notification.close();
+                const options = {};
+                // The filter uses `name in notification` because the properties are on the prototype so
+                // hasOwnProperty does not work here
+                NOTIFICATION_OPTION_NAMES.filter(name => name in notification)
+                    .forEach(name => options[name] = notification[name]);
+                yield this.broadcast({
+                    type: 'NOTIFICATION_CLICK',
+                    data: { action, notification: options },
+                });
             });
         }
         reportStatus(client, promise, nonce) {
