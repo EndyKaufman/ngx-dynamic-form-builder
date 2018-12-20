@@ -4,6 +4,7 @@ import { AdvancedPageRoutes } from './pages/advanced-page/advanced-page.routes';
 import { SimplePageRoutes } from './pages/simple-page/simple-page.routes';
 import { ExperimentalPageRoutes } from './pages/experimental-page/experimental-page.routes';
 import { CustomizationPageRoutes } from './pages/customization-page/customization-page.routes';
+import { ProjectPageRoutes } from './pages/project-page/project-page.routes';
 
 export const AppRoutes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -28,6 +29,11 @@ export const AppRoutes: Routes = [
     data: ExperimentalPageRoutes[0].data
   },
   {
+    path: 'project',
+    loadChildren: './pages/project-page/project-page.module#ProjectPageModule',
+    data: ProjectPageRoutes[0].data
+  },
+  {
     path: 'customization',
     loadChildren: './pages/customization-page/customization-page.module#CustomizationPageModule',
     data: CustomizationPageRoutes[0].data
@@ -41,9 +47,9 @@ export const AppRoutes: Routes = [
       svgIcon: `github-circle`,
       visible: true
     }
-  },
+  }/*,
   {
     path: '**',
     redirectTo: 'home'
-  }
+  }*/
 ];

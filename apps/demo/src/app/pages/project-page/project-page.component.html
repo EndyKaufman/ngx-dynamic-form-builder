@@ -1,0 +1,19 @@
+<div
+    class="project-page"
+    fxLayout.gt-md="row"
+    fxLayout.lt-md="column"
+    fxLayoutAlign="space-evenly stretch">
+    <ngx-docs-example
+        title="Project: project panel"
+        [html]="source.html"
+        [ts]="source.ts"
+        fxFlex.gt-sm="50">
+        <div class="body">
+            <router-outlet></router-outlet>
+        </div>
+    </ngx-docs-example>
+    <source-tabs
+        title="Other files"
+        [files]="otherFiles"
+        fxFlex.gt-sm="50"></source-tabs>
+</div>

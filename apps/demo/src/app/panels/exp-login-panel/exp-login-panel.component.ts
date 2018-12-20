@@ -15,7 +15,7 @@ export class ExpLoginPanelComponent implements OnInit {
   savedItem: ExpUser;
 
   constructor() {
-    this.form = this.fb.group(ExpUser, undefined, {
+    this.form = this.fb.group(ExpUser, {
       customValidatorOptions: {
         groups: ['guest']
       }
