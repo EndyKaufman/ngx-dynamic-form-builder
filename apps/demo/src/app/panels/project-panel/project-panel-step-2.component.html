@@ -2,7 +2,7 @@
     [formGroup]="form"
     *ngIf="form?.customValidateErrors | async as errors"
     novalidate>
-    <h3>Project: step-2</h3>
+    <h3>Create project: step-2</h3>
     <mat-form-field
         class="full-width"
         appearance="fill">
@@ -23,15 +23,21 @@
             readonly="true">
         <mat-error *ngIf="errors?.description?.length">{{errors.description.join('. ')}}</mat-error>
     </mat-form-field>
-    <h4>Tasks</h4>
+    <h4>
+        Tasks
+        <button
+            mat-mini-fab
+            (click)="addTask()"
+            color="primary">
+            +
+        </button>
+    </h4>
     <mat-list role="list">
         <mat-list-item
             role="listitem"
             formArrayName="tasks"
-            *ngFor="let item of form.get('tasks').controls; let i = index;">
-            <mat-form-field
-                class="full-width"
-                [formGroupName]="i">
+            *ngFor="let item of getTasksArray().controls; let i = index;">
+            <mat-form-field [formGroupName]="i">
                 <input
                     matInput
                     formControlName="description"
@@ -40,6 +46,14 @@
                     {{errors.tasks[i].description.join('. ')}}
                 </mat-error>
             </mat-form-field>
+            <mat-action-list>
+                <button
+                    mat-mini-fab
+                    (click)="getTasksArray().removeAt(i)"
+                    color="warn">
+                    x
+                </button>
+            </mat-action-list>
         </mat-list-item>
     </mat-list>
     <div class="full-width">

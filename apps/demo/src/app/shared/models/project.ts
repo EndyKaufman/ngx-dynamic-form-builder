@@ -4,32 +4,21 @@ import { serializeModel } from '../utils/custom-transforms';
 import { Task } from './task';
 
 export class Project {
-  id?: number;
+  id?: number = undefined;
   @IsNotEmpty({
     groups: ['step-1']
   })
-  name?: string;
+  name?: string = undefined;
   @IsNotEmpty({ always: true })
-  description?: string;
+  description?: string = undefined;
   @ValidateNested({
     groups: ['step-2']
   })
   @IsOptional()
   @Type(serializeModel(Task))
-  tasks?: Task[];
+  tasks?: Task[] = [];
 
   toString() {
     return `Project #${this.id} ${this.name}`;
-  }
-
-  constructor(data?: any) {
-    data = data ? data : {};
-    if (!(data instanceof Project)) {
-      this.id = data.id;
-      this.name = data.name;
-      this.description = data.description;
-      this.tasks = data.tasks ? data.tasks : [];
-    }
-    plainToClassFromExist(this, data);
   }
 }

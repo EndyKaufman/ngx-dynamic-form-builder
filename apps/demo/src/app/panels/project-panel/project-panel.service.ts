@@ -6,6 +6,7 @@ import { Project } from '../../shared/models/project';
 
 @Injectable()
 export class ProjectPanelService {
+  activatedStep$ = new BehaviorSubject('step-1');
   project$ = new BehaviorSubject(
     plainToClass(Project, environment.defaults.project)
   );

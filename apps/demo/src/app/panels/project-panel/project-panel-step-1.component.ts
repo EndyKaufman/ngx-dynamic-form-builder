@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { plainToClassFromExist } from 'class-transformer';
 import { DynamicFormBuilder, DynamicFormGroup } from 'ngx-dynamic-form-builder';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -13,8 +12,10 @@ import { ProjectPanelService } from './project-panel.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProjectPanelStep1Component implements OnDestroy {
+  @Input()
+  clear: boolean;
+
   form: DynamicFormGroup<Project>;
-  project: Project;
   project$: Observable<Project>;
 
   fb = new DynamicFormBuilder();
@@ -25,6 +26,13 @@ export class ProjectPanelStep1Component implements OnDestroy {
     private _activatedRoute: ActivatedRoute,
     private _projectPanelService: ProjectPanelService
   ) {
+    this._activatedRoute.data.pipe(
+      takeUntil(this._destroyed$)
+    ).subscribe(
+      data => this._projectPanelService.activatedStep$.next(
+        data.step
+      )
+    );
     this.form = this.createForm();
     this.project$ = this._projectPanelService.project$;
     this.subscribeToProject();

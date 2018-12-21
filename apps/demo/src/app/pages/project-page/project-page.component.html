@@ -5,9 +5,10 @@
     fxLayoutAlign="space-evenly stretch">
     <ngx-docs-example
         title="Project: project panel"
-        [html]="source.html"
-        [ts]="source.ts"
-        fxFlex.gt-sm="50">
+        [html]="sources[activatedStep$ | async]?.html"
+        [ts]="sources[activatedStep$ | async]?.ts"
+        fxFlex.gt-sm="50"
+        #doc>
         <div class="body">
             <router-outlet></router-outlet>
         </div>

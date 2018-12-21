@@ -1,4 +1,4 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material';
@@ -10,7 +10,6 @@ import { ProjectPanelCompleteComponent } from './project-panel-complete.componen
 import { ProjectPanelStep1Component } from './project-panel-step-1.component';
 import { ProjectPanelStep2Component } from './project-panel-step-2.component';
 import { ProjectPanelService } from './project-panel.service';
-
 @NgModule({
   imports: [
     SharedModule.forRoot(),
@@ -28,13 +27,4 @@ import { ProjectPanelService } from './project-panel.service';
     ProjectPanelService
   ]
 })
-export class ProjectPanelModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: ProjectPanelModule,
-      providers: [
-        ProjectPanelService
-      ]
-    };
-  }
-}
+export class ProjectPanelModule { }

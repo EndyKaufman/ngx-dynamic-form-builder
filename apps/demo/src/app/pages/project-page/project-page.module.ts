@@ -14,7 +14,7 @@ import { ProjectPageRoutes } from './project-page.routes';
     SharedModule.forRoot(),
     FlexLayoutModule,
     DocsExampleModule.forRoot(),
-    ProjectPanelModule.forRoot(),
+    ProjectPanelModule,
     RouterModule.forChild(ProjectPageRoutes),
     SourceTabsModule.forRoot(),
     MatIconModule

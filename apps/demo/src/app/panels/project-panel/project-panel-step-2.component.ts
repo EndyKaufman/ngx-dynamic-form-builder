@@ -14,9 +14,7 @@ import { ProjectPanelService } from './project-panel.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProjectPanelStep2Component implements OnDestroy {
-  tasks: FormArray;
   form: DynamicFormGroup<Project>;
-  project: Project;
   project$: Observable<Project>;
 
   fb = new DynamicFormBuilder();
@@ -27,6 +25,13 @@ export class ProjectPanelStep2Component implements OnDestroy {
     private _activatedRoute: ActivatedRoute,
     private _projectPanelService: ProjectPanelService
   ) {
+    this._activatedRoute.data.pipe(
+      takeUntil(this._destroyed$)
+    ).subscribe(
+      data => this._projectPanelService.activatedStep$.next(
+        data.step
+      )
+    );
     this.form = this.createForm();
     this.project$ = this._projectPanelService.project$;
     this.subscribeToProject();
@@ -43,13 +48,13 @@ export class ProjectPanelStep2Component implements OnDestroy {
     });
   }
   createTaskControl() {
-    return this.fb.group(Task, {
-      description: 'new task'
-    });
+    return this.fb.group(Task);
+  }
+  getTasksArray() {
+    return this.form.get('tasks') as FormArray;
   }
   addTask(): void {
-    this.tasks = this.form.get('tasks') as FormArray;
-    this.tasks.push(
+    this.getTasksArray().push(
       this.createTaskControl()
     );
   }
@@ -64,9 +69,6 @@ export class ProjectPanelStep2Component implements OnDestroy {
   loadFormData(project: Project): void {
     this.form.object = project;
     this.form.validateAllFormFields();
-  }
-  onClearClick(): void {
-    this._projectPanelService.clear();
   }
   onPrevStepClick(): void {
     this._projectPanelService.store(this.form.object);

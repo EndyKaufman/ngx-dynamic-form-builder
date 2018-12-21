@@ -20,14 +20,23 @@ export const ProjectPageRoutes: Routes = [
       {
         path: 'step-1',
         component: ProjectPanelStep1Component,
+        data: {
+          step: 'step-1'
+        }
       },
       {
         path: 'step-2',
         component: ProjectPanelStep2Component,
+        data: {
+          step: 'step-2'
+        }
       },
       {
         path: 'complete',
         component: ProjectPanelCompleteComponent,
+        data: {
+          step: 'complete'
+        }
       }
     ]
   }
