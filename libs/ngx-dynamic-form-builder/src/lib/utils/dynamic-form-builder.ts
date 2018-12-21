@@ -8,7 +8,7 @@ import { DynamicFormGroup } from './dynamic-form-group';
 export class DynamicFormBuilder extends FormBuilder {
 
   private createEmptyObject<TModel>(factoryModel: ClassType<TModel>, data = {}) {
-    const object = factoryModel ? plainToClass(factoryModel, data) : data;
+    const object: any = factoryModel ? plainToClass(factoryModel, data) : data;
     let modifed = false;
     const keys = Object.keys(object);
     keys.forEach((key: any) => {
@@ -64,13 +64,14 @@ export class DynamicFormBuilder extends FormBuilder {
       Object.keys(newControlsConfig).forEach(key => {
         if (
           newControlsConfig[key] &&
+          !Array.isArray(newControlsConfig[key]) &&
           newControlsConfig[key].constructor &&
           typeof newControlsConfig[key] === 'object' &&
           (newControlsConfig[key].length === undefined ||
             (newControlsConfig[key].length !== undefined &&
-              Object.keys(newControlsConfig[key].length).length === newControlsConfig[key].length))
+              Object.keys(newControlsConfig[key]).length === newControlsConfig[key].length))
         ) {
-          newControlsConfig[key] = this.group(newControlsConfig[key].constructor, newControlsConfig[key], extra);
+          newControlsConfig[key] = this.group(newControlsConfig[key].constructor, extra);
         } else {
           if (
             Array.isArray(newControlsConfig[key]) &&
@@ -78,14 +79,13 @@ export class DynamicFormBuilder extends FormBuilder {
             typeof newControlsConfig[key][0] === 'object' &&
             (newControlsConfig[key][0].length === undefined ||
               (newControlsConfig[key][0].length !== undefined &&
-                Object.keys(newControlsConfig[key][0].length).length === newControlsConfig[key][0].length))
+                Object.keys(newControlsConfig[key][0]).length === newControlsConfig[key][0].length))
           ) {
             if (newControlsConfig[key][0].constructor) {
               newControlsConfig[key] = super.array(
                 newControlsConfig[key].map(newControlsConfigItem =>
                   this.group(
                     newControlsConfigItem.constructor,
-                    newControlsConfigItem,
                     extra
                   )
                 )
