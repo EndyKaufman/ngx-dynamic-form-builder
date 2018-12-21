@@ -1,3 +1,12 @@
+## [0.6.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.6.0...0.6.1) (2018-12-21)
+
+
+### Bug Fixes
+
+* Update transformValidationErrors for correct output errors for array ([e526426](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/e526426))
+
+
+
 # [0.6.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.5.1...0.6.0) (2018-12-21)
 
 
