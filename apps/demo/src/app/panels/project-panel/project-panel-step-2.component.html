@@ -42,7 +42,7 @@
                     matInput
                     formControlName="description"
                     placeholder="description">
-                <mat-error *ngIf="errors?.tasks && errors.tasks.length && errors.tasks[i]">
+                <mat-error *ngIf="errors?.tasks && errors.tasks[i]">
                     {{errors.tasks[i].description.join('. ')}}
                 </mat-error>
             </mat-form-field>
