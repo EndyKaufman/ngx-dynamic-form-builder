@@ -382,11 +382,6 @@ export class DynamicFormGroup<TModel> extends FormGroup {
       }
       if (error.children !== undefined && error.children.length) {
         customErrors[error.property] = this.transformValidationErrors(error.children);
-        if (Array.isArray(error.value)) {
-          customErrors[error.property] = Object.keys(
-            customErrors[error.property]
-          ).map(key => customErrors[error.property][key]);
-        }
       }
     });
     return customErrors;
