@@ -1,0 +1,11 @@
+<h3>Create project: complete</h3>
+<div class="full-width">
+    <p>Data: {{ project$ | async | json }}</p>
+</div>
+<div class="full-width">
+    <button
+        mat-raised-button
+        (click)="onPrevStepClick()">
+        Prev step
+    </button>
+</div>

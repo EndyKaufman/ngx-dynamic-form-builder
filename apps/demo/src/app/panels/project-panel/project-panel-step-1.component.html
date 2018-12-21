@@ -1,0 +1,40 @@
+<form
+    [formGroup]="form"
+    *ngIf="form?.customValidateErrors | async as errors"
+    novalidate>
+    <h3>Create project: step-1</h3>
+    <mat-form-field class="full-width">
+        <input
+            matInput
+            formControlName="name"
+            placeholder="name">
+        <mat-error *ngIf="errors?.name?.length">{{errors?.name.join('. ')}}</mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <input
+            matInput
+            formControlName="description"
+            placeholder="description">
+        <mat-error *ngIf="errors?.description?.length">{{errors.description.join('. ')}}</mat-error>
+    </mat-form-field>
+    <div class="full-width">
+        <p>Form status: {{ form.status | json }}</p>
+        <p *ngIf="!form.valid">
+            Custom validation errors: {{errors | json}}
+        </p>
+    </div>
+    <div class="full-width">
+        <button
+            mat-raised-button
+            (click)="onClearClick()">
+            Clear
+        </button>
+        <button
+            mat-raised-button
+            (click)="onNextStepClick()"
+            [disabled]="!form.valid"
+            cdkFocusInitial>
+            Next step
+        </button>
+    </div>
+</form>

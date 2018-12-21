@@ -11,10 +11,7 @@ import { AppRoutes } from './app.routes';
 export class AppComponent {
   title = 'app';
   routes = AppRoutes;
-  constructor(
-    iconRegistry: MatIconRegistry,
-    sanitizer: DomSanitizer
-  ) {
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon(
       'github-circle',
       sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/github-circle.svg')

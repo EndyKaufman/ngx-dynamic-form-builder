@@ -1,9 +1,27 @@
+import { IEnvironment } from './environment.interface';
+
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = {
-  production: false
+export const environment: IEnvironment = {
+  production: false,
+  defaults: {
+    project: {
+      id: 1,
+      name: 'default project name',
+      tasks: [
+        {
+          id: 1,
+          description: 'default 1 task description'
+        },
+        {
+          id: 2,
+          description: 'default 2 task description'
+        }
+      ]
+    }
+  }
 };
 
 /*

@@ -6,14 +6,16 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AdvancedPageComponent {
-
   source = {
     html: require('!!raw-loader?lang=html!./../../panels/user-panel/user-panel.component.html'),
     ts: require('!!raw-loader?lang=typescript!./../../panels/user-panel/user-panel.component.ts'),
-    launch: { location: 'https://stackblitz.com/edit/ngx-dynamic-form-builder', tooltip: `Edit in http://stackblitz.com` }
+    launch: {
+      location: 'https://stackblitz.com/edit/ngx-dynamic-form-builder',
+      tooltip: `Edit in http://stackblitz.com`
+    }
   };
 
-  otherFiles: { name: string, language: string, content: string }[] = [
+  otherFiles: { name: string; language: string; content: string }[] = [
     {
       name: 'user.ts',
       language: 'javascript',
