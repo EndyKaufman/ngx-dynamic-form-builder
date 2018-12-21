@@ -10,7 +10,7 @@ export const ProjectPageRoutes: Routes = [
     component: ProjectPageComponent,
     data: {
       name: 'project',
-      title: 'Arrays with steps',
+      title: 'FormArray and Steps',
       visible: true
     },
     children: [
