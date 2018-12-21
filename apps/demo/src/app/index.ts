@@ -41,6 +41,7 @@ export * from './panels/project-panel/project-panel.service';
 export * from './panels/user-panel/user-panel.component';
 export * from './panels/user-panel/user-panel.module';
 export * from './shared/shared.module';
+export * from './shared/enums/project-panel-steps.enum';
 export * from './shared/models/company';
 export * from './shared/models/department';
 export * from './shared/models/exp-company';

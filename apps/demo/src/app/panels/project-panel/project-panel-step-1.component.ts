@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DynamicFormBuilder, DynamicFormGroup } from 'ngx-dynamic-form-builder';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ProjectPanelStepsEnum } from '../../shared/enums/project-panel-steps.enum';
 import { Project } from '../../shared/models/project';
 import { ProjectPanelService } from './project-panel.service';
 
@@ -44,7 +45,7 @@ export class ProjectPanelStep1Component implements OnDestroy {
   createForm() {
     return this.fb.group(Project, {
       customValidatorOptions: {
-        groups: 'step-1'
+        groups: [ProjectPanelStepsEnum.Step1]
       }
     });
   }
