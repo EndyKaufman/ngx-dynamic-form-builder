@@ -58,19 +58,21 @@ export class UserPanelComponent {
     });
   }
   onLoadExternalClick(): void {
-    this.form.externalErrors = {
+    this.form.setExternalErrorsAsync({
       username: ['external error'],
       department: {
         company: {
           name: ['external error for name']
         }
       }
-    };
-    this.form.validateAllFormFields();
+    }).then(() =>
+      this.form.validateAllFormFields()
+    );
   }
   onClearExternalClick(): void {
-    this.form.externalErrors = {};
-    this.form.validateAllFormFields();
+    this.form.clearExternalErrorsAsync().then(() =>
+      this.form.validateAllFormFields()
+    );
   }
   onLoadClick(): void {
     this.savedItem = undefined;
