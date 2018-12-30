@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ProjectPanelService } from '../../panels/project-panel/project-panel.service';
+import { ProjectPanelStepsEnum } from '../../shared/enums/project-panel-steps.enum';
 
 @Component({
   selector: 'project-page',
@@ -16,15 +17,15 @@ export class ProjectPageComponent implements OnInit, OnDestroy {
   activatedStep$: Observable<string>;
 
   sources = {
-    'step-1': {
+    [ProjectPanelStepsEnum.Step1]: {
       html: require('!!raw-loader?lang=html!./../../panels/project-panel/project-panel-step-1.component.html'),
       ts: require('!!raw-loader?lang=typescript!./../../panels/project-panel/project-panel-step-1.component.ts')
     },
-    'step-2': {
+    [ProjectPanelStepsEnum.Step2]: {
       html: require('!!raw-loader?lang=html!./../../panels/project-panel/project-panel-step-2.component.html'),
       ts: require('!!raw-loader?lang=typescript!./../../panels/project-panel/project-panel-step-2.component.ts')
     },
-    'complete': {
+    [ProjectPanelStepsEnum.Complete]: {
       html: require('!!raw-loader?lang=html!./../../panels/project-panel/project-panel-complete.component.html'),
       ts: require('!!raw-loader?lang=typescript!./../../panels/project-panel/project-panel-complete.component.ts')
     }
@@ -50,7 +51,22 @@ export class ProjectPageComponent implements OnInit, OnDestroy {
       name: 'environments.ts',
       language: 'javascript',
       content: require('!!raw-loader?lang=typescript!../../../environments/environment.ts')
-    }
+    },
+    {
+      name: 'environment.interface.ts',
+      language: 'javascript',
+      content: require('!!raw-loader?lang=typescript!../../../environments/environment.interface.ts')
+    },
+    {
+      name: 'project-panel-steps.enum.ts',
+      language: 'javascript',
+      content: require('!!raw-loader?lang=typescript!../../shared/enums/project-panel-steps.enum.ts')
+    },
+    {
+      name: 'project-page.routes.ts',
+      language: 'javascript',
+      content: require('!!raw-loader?lang=typescript!../../pages/project-page/project-page.routes.ts')
+    },
   ];
 
   private _destroyed$: Subject<boolean> = new Subject<boolean>();

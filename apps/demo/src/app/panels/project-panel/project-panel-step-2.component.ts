@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Project } from '../../shared/models/project';
 import { Task } from '../../shared/models/task';
 import { ProjectPanelService } from './project-panel.service';
+import { ProjectPanelStepsEnum } from '../../shared/enums/project-panel-steps.enum';
 
 @Component({
   selector: 'project-panel-step-2',
@@ -43,7 +44,7 @@ export class ProjectPanelStep2Component implements OnDestroy {
   createForm() {
     return this.fb.group(Project, {
       customValidatorOptions: {
-        groups: 'step-2'
+        groups: [ProjectPanelStepsEnum.Step2]
       }
     });
   }

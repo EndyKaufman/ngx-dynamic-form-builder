@@ -10,20 +10,6 @@ export interface IShortValidationErrors {
   [key: string]: string[] | IShortValidationErrors;
 }
 export class DynamicFormGroup<TModel> extends FormGroup {
-  set externalErrors(externalErrors: IShortValidationErrors) {
-    this._externalErrors = externalErrors;
-    this.validate();
-  }
-  get externalErrors(): IShortValidationErrors {
-    return this._externalErrors;
-  }
-  set validatorOptions(validatorOptions: ValidatorOptions) {
-    this._validatorOptions = validatorOptions;
-    this.validate();
-  }
-  get validatorOptions(): ValidatorOptions {
-    return this._validatorOptions;
-  }
   customValidateErrors = new BehaviorSubject<IShortValidationErrors>({});
   private _object: TModel;
   private _externalErrors: IShortValidationErrors;
@@ -392,6 +378,40 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   plainToClass<TClassModel, Object>(cls: ClassType<TClassModel>, plain: Object) {
     return plainToClass(cls, plain, { ignoreDecorators: true });
   }
+  async setExternalErrorsAsync(externalErrors: IShortValidationErrors) {
+    this._externalErrors = externalErrors;
+    try {
+      return await this.validateAsync();
+    } catch (error) {
+      throw error;
+    }
+  }
+  setExternalErrors(externalErrors: IShortValidationErrors) {
+    this.setExternalErrorsAsync(externalErrors).then(() => { }, error => { throw error; });
+  }
+  getExternalErrors(): IShortValidationErrors {
+    return this._externalErrors;
+  }
+  clearExternalErrors() {
+    this.setExternalErrors({});
+  }
+  clearExternalErrorsAsync() {
+    return this.setExternalErrorsAsync({});
+  }
+  async setValidatorOptionsAsync(validatorOptions: ValidatorOptions) {
+    this._validatorOptions = validatorOptions;
+    try {
+      return await this.validateAsync();
+    } catch (error) {
+      throw error;
+    }
+  }
+  setValidatorOptions(validatorOptions: ValidatorOptions) {
+    this.setValidatorOptionsAsync(validatorOptions).then(() => { }, error => { throw error; });
+  }
+  getValidatorOptions(): ValidatorOptions {
+    return this._validatorOptions;
+  }
   private mergeErrors(errors?: IShortValidationErrors, externalErrors?: IShortValidationErrors) {
     return mergeWith(errors, externalErrors, (objValue, srcValue) => {
       if (
@@ -405,18 +425,18 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   }
   async validateAsync(externalErrors?: IShortValidationErrors, validatorOptions?: ValidatorOptions) {
     if (externalErrors === undefined) {
-      externalErrors = cloneDeep(this.externalErrors);
+      externalErrors = cloneDeep(this._externalErrors);
     }
     if (validatorOptions === undefined) {
-      validatorOptions = cloneDeep(this.validatorOptions);
+      validatorOptions = cloneDeep(this._validatorOptions);
     }
     if (!externalErrors) {
       externalErrors = {};
     }
     try {
       const result = await validate(this.object, validatorOptions);
-      const transformedErrors = this.transformValidationErrors(result);
-      const allErrors = this.mergeErrors(externalErrors, transformedErrors);
+      const validationErrors = this.transformValidationErrors(result);
+      const allErrors = this.mergeErrors(externalErrors, validationErrors);
       this.markAsInvalidForExternalErrors(externalErrors, this.controls);
       this.customValidateErrors.next(allErrors);
     } catch (error) {

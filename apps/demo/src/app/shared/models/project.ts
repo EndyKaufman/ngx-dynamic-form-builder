@@ -1,18 +1,19 @@
-import { plainToClassFromExist, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 import { IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
+import { ProjectPanelStepsEnum } from '../enums/project-panel-steps.enum';
 import { serializeModel } from '../utils/custom-transforms';
 import { Task } from './task';
 
 export class Project {
   id?: number = undefined;
   @IsNotEmpty({
-    groups: ['step-1']
+    groups: [ProjectPanelStepsEnum.Step1]
   })
   name?: string = undefined;
   @IsNotEmpty({ always: true })
   description?: string = undefined;
   @ValidateNested({
-    groups: ['step-2']
+    groups: [ProjectPanelStepsEnum.Step2]
   })
   @IsOptional()
   @Type(serializeModel(Task))
