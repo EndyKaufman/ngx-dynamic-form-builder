@@ -1,3 +1,12 @@
+# [0.7.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.6.1...0.7.0) (2018-12-30)
+
+
+### Features
+
+* Change externalErrors and validatorOptions with getter and setter to functions: setExternalErrorsAsync, setExternalErrors, clearExternalErrorsAsync, clearExternalErrors and setValidatorOptionsAsync, setValidatorOptions ([e256c0f](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/e256c0f))
+
+
+
 ## [0.6.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.6.0...0.6.1) (2018-12-21)
 
 
