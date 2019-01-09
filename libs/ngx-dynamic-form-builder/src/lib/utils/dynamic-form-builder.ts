@@ -4,8 +4,7 @@ import { ValidatorOptions } from 'class-validator';
 import 'reflect-metadata';
 import { Dictionary } from '../models';
 import { DynamicFormGroupConfig } from '../models/dynamic-form-group-config';
-import { DynamicFormGroup } from './dynamic-form-group';
-import { getClassValidators } from './functions/get-class-validators.function';
+import { DynamicFormGroup, getClassValidators } from './dynamic-form-group';
 import { plainToClass } from 'class-transformer';
 
 export class DynamicFormBuilder extends FormBuilder {
