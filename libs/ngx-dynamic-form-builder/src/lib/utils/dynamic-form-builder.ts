@@ -1,10 +1,10 @@
 import { FormBuilder } from '@angular/forms';
 import { ClassType } from 'class-transformer/ClassTransformer';
+import { ValidatorOptions } from 'class-validator';
 import 'reflect-metadata';
 import { Dictionary } from '../models';
 import { FormGroupExtra } from '../models/form-group-extra';
 import { DynamicFormGroup } from './dynamic-form-group';
-import { ValidatorOptions } from 'class-validator';
 import { getClassValidators } from './functions/get-class-validators.function';
 
 export class DynamicFormBuilder extends FormBuilder {

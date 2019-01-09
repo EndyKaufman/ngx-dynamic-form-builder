@@ -3,7 +3,7 @@ import { ClassType } from 'class-transformer/ClassTransformer';
 import { getFromContainer, MetadataStorage, validateSync, ValidationError, ValidationTypes, Validator, ValidatorOptions } from 'class-validator';
 import { ValidationMetadata } from 'class-validator/metadata/ValidationMetadata';
 import 'reflect-metadata';
-import { Dictionary } from '../../models';
+import { Dictionary, DynamicFormGroupField } from '../../models';
 import { DynamicFormGroup } from '../dynamic-form-group';
 
 export function getClassValidators<TModel>(factoryModel: ClassType<TModel>, fields: Dictionary, validatorOptions?: ValidatorOptions) {
@@ -19,101 +19,116 @@ export function getClassValidators<TModel>(factoryModel: ClassType<TModel>, fiel
   const formGroupFields = {};
   const validator = new Validator();
 
-  Object.keys(fields).filter(key => key.indexOf('__') !== 0).forEach(key => {
-    let formGroupField = formGroupFields[key];
+  // Loop through all fields in the form definition
+  Object.keys(fields).filter(key => key.indexOf('__') !== 0).forEach(fieldName => {
 
-    if (formGroupField === undefined) {
-      formGroupField = Array.isArray(fields[key]) ? fields[key] : [];
+    // Initialize the field definition with the value of the field
+    const fieldDefinition: DynamicFormGroupField = {
+      data: formGroupFields[fieldName],
+      validation: []
+    };
+
+    if (fieldDefinition.data === undefined) {
+      fieldDefinition.data = fields[fieldName];
     }
 
-    if (!Array.isArray(fields[key])) {
-      if (fields[key] instanceof DynamicFormGroup) {
-        fields[key].object = fields[key].fields;
+    if (!Array.isArray(fields[fieldName])) {
+      if (fields[fieldName] instanceof DynamicFormGroup) {
+        fields[fieldName].object = fields[fieldName].fields;
       }
-      formGroupField.push(fields[key]);
+
+      fieldDefinition.data = fields[fieldName];
     }
 
+    // identify any conditional validation for the field (Marked with @IsOptional())
     const conditionalValidations: ValidationMetadata[] = [];
 
     validationMetadatas.forEach(validationMetadata => {
-      if (validationMetadata.propertyName === key && validationMetadata.type === 'conditionalValidation') {
+      if (validationMetadata.propertyName === fieldName && validationMetadata.type === 'conditionalValidation') {
         conditionalValidations.push(validationMetadata);
       }
     });
 
+    // Loop through all validation definitions and create validation functions for the field
     validationMetadatas.forEach(validationMetadata => {
-      if (validationMetadata.propertyName === key && validationMetadata.type !== 'conditionalValidation') {
-        switch (validationMetadata.type) {
-          /*
-          case ValidationTypes.IS_NOT_EMPTY: {
-              formGroupField.push(Validators.required);
-              break;
-          }
-          case ValidationTypes.IS_EMAIL: {
-              formGroupField.push(Validators.required);
-              break;
-          }*/
-          default: {
-            for (const typeKey in ValidationTypes) {
-              if (ValidationTypes.hasOwnProperty(typeKey)) {
 
-                // Handle nested validation
-                if (isNestedValidation(validationMetadata, validator, typeKey)) {
-                  const nestedValidate = function (c: FormControl) {
-                    const isValid = getValidateErrors(c, c.value, validatorOptions).length === 0;
-                    return getIsValidResult(isValid, validationMetadata);
-                  };
+      if (validationMetadata.propertyName === fieldName) {
+        if (validationMetadata.type !== 'conditionalValidation') {
+          switch (validationMetadata.type) {
+            /*
+            case ValidationTypes.IS_NOT_EMPTY: {
+                formGroupField.validation.push(Validators.required);
+                break;
+            }
+            case ValidationTypes.IS_EMAIL: {
+                formGroupField.validation.push(Validators.required);
+                break;
+            }*/
+            default: {
+              for (const typeKey in ValidationTypes) {
+                if (ValidationTypes.hasOwnProperty(typeKey)) {
+                  if (hasValidationRule(validationMetadata, validator, typeKey)) {
 
-                  formGroupField.push(nestedValidate);
-                }
+                    // Handle nested validation
+                    if (validationMetadata.type === 'nestedValidation' && typeKey === 'NESTED_VALIDATION') {
+                      const nestedValidate = function (control: FormControl) {
+                        const isValid = getValidateErrors(control, control.value, validatorOptions).length === 0;
+                        return getIsValidResult(isValid, validationMetadata);
+                      };
 
-                // Handle Custom Validation
-                if (isCustomValidation(validationMetadata, validator, typeKey)) {
-
-                  const customValidation = function (c: FormControl) {
-                    const validateErrors: ValidationError[] = setObjectValueAndGetValidationErrors(c, key, validatorOptions);
-                    const isValid = getAllErrors(validateErrors, key).length === 0;
-
-                    return getIsValidResult(isValid, validationMetadata);
-                  };
-
-                  formGroupField.push(customValidation);
-                }
-
-                // Handle remaining validation
-                if (hasValidationRule(validationMetadata, validator, typeKey)) {
-                  const dynamicValidate = function (c: FormControl) {
-
-                    if (!c) {
-                      return null;
+                      fieldDefinition.validation.push(nestedValidate);
                     }
 
-                    let isValid = c.parent && c.parent.value ? validator.validateValueByMetadata(c.value, validationMetadata) : true;
+                    // Handle Custom Validation
+                    else if (validationMetadata.type === 'customValidation' && typeKey === 'CUSTOM_VALIDATION') {
+                      const customValidation = function (control: FormControl) {
+                        const validateErrors: ValidationError[] = setObjectValueAndGetValidationErrors(control, fieldName, validatorOptions);
+                        const isValid = getAllErrors(validateErrors, fieldName).length === 0;
 
-                    if (!isValid && conditionalValidations.length > 0) {
-                      const validateErrors: ValidationError[] = setObjectValueAndGetValidationErrors(c, key, validatorOptions);
-                      isValid = validateErrors.filter((error: ValidationError) => error.property === key).length === 0;
+                        return getIsValidResult(isValid, validationMetadata);
+                      };
+
+                      fieldDefinition.validation.push(customValidation);
                     }
 
-                    return getIsValidResult(isValid, validationMetadata);
-                  };
+                    // Handle remaining validation
+                    else {
+                      const dynamicValidate = function (control: FormControl) {
 
-                  formGroupField.push(dynamicValidate);
+                        if (!control) {
+                          return null;
+                        }
+
+                        let isValid = control.parent && control.parent.value ? validator.validateValueByMetadata(control.value, validationMetadata) : true;
+
+                        if (!isValid && conditionalValidations.length > 0) {
+                          const validateErrors: ValidationError[] = setObjectValueAndGetValidationErrors(control, fieldName, validatorOptions);
+                          isValid = validateErrors.filter((error: ValidationError) => error.property === fieldName).length === 0;
+                        }
+
+                        return getIsValidResult(isValid, validationMetadata);
+                      };
+
+                      fieldDefinition.validation.push(dynamicValidate);
+                    }
+                  }
                 }
               }
+
+              break;
             }
-            break;
           }
         }
       }
     });
 
-    if (formGroupField[0] instanceof DynamicFormGroup) {
-      formGroupFields[key] = formGroupField[0];
+    // Convert to a structure, angular understans
+    if (fieldDefinition.data instanceof DynamicFormGroup) {
+      formGroupFields[fieldName] = fieldDefinition.data;
     } else {
-      formGroupFields[key] = [
-        formGroupField[0],
-        formGroupField.filter((item, index) => index !== 0)
+      formGroupFields[fieldName] = [
+        fieldDefinition.data,
+        fieldDefinition.validation
       ];
     }
   });
@@ -124,18 +139,6 @@ export function getClassValidators<TModel>(factoryModel: ClassType<TModel>, fiel
 // *************************
 // Helper functions to help make the main code more readable
 //
-
-function isNestedValidation(validationMetadata: ValidationMetadata, validator: Validator, typeKey: string): boolean {
-  return hasValidationRule(validationMetadata, validator, typeKey) &&
-    validationMetadata.type === 'nestedValidation' &&
-    typeKey === 'NESTED_VALIDATION';
-}
-
-function isCustomValidation(validationMetadata: ValidationMetadata, validator: Validator, typeKey: string): boolean {
-  return hasValidationRule(validationMetadata, validator, typeKey) &&
-    validationMetadata.type === 'customValidation' &&
-    typeKey === 'CUSTOM_VALIDATION';
-}
 
 function hasValidationRule(validationMetadata: ValidationMetadata, validator: Validator, typeKey: string) {
   return validationMetadata.type === ValidationTypes[typeKey] && validator[validationMetadata.type] === undefined;
@@ -186,5 +189,3 @@ function getIsValidResult(isValid: boolean, validationMetadata: ValidationMetada
       }
     };
 }
-
-
