@@ -19,6 +19,24 @@ export class DynamicFormGroup<TModel> extends FormGroup {
 
   constructor(public factoryModel: ClassType<TModel>, public fields: Dictionary, public defaultValidatorOptions?: ValidatorOptions) {
     super({});
+    /*
+    const classValidators = DynamicFormGroup.getClassValidators<TModel>(
+      this.factoryModel,
+      this.fields,
+      this.defaultValidatorOptions
+    );
+    const formGroup = this._fb.group(
+      classValidators
+    );
+    Object.keys(formGroup.controls).forEach(key => {
+      this.addControl(key, formGroup.controls[key]);
+    });
+    this.valueChanges.subscribe(data => {
+      this.validate(
+        undefined,
+        this.defaultValidatorOptions
+      );
+    });*/
     this.fields = this.onlyFields(this.fields);
   }
 
@@ -452,8 +470,15 @@ export function getClassValidators<TModel>(factoryModel: ClassType<TModel>, fiel
 
     validationGroupMetadatas.forEach(validationMetadata => {
       if (validationMetadata.propertyName === fieldName && validationMetadata.type !== ValidationKeys.conditional.type) {
+
+        // tslint:disable-next-line:forin
         for (const typeKey in ValidationTypes) {
-          if (ValidationTypes.hasOwnProperty(typeKey) && hasValidationRule(validationMetadata, validator, typeKey)) {
+
+          const canValidateField = ValidationTypes.hasOwnProperty(typeKey)
+            && validationMetadata.type === ValidationTypes[typeKey]
+            && validator[validationMetadata.type] === undefined;
+
+          if (canValidateField) {
 
             const canValidateNested = (
               (
@@ -573,10 +598,6 @@ export function getClassValidators<TModel>(factoryModel: ClassType<TModel>, fiel
 
 function isPropertyValidatorOfType(validationMetadata: ValidationMetadata, fieldName: string, validationMetadataType: string) {
   return validationMetadata.propertyName === fieldName && validationMetadata.type === validationMetadataType;
-}
-
-function hasValidationRule(validationMetadata: ValidationMetadata, validator: Validator, typeKey: string) {
-  return validationMetadata.type === ValidationTypes[typeKey] && validator[validationMetadata.type] === undefined;
 }
 
 function getAllErrors(validateErrors: ValidationError[], key: string): ValidationError[] {
