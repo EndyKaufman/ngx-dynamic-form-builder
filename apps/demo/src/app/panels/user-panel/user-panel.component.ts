@@ -10,25 +10,24 @@ import { Company } from './../../shared/models/company';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserPanelComponent {
-
   @Input()
   form: DynamicFormGroup<User>;
   @Input()
   item = new User({
-    'username': 'admin',
-    'isStaff': true,
-    'id': 1,
-    'isSuperuser': true,
-    'dateOfBirth': '1985-05-11T01:00:00Z',
-    'password': 'secretpassword',
-    'email': 'admin@site15.ru',
-    'department': {
-      'id': 2,
-      'name': 'department 1',
-      'company': {
-        'id': 3,
-        'name': 'company 2',
-        'regionNum': 1
+    username: 'admin',
+    isStaff: true,
+    id: 1,
+    isSuperuser: true,
+    dateOfBirth: '1985-05-11T01:00:00Z',
+    password: 'secretpassword',
+    email: 'admin@site15.ru',
+    department: {
+      id: 2,
+      name: 'department 1',
+      company: {
+        id: 3,
+        name: 'company 2',
+        regionNum: 1
       }
     }
   });
@@ -59,19 +58,21 @@ export class UserPanelComponent {
     });
   }
   onLoadExternalClick(): void {
-    this.form.externalErrors = {
+    this.form.setExternalErrorsAsync({
       username: ['external error'],
       department: {
         company: {
           name: ['external error for name']
         }
       }
-    };
-    this.form.validateAllFormFields();
+    }).then(() =>
+      this.form.validateAllFormFields()
+    );
   }
   onClearExternalClick(): void {
-    this.form.externalErrors = {};
-    this.form.validateAllFormFields();
+    this.form.clearExternalErrorsAsync().then(() =>
+      this.form.validateAllFormFields()
+    );
   }
   onLoadClick(): void {
     this.savedItem = undefined;

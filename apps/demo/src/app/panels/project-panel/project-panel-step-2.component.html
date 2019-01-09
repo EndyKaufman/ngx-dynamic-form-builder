@@ -1,0 +1,79 @@
+<form
+    [formGroup]="form"
+    *ngIf="form?.customValidateErrors | async as errors"
+    novalidate>
+    <h3>Create project: step-2</h3>
+    <mat-form-field
+        class="full-width"
+        appearance="fill">
+        <input
+            matInput
+            formControlName="name"
+            placeholder="name"
+            readonly="true">
+        <mat-error *ngIf="errors?.name?.length">{{errors?.name.join('. ')}}</mat-error>
+    </mat-form-field>
+    <mat-form-field
+        class="full-width"
+        appearance="fill">
+        <input
+            matInput
+            formControlName="description"
+            placeholder="description"
+            readonly="true">
+        <mat-error *ngIf="errors?.description?.length">{{errors.description.join('. ')}}</mat-error>
+    </mat-form-field>
+    <h4>
+        Tasks
+        <button
+            mat-mini-fab
+            (click)="addTask()"
+            color="primary">
+            +
+        </button>
+    </h4>
+    <mat-list role="list">
+        <mat-list-item
+            role="listitem"
+            formArrayName="tasks"
+            *ngFor="let item of getTasksArray().controls; let i = index;">
+            <mat-form-field [formGroupName]="i">
+                <input
+                    matInput
+                    formControlName="description"
+                    placeholder="description">
+                <mat-error *ngIf="errors?.tasks && errors.tasks[i]">
+                    {{errors.tasks[i].description.join('. ')}}
+                </mat-error>
+            </mat-form-field>
+            <mat-action-list>
+                <button
+                    mat-mini-fab
+                    (click)="getTasksArray().removeAt(i)"
+                    color="warn">
+                    x
+                </button>
+            </mat-action-list>
+        </mat-list-item>
+    </mat-list>
+    <div class="full-width">
+        <p>Form status: {{ form.status | json }}</p>
+        <p *ngIf="!form.valid">
+            Custom validation errors: {{errors | json}}
+        </p>
+    </div>
+    <div class="full-width">
+        <button
+            mat-raised-button
+            (click)="onPrevStepClick()">
+            Prev step
+        </button>
+        <button
+            mat-raised-button
+            (click)="onNextStepClick()"
+            [disabled]="!form.valid"
+            cdkFocusInitial>
+            Next step
+        </button>
+    </div>
+</form>

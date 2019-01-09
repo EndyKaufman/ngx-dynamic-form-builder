@@ -64,10 +64,13 @@ export class DynamicFormBuilder extends FormBuilder {
         }
 
         function canCreateArray() {
+          if (Array.isArray(newControlsConfig[key]) === false) {
+            return false;
+          }
+
           const candidate = newControlsConfig[key][0];
 
-          return Array.isArray(newControlsConfig[key]) &&
-            candidate.constructor &&
+          return  candidate.constructor &&
             typeof candidate === 'object' &&
             (candidate.length === undefined ||
               (candidate.length !== undefined &&

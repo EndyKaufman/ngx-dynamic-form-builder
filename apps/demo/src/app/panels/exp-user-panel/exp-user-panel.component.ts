@@ -8,25 +8,24 @@ import { ExpUser } from '../../shared/models/exp-user';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExpUserPanelComponent {
-
   @Input()
   form: DynamicFormGroup<ExpUser>;
   @Input()
   item = new ExpUser({
-    'username': 'admin',
-    'isStaff': true,
-    'id': 1,
-    'isSuperuser': true,
-    'dateOfBirth': '1985-05-11T01:00:00Z',
-    'password': 'secretpassword',
-    'email': 'admin@site15.ru',
-    'department': {
-      'id': 2,
-      'name': 'department 1',
-      'company': {
-        'id': 3,
-        'name': 'company 2',
-        'regionNum': 1
+    username: 'admin',
+    isStaff: true,
+    id: 1,
+    isSuperuser: true,
+    dateOfBirth: '1985-05-11T01:00:00Z',
+    password: 'secretpassword',
+    email: 'admin@site15.ru',
+    department: {
+      id: 2,
+      name: 'department 1',
+      company: {
+        id: 3,
+        name: 'company 2',
+        regionNum: 1
       }
     }
   });
@@ -35,7 +34,7 @@ export class ExpUserPanelComponent {
   savedItem: ExpUser;
 
   constructor() {
-    this.form = this.fb.group(ExpUser, undefined, {
+    this.form = this.fb.group(ExpUser, {
       customValidatorOptions: {
         groups: ['user']
       }

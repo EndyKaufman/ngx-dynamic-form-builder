@@ -6,11 +6,13 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExperimentalPageComponent {
-
   source = {
     html: require('!!raw-loader?lang=html!./../../panels/exp-user-panel/exp-user-panel.component.html'),
     ts: require('!!raw-loader?lang=typescript!./../../panels/exp-user-panel/exp-user-panel.component.ts'),
-    launch: { location: 'https://stackblitz.com/edit/ngx-dynamic-form-builder-experimental', tooltip: `Edit in http://stackblitz.com` }
+    launch: {
+      location: 'https://stackblitz.com/edit/ngx-dynamic-form-builder-experimental',
+      tooltip: `Edit in http://stackblitz.com`
+    }
   };
 
   loginSource = {
@@ -22,7 +24,7 @@ export class ExperimentalPageComponent {
     }
   };
 
-  otherFiles: { name: string, language: string, content: string }[] = [
+  otherFiles: { name: string; language: string; content: string }[] = [
     {
       name: 'exp-user.ts',
       language: 'javascript',

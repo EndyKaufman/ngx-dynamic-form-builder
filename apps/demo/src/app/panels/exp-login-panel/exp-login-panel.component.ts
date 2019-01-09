@@ -8,7 +8,6 @@ import { ExpUser } from '../../shared/models/exp-user';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExpLoginPanelComponent implements OnInit {
-
   @Input()
   form: DynamicFormGroup<ExpUser>;
 
@@ -16,7 +15,7 @@ export class ExpLoginPanelComponent implements OnInit {
   savedItem: ExpUser;
 
   constructor() {
-    this.form = this.fb.group(ExpUser, undefined, {
+    this.form = this.fb.group(ExpUser, {
       customValidatorOptions: {
         groups: ['guest']
       }

@@ -3,11 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 @Pipe({ name: 'safeHtml' })
 export class SafeHtmlPipe implements PipeTransform {
-
-  constructor(
-    public _sanitizer: DomSanitizer
-  ) {
-  }
+  constructor(public _sanitizer: DomSanitizer) {}
 
   transform(value: string, args: any): any {
     if (this._sanitizer) {

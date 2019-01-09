@@ -1,0 +1,20 @@
+<div
+    class="project-page"
+    fxLayout.gt-md="row"
+    fxLayout.lt-md="column"
+    fxLayoutAlign="space-evenly stretch">
+    <ngx-docs-example
+        title="FormArray and Steps: project panel"
+        [html]="sources[activatedStep$ | async]?.html"
+        [ts]="sources[activatedStep$ | async]?.ts"
+        fxFlex.gt-sm="50"
+        #doc>
+        <div class="body">
+            <router-outlet></router-outlet>
+        </div>
+    </ngx-docs-example>
+    <source-tabs
+        title="Other files"
+        [files]="otherFiles"
+        fxFlex.gt-sm="50"></source-tabs>
+</div>

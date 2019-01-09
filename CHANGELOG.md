@@ -1,3 +1,44 @@
+# [0.7.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.6.1...0.7.0) (2018-12-30)
+
+
+### Features
+
+* Change externalErrors and validatorOptions with getter and setter to functions: setExternalErrorsAsync, setExternalErrors, clearExternalErrorsAsync, clearExternalErrors and setValidatorOptionsAsync, setValidatorOptions ([e256c0f](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/e256c0f))
+
+
+
+## [0.6.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.6.0...0.6.1) (2018-12-21)
+
+
+### Bug Fixes
+
+* Update transformValidationErrors for correct output errors for array ([e526426](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/e526426))
+
+
+
+# [0.6.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.5.1...0.6.0) (2018-12-21)
+
+
+### Bug Fixes
+
+* Wrong work with exists nested exeperimental sample ([#74](https://github.com/EndyKaufman/ngx-dynamic-form-builder/issues/74)) ([407b9de](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/407b9de))
+
+
+### Features
+
+* Add support bind class validator to array controls and array form groups ([#74](https://github.com/EndyKaufman/ngx-dynamic-form-builder/issues/74), [#75](https://github.com/EndyKaufman/ngx-dynamic-form-builder/issues/75)) ([90f8c3e](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/90f8c3e))
+
+
+
+## [0.5.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.5.0...0.5.1) (2018-12-10)
+
+
+### Bug Fixes
+
+* Update dependencies ([db8c595](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/db8c595))
+
+
+
 # [0.5.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.4.4...0.5.0) (2018-11-17)
 
 
