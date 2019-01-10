@@ -7,8 +7,8 @@
             matInput
             formControlName="username"
             placeholder="Username">
-        <mat-error *ngIf="(form?.customValidateErrors | async)?.username?.length">
-            {{(form?.customValidateErrors | async).username[0]}}
+        <mat-error *ngIf="form?.formErrors?.username?.length">
+            {{form?.formErrors.username[0]}}
         </mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
@@ -17,14 +17,14 @@
             type="password"
             formControlName="password"
             placeholder="Password">
-        <mat-error *ngIf="(form?.customValidateErrors | async)?.password?.length">
-            {{(form.customValidateErrors | async).password[0]}}
+        <mat-error *ngIf="form?.formErrors?.password?.length">
+            {{form?.formErrors.password[0]}}
         </mat-error>
     </mat-form-field>
     <div class="full-width">
         <p>Form status: {{ form.status | json }}</p>
         <p *ngIf="!form.valid">
-            Custom validation errors: {{form.customValidateErrors|async|json}}
+          Form errors: {{form?.formErrors|json}}
         </p>
         <p *ngIf="savedItem">Saved item: {{savedItem|json}}</p>
     </div>

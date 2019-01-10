@@ -11,6 +11,7 @@ import { Dictionary, ShortValidationErrors, DynamicFormGroupField } from '../mod
 export class DynamicFormGroup<TModel> extends FormGroup {
 
   public customValidateErrors = new BehaviorSubject<ShortValidationErrors>({});
+  public formErrors: ShortValidationErrors;
 
   private _object: TModel;
   private _externalErrors: ShortValidationErrors;
@@ -86,8 +87,11 @@ export class DynamicFormGroup<TModel> extends FormGroup {
       const result = await validate(this.object, validatorOptions);
       const validationErrors = this.transformValidationErrors(result);
       const allErrors = this.mergeErrors(externalErrors, validationErrors);
+
       this.markAsInvalidForExternalErrors(externalErrors, this.controls);
-      this.customValidateErrors.next(allErrors);
+
+      this.formErrors = allErrors;
+      this.customValidateErrors.next(this.formErrors);
     } catch (error) {
       throw error;
     }

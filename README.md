@@ -22,7 +22,7 @@ npm i --save ngx-dynamic-form-builder
 ## Usage
 
 app.module.ts
-```js 
+```typescript 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CompanyPanelComponent } from './company-panel.component';
 
@@ -44,7 +44,7 @@ export class AppModule {}
 ```
 
 company.ts
-```js 
+```typescript 
 import { Validate, IsNotEmpty } from 'class-validator';
 import { plainToClassFromExist } from 'class-transformer';
 import { TextLengthMore15 } from '../utils/custom-validators';
@@ -77,12 +77,12 @@ company-panel.component.html
 ```html
 <form [formGroup]="form" novalidate>
     <input formControlName="name" [placeholder]="strings.name">
-    <p *ngIf="(form?.customValidateErrors | async)?.name?.length">
-      Error: {{(form.customValidateErrors | async).name[0]}}
+    <p *ngIf="form?.formErrors?.name?.length">
+      Error: {{form.formErrors.name[0]}}
     </p>
     <p>Form status: {{ form.status | json }}</p>
     <p *ngIf="!form.valid">
-      Custom validation errors: {{form.customValidateErrors|async|json}}
+      Form errors: {{form?.formErrors|json}}
     </p>
     <p *ngIf="savedItem">
       Saved item: {{savedItem|json}}
@@ -94,7 +94,7 @@ company-panel.component.html
 ```
 
 company-panel.component.ts
-```js
+```typescript
 import { DynamicFormGroup, DynamicFormBuilder } from 'ngx-dynamic-form-builder';
 import { Company } from './../../shared/models/company';
 import { Input, Component } from '@angular/core';
@@ -145,7 +145,7 @@ export class CompanyPanelComponent {
 ```
 
 custom-validators.ts
-```css
+```typescript
 import {
     ValidatorConstraintInterface, ValidatorConstraint
 } from 'class-validator';
@@ -155,6 +155,92 @@ export class TextLengthMore15 implements ValidatorConstraintInterface {
     validate(text: string) {
         return text ? text.length > 15 : false;
     }
+}
+```
+
+## Observable Errors
+the customValidateErrors property can be subscribed for cases in which your code should act on changes in errors
+
+company-panel.component.html
+```html
+<form [formGroup]="form" novalidate>
+    <input formControlName="name" [placeholder]="strings.name">
+    <p *ngIf="(form?.customValidateErrors | async)?.name?.length">
+      Error: {{(form.customValidateErrors | async).name[0]}}
+    </p>
+    <p>Form status: {{ form.status | json }}</p>
+    <p *ngIf="!form.valid">
+      Observable validation errors: {{form.customValidateErrors|async|json}}
+    </p>
+    <p *ngIf="savedItem">
+      Saved item: {{savedItem|json}}
+    </p>
+    <button (click)="onLoadClick()">Load</button>
+    <button (click)="onClearClick()">Clear</button>
+    <button (click)="onSaveClick()" [disabled]="!form.valid">Save</button>
+</form>
+```
+
+company-panel.component.ts
+```typescript
+import { DynamicFormGroup, DynamicFormBuilder } from 'ngx-dynamic-form-builder';
+import { Company } from './../../shared/models/company';
+import { Input, Component } from '@angular/core';
+import { Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+
+@Component({
+  selector: 'company-panel',
+  templateUrl: './company-panel.component.html'
+})
+export class CompanyPanelComponent implements onDestroy {
+
+  @Input()
+  form: DynamicFormGroup<Company>;
+  @Input()
+  item = new Company({
+    'id': 11,
+    'name': '123456789012345'
+  });
+  @Input()
+  strings = Company.strings;
+
+  fb = new DynamicFormBuilder();
+  savedItem: Company;
+
+  errorChangeSubscription: Subscription;
+
+  constructor() {
+    this.form = this.fb.group(Company, {
+      name: ''
+    });
+
+    this.errorChangeSubscription = this.form.customValidateErrors.subscribe((allErrors) => {
+      console.log('Errors changed': allErrors);
+    })
+  }
+  ngOnDestroy() {
+    if(this.errorChangeSubscription != null && this.errorChangeSubscription.closed === false) {
+      this.errorChangeSubscription.unsubscribe();
+    }
+  }
+  onLoadClick(): void {
+    this.savedItem = undefined;
+    this.form.object = this.item;
+    this.form.validateAllFormFields();
+  }
+  onClearClick(): void {
+    this.savedItem = undefined;
+    this.form.object = new Company();
+    this.form.validateAllFormFields();
+  }
+  onSaveClick(): void {
+    if (this.form.valid) {
+      this.savedItem = this.form.object;
+    } else {
+      this.form.validateAllFormFields();
+    }
+  }
 }
 ```
 
