@@ -1,6 +1,8 @@
 import { DynamicFormGroup } from '../utils/dynamic-form-group';
+import { ValidationMetadata } from 'class-validator/metadata/ValidationMetadata';
 
 export interface DynamicFormGroupField {
   data: any | DynamicFormGroup<any>;
-  validation: any[];
+  validationFunctions: any[];
+  validationDefinitions: ValidationMetadata[];
 }
