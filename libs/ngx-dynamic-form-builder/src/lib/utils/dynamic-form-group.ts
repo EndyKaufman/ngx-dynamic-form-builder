@@ -521,67 +521,39 @@ export function getClassValidators<TModel>(factoryModel: ClassType<TModel>, fiel
     };
   }
 
-  function createDynamicValidate(validationMetadata: ValidationMetadata, conditionalValidations: ValidationMetadata[], key: string) {
+  function createDynamicValidate(validationMetadata: ValidationMetadata, conditionalValidations: ValidationMetadata[], fieldName: string) {
     return function (control: FormControl) {
       if (!control) {
         return null;
       }
+
       let isValid = control.parent && control.parent.value
         ? validator.validateValueByMetadata(control.value, validationMetadata)
         : true;
+
       if (!isValid && conditionalValidations.length > 0) {
-        // todo: refactor
-        const object = control.parent instanceof DynamicFormGroup
-          ? (control.parent as DynamicFormGroup<any>).object
-          : control.parent
-            ? control.parent.value
-            : {};
-        if (object) {
-          object[key] = control.value;
-        }
-        const validateErrors = control.parent && control.parent.value ? validateSync(object, validatorOptions) : [];
-        isValid =
-          validateErrors.filter((error: ValidationError) => {
-            if (error.property === key) {
-              return true;
-            }
-            return false;
-          }).length === 0;
+        const validateErrors = setObjectValueAndGetValidationErrors(control, fieldName, validatorOptions);
+        isValid = validateErrors.filter((error: ValidationError) => error.property === fieldName).length === 0;
       }
 
       return getIsValidResult(isValid, validationMetadata, 'dynamicValidate');
     };
   }
 
-  function createCustomValidation(key: string, validationMetadata: ValidationMetadata) {
+  function createCustomValidation(fieldName: string, validationMetadata: ValidationMetadata) {
     return function (control: FormControl) {
-      // todo: refactor
-      const object = control.parent instanceof DynamicFormGroup
-        ? (control.parent as DynamicFormGroup<any>).object
-        : control.parent
-          ? control.parent.value
-          : {};
-      if (object) {
-        object[key] = control.value;
-      }
-      const validateErrors = control.parent && control.parent.value ? validateSync(object, validatorOptions) : [];
-      const isValid = validateErrors.filter((error: ValidationError) => {
-        if (error.children.length && error.children.filter(children => children.property === key)) {
-          return true;
-        }
-        return true;
-      }).length === 0;
+      const validateErrors: ValidationError[] = setObjectValueAndGetValidationErrors(control, fieldName, validatorOptions);
+      const isValid = getAllErrors(validateErrors, fieldName).length === 0;
 
       return getIsValidResult(isValid, validationMetadata, 'customValidation');
     };
   }
 
   function checkWithAllNestedValidations(allNestedValidations: ValidationMetadata[], nestedValidations: ValidationMetadata[], key: string) {
-    return (allNestedValidations.length === nestedValidations.length) ||
-      (fields[key] instanceof DynamicFormGroup &&
-        (allNestedValidations.length > 0 && nestedValidations.length === 0)) ||
-      (fields[key] instanceof FormArray &&
-        (allNestedValidations.length > 0 && nestedValidations.length === 0));
+    return (allNestedValidations.length === nestedValidations.length)
+      || (
+        (fields[key] instanceof DynamicFormGroup || fields[key] instanceof FormArray)
+        && (allNestedValidations.length > 0 && nestedValidations.length === 0));
   }
 
   function isDynamicValidate(validationMetadata: ValidationMetadata, typeKey: string) {
@@ -625,6 +597,21 @@ export function getClassValidators<TModel>(factoryModel: ClassType<TModel>, fiel
     }
 
     formGroupField.push(validationFunction);
+  }
+
+  function getAllErrors(validateErrors: ValidationError[], fieldName: string): ValidationError[] {
+    return validateErrors.filter((error: ValidationError) => {
+      // Check for nested/child errors
+      if (error.children.length && error.children.filter(children => children.property === fieldName)) {
+        return true;
+      }
+
+      // If this exists, it is also an error
+
+      // NOTE: Not exactly sure what this is supposed to do. It looks like it will always return true if the array.length > 0.
+      // Could substitute the function with a length check?
+      return true;
+    });
   }
 }
 
