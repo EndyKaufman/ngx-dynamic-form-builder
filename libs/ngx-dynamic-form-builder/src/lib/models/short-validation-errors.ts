@@ -1,1 +1,3 @@
-export interface ShortValidationErrors { [key: string]: string[] | ShortValidationErrors; }
+export interface ShortValidationErrors {
+  [key: string]: string[] | ShortValidationErrors | any;
+}
