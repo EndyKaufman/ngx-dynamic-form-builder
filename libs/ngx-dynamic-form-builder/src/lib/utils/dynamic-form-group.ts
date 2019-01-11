@@ -438,19 +438,19 @@ export function getClassValidators<TModel>(factoryModel: ClassType<TModel>, fiel
     .forEach(key => {
       const conditionalValidations: ValidationMetadata[] = [];
       validationMetadatas.forEach(validationMetadata => {
-        if (validationMetadata.propertyName === key && validationMetadata.type === 'conditionalValidation') {
+        if (validationMetadata.propertyName === key && validationMetadata.type === ValidationKeys.conditional.type) {
           conditionalValidations.push(validationMetadata);
         }
       });
       const allNestedValidations: ValidationMetadata[] = [];
       allValidationMetadatas.forEach(validationMetadata => {
-        if (validationMetadata.propertyName === key && validationMetadata.type === 'nestedValidation') {
+        if (validationMetadata.propertyName === key && validationMetadata.type === ValidationKeys.nested.type) {
           allNestedValidations.push(validationMetadata);
         }
       });
       const nestedValidations: ValidationMetadata[] = [];
       validationMetadatas.forEach(validationMetadata => {
-        if (validationMetadata.propertyName === key && validationMetadata.type === 'nestedValidation') {
+        if (validationMetadata.propertyName === key && validationMetadata.type === ValidationKeys.nested.type) {
           nestedValidations.push(validationMetadata);
         }
       });
@@ -459,7 +459,7 @@ export function getClassValidators<TModel>(factoryModel: ClassType<TModel>, fiel
         formGroupField = Array.isArray(fields[key]) ? fields[key] : [];
       }
       validationMetadatas.forEach(validationMetadata => {
-        if (validationMetadata.propertyName === key && validationMetadata.type !== 'conditionalValidation') {
+        if (validationMetadata.propertyName === key && validationMetadata.type !== ValidationKeys.conditional.type) {
           for (const typeKey in ValidationTypes) {
             if (ValidationTypes.hasOwnProperty(typeKey)) {
               if (
@@ -619,16 +619,34 @@ export function getClassValidators<TModel>(factoryModel: ClassType<TModel>, fiel
   }
 
   function isCustomValidate(validationMetadata: ValidationMetadata, typeKey: string) {
-    return validationMetadata.type === ValidationTypes[typeKey] &&
-      validator[validationMetadata.type] === undefined &&
-      validationMetadata.type === 'customValidation' &&
-      typeKey === 'CUSTOM_VALIDATION';
+    return isNotPropertyValidation(validationMetadata, typeKey) &&
+      validationMetadata.type === ValidationKeys.custom.type &&
+      typeKey === ValidationKeys.custom.key;
   }
 
   function isNestedValidate(validationMetadata: ValidationMetadata, typeKey: string) {
+    return isNotPropertyValidation(validationMetadata, typeKey) &&
+      validationMetadata.type === ValidationKeys.nested.type &&
+      typeKey === ValidationKeys.nested.key;
+  }
+
+  function isNotPropertyValidation(validationMetadata: ValidationMetadata, typeKey: string) {
     return validationMetadata.type === ValidationTypes[typeKey] &&
-      validator[validationMetadata.type] === undefined &&
-      validationMetadata.type === 'nestedValidation' &&
-      typeKey === 'NESTED_VALIDATION';
+      validator[validationMetadata.type] === undefined;
   }
 }
+
+
+const ValidationKeys = {
+  nested: {
+    type: 'nestedValidation',
+    key: 'NESTED_VALIDATION'
+  },
+  conditional: {
+    type: 'conditionalValidation',
+  },
+  custom: {
+    type: 'customValidation',
+    key: 'CUSTOM_VALIDATION'
+  }
+};
