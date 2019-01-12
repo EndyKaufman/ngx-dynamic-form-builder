@@ -1,5 +1,6 @@
 <form
     [formGroup]="form"
+    *ngIf="form?.customValidateErrors | async as errors"
     novalidate>
     <h3>Group form</h3>
     <mat-form-field class="full-width">
@@ -7,9 +8,7 @@
             matInput
             formControlName="username"
             placeholder="Username">
-        <mat-error *ngIf="form?.formErrors?.username?.length">
-            {{form?.formErrors.username[0]}}
-        </mat-error>
+        <mat-error *ngIf="errors?.username?.length">{{errors.username[0]}}</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
         <input
@@ -17,15 +16,11 @@
             type="password"
             formControlName="password"
             placeholder="Password">
-        <mat-error *ngIf="form?.formErrors?.password?.length">
-            {{form?.formErrors.password[0]}}
-        </mat-error>
+        <mat-error *ngIf="errors?.password?.length">{{errors.password[0]}}</mat-error>
     </mat-form-field>
     <div class="full-width">
         <p>Form status: {{ form.status | json }}</p>
-        <p *ngIf="!form.valid">
-          Form errors: {{form?.formErrors|json}}
-        </p>
+        <p *ngIf="!form.valid">Form errors: {{errors|json}}</p>
         <p *ngIf="savedItem">Saved item: {{savedItem|json}}</p>
     </div>
     <div class="full-width">
