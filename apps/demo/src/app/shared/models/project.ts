@@ -1,7 +1,8 @@
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
+import { IsNotEmpty, IsOptional, Validate, ValidateNested } from 'class-validator';
 import { ProjectPanelStepsEnum } from '../enums/project-panel-steps.enum';
 import { serializeModel } from '../utils/custom-transforms';
+import { ObjectMustBeNotEmpty } from '../utils/custom-validators';
 import { Task } from './task';
 
 export class Project {
@@ -12,6 +13,10 @@ export class Project {
   name?: string = undefined;
   @IsNotEmpty({ always: true })
   description?: string = undefined;
+  @Validate(ObjectMustBeNotEmpty, [1, 3], {
+    groups: [ProjectPanelStepsEnum.Step2],
+    message: 'Tasks not initialized or min length = 1 and max length = 3, and all initialized tasks must be not empty'
+  })
   @ValidateNested({
     groups: [ProjectPanelStepsEnum.Step2]
   })

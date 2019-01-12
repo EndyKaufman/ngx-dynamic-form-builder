@@ -15,7 +15,7 @@ import { ValidationMetadata } from 'class-validator/metadata/ValidationMetadata'
 import { cloneDeep, mergeWith } from 'lodash-es';
 import 'reflect-metadata';
 import { BehaviorSubject } from 'rxjs';
-import { Dictionary, ShortValidationErrors, DynamicFormGroupField } from '../models';
+import { Dictionary, DynamicFormGroupField, ShortValidationErrors } from '../models';
 import { DynamicFormControl } from './dynamic-form-control';
 
 // Enforces the properties of the object, if supplied, to be of the original type or DynamicFormGroup or, FormArray
@@ -567,7 +567,9 @@ export function getClassValidators<TModel>(
 
   function createNestedValidate(objectToValidate: any, validationMetadata: ValidationMetadata) {
     return function(control: FormControl) {
-      const isValid = getValidateErrors(control, objectToValidate, validatorOptions).length === 0;
+      const isValid =
+        getValidateErrors(control, objectToValidate !== undefined ? objectToValidate : control.value, validatorOptions)
+          .length === 0;
       return getIsValidResult(isValid, validationMetadata, 'nestedValidate');
     };
   }
@@ -667,18 +669,11 @@ export function getClassValidators<TModel>(
   }
 
   function getAllErrors(validateErrors: ValidationError[], fieldName: string): ValidationError[] {
-    return validateErrors.filter((error: ValidationError) => {
-      // Check for nested/child errors
-      if (error.children.length && error.children.filter(children => children.property === fieldName)) {
-        return true;
-      }
-
-      // If this exists, it is also an error
-
-      // NOTE: Not exactly sure what this is supposed to do. It looks like it will always return true if the array.length > 0.
-      // Could substitute the function with a length check?
-      return true;
-    });
+    return validateErrors.filter(
+      (error: ValidationError) =>
+        // Check for nested/child errors
+        error.children.length && error.children.filter(children => children.property === fieldName)
+    );
   }
 }
 
