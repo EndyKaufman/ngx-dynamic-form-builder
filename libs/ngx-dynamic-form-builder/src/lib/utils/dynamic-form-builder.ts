@@ -1,21 +1,20 @@
 import { FormBuilder } from '@angular/forms';
+import { plainToClass } from 'class-transformer';
 import { ClassType } from 'class-transformer/ClassTransformer';
 import { ValidatorOptions } from 'class-validator';
 import 'reflect-metadata';
-import { Dictionary } from '../models';
 import { DynamicFormGroupConfig } from '../models/dynamic-form-group-config';
-import { DynamicFormGroup, getClassValidators } from './dynamic-form-group';
-import { plainToClass } from 'class-transformer';
+import { DynamicFormGroup, FormModel, getClassValidators } from './dynamic-form-group';
 
 export class DynamicFormBuilder extends FormBuilder {
 
   // ******************
   // Public API
 
-  group<TModel>(factoryModel: ClassType<TModel>, controlsConfig?: Dictionary | DynamicFormGroupConfig, extra?: DynamicFormGroupConfig): DynamicFormGroup<TModel> {
+  group<TModel>(factoryModel: ClassType<TModel>, controlsConfig?: FormModel<TModel> | DynamicFormGroupConfig, extra?: DynamicFormGroupConfig): DynamicFormGroup<TModel> {
 
     // Process the group with the controlsConfig passed into extra instead. (What does this accomplish?)
-    if (controlsConfig && (controlsConfig.legacyOrOpts || controlsConfig.customValidatorOptions)) {
+    if (controlsConfig && ((controlsConfig as DynamicFormGroupConfig).legacyOrOpts || (controlsConfig as DynamicFormGroupConfig).customValidatorOptions)) {
       return this.group(factoryModel, undefined, controlsConfig);
     }
 
@@ -24,10 +23,10 @@ export class DynamicFormBuilder extends FormBuilder {
       extra.customValidatorOptions = { validationError: { target: false } };
     }
 
-    let newControlsConfig: Dictionary;
+    let newControlsConfig: FormModel<TModel>;
 
     if (controlsConfig !== undefined) {
-      newControlsConfig = controlsConfig;
+      newControlsConfig = controlsConfig as FormModel<TModel>;
     }
 
     // experimental

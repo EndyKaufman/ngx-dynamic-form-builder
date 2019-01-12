@@ -9,17 +9,21 @@ import { BehaviorSubject } from 'rxjs';
 import { Dictionary, ShortValidationErrors, DynamicFormGroupField } from '../models';
 import { DynamicFormControl } from './dynamic-form-control';
 
+// Enforces the properties of the object, if supplied, to be of the original type or DynamicFormGroup or, FormArray
+export type FormModel<T> = { [P in keyof T]?: T[P] | DynamicFormGroup<any> | FormArray };
+
 export class DynamicFormGroup<TModel> extends FormGroup {
 
   public customValidateErrors = new BehaviorSubject<ShortValidationErrors>({});
   public formErrors: ShortValidationErrors;
+  public formFields: Dictionary;
 
   private _object: TModel;
   private _externalErrors: ShortValidationErrors;
   private _validatorOptions: ValidatorOptions;
   private _fb = new FormBuilder();
 
-  constructor(public factoryModel: ClassType<TModel>, public fields: Dictionary, public defaultValidatorOptions?: ValidatorOptions) {
+  constructor(public factoryModel: ClassType<TModel>, fields: FormModel<TModel>, public defaultValidatorOptions?: ValidatorOptions) {
     super({});
     /*
     const classValidators = DynamicFormGroup.getClassValidators<TModel>(
@@ -39,7 +43,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         this.defaultValidatorOptions
       );
     });*/
-    this.fields = this.onlyFields(this.fields);
+    this.formFields = this.onlyFields(fields);
   }
 
   // Getters & Setters
@@ -176,21 +180,21 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   }
 
   // Helpers
-  private onlyFields(fields: Dictionary) {
-    const newFields = {};
+  private onlyFields(fields: FormModel<any>): Dictionary {
+    const newFields: Dictionary = {};
 
     if (fields !== undefined) {
       Object.keys(fields).forEach(key => {
         if (fields[key] instanceof DynamicFormGroup) {
           // Group: recursive
-          newFields[key] = this.onlyFields((fields[key] as DynamicFormGroup<any>).fields);
+          newFields[key] = this.onlyFields((fields[key] as DynamicFormGroup<any>).formFields);
         }
         else {
           // Array
           if (fields[key] instanceof FormArray) {
             if ((fields[key] as FormArray).controls[0] instanceof DynamicFormGroup) {
               // Group within Array: recursive
-              newFields[key] = this.onlyFields(((fields[key] as FormArray).controls[0] as DynamicFormGroup<any>).fields);
+              newFields[key] = this.onlyFields(((fields[key] as FormArray).controls[0] as DynamicFormGroup<any>).formFields);
             }
             else {
               // Control within Array
@@ -376,11 +380,11 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         for (let i = 0; i < objectArray.length; i++) {
           if (isFormGroup) {
             // Create FormGroup
-            const dynamicFormGroup = new DynamicFormGroup(prevFormGroup.factoryModel, prevFormGroup.fields, this._validatorOptions);
+            const dynamicFormGroup = new DynamicFormGroup(prevFormGroup.factoryModel, prevFormGroup.formFields, this._validatorOptions);
 
             dynamicFormGroup.setParent(this);
 
-            const classValidators = getClassValidators<TModel>(prevFormGroup.factoryModel, prevFormGroup.fields, this._validatorOptions);
+            const classValidators = getClassValidators<TModel>(prevFormGroup.factoryModel, prevFormGroup.formFields, this._validatorOptions);
             const formGroup = this._fb.group(classValidators);
 
             // Add all controls to the form group

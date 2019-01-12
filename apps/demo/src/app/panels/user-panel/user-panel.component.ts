@@ -52,7 +52,7 @@ export class UserPanelComponent {
         name: '',
         company: this.fb.group(Company, {
           name: '',
-          regionNum: ''
+          regionNum: null
         })
       })
     });
