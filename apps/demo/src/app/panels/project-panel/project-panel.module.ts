@@ -23,8 +23,6 @@ import { ProjectPanelService } from './project-panel.service';
   ],
   exports: [ProjectPanelStep1Component, ProjectPanelStep2Component, ProjectPanelCompleteComponent],
   declarations: [ProjectPanelStep1Component, ProjectPanelStep2Component, ProjectPanelCompleteComponent],
-  providers: [
-    ProjectPanelService
-  ]
+  providers: [ProjectPanelService]
 })
-export class ProjectPanelModule { }
+export class ProjectPanelModule {}

@@ -3,129 +3,164 @@ import { plainToClass } from 'class-transformer';
 import { ClassType } from 'class-transformer/ClassTransformer';
 import { ValidatorOptions } from 'class-validator';
 import 'reflect-metadata';
-import { DynamicFormGroup } from './dynamic-form-group';
+import { DynamicFormGroupConfig } from '../models/dynamic-form-group-config';
+import { DynamicFormGroup, FormModel, getClassValidators } from './dynamic-form-group';
 
 export class DynamicFormBuilder extends FormBuilder {
+  // ******************
+  // Public API
 
-  private createEmptyObject<TModel>(factoryModel: ClassType<TModel>, data = {}) {
-    const object: any = factoryModel ? plainToClass(factoryModel, data) : data;
-    let modifed = false;
-    const keys = Object.keys(object);
-    keys.forEach((key: any) => {
-      if (object[key] && object[key].length !== undefined) {
-        if (object[key].length === 1 && Object.keys(object[key][0]).length > 0 && object[key][0].constructor) {
-          object[key] = [this.createEmptyObject(object[key][0].constructor)];
-        }
-        if (object[key].length === 0) {
-          data[key] = [
-            {}
-          ];
-          modifed = true;
-        }
-      } else {
-        data[key] = undefined;
-      }
-    });
-    if (modifed) {
-      return this.createEmptyObject(factoryModel, data);
-    }
-    return object;
-  }
   group<TModel>(
     factoryModel: ClassType<TModel>,
-    controlsConfig?: {
-      [key: string]: any;
-    } | {
-      legacyOrOpts?: {
-        [key: string]: any;
-      },
-      customValidatorOptions?: ValidatorOptions;
-    },
-    extra?: {
-      legacyOrOpts?: {
-        [key: string]: any;
-      },
-      customValidatorOptions?: ValidatorOptions;
-    }
+    controlsConfig?: FormModel<TModel> | DynamicFormGroupConfig,
+    extra?: DynamicFormGroupConfig
   ): DynamicFormGroup<TModel> {
-    if (controlsConfig && (controlsConfig.legacyOrOpts || controlsConfig.customValidatorOptions)) {
+    // Process the group with the controlsConfig passed into extra instead. (What does this accomplish?)
+    if (
+      controlsConfig &&
+      ((controlsConfig as DynamicFormGroupConfig).legacyOrOpts ||
+        (controlsConfig as DynamicFormGroupConfig).customValidatorOptions)
+    ) {
       return this.group(factoryModel, undefined, controlsConfig);
     }
+
+    // Set default customValidatorOptions
     if (extra !== undefined && extra.customValidatorOptions === undefined) {
       extra.customValidatorOptions = { validationError: { target: false } };
     }
-    let newControlsConfig;
+
+    let newControlsConfig: FormModel<TModel>;
+
     if (controlsConfig !== undefined) {
-      newControlsConfig = controlsConfig;
+      newControlsConfig = controlsConfig as FormModel<TModel>;
     }
+
     // experimental
     if (controlsConfig === undefined) {
       newControlsConfig = { ...this.createEmptyObject(factoryModel) };
+
       Object.keys(newControlsConfig).forEach(key => {
-        if (
-          newControlsConfig[key] &&
-          !Array.isArray(newControlsConfig[key]) &&
-          newControlsConfig[key].constructor &&
-          typeof newControlsConfig[key] === 'object' &&
-          (newControlsConfig[key].length === undefined ||
-            (newControlsConfig[key].length !== undefined &&
-              Object.keys(newControlsConfig[key]).length === newControlsConfig[key].length))
-        ) {
+        if (canCreateGroup()) {
+          // recursively create a dynamic group for the nested object
           newControlsConfig[key] = this.group(newControlsConfig[key].constructor, extra);
         } else {
-          if (
-            Array.isArray(newControlsConfig[key]) &&
-            newControlsConfig[key][0].constructor &&
-            typeof newControlsConfig[key][0] === 'object' &&
-            (newControlsConfig[key][0].length === undefined ||
-              (newControlsConfig[key][0].length !== undefined &&
-                Object.keys(newControlsConfig[key][0]).length === newControlsConfig[key][0].length))
-          ) {
+          if (canCreateArray()) {
             if (newControlsConfig[key][0].constructor) {
+              // recursively create an array with a group
               newControlsConfig[key] = super.array(
                 newControlsConfig[key].map(newControlsConfigItem =>
-                  this.group(
-                    newControlsConfigItem.constructor,
-                    extra
-                  )
+                  this.group(newControlsConfigItem.constructor, extra)
                 )
               );
             } else {
+              // Create an array of form controls
               newControlsConfig[key] = super.array(
-                newControlsConfig[key].map(newControlsConfigItem =>
-                  this.control(
-                    newControlsConfigItem
-                  )
-                )
+                newControlsConfig[key].map(newControlsConfigItem => this.control(newControlsConfigItem))
               );
             }
           }
         }
+
+        function canCreateGroup() {
+          const candidate = newControlsConfig[key];
+
+          return (
+            candidate &&
+            !Array.isArray(candidate) &&
+            candidate.constructor &&
+            typeof candidate === 'object' &&
+            (candidate.length === undefined ||
+              (candidate.length !== undefined && Object.keys(candidate).length === candidate.length))
+          );
+        }
+
+        function canCreateArray() {
+          if (Array.isArray(newControlsConfig[key]) === false) {
+            return false;
+          }
+
+          const candidate = newControlsConfig[key][0];
+
+          return (
+            candidate.constructor &&
+            typeof candidate === 'object' &&
+            (candidate.length === undefined ||
+              (candidate.length !== undefined && Object.keys(candidate).length === candidate.length))
+          );
+        }
       });
     }
+
+    // Create an Angular group from the top-level object
+    const classValidators = getClassValidators<TModel>(
+      factoryModel,
+      newControlsConfig,
+      this.getExtraValidationOptions(extra)
+    );
+    const formGroup = super.group(classValidators, extra);
+
+    // Initialize the resulting group
     const dynamicFormGroup = new DynamicFormGroup<TModel>(
       factoryModel,
       newControlsConfig,
-      extra && extra.customValidatorOptions ? extra.customValidatorOptions : undefined
+      this.getExtraValidationOptions(extra)
     );
-    const classValidators = DynamicFormGroup.getClassValidators<TModel>(
-      factoryModel,
-      newControlsConfig,
-      extra && extra.customValidatorOptions ? extra.customValidatorOptions : undefined
-    );
-    const formGroup = super.group(
-      classValidators,
-      extra
-    );
+
+    // Add all angular controls to the resulting dynamic group
     Object.keys(formGroup.controls).forEach(key => {
       dynamicFormGroup.addControl(key, formGroup.controls[key]);
     });
+
+    // Add a listener to the dynamic group for value changes; on change, execute validation
     dynamicFormGroup.valueChanges.subscribe(data => {
-      dynamicFormGroup.validate(
-        undefined,
-        extra && extra.customValidatorOptions ? extra.customValidatorOptions : undefined
-      );
+      dynamicFormGroup.validate(undefined, this.getExtraValidationOptions(extra));
     });
+
     return dynamicFormGroup;
+  }
+
+  // *******************
+  // Helpers
+
+  /**
+   * Recursively creates an empty object from the data provided
+   */
+  private createEmptyObject<TModel>(factoryModel: ClassType<TModel>, data = {}) {
+    let modifed = false;
+
+    const object: any = factoryModel ? plainToClass(factoryModel, data) : data;
+    const fields = Object.keys(object);
+
+    fields.forEach((fieldName: any) => {
+      if (object[fieldName] && object[fieldName].length !== undefined) {
+        if (
+          object[fieldName].length === 1 &&
+          Object.keys(object[fieldName][0]).length > 0 &&
+          object[fieldName][0].constructor
+        ) {
+          object[fieldName] = [this.createEmptyObject(object[fieldName][0].constructor)];
+        }
+
+        if (object[fieldName].length === 0) {
+          data[fieldName] = [{}];
+          modifed = true;
+        }
+      } else {
+        data[fieldName] = undefined;
+      }
+    });
+
+    if (modifed) {
+      return this.createEmptyObject(factoryModel, data);
+    }
+
+    return object;
+  }
+
+  /**
+   * Helper for getting the customValidatorOptions
+   */
+  private getExtraValidationOptions(extra: DynamicFormGroupConfig): ValidatorOptions {
+    return extra && extra.customValidatorOptions ? extra.customValidatorOptions : undefined;
   }
 }

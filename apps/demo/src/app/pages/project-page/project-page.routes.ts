@@ -16,7 +16,9 @@ export const ProjectPageRoutes: Routes = [
     },
     children: [
       {
-        path: '', redirectTo: '/project/step-1', pathMatch: 'full'
+        path: '',
+        redirectTo: '/project/step-1',
+        pathMatch: 'full'
       },
       {
         path: 'step-1',

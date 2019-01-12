@@ -66,17 +66,13 @@ export class ProjectPageComponent implements OnInit, OnDestroy {
       name: 'project-page.routes.ts',
       language: 'javascript',
       content: require('!!raw-loader?lang=typescript!../../pages/project-page/project-page.routes.ts')
-    },
+    }
   ];
 
   private _destroyed$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(
-    private _projectPanelService: ProjectPanelService
-  ) {
-    this.activatedStep$ = this._projectPanelService.activatedStep$.asObservable().pipe(
-      takeUntil(this._destroyed$)
-    );
+  constructor(private _projectPanelService: ProjectPanelService) {
+    this.activatedStep$ = this._projectPanelService.activatedStep$.asObservable().pipe(takeUntil(this._destroyed$));
     this.activatedStep$.subscribe(step => {
       if (this.doc && this.doc.view && this.doc.view.code) {
         this.doc.view.code.active = false;

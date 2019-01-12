@@ -6,8 +6,8 @@
             matInput
             formControlName="name"
             [placeholder]="strings.name">
-        <mat-error *ngIf="(form?.customValidateErrors | async)?.name?.length">
-            {{(form.customValidateErrors | async).name[0]}}
+        <mat-error *ngIf="form?.formErrors?.name?.length">
+            {{form?.formErrors.name[0]}}
         </mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
@@ -16,14 +16,14 @@
             formControlName="regionNum"
             type="number"
             [placeholder]="strings.regionNum">
-        <mat-error *ngIf="(form?.customValidateErrors | async)?.regionNum?.length">
-            {{(form.customValidateErrors | async).regionNum[0]}}
+        <mat-error *ngIf="form?.formErrors?.regionNum?.length">
+            {{form?.formErrors.regionNum[0]}}
         </mat-error>
     </mat-form-field>
     <div class="full-width">
         <p>Form status: {{ form.status | json }}</p>
         <p *ngIf="!form.valid">
-            Custom validation errors: {{form.customValidateErrors|async|json}}
+            Form errors: {{form?.formErrors|json}}
         </p>
         <p *ngIf="savedItem">Saved item: {{savedItem|json}}</p>
     </div>

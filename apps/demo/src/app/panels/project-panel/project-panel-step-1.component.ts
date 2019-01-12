@@ -27,13 +27,9 @@ export class ProjectPanelStep1Component implements OnDestroy {
     private _activatedRoute: ActivatedRoute,
     private _projectPanelService: ProjectPanelService
   ) {
-    this._activatedRoute.data.pipe(
-      takeUntil(this._destroyed$)
-    ).subscribe(
-      data => this._projectPanelService.activatedStep$.next(
-        data.step
-      )
-    );
+    this._activatedRoute.data
+      .pipe(takeUntil(this._destroyed$))
+      .subscribe(data => this._projectPanelService.activatedStep$.next(data.step));
     this.form = this.createForm();
     this.project$ = this._projectPanelService.project$;
     this.subscribeToProject();
@@ -50,12 +46,7 @@ export class ProjectPanelStep1Component implements OnDestroy {
     });
   }
   subscribeToProject() {
-    this.project$.pipe(
-      takeUntil(this._destroyed$)
-    ).subscribe(
-      project =>
-        this.loadFormData(project)
-    );
+    this.project$.pipe(takeUntil(this._destroyed$)).subscribe(project => this.loadFormData(project));
   }
   loadFormData(project: Project): void {
     this.form.object = project;

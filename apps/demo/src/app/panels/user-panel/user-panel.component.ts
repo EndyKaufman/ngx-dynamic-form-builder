@@ -52,27 +52,25 @@ export class UserPanelComponent {
         name: '',
         company: this.fb.group(Company, {
           name: '',
-          regionNum: ''
+          regionNum: null
         })
       })
     });
   }
   onLoadExternalClick(): void {
-    this.form.setExternalErrorsAsync({
-      username: ['external error'],
-      department: {
-        company: {
-          name: ['external error for name']
+    this.form
+      .setExternalErrorsAsync({
+        username: ['external error'],
+        department: {
+          company: {
+            name: ['external error for name']
+          }
         }
-      }
-    }).then(() =>
-      this.form.validateAllFormFields()
-    );
+      })
+      .then(() => this.form.validateAllFormFields());
   }
   onClearExternalClick(): void {
-    this.form.clearExternalErrorsAsync().then(() =>
-      this.form.validateAllFormFields()
-    );
+    this.form.clearExternalErrorsAsync().then(() => this.form.validateAllFormFields());
   }
   onLoadClick(): void {
     this.savedItem = undefined;

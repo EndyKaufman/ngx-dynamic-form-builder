@@ -18,13 +18,9 @@ export class ProjectPanelCompleteComponent implements OnDestroy {
     private _activatedRoute: ActivatedRoute,
     private _projectPanelService: ProjectPanelService
   ) {
-    this._activatedRoute.data.pipe(
-      takeUntil(this._destroyed$)
-    ).subscribe(
-      data => this._projectPanelService.activatedStep$.next(
-        data.step
-      )
-    );
+    this._activatedRoute.data
+      .pipe(takeUntil(this._destroyed$))
+      .subscribe(data => this._projectPanelService.activatedStep$.next(data.step));
     this.project$ = this._projectPanelService.project$;
   }
   ngOnDestroy(): void {
