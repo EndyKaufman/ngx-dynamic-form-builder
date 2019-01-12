@@ -5,4 +5,3 @@ export interface DynamicFormGroupConfig {
   legacyOrOpts?: Dictionary;
   customValidatorOptions?: ValidatorOptions;
 }
-

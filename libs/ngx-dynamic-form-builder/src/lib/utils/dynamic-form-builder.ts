@@ -7,14 +7,20 @@ import { DynamicFormGroupConfig } from '../models/dynamic-form-group-config';
 import { DynamicFormGroup, FormModel, getClassValidators } from './dynamic-form-group';
 
 export class DynamicFormBuilder extends FormBuilder {
-
   // ******************
   // Public API
 
-  group<TModel>(factoryModel: ClassType<TModel>, controlsConfig?: FormModel<TModel> | DynamicFormGroupConfig, extra?: DynamicFormGroupConfig): DynamicFormGroup<TModel> {
-
+  group<TModel>(
+    factoryModel: ClassType<TModel>,
+    controlsConfig?: FormModel<TModel> | DynamicFormGroupConfig,
+    extra?: DynamicFormGroupConfig
+  ): DynamicFormGroup<TModel> {
     // Process the group with the controlsConfig passed into extra instead. (What does this accomplish?)
-    if (controlsConfig && ((controlsConfig as DynamicFormGroupConfig).legacyOrOpts || (controlsConfig as DynamicFormGroupConfig).customValidatorOptions)) {
+    if (
+      controlsConfig &&
+      ((controlsConfig as DynamicFormGroupConfig).legacyOrOpts ||
+        (controlsConfig as DynamicFormGroupConfig).customValidatorOptions)
+    ) {
       return this.group(factoryModel, undefined, controlsConfig);
     }
 
@@ -41,12 +47,16 @@ export class DynamicFormBuilder extends FormBuilder {
           if (canCreateArray()) {
             if (newControlsConfig[key][0].constructor) {
               // recursively create an array with a group
-              newControlsConfig[key] = super.array(newControlsConfig[key]
-                .map(newControlsConfigItem => this.group(newControlsConfigItem.constructor, extra)));
+              newControlsConfig[key] = super.array(
+                newControlsConfig[key].map(newControlsConfigItem =>
+                  this.group(newControlsConfigItem.constructor, extra)
+                )
+              );
             } else {
               // Create an array of form controls
-              newControlsConfig[key] = super.array(newControlsConfig[key]
-                .map(newControlsConfigItem => this.control(newControlsConfigItem)));
+              newControlsConfig[key] = super.array(
+                newControlsConfig[key].map(newControlsConfigItem => this.control(newControlsConfigItem))
+              );
             }
           }
         }
@@ -54,12 +64,14 @@ export class DynamicFormBuilder extends FormBuilder {
         function canCreateGroup() {
           const candidate = newControlsConfig[key];
 
-          return candidate && !Array.isArray(candidate) &&
+          return (
+            candidate &&
+            !Array.isArray(candidate) &&
             candidate.constructor &&
             typeof candidate === 'object' &&
             (candidate.length === undefined ||
-              (candidate.length !== undefined &&
-              Object.keys(candidate).length === candidate.length));
+              (candidate.length !== undefined && Object.keys(candidate).length === candidate.length))
+          );
         }
 
         function canCreateArray() {
@@ -69,17 +81,22 @@ export class DynamicFormBuilder extends FormBuilder {
 
           const candidate = newControlsConfig[key][0];
 
-          return  candidate.constructor &&
+          return (
+            candidate.constructor &&
             typeof candidate === 'object' &&
             (candidate.length === undefined ||
-              (candidate.length !== undefined &&
-              Object.keys(candidate).length === candidate.length));
+              (candidate.length !== undefined && Object.keys(candidate).length === candidate.length))
+          );
         }
       });
     }
 
     // Create an Angular group from the top-level object
-    const classValidators = getClassValidators<TModel>(factoryModel, newControlsConfig, this.getExtraValidationOptions(extra));
+    const classValidators = getClassValidators<TModel>(
+      factoryModel,
+      newControlsConfig,
+      this.getExtraValidationOptions(extra)
+    );
     const formGroup = super.group(classValidators, extra);
 
     // Initialize the resulting group
@@ -116,8 +133,11 @@ export class DynamicFormBuilder extends FormBuilder {
 
     fields.forEach((fieldName: any) => {
       if (object[fieldName] && object[fieldName].length !== undefined) {
-
-        if (object[fieldName].length === 1 && Object.keys(object[fieldName][0]).length > 0 && object[fieldName][0].constructor) {
+        if (
+          object[fieldName].length === 1 &&
+          Object.keys(object[fieldName][0]).length > 0 &&
+          object[fieldName][0].constructor
+        ) {
           object[fieldName] = [this.createEmptyObject(object[fieldName][0].constructor)];
         }
 
