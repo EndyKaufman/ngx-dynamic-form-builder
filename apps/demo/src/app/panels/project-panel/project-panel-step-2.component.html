@@ -11,7 +11,7 @@
             formControlName="name"
             placeholder="name"
             readonly="true">
-        <mat-error *ngIf="errors?.name?.length">{{errors?.name.join('. ')}}</mat-error>
+        <mat-error *ngIf="errors?.name?.length">{{errors.name?.join('. ')}}</mat-error>
     </mat-form-field>
     <mat-form-field
         class="full-width"
@@ -21,7 +21,7 @@
             formControlName="description"
             placeholder="description"
             readonly="true">
-        <mat-error *ngIf="errors?.description?.length">{{errors.description.join('. ')}}</mat-error>
+        <mat-error *ngIf="errors?.description?.length">{{errors.description?.join('. ')}}</mat-error>
     </mat-form-field>
     <h4>
         Tasks
@@ -31,6 +31,7 @@
             color="primary">
             +
         </button>
+        <mat-error *ngIf="errors?.tasks?.length">{{errors.tasks?.join('. ')}}</mat-error>
     </h4>
     <mat-list role="list">
         <mat-list-item
@@ -43,7 +44,7 @@
                     formControlName="description"
                     placeholder="description">
                 <mat-error *ngIf="errors?.tasks && errors.tasks[i]">
-                    {{errors.tasks[i].description.join('. ')}}
+                    {{errors.tasks[i]?.description?.join('. ')}}
                 </mat-error>
             </mat-form-field>
             <mat-action-list>
@@ -58,9 +59,7 @@
     </mat-list>
     <div class="full-width">
         <p>Form status: {{ form.status | json }}</p>
-        <p *ngIf="!form.valid">
-          Form errors: {{errors | json}}
-        </p>
+        <p *ngIf="!form.valid">Form errors: {{errors | json}}</p>
     </div>
     <div class="full-width">
         <button
