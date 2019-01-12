@@ -1,3 +1,13 @@
+## [0.8.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.8.0...0.8.1) (2019-01-12)
+
+
+### Bug Fixes
+
+* **dynamic-form-group:** Refactor isValid detect in createCustomValidation ([49871c5](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/49871c5))
+* Set value from control on createNestedValidate if it ([6dc9c1c](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/6dc9c1c))
+
+
+
 # [0.8.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.7.0...0.8.0) (2019-01-12)
 
 
