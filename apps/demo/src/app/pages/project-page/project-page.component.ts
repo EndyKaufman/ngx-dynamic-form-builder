@@ -66,6 +66,16 @@ export class ProjectPageComponent implements OnInit, OnDestroy {
       name: 'project-page.routes.ts',
       language: 'javascript',
       content: require('!!raw-loader?lang=typescript!../../pages/project-page/project-page.routes.ts')
+    },
+    {
+      name: 'custom-transforms.ts',
+      language: 'javascript',
+      content: require('!!raw-loader?lang=typescript!../../shared/utils/custom-transforms.ts')
+    },
+    {
+      name: 'custom-validators.ts',
+      language: 'javascript',
+      content: require('!!raw-loader?lang=typescript!../../shared/utils/custom-validators.ts')
     }
   ];
 
