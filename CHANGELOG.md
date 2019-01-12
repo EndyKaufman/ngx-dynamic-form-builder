@@ -1,3 +1,20 @@
+# [0.8.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.7.0...0.8.0) (2019-01-12)
+
+
+### Bug Fixes
+
+* Revert to original getClassValidators for correct validate arrays and refactor code more readable ([bf296c3](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/bf296c3))
+* **dynamic-form-group:** Fix test error due to recursive types ([87bfee8](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/87bfee8))
+
+
+### Features
+
+* **dynamic-form-control:** Add validation definitions to form controls ([8cbb9a2](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/8cbb9a2))
+* **dynamic-form-group:** Group type safety ([f183e49](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/f183e49))
+* **dynamic-form-group:** Implement a non-observable error API ([ac713c8](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/ac713c8))
+
+
+
 # [0.7.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.6.1...0.7.0) (2018-12-30)
 
 
