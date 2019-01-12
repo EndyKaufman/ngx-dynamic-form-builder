@@ -484,7 +484,7 @@
                             const metaTable = yield this.metadata;
                             ts = (yield metaTable.read(req.url)).ts;
                         }
-                        catch (e) {
+                        catch (_a) {
                             // Otherwise, look for a Date header.
                             const date = res.headers.get('Date');
                             if (date === null) {
@@ -497,7 +497,7 @@
                         const age = this.adapter.time - ts;
                         return age < 0 || age > maxAge;
                     }
-                    catch (e) {
+                    catch (_b) {
                         // Assume stale.
                         return true;
                     }
@@ -510,7 +510,7 @@
                         // time, if it parses correctly.
                         return this.adapter.time > Date.parse(expiresStr);
                     }
-                    catch (e) {
+                    catch (_c) {
                         // The expiration date failed to parse, so revalidate as a precaution.
                         return true;
                     }
@@ -539,7 +539,7 @@
                 try {
                     metadata = yield metaTable.read(url);
                 }
-                catch (e) {
+                catch (_a) {
                     // Do nothing, not found. This shouldn't happen, but it can be handled.
                 }
                 // Return both the response and any available metadata.
@@ -741,7 +741,7 @@
                 try {
                     return yield this.scope.fetch(req);
                 }
-                catch (err) {
+                catch (_a) {
                     return this.adapter.newResponse('', {
                         status: 504,
                         statusText: 'Gateway Timeout',
@@ -1025,7 +1025,7 @@
                     try {
                         this._lru = new LruList(yield table.read('lru'));
                     }
-                    catch (e) {
+                    catch (_a) {
                         this._lru = new LruList();
                     }
                 }
@@ -1128,7 +1128,7 @@
                 try {
                     res = yield timeoutFetch;
                 }
-                catch (e) {
+                catch (_a) {
                     res = undefined;
                 }
                 // If the network fetch times out or errors, fall back on the cache.
@@ -1162,7 +1162,7 @@
                     try {
                         return yield networkFetch;
                     }
-                    catch (err) {
+                    catch (_a) {
                         return this.adapter.newResponse(null, {
                             status: 504,
                             statusText: 'Gateway Timeout',
@@ -1173,7 +1173,7 @@
                     try {
                         return yield networkFetch;
                     }
-                    catch (err) {
+                    catch (_b) {
                         return undefined;
                     }
                 }))();
@@ -1194,7 +1194,7 @@
                 try {
                     yield this.cacheResponse(req, yield res, yield this.lru());
                 }
-                catch (e) {
+                catch (_a) {
                     // TODO: handle this error somehow?
                 }
             });
@@ -1218,7 +1218,7 @@
                         }
                         // Otherwise, or if there was an error, assume the response is expired, and evict it.
                     }
-                    catch (e) {
+                    catch (_a) {
                         // Some error getting the age for the response. Assume it's expired.
                     }
                     lru.remove(req.url);
@@ -1300,7 +1300,7 @@
                 try {
                     return this.scope.fetch(req);
                 }
-                catch (err) {
+                catch (_a) {
                     return this.adapter.newResponse(null, {
                         status: 504,
                         statusText: 'Gateway Timeout',
