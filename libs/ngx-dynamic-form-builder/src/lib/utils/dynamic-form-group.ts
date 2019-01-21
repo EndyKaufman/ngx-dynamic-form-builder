@@ -1,21 +1,13 @@
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { classToClass, plainToClass } from 'class-transformer';
 import { ClassType } from 'class-transformer/ClassTransformer';
-import {
-  getFromContainer,
-  MetadataStorage,
-  validate,
-  validateSync,
-  ValidationError,
-  ValidationTypes,
-  Validator,
-  ValidatorOptions
-} from 'class-validator';
+import { getFromContainer, MetadataStorage, validate, validateSync, ValidationError, ValidationTypes, Validator, ValidatorOptions } from 'class-validator';
 import { ValidationMetadata } from 'class-validator/metadata/ValidationMetadata';
 import { cloneDeep, mergeWith } from 'lodash-es';
 import 'reflect-metadata';
 import { BehaviorSubject } from 'rxjs';
 import { Dictionary, DynamicFormGroupField, ShortValidationErrors } from '../models';
+import { foreverInvalid, FOREVER_INVALID_NAME } from '../validators/forever-invalid.validator';
 import { DynamicFormControl } from './dynamic-form-control';
 
 // Enforces the properties of the object, if supplied, to be of the original type or DynamicFormGroup or, FormArray
@@ -85,7 +77,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   // Public API
   validate(externalErrors?: ShortValidationErrors, validatorOptions?: ValidatorOptions) {
     this.validateAsync(externalErrors, validatorOptions).then(
-      () => {},
+      () => { },
       error => {
         throw error;
       }
@@ -114,6 +106,23 @@ export class DynamicFormGroup<TModel> extends FormGroup {
 
       this.formErrors = allErrors;
       this.customValidateErrors.next(this.formErrors);
+
+      // todo: refactor, invalidate form if exists any allErrors
+      let usedForeverInvalid = false;
+      if (Object.keys(allErrors).filter(key => key !== FOREVER_INVALID_NAME).length === 0 && this.get(FOREVER_INVALID_NAME)) {
+        this.removeControl(FOREVER_INVALID_NAME);
+        usedForeverInvalid = true;
+      }
+      if (this.valid && Object.keys(allErrors).length > 0 && !this.get(FOREVER_INVALID_NAME)) {
+        this.addControl(FOREVER_INVALID_NAME, new FormControl('', [foreverInvalid]));
+        usedForeverInvalid = true;
+      }
+      if (usedForeverInvalid) {
+        this.updateValueAndValidity({
+          onlySelf: true,
+          emitEvent: false
+        });
+      }
     } catch (error) {
       throw error;
     }
@@ -166,7 +175,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
 
   setExternalErrors(externalErrors: ShortValidationErrors) {
     this.setExternalErrorsAsync(externalErrors).then(
-      () => {},
+      () => { },
       error => {
         throw error;
       }
@@ -195,7 +204,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
 
   setValidatorOptions(validatorOptions: ValidatorOptions) {
     this.setValidatorOptionsAsync(validatorOptions).then(
-      () => {},
+      () => { },
       error => {
         throw error;
       }
@@ -330,7 +339,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
 
     if (object !== undefined) {
       // Recursively get the value of all fields
-      Object.keys(this.controls).forEach(key => {
+      Object.keys(this.controls).filter(name => name !== FOREVER_INVALID_NAME).forEach(key => {
         // Handle Group
         if (this.controls[key] instanceof DynamicFormGroup) {
           object[key] = (this.controls[key] as DynamicFormGroup<any>).object;
@@ -566,7 +575,7 @@ export function getClassValidators<TModel>(
   //
 
   function createNestedValidate(objectToValidate: any, validationMetadata: ValidationMetadata) {
-    return function(control: FormControl) {
+    return function (control: FormControl) {
       const isValid =
         getValidateErrors(control, objectToValidate !== undefined ? objectToValidate : control.value, validatorOptions)
           .length === 0;
@@ -579,7 +588,7 @@ export function getClassValidators<TModel>(
     conditionalValidations: ValidationMetadata[],
     fieldName: string
   ) {
-    return function(control: FormControl) {
+    return function (control: FormControl) {
       if (!control) {
         return null;
       }
@@ -599,7 +608,7 @@ export function getClassValidators<TModel>(
   }
 
   function createCustomValidation(fieldName: string, validationMetadata: ValidationMetadata) {
-    return function(control: FormControl) {
+    return function (control: FormControl) {
       const validateErrors: ValidationError[] = setObjectValueAndGetValidationErrors(
         control,
         fieldName,
@@ -694,8 +703,8 @@ function setObjectValueAndGetValidationErrors(control: FormControl, key: string,
     control.parent instanceof DynamicFormGroup
       ? (control.parent as DynamicFormGroup<any>).object
       : control.parent
-      ? control.parent.value
-      : {};
+        ? control.parent.value
+        : {};
 
   if (object) {
     object[key] = control.value;
@@ -714,11 +723,11 @@ function getIsValidResult(isValid: boolean, validationMetadata: ValidationMetada
   return isValid
     ? null
     : {
-        [errorType]: {
-          valid: false,
-          type: validationMetadata.type
-        }
-      };
+      [errorType]: {
+        valid: false,
+        type: validationMetadata.type
+      }
+    };
 }
 
 type ErrorPropertyName = 'nestedValidate' | 'customValidation' | 'dynamicValidate';
