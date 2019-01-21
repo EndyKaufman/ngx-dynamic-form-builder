@@ -1,0 +1,58 @@
+
+:root {
+  --ngx-docs-example-box-shadow: 0 2px 2px rgba(0,0,0,.24), 0 0 2px rgba(0,0,0,.12);
+  --ngx-docs-example-border: 1px solid rgba(0,0,0,.03);
+}
+
+.ngx-docs-example {
+  margin: 3px 3px 32px 3px;
+  border-spacing: 0;
+  border-collapse: collapse;
+  border: var(--ngx-docs-example-border);
+  box-shadow: var(--ngx-docs-example-box-shadow);
+
+  ngx-prism > pre {
+    background: #ffffff;
+    background-color: #ffffff;
+  }
+
+  > .ngx-docs-example-title {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding: 8px 16px;
+    color: rgba(0,0,0,.54);
+    background: rgba(0,0,0,.03);
+
+    span.spacer {
+      flex: 1 1 auto;
+    }
+
+    button {
+      min-width: 44px
+    }
+  }
+  > .ngx-docs-example-source {
+    .mat-tab-body {
+      display: block;
+      width: 100%;
+      padding: 0;
+      box-sizing: border-box;
+    }
+  }
+  > .ngx-docs-example-debug {
+    display: block;
+    width: 100%;
+    padding: 16px 32px;
+    box-sizing: border-box;
+    border-top: 1px solid #f1f1f1;
+    background: rgba(0,0,0,.03);
+  }
+  > .ngx-docs-example-body {
+    display: block;
+    width: 100%;
+    padding: 0px 16px;
+    box-sizing: border-box;
+    border-top: 1px solid #f1f1f1;
+  }
+}

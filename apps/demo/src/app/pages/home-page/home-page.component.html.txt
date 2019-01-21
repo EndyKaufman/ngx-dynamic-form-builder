@@ -1,3 +1,5 @@
 <div class="home-page">
-  <div [innerHtml]="readme | safeHtml"></div>
+  <markdown
+      [data]="readme"
+      lineNumbers></markdown>
 </div>

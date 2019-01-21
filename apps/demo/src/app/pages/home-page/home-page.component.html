@@ -3,9 +3,11 @@
         title="Home page"
         [html]="source.html"
         [ts]="source.ts">
-        <div
-            class="body"
-            [innerHtml]="readme | safeHtml"></div>
+        <div class="body">
+            <markdown
+                [data]="readme"
+                lineNumbers></markdown>
+        </div>
     </ngx-docs-example>
     <source-tabs
         title="Other files"

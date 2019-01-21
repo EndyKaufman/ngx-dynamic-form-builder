@@ -1,14 +1,13 @@
-import { NgModule } from '@angular/core';
-import { SimplePageComponent } from './simple-page.component';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { ModuleWithProviders } from '@angular/core';
-import { DocsExampleModule } from '@ngx-docs/example';
-import { SharedModule } from '../../shared/shared.module';
-import { RouterModule } from '@angular/router';
-import { SimplePageRoutes } from './simple-page.routes';
-import { CompanyPanelModule } from '../../panels/company-panel/company-panel.module';
-import { SourceTabsModule } from '../../others/source-tabs/source-tabs.module';
 import { MatIconModule } from '@angular/material';
+import { RouterModule } from '@angular/router';
+import { DocsExampleModule } from '../../others/docs-example/docs-example.module';
+import { SourceTabsModule } from '../../others/source-tabs/source-tabs.module';
+import { CompanyPanelModule } from '../../panels/company-panel/company-panel.module';
+import { SharedModule } from '../../shared/shared.module';
+import { SimplePageComponent } from './simple-page.component';
+import { SimplePageRoutes } from './simple-page.routes';
 
 @NgModule({
   imports: [

@@ -20,7 +20,7 @@ npm i --save ngx-dynamic-form-builder
 ## Usage
 
 app.module.ts
-```typescript
+```js 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CompanyPanelComponent } from './company-panel.component';
 
@@ -42,28 +42,18 @@ export class AppModule {}
 ```
 
 company.ts
-```typescript
+```js 
 import { Validate, IsNotEmpty } from 'class-validator';
 import { plainToClassFromExist } from 'class-transformer';
 import { TextLengthMore15 } from '../utils/custom-validators';
 
 export class Company {
-    static strings = {
-        id: 'Id',
-        name: 'Name'
-    };
-    static fields = ['id', 'name'];
-
-    id: number;
+    id: number = undefined;
     @Validate(TextLengthMore15, {
         message: 'The company name must be longer than 15'
     })
     @IsNotEmpty()
-    name: string;
-
-    toString() {
-        return this.name;
-    }
+    name: string = undefined;
 
     constructor(data?: any) {
         plainToClassFromExist(this, data);
@@ -74,13 +64,13 @@ export class Company {
 company-panel.component.html
 ```html
 <form [formGroup]="form" novalidate>
-    <input formControlName="name" [placeholder]="strings.name">
+    <input formControlName="name" placeholder="Name">
     <p *ngIf="form?.formErrors?.name?.length">
-      Error: {{form?.formErrors.name[0]}}
+      Error: {{form.formErrors.name[0]}}
     </p>
     <p>Form status: {{ form.status | json }}</p>
     <p *ngIf="!form.valid">
-      Form errors: {{fform?.formErrors | json}}
+      Form errors: {{form?.formErrors|json}}
     </p>
     <p *ngIf="savedItem">
       Saved item: {{savedItem|json}}
@@ -92,7 +82,7 @@ company-panel.component.html
 ```
 
 company-panel.component.ts
-```typescript
+```js
 import { DynamicFormGroup, DynamicFormBuilder } from 'ngx-dynamic-form-builder';
 import { Company } from './../../shared/models/company';
 import { Input, Component } from '@angular/core';
@@ -103,7 +93,6 @@ import { Validators } from '@angular/forms';
   templateUrl: './company-panel.component.html'
 })
 export class CompanyPanelComponent {
-
   @Input()
   form: DynamicFormGroup<Company>;
   @Input()
@@ -111,8 +100,6 @@ export class CompanyPanelComponent {
     'id': 11,
     'name': '123456789012345'
   });
-  @Input()
-  strings = Company.strings;
 
   fb = new DynamicFormBuilder();
   savedItem: Company;
@@ -143,7 +130,7 @@ export class CompanyPanelComponent {
 ```
 
 custom-validators.ts
-```typescript
+```js
 import {
     ValidatorConstraintInterface, ValidatorConstraint
 } from 'class-validator';
@@ -162,7 +149,7 @@ the customValidateErrors property can be subscribed for cases in which your code
 company-panel.component.html
 ```html
 <form [formGroup]="form" novalidate>
-    <input formControlName="name" [placeholder]="strings.name">
+    <input formControlName="name" placeholder="Name">
     <p *ngIf="(form?.customValidateErrors | async)?.name?.length">
       Error: {{(form.customValidateErrors | async).name[0]}}
     </p>
@@ -180,7 +167,7 @@ company-panel.component.html
 ```
 
 company-panel.component.ts
-```typescript
+```js
 import { DynamicFormGroup, DynamicFormBuilder } from 'ngx-dynamic-form-builder';
 import { Company } from './../../shared/models/company';
 import { Input, Component } from '@angular/core';
