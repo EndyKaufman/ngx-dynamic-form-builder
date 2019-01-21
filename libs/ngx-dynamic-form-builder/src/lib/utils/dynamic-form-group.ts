@@ -5,7 +5,7 @@ import { getFromContainer, MetadataStorage, validate, validateSync, ValidationEr
 import { ValidationMetadata } from 'class-validator/metadata/ValidationMetadata';
 import { cloneDeep, mergeWith } from 'lodash-es';
 import 'reflect-metadata';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Dictionary, DynamicFormGroupField, ShortValidationErrors } from '../models';
 import { foreverInvalid, FOREVER_INVALID_NAME } from '../validators/forever-invalid.validator';
 import { DynamicFormControl } from './dynamic-form-control';
@@ -17,6 +17,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   public customValidateErrors = new BehaviorSubject<ShortValidationErrors>({});
   public formErrors: ShortValidationErrors;
   public formFields: Dictionary;
+  public objectChange = new Subject();
 
   private _object: TModel;
   private _externalErrors: ShortValidationErrors;
@@ -458,6 +459,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         this.controls[key].setValue(this._object && newObject ? newObject : undefined);
       }
     });
+    this.objectChange.next(this._object);
   }
 }
 
