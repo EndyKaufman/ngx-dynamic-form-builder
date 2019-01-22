@@ -1325,6 +1325,11 @@
             step((generator = generator.apply(thisArg, _arguments || [])).next());
         });
     };
+    const BACKWARDS_COMPATIBILITY_NAVIGATION_URLS = [
+        { positive: true, regex: '^/.*$' },
+        { positive: false, regex: '^/.*\\.[^/]*$' },
+        { positive: false, regex: '^/.*__' },
+    ];
     /**
      * A specific version of the application, identified by a unique manifest
      * as determined by its hash.
@@ -1371,6 +1376,9 @@
             // Process each `DataGroup` declared in the manifest.
             this.dataGroups = (manifest.dataGroups || [])
                 .map(config => new DataGroup(this.scope, this.adapter, config, this.database, `ngsw:${config.version}:data`));
+            // This keeps backwards compatibility with app versions without navigation urls.
+            // Fix: https://github.com/angular/angular/issues/27209
+            manifest.navigationUrls = manifest.navigationUrls || BACKWARDS_COMPATIBILITY_NAVIGATION_URLS;
             // Create `include`/`exclude` RegExps for the `navigationUrls` declared in the manifest.
             const includeUrls = manifest.navigationUrls.filter(spec => spec.positive);
             const excludeUrls = manifest.navigationUrls.filter(spec => !spec.positive);
