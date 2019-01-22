@@ -28,9 +28,18 @@
               "apps/demo/src/manifest.json"
             ],
             "styles": [
-              "apps/demo/src/styles.scss"
+              "apps/demo/src/styles.scss",
+              "node_modules/prismjs/themes/prism.css",
+              "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/marked/lib/marked.js",
+              "node_modules/prismjs/prism.js",
+              "node_modules/prismjs/components/prism-bash.min.js",
+              "node_modules/prismjs/components/prism-typescript.min.js",
+              "node_modules/prismjs/components/prism-scss.min.js",
+              "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -81,9 +90,18 @@
               {
                 "input": "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
               },
-              "apps/demo/src/styles.scss"
+              "apps/demo/src/styles.scss",
+              "node_modules/prismjs/themes/prism.css",
+              "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/marked/lib/marked.js",
+              "node_modules/prismjs/prism.js",
+              "node_modules/prismjs/components/prism-bash.min.js",
+              "node_modules/prismjs/components/prism-typescript.min.js",
+              "node_modules/prismjs/components/prism-scss.min.js",
+              "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.js"
+            ],
             "assets": [
               "apps/demo/src/favicon.ico",
               "apps/demo/src/assets",

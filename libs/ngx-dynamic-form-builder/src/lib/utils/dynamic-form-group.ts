@@ -14,8 +14,9 @@ import {
 import { ValidationMetadata } from 'class-validator/metadata/ValidationMetadata';
 import { cloneDeep, mergeWith } from 'lodash-es';
 import 'reflect-metadata';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Dictionary, DynamicFormGroupField, ShortValidationErrors } from '../models';
+import { foreverInvalid, FOREVER_INVALID_NAME } from '../validators/forever-invalid.validator';
 import { DynamicFormControl } from './dynamic-form-control';
 
 // Enforces the properties of the object, if supplied, to be of the original type or DynamicFormGroup or, FormArray
@@ -25,6 +26,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   public customValidateErrors = new BehaviorSubject<ShortValidationErrors>({});
   public formErrors: ShortValidationErrors;
   public formFields: Dictionary;
+  public objectChange = new Subject();
 
   private _object: TModel;
   private _externalErrors: ShortValidationErrors;
@@ -114,6 +116,26 @@ export class DynamicFormGroup<TModel> extends FormGroup {
 
       this.formErrors = allErrors;
       this.customValidateErrors.next(this.formErrors);
+
+      // todo: refactor, invalidate form if exists any allErrors
+      let usedForeverInvalid = false;
+      if (
+        Object.keys(allErrors).filter(key => key !== FOREVER_INVALID_NAME).length === 0 &&
+        this.get(FOREVER_INVALID_NAME)
+      ) {
+        this.removeControl(FOREVER_INVALID_NAME);
+        usedForeverInvalid = true;
+      }
+      if (this.valid && Object.keys(allErrors).length > 0 && !this.get(FOREVER_INVALID_NAME)) {
+        this.addControl(FOREVER_INVALID_NAME, new FormControl('', [foreverInvalid]));
+        usedForeverInvalid = true;
+      }
+      if (usedForeverInvalid) {
+        this.updateValueAndValidity({
+          onlySelf: true,
+          emitEvent: false
+        });
+      }
     } catch (error) {
       throw error;
     }
@@ -330,36 +352,38 @@ export class DynamicFormGroup<TModel> extends FormGroup {
 
     if (object !== undefined) {
       // Recursively get the value of all fields
-      Object.keys(this.controls).forEach(key => {
-        // Handle Group
-        if (this.controls[key] instanceof DynamicFormGroup) {
-          object[key] = (this.controls[key] as DynamicFormGroup<any>).object;
-        }
-
-        // Handle Form Array
-        else if (this.controls[key] instanceof FormArray) {
-          // Initialize value
-          object[key] = [];
-
-          for (let i = 0; i < (this.controls[key] as FormArray).controls.length; i++) {
-            let value;
-
-            if ((this.controls[key] as FormArray).controls[i] instanceof DynamicFormGroup) {
-              // Recursively get object group
-              value = ((this.controls[key] as FormArray).controls[i] as DynamicFormGroup<any>).object;
-            } else {
-              value = (this.controls[key] as FormArray).controls[i].value;
-            }
-
-            object[key].push(value);
+      Object.keys(this.controls)
+        .filter(name => name !== FOREVER_INVALID_NAME)
+        .forEach(key => {
+          // Handle Group
+          if (this.controls[key] instanceof DynamicFormGroup) {
+            object[key] = (this.controls[key] as DynamicFormGroup<any>).object;
           }
-        }
 
-        // Handle Control
-        else {
-          object[key] = this.controls[key].value;
-        }
-      });
+          // Handle Form Array
+          else if (this.controls[key] instanceof FormArray) {
+            // Initialize value
+            object[key] = [];
+
+            for (let i = 0; i < (this.controls[key] as FormArray).controls.length; i++) {
+              let value;
+
+              if ((this.controls[key] as FormArray).controls[i] instanceof DynamicFormGroup) {
+                // Recursively get object group
+                value = ((this.controls[key] as FormArray).controls[i] as DynamicFormGroup<any>).object;
+              } else {
+                value = (this.controls[key] as FormArray).controls[i].value;
+              }
+
+              object[key].push(value);
+            }
+          }
+
+          // Handle Control
+          else {
+            object[key] = this.controls[key].value;
+          }
+        });
     }
 
     return this.plainToClass(this.factoryModel, object);
@@ -449,6 +473,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         this.controls[key].setValue(this._object && newObject ? newObject : undefined);
       }
     });
+    this.objectChange.next(this._object);
   }
 }
 

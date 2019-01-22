@@ -1,26 +1,23 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-
-import { AppComponent } from './app.component';
-import { ErrorHandler } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { NavbarModule } from './others/navbar/navbar.module';
-import { MAT_DIALOG_DEFAULT_OPTIONS, ShowOnDirtyErrorStateMatcher, ErrorStateMatcher } from '@angular/material';
-import { FormControl } from '@angular/forms';
-import { FormGroupDirective } from '@angular/forms/src/directives/reactive_directives/form_group_directive';
-import { NgForm } from '@angular/forms/src/directives/ng_form';
-import { MyErrorStateMatcher } from './shared/utils/my-error-state-matcher';
-import { RouterModule, PreloadAllModules } from '@angular/router';
-import { AppRoutes } from './app.routes';
+import { ErrorStateMatcher, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SharedModule } from './shared/shared.module';
-import { MessageBoxModule } from './others/message-box/message-box.module';
+import { PreloadAllModules, RouterModule } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { PrismModule } from '@ngx-prism/core';
 import { environment } from '../environments/environment';
+import { AppComponent } from './app.component';
+import { AppRoutes } from './app.routes';
+import { MessageBoxModule } from './others/message-box/message-box.module';
+import { NavbarModule } from './others/navbar/navbar.module';
+import { SharedModule } from './shared/shared.module';
+import { MyErrorStateMatcher } from './shared/utils/my-error-state-matcher';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    PrismModule,
     SharedModule.forRoot(),
     MessageBoxModule.forRoot(),
     HttpClientModule,

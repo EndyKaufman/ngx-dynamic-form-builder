@@ -6,10 +6,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomePageComponent {
-  readme = require('html-loader!markdown-loader!../../../../../../README.md').replace(
-    '<h1 id="ngx-dynamic-form-builder">ngx-dynamic-form-builder</h1>',
-    ''
-  );
+  readme = require('!!raw-loader?lang=markdown!../../../../../../README.md').replace('# ngx-dynamic-form-builder', '');
 
   source = {
     html: require('!!raw-loader?lang=html!./home-page.component.html.txt'),

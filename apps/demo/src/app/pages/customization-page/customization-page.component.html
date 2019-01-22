@@ -1,10 +1,13 @@
 <div class="customization-page">
     <ngx-docs-example
+        customClass="margin-minus-16"
         title="Сustomization page"
         [html]="source.html"
         [ts]="source.ts">
-        <div
-            class="body"
-            [innerHtml]="customization | safeHtml"></div>
+        <div class="body">
+            <markdown
+                [data]="customization"
+                lineNumbers></markdown>
+        </div>
     </ngx-docs-example>
 </div>

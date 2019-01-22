@@ -63,4 +63,14 @@ export class ProjectPanelStep1Component implements OnDestroy {
       this.form.validateAllFormFields();
     }
   }
+  onLoadExternalClick(): void {
+    this.form
+      .setExternalErrorsAsync({
+        name: ['external error']
+      })
+      .then(() => this.form.validateAllFormFields());
+  }
+  onClearExternalClick(): void {
+    this.form.clearExternalErrorsAsync().then(() => this.form.validateAllFormFields());
+  }
 }

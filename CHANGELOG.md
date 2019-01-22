@@ -1,3 +1,17 @@
+# [0.9.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.8.1...0.9.0) (2019-01-21)
+
+
+### Bug Fixes
+
+* Ivalidate formGroup if founded any castomValidationErrors ([26a26ec](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/26a26ec))
+
+
+### Features
+
+* Add objectChange event on update with set object ([62e05d8](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/62e05d8))
+
+
+
 ## [0.8.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.8.0...0.8.1) (2019-01-12)
 
 

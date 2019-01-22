@@ -13,12 +13,12 @@ export class Project {
   name?: string = undefined;
   @IsNotEmpty({ always: true })
   description?: string = undefined;
+  @ValidateNested({
+    groups: [ProjectPanelStepsEnum.Step2]
+  })
   @Validate(ObjectMustBeNotEmpty, [1, 3], {
     groups: [ProjectPanelStepsEnum.Step2],
     message: 'Tasks not initialized or min length = 1 and max length = 3, and all initialized tasks must be not empty'
-  })
-  @ValidateNested({
-    groups: [ProjectPanelStepsEnum.Step2]
   })
   @IsOptional()
   @Type(serializeModel(Task))

@@ -1,3 +1,5 @@
 <div class="customization-page">
-  <div [innerHtml]="customization | safeHtml"></div>
+  <markdown
+      [data]="customization"
+      lineNumbers></markdown>
 </div>

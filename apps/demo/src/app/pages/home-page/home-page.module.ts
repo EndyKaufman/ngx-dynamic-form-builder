@@ -1,16 +1,18 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
-import { HomePageComponent } from './home-page.component';
-import { RouterModule } from '@angular/router';
-import { HomePageRoutes } from './home-page.routes';
-import { DocsExampleModule } from '@ngx-docs/example';
-import { SharedModule } from '../../shared/shared.module';
-import { SourceTabsModule } from '../../others/source-tabs/source-tabs.module';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { RouterModule } from '@angular/router';
+import { MarkdownModule } from 'ngx-markdown';
+import { DocsExampleModule } from '../../others/docs-example/docs-example.module';
+import { SourceTabsModule } from '../../others/source-tabs/source-tabs.module';
+import { SharedModule } from '../../shared/shared.module';
+import { HomePageComponent } from './home-page.component';
+import { HomePageRoutes } from './home-page.routes';
 
 @NgModule({
   imports: [
     SharedModule.forRoot(),
     RouterModule.forChild(HomePageRoutes),
+    MarkdownModule.forRoot(),
     DocsExampleModule.forRoot(),
     SourceTabsModule.forRoot(),
     FlexLayoutModule
