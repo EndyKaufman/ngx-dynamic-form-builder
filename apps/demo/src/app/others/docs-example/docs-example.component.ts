@@ -38,6 +38,8 @@ export class DocsExampleComponent extends DocsExampleClass {
   title: string | undefined = undefined;
   @Input()
   ts: string | undefined = undefined;
+  @Input()
+  customClass: string;
 
   openLocation() {
     if (this.launch) {
