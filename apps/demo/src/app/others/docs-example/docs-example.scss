@@ -51,8 +51,11 @@
   > .ngx-docs-example-body {
     display: block;
     width: 100%;
-    padding: 0px 16px;
+    padding: 16px 16px;
     box-sizing: border-box;
     border-top: 1px solid #f1f1f1;
+    &.margin-minus-16{
+      margin-top: -16px;
+    }
   }
 }

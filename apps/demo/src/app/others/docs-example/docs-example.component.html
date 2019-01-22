@@ -1,34 +1,75 @@
 <div class="ngx-docs-example">
 
-  <!-- title -->
-  <div class="ngx-docs-example-title">
-    <span class="title" fxHide.xs fxShow.sm-xl>
-      {{title}}
-    </span>
-    <span class="spacer"></span>
-    <button mat-button (click)="switchActive('code')" matTooltip="{{view?.code?.tooltip}}">
-      <mat-icon>code</mat-icon>
-    </button>
-    <button mat-button (click)="switchActive('debug')" matTooltip="{{view?.debug?.tooltip}}">
-      <mat-icon>bug_report</mat-icon>
-    </button>
-    <button *ngIf="launch"  mat-button (click)="openLocation()" matTooltip="{{launch?.tooltip}}">
-      <mat-icon>launch</mat-icon>
-    </button>
-  </div>
+    <!-- title -->
+    <div class="ngx-docs-example-title">
+        <span
+            class="title"
+            fxHide.xs
+            fxShow.sm-xl>
+            {{title}}
+        </span>
+        <span class="spacer"></span>
+        <button
+            mat-button
+            (click)="switchActive('code')"
+            matTooltip="{{view?.code?.tooltip}}">
+            <mat-icon>code</mat-icon>
+        </button>
+        <button
+            mat-button
+            (click)="switchActive('debug')"
+            matTooltip="{{view?.debug?.tooltip}}">
+            <mat-icon>bug_report</mat-icon>
+        </button>
+        <button
+            *ngIf="launch"
+            mat-button
+            (click)="openLocation()"
+            matTooltip="{{launch?.tooltip}}">
+            <mat-icon>launch</mat-icon>
+        </button>
+    </div>
 
-  <!-- source -->
-  <div class="ngx-docs-example-source" *ngIf="view?.code?.active === true">
-    <mat-tab-group >
-      <mat-tab label="HTML" *ngIf="html"><ngx-prism [language]="'html'" [code]="html"></ngx-prism></mat-tab>
-      <mat-tab label="TS" *ngIf="ts" ><ngx-prism [language]="'javascript'" [code]="ts"></ngx-prism></mat-tab>
-      <mat-tab label="CSS" *ngIf="css" ><ngx-prism [language]="'css'" [code]="css"></ngx-prism></mat-tab>
-    </mat-tab-group>
-  </div>
+    <!-- source -->
+    <div
+        class="ngx-docs-example-source"
+        *ngIf="view?.code?.active === true">
+        <mat-tab-group>
+            <mat-tab
+                label="HTML"
+                *ngIf="html">
+                <ngx-prism
+                    [language]="'html'"
+                    [code]="html"></ngx-prism>
+            </mat-tab>
+            <mat-tab
+                label="TS"
+                *ngIf="ts">
+                <ngx-prism
+                    [language]="'javascript'"
+                    [code]="ts"></ngx-prism>
+            </mat-tab>
+            <mat-tab
+                label="CSS"
+                *ngIf="css">
+                <ngx-prism
+                    [language]="'css'"
+                    [code]="css"></ngx-prism>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
 
-  <!-- body -->
-  <div class="ngx-docs-example-body"><ng-content select=".body"></ng-content></div>
+    <!-- body -->
+    <div
+        class="ngx-docs-example-body"
+        [ngClass]="customClass">
+        <ng-content select=".body"></ng-content>
+    </div>
 
-  <!-- debug -->
-  <div class="ngx-docs-example-debug" *ngIf="view?.debug?.active === true"><ng-content select=".debug"></ng-content></div>
+    <!-- debug -->
+    <div
+        class="ngx-docs-example-debug"
+        *ngIf="view?.debug?.active === true">
+        <ng-content select=".debug"></ng-content>
+    </div>
 </div>
