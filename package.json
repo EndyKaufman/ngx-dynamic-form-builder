@@ -106,7 +106,7 @@
     "conventional-changelog-cli": "^2.0.11",
     "conventional-commits-detector": "^1.0.2",
     "conventional-recommended-bump": "^4.0.4",
-    "cp-cli": "^1.1.2",
+    "cp-cli": "^2.0.0",
     "gh-pages": "^2.0.1",
     "html-loader": "^0.5.5",
     "jasmine-core": "~3.3.0",
