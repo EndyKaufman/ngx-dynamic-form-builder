@@ -85,7 +85,7 @@
     "@types/prismjs": "^1.9.0",
     "class-transformer": "^0.2.0",
     "class-validator": "^0.9.1",
-    "core-js": "^2.6.2",
+    "core-js": "^3.0.0",
     "lodash-es": "^4.17.11",
     "ngx-markdown": "^7.1.1",
     "prismjs": "^1.15.0",
