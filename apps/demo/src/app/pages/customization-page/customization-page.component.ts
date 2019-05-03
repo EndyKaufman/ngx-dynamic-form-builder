@@ -6,10 +6,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CustomizationPageComponent {
-  customization = require('!!raw-loader!../../../../../../CUSTOMIZATION.md').replace(
-    '# customization',
-    ''
-  );
+  customization = require('!!raw-loader!../../../../../../CUSTOMIZATION.md').replace('# customization', '');
 
   source = {
     html: require('!!raw-loader!./customization-page.component.html.txt'),

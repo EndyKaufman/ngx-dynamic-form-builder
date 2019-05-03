@@ -17,10 +17,10 @@ export function isLegacyOrOpts(options: AbstractControlOptions | DynamicFormGrou
   return options && (!isNullOrUndefined(options['validator']) || !isNullOrUndefined(options['asyncValidator']));
 }
 export function isAbstractControlOptions(options: AbstractControlOptions | DynamicFormGroupConfig) {
-  return options &&
-    (
-      !isNullOrUndefined(options.validators) ||
+  return (
+    options &&
+    (!isNullOrUndefined(options.validators) ||
       !isNullOrUndefined(options.asyncValidators) ||
-      !isNullOrUndefined(options.updateOn)
-    );
+      !isNullOrUndefined(options.updateOn))
+  );
 }
