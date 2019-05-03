@@ -46,7 +46,7 @@ export class ProjectPanelStep2Component implements OnDestroy {
     });
   }
   classLevelValidator(group: DynamicFormGroup<Project>) {
-    return (group.object && group.object.tasks && group.object.tasks.length >= 3) ? { maxLength3: true } : null;
+    return group.object && group.object.tasks && group.object.tasks.length >= 3 ? { maxLength3: true } : null;
   }
   createTaskControl() {
     return this.fb.group(Task);

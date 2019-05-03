@@ -2,7 +2,12 @@ import { AbstractControlOptions, AsyncValidatorFn, FormBuilder, ValidatorFn, Abs
 import { plainToClass } from 'class-transformer';
 import { ClassType } from 'class-transformer/ClassTransformer';
 import 'reflect-metadata';
-import { DynamicFormGroupConfig, isAbstractControlOptions, isDynamicFormGroupConfig, isLegacyOrOpts } from '../models/dynamic-form-group-config';
+import {
+  DynamicFormGroupConfig,
+  isAbstractControlOptions,
+  isDynamicFormGroupConfig,
+  isLegacyOrOpts
+} from '../models/dynamic-form-group-config';
 import { DynamicFormGroup, FormModel, getClassValidators } from './dynamic-form-group';
 
 export class DynamicFormBuilder extends FormBuilder {
@@ -63,29 +68,22 @@ export class DynamicFormBuilder extends FormBuilder {
       Object.keys(newControlsConfig).forEach(key => {
         if (canCreateGroup()) {
           // recursively create a dynamic group for the nested object
-          newControlsConfig[key] = this.group(
-            newControlsConfig[key].constructor,
-            undefined,
-            {
-              asyncValidators,
-              updateOn,
-              validators
-            });
+          newControlsConfig[key] = this.group(newControlsConfig[key].constructor, undefined, {
+            asyncValidators,
+            updateOn,
+            validators
+          });
         } else {
           if (canCreateArray()) {
             if (newControlsConfig[key][0].constructor) {
               // recursively create an array with a group
               newControlsConfig[key] = super.array(
                 newControlsConfig[key].map(newControlsConfigItem =>
-                  this.group(
-                    newControlsConfigItem.constructor,
-                    undefined,
-                    {
-                      asyncValidators,
-                      updateOn,
-                      validators
-                    }
-                  )
+                  this.group(newControlsConfigItem.constructor, undefined, {
+                    asyncValidators,
+                    updateOn,
+                    validators
+                  })
                 )
               );
             } else {
@@ -132,7 +130,11 @@ export class DynamicFormBuilder extends FormBuilder {
     asyncValidators = asyncValidators && asyncValidators.filter(validator => validator);
 
     // Create an Angular group from the top-level object
-    const classValidators = getClassValidators<TModel>(factoryModel, newControlsConfig, extra && extra.customValidatorOptions);
+    const classValidators = getClassValidators<TModel>(
+      factoryModel,
+      newControlsConfig,
+      extra && extra.customValidatorOptions
+    );
     const formGroup = super.group(classValidators, {
       ...(asyncValidators || {}),
       ...(updateOn || {}),
