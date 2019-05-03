@@ -42,20 +42,18 @@
     }
   ],
   "peerDependencies": {
-    "rxjs": "^6.3.3",
-    "@angular/forms": "^7.2.1",
-    "@angular/common": "^7.2.1",
-    "@angular/compiler": "^7.2.1",
-    "@angular/core": "^7.2.1",
+    "rxjs": "^6.5.1",
+    "@angular/forms": "^7.2.14",
+    "@angular/common": "^7.2.14",
+    "@angular/compiler": "^7.2.14",
+    "@angular/core": "^7.2.14",
     "class-transformer": "^0.2.0",
     "class-validator": "^0.9.1",
-    "@types/lodash-es": "^4.17.1",
+    "@types/lodash-es": "^4.17.3",
     "lodash-es": "^4.17.11"
   },
   "dependencies": {
     "class-transformer": "^0.2.0",
-    "class-validator": "^0.9.1",
-    "@types/lodash-es": "^4.17.1",
-    "lodash-es": "^4.17.11"
+    "class-validator": "^0.9.1"
   }
 }

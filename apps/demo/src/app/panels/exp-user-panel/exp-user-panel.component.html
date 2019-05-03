@@ -7,9 +7,7 @@
             matInput
             formControlName="username"
             placeholder="Username">
-        <mat-error *ngIf="form?.formErrors?.username?.length">
-            {{form?.formErrors.username[0]}}
-        </mat-error>
+        <mat-error *ngIf="form?.formErrors?.username?.length">{{form?.formErrors.username[0]}}</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
         <input
@@ -17,9 +15,7 @@
             type="password"
             formControlName="password"
             placeholder="Password">
-        <mat-error *ngIf="form?.formErrors?.password?.length">
-            {{form?.formErrors.password[0]}}
-        </mat-error>
+        <mat-error *ngIf="form?.formErrors?.password?.length">{{form?.formErrors.password[0]}}</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
         <input
@@ -27,9 +23,7 @@
             type="email"
             formControlName="email"
             placeholder="Email">
-        <mat-error *ngIf="form?.formErrors?.email?.length">
-            {{form?.formErrors.email[0]}}
-        </mat-error>
+        <mat-error *ngIf="form?.formErrors?.email?.length">{{form?.formErrors.email[0]}}</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
         <input
@@ -41,9 +35,7 @@
             date of birth is
             <strong>required</strong>
         </mat-error>
-        <mat-error *ngIf="form?.formErrors?.dateOfBirth?.length">
-            {{form?.formErrors.dateOfBirth[0]}}
-        </mat-error>
+        <mat-error *ngIf="form?.formErrors?.dateOfBirth?.length">{{form?.formErrors.dateOfBirth[0]}}</mat-error>
     </mat-form-field>
     <div formGroupName="department">
         <h3>Department of user</h3>
@@ -52,9 +44,7 @@
                 matInput
                 formControlName="name"
                 placeholder="Department name">
-            <mat-error *ngIf="form?.formErrors?.department?.name?.length">
-                {{form?.formErrors.department.name[0]}}
-            </mat-error>
+            <mat-error *ngIf="form?.formErrors?.department?.name?.length">{{form?.formErrors.department.name[0]}}</mat-error>
         </mat-form-field>
         <div formGroupName="company">
             <h3>Company of department</h3>
@@ -86,7 +76,9 @@
     <div class="full-width">
         <p>Form status: {{ form.status | json }}</p>
         <p *ngIf="!form.valid">
-          Form errors: {{form?.formErrors|json}}
+            Form class-validator errors: {{form?.formErrors|json}}
+            <br>
+            Form native errors: {{form?.errors|json}}
         </p>
         <p *ngIf="savedItem">Saved item: {{savedItem|json}}</p>
     </div>

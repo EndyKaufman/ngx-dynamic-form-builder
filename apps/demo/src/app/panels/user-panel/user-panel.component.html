@@ -17,9 +17,7 @@
             type="email"
             formControlName="email"
             [placeholder]="strings.email">
-        <mat-error *ngIf="form?.formErrors?.email?.length">
-            {{form?.formErrors.email.join('. ')}}
-        </mat-error>
+        <mat-error *ngIf="form?.formErrors?.email?.length">{{form?.formErrors.email.join('. ')}}</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
         <input
@@ -76,7 +74,9 @@
     <div class="full-width">
         <p>Form status: {{ form.status | json }}</p>
         <p *ngIf="!form.valid">
-          Form errors: {{form.formErrors|json}}
+            Form class-validator errors: {{form?.formErrors|json}}
+            <br>
+            Form native errors: {{form?.errors|json}}
         </p>
         <p *ngIf="savedItem">Saved item: {{savedItem|json}}</p>
     </div>

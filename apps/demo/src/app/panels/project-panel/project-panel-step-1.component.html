@@ -19,7 +19,11 @@
     </mat-form-field>
     <div class="full-width">
         <p>Form status: {{ form.status | json }}</p>
-        <p *ngIf="!form.valid">Form errors: {{errors | json}}</p>
+        <p *ngIf="!form.valid">
+            Form class-validator errors: {{form?.formErrors|json}}
+            <br>
+            Form native errors: {{form?.errors|json}}
+        </p>
     </div>
     <div
         class="full-width"

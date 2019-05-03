@@ -70,7 +70,9 @@ company-panel.component.html
     </p>
     <p>Form status: {{ form.status | json }}</p>
     <p *ngIf="!form.valid">
-      Form errors: {{form?.formErrors|json}}
+      Form class-validator errors: {{form?.formErrors|json}}
+      <br>
+      Form native errors: {{form?.errors|json}}
     </p>
     <p *ngIf="savedItem">
       Saved item: {{savedItem|json}}

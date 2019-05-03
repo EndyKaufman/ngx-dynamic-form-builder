@@ -10,7 +10,6 @@ import { Company } from './../../shared/models/company';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserPanelComponent {
-
   form: DynamicFormGroup<User>;
 
   @Input()

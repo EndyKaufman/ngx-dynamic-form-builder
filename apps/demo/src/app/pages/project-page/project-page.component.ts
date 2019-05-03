@@ -18,16 +18,16 @@ export class ProjectPageComponent implements OnInit, OnDestroy {
 
   sources = {
     [ProjectPanelStepsEnum.Step1]: {
-      html: require('!!raw-loader?lang=html!./../../panels/project-panel/project-panel-step-1.component.html'),
-      ts: require('!!raw-loader?lang=typescript!./../../panels/project-panel/project-panel-step-1.component.ts')
+      html: require('!!raw-loader!./../../panels/project-panel/project-panel-step-1.component.html'),
+      ts: require('!!raw-loader!./../../panels/project-panel/project-panel-step-1.component.ts')
     },
     [ProjectPanelStepsEnum.Step2]: {
-      html: require('!!raw-loader?lang=html!./../../panels/project-panel/project-panel-step-2.component.html'),
-      ts: require('!!raw-loader?lang=typescript!./../../panels/project-panel/project-panel-step-2.component.ts')
+      html: require('!!raw-loader!./../../panels/project-panel/project-panel-step-2.component.html'),
+      ts: require('!!raw-loader!./../../panels/project-panel/project-panel-step-2.component.ts')
     },
     [ProjectPanelStepsEnum.Complete]: {
-      html: require('!!raw-loader?lang=html!./../../panels/project-panel/project-panel-complete.component.html'),
-      ts: require('!!raw-loader?lang=typescript!./../../panels/project-panel/project-panel-complete.component.ts')
+      html: require('!!raw-loader!./../../panels/project-panel/project-panel-complete.component.html'),
+      ts: require('!!raw-loader!./../../panels/project-panel/project-panel-complete.component.ts')
     }
   };
 
@@ -35,47 +35,47 @@ export class ProjectPageComponent implements OnInit, OnDestroy {
     {
       name: 'project.ts',
       language: 'javascript',
-      content: require('!!raw-loader?lang=typescript!../../shared/models/project.ts')
+      content: require('!!raw-loader!../../shared/models/project.ts')
     },
     {
       name: 'task.ts',
       language: 'javascript',
-      content: require('!!raw-loader?lang=typescript!../../shared/models/task.ts')
+      content: require('!!raw-loader!../../shared/models/task.ts')
     },
     {
       name: 'project-panel.service.ts',
       language: 'javascript',
-      content: require('!!raw-loader?lang=typescript!../../panels/project-panel/project-panel.service.ts')
+      content: require('!!raw-loader!../../panels/project-panel/project-panel.service.ts')
     },
     {
       name: 'environments.ts',
       language: 'javascript',
-      content: require('!!raw-loader?lang=typescript!../../../environments/environment.ts')
+      content: require('!!raw-loader!../../../environments/environment.ts')
     },
     {
       name: 'environment.interface.ts',
       language: 'javascript',
-      content: require('!!raw-loader?lang=typescript!../../../environments/environment.interface.ts')
+      content: require('!!raw-loader!../../../environments/environment.interface.ts')
     },
     {
       name: 'project-panel-steps.enum.ts',
       language: 'javascript',
-      content: require('!!raw-loader?lang=typescript!../../shared/enums/project-panel-steps.enum.ts')
+      content: require('!!raw-loader!../../shared/enums/project-panel-steps.enum.ts')
     },
     {
       name: 'project-page.routes.ts',
       language: 'javascript',
-      content: require('!!raw-loader?lang=typescript!../../pages/project-page/project-page.routes.ts')
+      content: require('!!raw-loader!../../pages/project-page/project-page.routes.ts')
     },
     {
       name: 'custom-transforms.ts',
       language: 'javascript',
-      content: require('!!raw-loader?lang=typescript!../../shared/utils/custom-transforms.ts')
+      content: require('!!raw-loader!../../shared/utils/custom-transforms.ts')
     },
     {
       name: 'custom-validators.ts',
       language: 'javascript',
-      content: require('!!raw-loader?lang=typescript!../../shared/utils/custom-validators.ts')
+      content: require('!!raw-loader!../../shared/utils/custom-validators.ts')
     }
   ];
 
