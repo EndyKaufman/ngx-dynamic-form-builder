@@ -196,7 +196,7 @@ export class CompanyPanelComponent implements onDestroy {
   strings = Company.strings;
 
   fb = new DynamicFormBuilder();
-  
+
   savedItem: Company;
 
   errorChangeSubscription: Subscription;
@@ -207,7 +207,7 @@ export class CompanyPanelComponent implements onDestroy {
     });
 
     this.errorChangeSubscription = this.form.customValidateErrors.subscribe((allErrors) => {
-      console.log('Errors changed': allErrors);
+       console.log(`Errors changed: ${allErrors}`);
     })
   }
   ngOnDestroy() {
