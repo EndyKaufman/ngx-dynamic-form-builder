@@ -1,3 +1,17 @@
+# [0.10.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.9.0...0.10.0) (2019-05-03)
+
+
+### Bug Fixes
+
+* Update dependencies ([3c88ce1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/3c88ce1))
+
+
+### Features
+
+* Add support classLevelValidator with native angular validators and update sample for it ([#106](https://github.com/EndyKaufman/ngx-dynamic-form-builder/issues/106), [#107](https://github.com/EndyKaufman/ngx-dynamic-form-builder/issues/107)) ([26ee044](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/26ee044))
+
+
+
 # [0.9.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.8.1...0.9.0) (2019-01-21)
 
 

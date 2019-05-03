@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Validators } from '@angular/forms';
 import { DynamicFormBuilder, DynamicFormGroup } from 'ngx-dynamic-form-builder';
 import { Company } from './../../shared/models/company';
 
@@ -8,18 +9,20 @@ import { Company } from './../../shared/models/company';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CompanyPanelComponent {
-  @Input()
   form: DynamicFormGroup<Company>;
+
   @Input()
   item = new Company({
     id: 11,
     name: '123456789012345',
     regionNum: 1
   });
+
   @Input()
   strings = Company.strings;
 
   fb = new DynamicFormBuilder();
+
   savedItem: Company;
 
   constructor() {

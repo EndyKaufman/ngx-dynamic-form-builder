@@ -7,8 +7,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 })
 export class AdvancedPageComponent {
   source = {
-    html: require('!!raw-loader?lang=html!./../../panels/user-panel/user-panel.component.html'),
-    ts: require('!!raw-loader?lang=typescript!./../../panels/user-panel/user-panel.component.ts'),
+    html: require('!!raw-loader!./../../panels/user-panel/user-panel.component.html'),
+    ts: require('!!raw-loader!./../../panels/user-panel/user-panel.component.ts'),
     launch: {
       location: 'https://stackblitz.com/edit/ngx-dynamic-form-builder',
       tooltip: `Edit in http://stackblitz.com`
@@ -19,27 +19,27 @@ export class AdvancedPageComponent {
     {
       name: 'user.ts',
       language: 'javascript',
-      content: require('!!raw-loader?lang=typescript!../../shared/models/user.ts')
+      content: require('!!raw-loader!../../shared/models/user.ts')
     },
     {
       name: 'department.ts',
       language: 'javascript',
-      content: require('!!raw-loader?lang=typescript!../../shared/models/department.ts')
+      content: require('!!raw-loader!../../shared/models/department.ts')
     },
     {
       name: 'company.ts',
       language: 'javascript',
-      content: require('!!raw-loader?lang=typescript!../../shared/models/company.ts')
+      content: require('!!raw-loader!../../shared/models/company.ts')
     },
     {
       name: 'custom-transforms.ts',
       language: 'javascript',
-      content: require('!!raw-loader?lang=typescript!../../shared/utils/custom-transforms.ts')
+      content: require('!!raw-loader!../../shared/utils/custom-transforms.ts')
     },
     {
       name: 'custom-validators.ts',
       language: 'javascript',
-      content: require('!!raw-loader?lang=typescript!../../shared/utils/custom-validators.ts')
+      content: require('!!raw-loader!../../shared/utils/custom-validators.ts')
     }
   ];
 }

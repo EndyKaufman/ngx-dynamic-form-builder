@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CustomizationPageComponent {
 
-  customization = require('!!raw-loader?lang=markdown!../../../../../../CUSTOMIZATION.md').replace(
+  customization = require('!!raw-loader!../../../../../../CUSTOMIZATION.md').replace(
     '# customization',
     ''
   );

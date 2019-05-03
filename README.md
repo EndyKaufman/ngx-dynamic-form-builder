@@ -72,7 +72,9 @@ company-panel.component.html
     </p>
     <p>Form status: {{ form.status | json }}</p>
     <p *ngIf="!form.valid">
-      Form errors: {{form?.formErrors|json}}
+      Form class-validator errors: {{form?.formErrors|json}}
+      <br>
+      Form native errors: {{form?.errors|json}}
     </p>
     <p *ngIf="savedItem">
       Saved item: {{savedItem|json}}
@@ -95,8 +97,9 @@ import { Validators } from '@angular/forms';
   templateUrl: './company-panel.component.html'
 })
 export class CompanyPanelComponent {
-  @Input()
+  
   form: DynamicFormGroup<Company>;
+
   @Input()
   item = new Company({
     'id': 11,
@@ -104,6 +107,7 @@ export class CompanyPanelComponent {
   });
 
   fb = new DynamicFormBuilder();
+
   savedItem: Company;
 
   constructor() {
@@ -182,17 +186,19 @@ import { Subscription } from 'rxjs';
 })
 export class CompanyPanelComponent implements onDestroy {
 
-  @Input()
   form: DynamicFormGroup<Company>;
+
   @Input()
   item = new Company({
     'id': 11,
     'name': '123456789012345'
   });
+
   @Input()
   strings = Company.strings;
 
   fb = new DynamicFormBuilder();
+
   savedItem: Company;
 
   errorChangeSubscription: Subscription;
@@ -203,7 +209,7 @@ export class CompanyPanelComponent implements onDestroy {
     });
 
     this.errorChangeSubscription = this.form.customValidateErrors.subscribe((allErrors) => {
-      console.log('Errors changed': allErrors);
+       console.log(`Errors changed: ${allErrors}`);
     })
   }
   ngOnDestroy() {

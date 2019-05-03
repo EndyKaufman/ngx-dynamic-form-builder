@@ -10,8 +10,8 @@ import { Company } from './../../shared/models/company';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserPanelComponent {
-  @Input()
   form: DynamicFormGroup<User>;
+
   @Input()
   item = new User({
     username: 'admin',
@@ -31,14 +31,18 @@ export class UserPanelComponent {
       }
     }
   });
+
   @Input()
   strings = User.strings;
+
   @Input()
   departmentStrings = Department.strings;
+
   @Input()
   companyStrings = Company.strings;
 
   fb = new DynamicFormBuilder();
+
   savedItem: User;
 
   constructor() {

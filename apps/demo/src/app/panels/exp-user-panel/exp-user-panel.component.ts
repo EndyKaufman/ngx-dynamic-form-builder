@@ -8,8 +8,8 @@ import { ExpUser } from '../../shared/models/exp-user';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExpUserPanelComponent {
-  @Input()
   form: DynamicFormGroup<ExpUser>;
+
   @Input()
   item = new ExpUser({
     username: 'admin',
@@ -31,6 +31,7 @@ export class ExpUserPanelComponent {
   });
 
   fb = new DynamicFormBuilder();
+
   savedItem: ExpUser;
 
   constructor() {

@@ -4,10 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DynamicFormBuilder, DynamicFormGroup } from 'ngx-dynamic-form-builder';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ProjectPanelStepsEnum } from '../../shared/enums/project-panel-steps.enum';
 import { Project } from '../../shared/models/project';
 import { Task } from '../../shared/models/task';
 import { ProjectPanelService } from './project-panel.service';
-import { ProjectPanelStepsEnum } from '../../shared/enums/project-panel-steps.enum';
 
 @Component({
   selector: 'project-panel-step-2',
@@ -41,8 +41,12 @@ export class ProjectPanelStep2Component implements OnDestroy {
     return this.fb.group(Project, {
       customValidatorOptions: {
         groups: [ProjectPanelStepsEnum.Step2]
-      }
+      },
+      validator: this.classLevelValidator
     });
+  }
+  classLevelValidator(group: DynamicFormGroup<Project>) {
+    return group.object && group.object.tasks && group.object.tasks.length >= 3 ? { maxLength3: true } : null;
   }
   createTaskControl() {
     return this.fb.group(Task);
