@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1556925326773,
+  "timestamp": 1556928695041,
   "index": "/ngx-dynamic-form-builder/index.html",
   "assetGroups": [
     {
@@ -20,7 +20,7 @@
         "/ngx-dynamic-form-builder/common.cdfcc6601dda655dd513.js",
         "/ngx-dynamic-form-builder/favicon.ico",
         "/ngx-dynamic-form-builder/index.html",
-        "/ngx-dynamic-form-builder/main.a78713a56d19dc00e6f4.js",
+        "/ngx-dynamic-form-builder/main.f5662611ed2a74a9e439.js",
         "/ngx-dynamic-form-builder/polyfills.8fa146e19b3c09dba644.js",
         "/ngx-dynamic-form-builder/runtime.30f10e31264fa66d046f.js",
         "/ngx-dynamic-form-builder/scripts.914dea7e8b3fda1cf659.js",
@@ -70,8 +70,8 @@
     "/ngx-dynamic-form-builder/assets/img/icons/shape-outline.svg": "9d0f9439eb430f8282fd8cc60e674b07ec8318ac",
     "/ngx-dynamic-form-builder/common.cdfcc6601dda655dd513.js": "965fa6a65a7011f11422c0e56a9c18d8e6875b31",
     "/ngx-dynamic-form-builder/favicon.ico": "84161b857f5c547e3699ddfbffc6d8d737542e01",
-    "/ngx-dynamic-form-builder/index.html": "6c108ba2c6564ce1a9725a31a0e3e3cb5b27cf63",
-    "/ngx-dynamic-form-builder/main.a78713a56d19dc00e6f4.js": "3dfe7cb6fbf0ca0e2ceaffee6fbfcad3e942fd3c",
+    "/ngx-dynamic-form-builder/index.html": "5c30933823948bde99bfc3a139ea3b28038e3603",
+    "/ngx-dynamic-form-builder/main.f5662611ed2a74a9e439.js": "408170882936dcb2fd2b68cc7997a834127eb5c3",
     "/ngx-dynamic-form-builder/polyfills.8fa146e19b3c09dba644.js": "12a2f34286091cef775fc2a1560f1ac10d6ea61c",
     "/ngx-dynamic-form-builder/runtime.30f10e31264fa66d046f.js": "f5e060f6a17bd1c16349223adff75d9b66db4ccb",
     "/ngx-dynamic-form-builder/scripts.914dea7e8b3fda1cf659.js": "13b35406db01f6b2cdedd433d924bd6786f22d9c",
