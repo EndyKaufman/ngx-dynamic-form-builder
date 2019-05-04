@@ -21,13 +21,14 @@ import {
   ValidatorOptions
 } from 'class-validator';
 import { ValidationMetadata } from 'class-validator/metadata/ValidationMetadata';
-import cloneDeep from 'lodash-es/cloneDeep';
-import mergeWith from 'lodash-es/mergeWith';
 import 'reflect-metadata';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Dictionary, DynamicFormGroupField, ShortValidationErrors } from '../models';
 import { foreverInvalid, FOREVER_INVALID_NAME } from '../validators/forever-invalid.validator';
 import { DynamicFormControl } from './dynamic-form-control';
+
+const cloneDeep = require('lodash.clonedeep');
+const mergeWith = require('lodash.mergewith');
 
 // Enforces the properties of the object, if supplied, to be of the original type or DynamicFormGroup or, FormArray
 export type FormModel<T> = { [P in keyof T]?: T[P] | DynamicFormGroup<any> | FormArray };
