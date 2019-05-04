@@ -8,6 +8,7 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "esModuleInterop": true,
     "target": "es5",
     "typeRoots": [
       "node_modules/@types"
@@ -18,10 +19,10 @@
     ],
     "paths": {
       "ngx-dynamic-form-builder": [
-        "dist/ngx-dynamic-form-builder"
+        "libs/ngx-dynamic-form-builder/src"
       ],
       "ngx-dynamic-form-builder/*": [
-        "dist/ngx-dynamic-form-builder/*"
+        "libs/ngx-dynamic-form-builder/src/*"
       ]
     }
   }

@@ -49,11 +49,13 @@
     "@angular/core": "^7.2.14",
     "class-transformer": "^0.2.0",
     "class-validator": "^0.9.1",
-    "@types/lodash-es": "^4.17.3",
-    "lodash-es": "^4.17.11"
+    "lodash.clonedeep": "^4.5.0",
+    "lodash.mergewith": "^4.6.1"
   },
   "dependencies": {
     "class-transformer": "^0.2.0",
-    "class-validator": "^0.9.1"
+    "class-validator": "^0.9.1",
+    "lodash.clonedeep": "^4.5.0",
+    "lodash.mergewith": "^4.6.1"
   }
 }
