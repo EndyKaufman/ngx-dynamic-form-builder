@@ -33,7 +33,7 @@ export class DynamicFormBuilder extends FormBuilder {
 
     let validators: ValidatorFn[] | null = null;
     let asyncValidators: AsyncValidatorFn[] | null = null;
-    let updateOn: any = undefined;
+    let updateOn: any;
 
     if (extra != null) {
       if (isAbstractControlOptions(extra)) {
