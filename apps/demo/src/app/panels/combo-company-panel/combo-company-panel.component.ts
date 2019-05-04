@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Validators } from '@angular/forms';
 import { DynamicFormBuilder, DynamicFormGroup } from 'ngx-dynamic-form-builder';
 import { Company } from './../../shared/models/company';
 
 @Component({
-  selector: 'company-panel',
-  templateUrl: './company-panel.component.html',
+  selector: 'combo-company-panel',
+  templateUrl: './combo-company-panel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CompanyPanelComponent {
+export class ComboCompanyPanelComponent {
   form: DynamicFormGroup<Company>;
 
   @Input()
@@ -26,8 +27,8 @@ export class CompanyPanelComponent {
 
   constructor() {
     this.form = this.fb.group(Company, {
-      name: '',
-      regionNum: 0
+      name: 'name',
+      regionNum: ['', Validators.required]
     });
   }
   onLoadClick(): void {

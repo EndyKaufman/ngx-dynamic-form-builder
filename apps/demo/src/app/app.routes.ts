@@ -1,10 +1,11 @@
 import { Routes } from '@angular/router';
-import { HomePageRoutes } from './pages/home-page/home-page.routes';
 import { AdvancedPageRoutes } from './pages/advanced-page/advanced-page.routes';
-import { SimplePageRoutes } from './pages/simple-page/simple-page.routes';
-import { ExperimentalPageRoutes } from './pages/experimental-page/experimental-page.routes';
+import { ComboPageRoutes } from './pages/combo-page/combo-page.routes';
 import { CustomizationPageRoutes } from './pages/customization-page/customization-page.routes';
+import { ExperimentalPageRoutes } from './pages/experimental-page/experimental-page.routes';
+import { HomePageRoutes } from './pages/home-page/home-page.routes';
 import { ProjectPageRoutes } from './pages/project-page/project-page.routes';
+import { SimplePageRoutes } from './pages/simple-page/simple-page.routes';
 
 export const AppRoutes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -17,6 +18,11 @@ export const AppRoutes: Routes = [
     path: 'simple',
     loadChildren: './pages/simple-page/simple-page.module#SimplePageModule',
     data: SimplePageRoutes[0].data
+  },
+  {
+    path: 'combo',
+    loadChildren: './pages/combo-page/combo-page.module#ComboPageModule',
+    data: ComboPageRoutes[0].data
   },
   {
     path: 'advanced',

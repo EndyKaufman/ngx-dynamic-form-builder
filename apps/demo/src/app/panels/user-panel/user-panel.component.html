@@ -8,7 +8,7 @@
             matInput
             formControlName="username"
             [placeholder]="strings.username">
-        <mat-error *ngIf="errors?.username?.length">{{errors.username.join('. ')}}</mat-error>
+        <mat-error *ngIf="errors.username?.length">{{errors.username.join(', ')}}</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
         <input
@@ -16,7 +16,7 @@
             type="email"
             formControlName="email"
             [placeholder]="strings.email">
-        <mat-error *ngIf="errors?.email?.length">{{errors.email.join('. ')}}</mat-error>
+        <mat-error *ngIf="errors.email?.length">{{errors.email.join(', ')}}</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
         <input
@@ -28,7 +28,7 @@
             date of birth is
             <strong>required</strong>
         </mat-error>
-        <mat-error *ngIf="errors?.dateOfBirth?.length">{{errors.dateOfBirth.join('. ')}}</mat-error>
+        <mat-error *ngIf="errors.dateOfBirth?.length">{{errors.dateOfBirth.join(', ')}}</mat-error>
     </mat-form-field>
     <div formGroupName="department">
         <h3>Department of user</h3>
@@ -37,7 +37,7 @@
                 matInput
                 formControlName="name"
                 [placeholder]="strings.department">
-            <mat-error *ngIf="errors?.department?.name?.length">{{errors.department.name.join('. ')}}</mat-error>
+            <mat-error *ngIf="errors.department?.name?.length">{{errors.department.name.join(', ')}}</mat-error>
         </mat-form-field>
         <div formGroupName="company">
             <h3>Company of department</h3>
@@ -46,8 +46,8 @@
                     matInput
                     formControlName="name"
                     [placeholder]="departmentStrings.company">
-                <mat-error *ngIf="errors?.department?.company?.name?.length">
-                    {{errors.department.company.name.join('. ')}}
+                <mat-error *ngIf="errors.department?.company?.name?.length">
+                    {{errors.department.company.name.join(', ')}}
                 </mat-error>
             </mat-form-field>
             <mat-form-field class="full-width">
@@ -56,8 +56,8 @@
                     formControlName="regionNum"
                     type="number"
                     [placeholder]="companyStrings.regionNum">
-                <mat-error *ngIf="errors?.department?.company?.regionNum?.length">
-                    {{errors.department.company.regionNum.join('. ')}}
+                <mat-error *ngIf="errors.department?.company?.regionNum?.length">
+                    {{errors.department.company.regionNum.join(', ')}}
                 </mat-error>
             </mat-form-field>
         </div>
@@ -70,8 +70,9 @@
         <p>Form status: {{ form.status | json }}</p>
         <p>
             Form class-validator errors: {{errors|json}}
-            <br>
-            Form native errors: {{form?.errors|json}}
+        </p>
+        <p>
+            Form native errors: {{form?.nativeValidateErrors|async|json}}
         </p>
         <p *ngIf="savedItem">Saved item: {{savedItem|json}}</p>
     </div>

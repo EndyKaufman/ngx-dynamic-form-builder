@@ -1,0 +1,19 @@
+<div
+    class="combo-page"
+    fxLayout.gt-md="row"
+    fxLayout.lt-md="column"
+    fxLayoutAlign="space-evenly stretch">
+    <ngx-docs-example
+        title="Combo: company panel"
+        [html]="source.html"
+        [ts]="source.ts"
+        fxFlex.gt-sm="50">
+        <div class="body">
+            <combo-company-panel></combo-company-panel>
+        </div>
+    </ngx-docs-example>
+    <source-tabs
+        title="Other files"
+        [files]="otherFiles"
+        fxFlex.gt-sm="50"></source-tabs>
+</div>

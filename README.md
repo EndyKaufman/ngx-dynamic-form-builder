@@ -73,8 +73,9 @@ company-panel.component.html
     <p>Form status: {{ form.status | json }}</p>
     <p>
       Form class-validator errors: {{errors|json}}
-      <br>
-      Form native errors: {{form?.errors|json}}
+    </p>
+    <p>
+      Form native errors: {{form?.nativeValidateErrors|async|json}}
     </p>
     <p *ngIf="savedItem">
       Saved item: {{savedItem|json}}

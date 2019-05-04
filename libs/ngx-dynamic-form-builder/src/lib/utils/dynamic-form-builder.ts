@@ -1,13 +1,8 @@
-import { AbstractControlOptions, AsyncValidatorFn, FormBuilder, ValidatorFn, AbstractControl } from '@angular/forms';
+import { AbstractControlOptions, AsyncValidatorFn, FormBuilder, ValidatorFn } from '@angular/forms';
 import { plainToClass } from 'class-transformer';
 import { ClassType } from 'class-transformer/ClassTransformer';
 import 'reflect-metadata';
-import {
-  DynamicFormGroupConfig,
-  isAbstractControlOptions,
-  isDynamicFormGroupConfig,
-  isLegacyOrOpts
-} from '../models/dynamic-form-group-config';
+import { DynamicFormGroupConfig, isAbstractControlOptions, isDynamicFormGroupConfig, isLegacyOrOpts } from '../models/dynamic-form-group-config';
 import { DynamicFormGroup, FormModel, getClassValidators } from './dynamic-form-group';
 
 export class DynamicFormBuilder extends FormBuilder {
@@ -69,6 +64,7 @@ export class DynamicFormBuilder extends FormBuilder {
         if (canCreateGroup()) {
           // recursively create a dynamic group for the nested object
           newControlsConfig[key] = this.group(newControlsConfig[key].constructor, undefined, {
+            ...(extra.customValidatorOptions ? { customValidatorOptions: extra.customValidatorOptions } : {}),
             asyncValidators,
             updateOn,
             validators
@@ -80,6 +76,7 @@ export class DynamicFormBuilder extends FormBuilder {
               newControlsConfig[key] = super.array(
                 newControlsConfig[key].map(newControlsConfigItem =>
                   this.group(newControlsConfigItem.constructor, undefined, {
+                    ...(extra.customValidatorOptions ? { customValidatorOptions: extra.customValidatorOptions } : {}),
                     asyncValidators,
                     updateOn,
                     validators

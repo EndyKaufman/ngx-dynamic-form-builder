@@ -8,7 +8,7 @@
             matInput
             formControlName="username"
             placeholder="Username">
-        <mat-error *ngIf="errors?.username?.length">{{errors.username[0]}}</mat-error>
+        <mat-error *ngIf="errors.username?.length">{{errors.username[0]}}</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
         <input
@@ -16,16 +16,17 @@
             type="password"
             formControlName="password"
             placeholder="Password">
-        <mat-error *ngIf="errors?.password?.length">{{errors.password[0]}}</mat-error>
+        <mat-error *ngIf="errors.password?.length">{{errors.password[0]}}</mat-error>
     </mat-form-field>
     <div class="full-width">
         <p>Form status: {{ form.status | json }}</p>
         <p>
             Form class-validator errors: {{errors|json}}
-            <br>
-            Form native errors: {{form?.errors|json}}
         </p>
-        <p *ngIf="savedItem">Saved item: {{savedItem|json}}</p>
+        <p>
+            Form native errors: {{form?.nativeValidateErrors|async|json}}
+        </p>
+        <p *ngIf="savedItem">Login user data: {{savedItem|json}}</p>
     </div>
     <div class="full-width">
         <button
