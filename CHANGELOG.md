@@ -1,3 +1,18 @@
+# [1.0.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.10.1...1.0.0) (2019-05-04)
+
+
+### Bug Fixes
+
+* Change private transformValidationErrors to public ([f80e6e9](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/f80e6e9))
+
+
+### Features
+
+* Add method resetValidateAllFormFields to reset all errors ([8642886](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/8642886))
+* Add support use native angular validations, create sample for it - combo ([fd48f90](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/fd48f90))
+
+
+
 ## [0.10.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.10.0...0.10.1) (2019-05-04)
 
 

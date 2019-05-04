@@ -2,7 +2,12 @@ import { AbstractControlOptions, AsyncValidatorFn, FormBuilder, ValidatorFn } fr
 import { plainToClass } from 'class-transformer';
 import { ClassType } from 'class-transformer/ClassTransformer';
 import 'reflect-metadata';
-import { DynamicFormGroupConfig, isAbstractControlOptions, isDynamicFormGroupConfig, isLegacyOrOpts } from '../models/dynamic-form-group-config';
+import {
+  DynamicFormGroupConfig,
+  isAbstractControlOptions,
+  isDynamicFormGroupConfig,
+  isLegacyOrOpts
+} from '../models/dynamic-form-group-config';
 import { DynamicFormGroup, FormModel, getClassValidators } from './dynamic-form-group';
 
 export class DynamicFormBuilder extends FormBuilder {
