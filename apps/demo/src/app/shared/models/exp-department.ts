@@ -3,10 +3,12 @@ import { ExpCompany } from './exp-company';
 
 export class ExpDepartment {
   id: number;
+
   @IsNotEmpty({
     groups: ['user']
   })
   name: string;
+
   @ValidateNested({
     groups: ['user']
   })

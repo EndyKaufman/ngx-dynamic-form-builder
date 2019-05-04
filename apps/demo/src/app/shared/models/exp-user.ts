@@ -3,14 +3,17 @@ import { ExpDepartment } from './exp-department';
 
 export class ExpUser {
   id: number;
+
   @IsNotEmpty({
     groups: ['user', 'guest']
   })
   username: string;
+
   @IsNotEmpty({
     groups: ['guest']
   })
   password: string;
+
   @IsEmail(undefined, {
     groups: ['user']
   })
@@ -18,8 +21,11 @@ export class ExpUser {
     groups: ['user']
   })
   email: string;
+
   isSuperuser: boolean;
+
   isStaff: boolean;
+
   @ValidateNested({
     groups: ['user']
   })
@@ -27,6 +33,7 @@ export class ExpUser {
     groups: ['user']
   })
   department: ExpDepartment;
+
   dateOfBirth: string;
 
   constructor(data?: any) {

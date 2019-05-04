@@ -22,7 +22,7 @@ import { MyErrorStateMatcher } from './shared/utils/my-error-state-matcher';
     MessageBoxModule.forRoot(),
     HttpClientModule,
     BrowserAnimationsModule,
-    BrowserModule.withServerTransition({ appId: 'demo' }),
+    BrowserModule.withServerTransition({ appId: 'ngx-dynamic-form-builder' }),
     NavbarModule.forRoot(),
     RouterModule.forRoot(AppRoutes, { preloadingStrategy: PreloadAllModules, initialNavigation: 'enabled' }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })

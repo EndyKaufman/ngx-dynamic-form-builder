@@ -18,22 +18,31 @@ import { MatDialogRef } from '@angular/material';
 export class MessageBoxComponent implements OnInit {
   @Input()
   isInfo?: boolean;
+
   @Input()
   isError?: boolean;
+
   @Input()
   hideOnNo = true;
+
   @Input()
   hideOnYes = false;
+
   @Input()
   title: string;
+
   @Input()
   message: string;
+
   @Input()
   noTitle = 'Cancel';
+
   @Input()
   yesTitle = 'OK';
+
   @Output()
   no = new EventEmitter<MessageBoxComponent>();
+
   @Output()
   yes = new EventEmitter<MessageBoxComponent>();
 
