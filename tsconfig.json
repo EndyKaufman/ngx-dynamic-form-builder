@@ -10,6 +10,10 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "target": "es5",
+    "types": [
+      "jasmine",
+      "node"
+    ],
     "typeRoots": [
       "node_modules/@types"
     ],
@@ -19,10 +23,10 @@
     ],
     "paths": {
       "ngx-dynamic-form-builder": [
-        "libs/ngx-dynamic-form-builder/src"
+        "dist/ngx-dynamic-form-builder"
       ],
       "ngx-dynamic-form-builder/*": [
-        "libs/ngx-dynamic-form-builder/src/*"
+        "dist/ngx-dynamic-form-builder/*"
       ]
     }
   }

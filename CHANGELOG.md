@@ -1,3 +1,12 @@
+## [0.10.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.10.0...0.10.1) (2019-05-04)
+
+
+### Bug Fixes
+
+* Add use standalone lodash.clonedeep and lodash.mergewith in lib ([d38198d](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/d38198d))
+
+
+
 # [0.10.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.9.0...0.10.0) (2019-05-03)
 
 
