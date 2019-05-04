@@ -27,10 +27,9 @@ export class ExpLoginPanelComponent implements OnInit {
     this.form.validateAllFormFields();
   }
   onLoginClick(): void {
+    this.form.validateAllFormFields();
     if (this.form.valid) {
       this.savedItem = this.form.object;
-    } else {
-      this.form.validateAllFormFields();
     }
   }
 }

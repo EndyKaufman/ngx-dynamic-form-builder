@@ -87,10 +87,14 @@ export class UserPanelComponent {
     this.form.validateAllFormFields();
   }
   onSaveClick(): void {
-    if (this.form.valid) {
-      this.savedItem = this.form.object;
-    } else {
+    this.form.validateAsync().then(_ => {
       this.form.validateAllFormFields();
-    }
+      if (this.form.valid) {
+        this.savedItem = this.form.object;
+      }
+    });
+  }
+  onResetValidateAllFormFields(): void {
+    this.form.resetValidateAllFormFields();
   }
 }

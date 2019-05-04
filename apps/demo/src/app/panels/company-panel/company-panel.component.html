@@ -1,12 +1,13 @@
 <form
     [formGroup]="form"
+    *ngIf="form?.customValidateErrors|async as errors"
     novalidate>
     <mat-form-field class="full-width">
         <input
             matInput
             formControlName="name"
             [placeholder]="strings.name">
-        <mat-error *ngIf="form?.formErrors?.name?.length">{{form?.formErrors.name[0]}}</mat-error>
+        <mat-error *ngIf="errors.name?.length">{{errors.name[0]}}</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
         <input
@@ -14,12 +15,12 @@
             formControlName="regionNum"
             type="number"
             [placeholder]="strings.regionNum">
-        <mat-error *ngIf="form?.formErrors?.regionNum?.length">{{form?.formErrors.regionNum[0]}}</mat-error>
+        <mat-error *ngIf="errors?.regionNum?.length">{{errors.regionNum[0]}}</mat-error>
     </mat-form-field>
     <div class="full-width">
         <p>Form status: {{ form.status | json }}</p>
-        <p *ngIf="!form.valid">
-            Form class-validator errors: {{form?.formErrors|json}}
+        <p>
+            Form class-validator errors: {{errors|json}}
             <br>
             Form native errors: {{form?.errors|json}}
         </p>

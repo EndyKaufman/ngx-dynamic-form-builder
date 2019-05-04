@@ -1,6 +1,6 @@
 <form
     [formGroup]="form"
-    *ngIf="form?.formErrors as errors"
+    *ngIf="form?.customValidateErrors|async as errors"
     novalidate>
     <h3>Create project: step-1</h3>
     <mat-form-field class="full-width">
@@ -19,8 +19,8 @@
     </mat-form-field>
     <div class="full-width">
         <p>Form status: {{ form.status | json }}</p>
-        <p *ngIf="!form.valid">
-            Form class-validator errors: {{form?.formErrors|json}}
+        <p>
+            Form class-validator errors: {{errors|json}}
             <br>
             Form native errors: {{form?.errors|json}}
         </p>
