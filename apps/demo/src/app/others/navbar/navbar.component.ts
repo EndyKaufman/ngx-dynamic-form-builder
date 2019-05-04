@@ -10,6 +10,7 @@ import { Router, Routes } from '@angular/router';
 export class NavbarComponent implements OnInit {
   @Input()
   title: string;
+
   @Input()
   set childrenRoutes(routes: any[]) {
     this._childrenRoutes = routes.filter((item: any) => item.data);

@@ -8,6 +8,7 @@ export class Group {
   };
 
   id: number;
+
   @IsNotEmpty()
   name: string;
 

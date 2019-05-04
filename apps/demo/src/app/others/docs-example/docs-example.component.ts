@@ -28,16 +28,22 @@ export class DocsExampleComponent extends DocsExampleClass {
   set config(config: PackageConfigInterface | undefined) {
     this.setStyle(config);
   }
+
   @Input()
   css: string | undefined = undefined;
+
   @Input()
   html: string | undefined = undefined;
+
   @Input()
   launch: LaunchInterface | undefined = undefined;
+
   @Input()
   title: string | undefined = undefined;
+
   @Input()
   ts: string | undefined = undefined;
+
   @Input()
   customClass: string;
 

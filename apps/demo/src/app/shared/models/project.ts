@@ -7,12 +7,15 @@ import { Task } from './task';
 
 export class Project {
   id?: number = undefined;
+
   @IsNotEmpty({
     groups: [ProjectPanelStepsEnum.Step1]
   })
   name?: string = undefined;
+
   @IsNotEmpty({ always: true })
   description?: string = undefined;
+
   @ValidateNested({
     groups: [ProjectPanelStepsEnum.Step2]
   })

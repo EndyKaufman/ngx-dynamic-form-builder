@@ -34,6 +34,7 @@ const mergeWith = require('lodash.mergewith');
 export type FormModel<T> = { [P in keyof T]?: T[P] | DynamicFormGroup<any> | FormArray };
 
 export class DynamicFormGroup<TModel> extends FormGroup {
+  public nativeValidateErrors = new BehaviorSubject<Dictionary>({});
   public customValidateErrors = new BehaviorSubject<ShortValidationErrors>({});
   public formErrors: ShortValidationErrors;
   public formFields: Dictionary;
@@ -46,7 +47,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
 
   constructor(
     public factoryModel: ClassType<TModel>,
-    fields: FormModel<TModel>,
+    public fields: FormModel<TModel>,
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
     asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null
   ) {
@@ -124,10 +125,8 @@ export class DynamicFormGroup<TModel> extends FormGroup {
       const validationErrors = this.transformValidationErrors(result);
       const allErrors = this.mergeErrors(externalErrors, validationErrors);
 
-      this.markAsInvalidForExternalErrors(externalErrors, this.controls);
-
-      this.formErrors = allErrors;
-      this.customValidateErrors.next(this.formErrors);
+      this.markAsInvalidForExternalErrors(externalErrors);
+      this.setCustomErrors(allErrors);
 
       // todo: refactor, invalidate form if exists any allErrors
       let usedForeverInvalid = false;
@@ -150,6 +149,35 @@ export class DynamicFormGroup<TModel> extends FormGroup {
       }
     } catch (error) {
       throw error;
+    }
+  }
+
+  setCustomErrors(allErrors: any) {
+    this.formErrors = allErrors;
+    this.customValidateErrors.next(this.formErrors);
+    this.nativeValidateErrors.next(this.collectErrors(this));
+  }
+
+  private collectErrors(control: Dictionary, isRoot = true): any | null {
+    if (control.controls) {
+      return {
+        ...(isRoot ? this.errors : {}),
+        ...Object.entries(control.controls).reduce((acc, [key, childControl]) => {
+          const childErrors = this.collectErrors(childControl, false);
+          if (childErrors && key !== 'foreverInvalid' && Object.keys(childErrors).length > 0) {
+            acc = {
+              ...acc,
+              [key]: {
+                ...(acc && acc[key] ? acc[key] : {}),
+                ...childErrors
+              }
+            };
+          }
+          return acc;
+        }, null)
+      };
+    } else {
+      return control.errors;
     }
   }
 
@@ -179,6 +207,41 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         }
       }
     });
+  }
+
+  resetValidateAllFormFields() {
+    this.markAsInvalidForExternalErrors({});
+
+    Object.keys(this.controls).forEach(field => {
+      const control = this.get(field);
+
+      // Control
+      if (control instanceof FormControl) {
+        control.setErrors(undefined, { emitEvent: false });
+        control.markAsUntouched({ onlySelf: true });
+        control.markAsPristine({ onlySelf: true });
+      }
+      // Group: recursive
+      else if (control instanceof DynamicFormGroup) {
+        control.resetValidateAllFormFields();
+      }
+      // Array
+      else if (control instanceof FormArray) {
+        for (let i = 0; i < (control as FormArray).controls.length; i++) {
+          // Control in Array
+          if ((control as FormArray).controls[i] instanceof FormControl) {
+            ((control as FormArray).controls[i] as FormControl).setErrors(undefined, { emitEvent: false });
+            ((control as FormArray).controls[i] as FormControl).markAsUntouched({ onlySelf: true });
+            ((control as FormArray).controls[i] as FormControl).markAsPristine({ onlySelf: true });
+          }
+          // Group in Array: recursive
+          else if ((control as FormArray).controls[i] instanceof DynamicFormGroup) {
+            ((control as FormArray).controls[i] as DynamicFormGroup<any>).resetValidateAllFormFields();
+          }
+        }
+      }
+    });
+    this.setCustomErrors({});
   }
 
   classToClass<TClassModel>(object: TClassModel) {
@@ -272,7 +335,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     return newFields;
   }
 
-  private transformValidationErrors(errors: ValidationError[]): ShortValidationErrors {
+  transformValidationErrors(errors: ValidationError[]): ShortValidationErrors {
     const customErrors: ShortValidationErrors = {};
 
     errors.forEach((error: ValidationError) => {
@@ -296,8 +359,9 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     return customErrors;
   }
 
-  private mergeErrors(errors?: ShortValidationErrors, externalErrors?: ShortValidationErrors) {
-    return mergeWith(errors, externalErrors, (objValue, srcValue) => {
+  private mergeErrors(externalErrors?: ShortValidationErrors, validationErrors?: ShortValidationErrors) {
+    const clonedExternalErrors = cloneDeep(externalErrors);
+    return mergeWith(clonedExternalErrors, validationErrors, (objValue, srcValue) => {
       if (canMerge()) {
         return objValue.concat(srcValue);
       }
@@ -312,7 +376,10 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     });
   }
 
-  private markAsInvalidForExternalErrors(errors: ShortValidationErrors, controls: Dictionary<AbstractControl>) {
+  private markAsInvalidForExternalErrors(errors: ShortValidationErrors, controls?: Dictionary<AbstractControl>) {
+    if (!controls) {
+      controls = this.controls;
+    }
     Object.keys(controls).forEach(field => {
       const control = controls[field];
 
@@ -320,16 +387,15 @@ export class DynamicFormGroup<TModel> extends FormGroup {
       if (control instanceof FormControl) {
         if (errors && errors[field]) {
           control.setErrors({ externalError: true });
-        } else if (control.errors && control.errors.externalError === true) {
-          control.setErrors(null);
+        } else {
+          if (control.errors && control.errors.externalError === true) {
+            control.setErrors(null);
+          }
         }
       }
       // Group
       else if (control instanceof DynamicFormGroup) {
-        control.markAsInvalidForExternalErrors(
-          errors && errors[field] ? (errors[field] as ShortValidationErrors) : {},
-          control.controls
-        );
+        control.markAsInvalidForExternalErrors(errors && errors[field] ? (errors[field] as ShortValidationErrors) : {});
       }
       // Array
       else if (control instanceof FormArray) {
@@ -345,8 +411,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
           // Group in Array
           else if (control[i] instanceof DynamicFormGroup) {
             control[i].markAsInvalidForExternalErrors(
-              errors && errors[i] && errors[i][field] ? (errors[i][field] as ShortValidationErrors) : {},
-              control[i].controls
+              errors && errors[i] && errors[i][field] ? (errors[i][field] as ShortValidationErrors) : {}
             );
           }
         }
@@ -402,7 +467,6 @@ export class DynamicFormGroup<TModel> extends FormGroup {
           }
         });
     }
-
     return this.factoryModel ? this.plainToClass(this.factoryModel, object) : object;
   }
 
@@ -431,7 +495,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         const objectArray = this._object ? this._object[key] : [];
         const formArray = this.controls[key] as FormArray;
         const isFormGroup = formArray.controls[0] instanceof DynamicFormGroup;
-        const prevFormGroup = formArray.controls[0] as DynamicFormGroup<any>;
+        const firstFormGroup = formArray.controls[0] as DynamicFormGroup<any>;
         const formControl = formArray.controls[0] as FormControl;
 
         // Clear FormArray while retaining the reference
@@ -442,11 +506,11 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         for (let i = 0; i < objectArray.length; i++) {
           if (isFormGroup) {
             // Create FormGroup
-            const dynamicFormGroup = new DynamicFormGroup(prevFormGroup.factoryModel, prevFormGroup.formFields);
+            const dynamicFormGroup = new DynamicFormGroup(firstFormGroup.factoryModel, firstFormGroup.formFields);
 
             dynamicFormGroup.setParent(this);
 
-            const classValidators = getClassValidators<TModel>(prevFormGroup.factoryModel, prevFormGroup.formFields);
+            const classValidators = getClassValidators<TModel>(firstFormGroup.factoryModel, firstFormGroup.formFields);
             const formGroup = this._fb.group(classValidators);
 
             // Add all controls to the form group
@@ -544,7 +608,19 @@ export function getClassValidators<TModel>(
       if (fieldDefinition.data === undefined) {
         fieldDefinition.data = fields[fieldName];
       }
-      // todo: link exists native validations
+      // TRY LINK EXISTS NATIVE VALIDATIONS, UNSTABLE !!!
+      if (
+        Array.isArray(fieldDefinition.data) &&
+        fieldDefinition.data.length > 1 &&
+        fieldDefinition.data.filter(
+          (validationFunction, index) => index > 0 && typeof validationFunction === 'function'
+        ).length > 0
+      ) {
+        fieldDefinition.data
+          .filter((validationFunction, index) => index > 0 && typeof validationFunction === 'function')
+          .forEach(validationFunction => fieldDefinition.validationFunctions.push(validationFunction));
+        fieldDefinition.data = fieldDefinition.data[0];
+      }
 
       validationGroupMetadatas.forEach(validationMetadata => {
         if (
@@ -565,7 +641,6 @@ export function getClassValidators<TModel>(
                   const objectToValidate =
                     fields[fieldName] instanceof DynamicFormGroup ? fields[fieldName].object : undefined;
                   const nestedValidate = createNestedValidate(objectToValidate, validationMetadata);
-
                   setFieldData(fieldName, fieldDefinition, nestedValidate);
                 }
               }
@@ -585,7 +660,6 @@ export function getClassValidators<TModel>(
           }
         }
       });
-
       // Convert to a structure, angular understands
       if (fieldDefinition.data instanceof DynamicFormGroup || fieldDefinition.data instanceof FormArray) {
         formGroupFields[fieldName] = fieldDefinition.data;
@@ -641,7 +715,6 @@ export function getClassValidators<TModel>(
         validatorOptions
       );
       const isValid = getAllErrors(validateErrors, fieldName).length === 0;
-
       return getIsValidResult(isValid, validationMetadata, 'customValidation');
     };
   }
@@ -691,9 +764,10 @@ export function getClassValidators<TModel>(
   }
 
   function setFieldData(fieldName: string, fieldDefinition: DynamicFormGroupField, validationFunction: Function) {
+    /* todo: maybe not need, if enable this code, experemental mode not work
     if (fields[fieldName] instanceof DynamicFormGroup) {
       fields[fieldName].object = fields[fieldName].fields;
-    }
+    }*/
 
     // Fill field data if empty
     if (fieldDefinition.data === undefined) {
@@ -707,7 +781,8 @@ export function getClassValidators<TModel>(
     return validateErrors.filter(
       (error: ValidationError) =>
         // Check for nested/child errors
-        error.children.length && error.children.filter(children => children.property === fieldName)
+        (error.children.length && error.children.filter(children => children.property === fieldName)) ||
+        error.property === fieldName
     );
   }
 }

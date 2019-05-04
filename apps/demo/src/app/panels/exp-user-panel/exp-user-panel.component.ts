@@ -52,10 +52,9 @@ export class ExpUserPanelComponent {
     this.form.validateAllFormFields();
   }
   onSaveClick(): void {
+    this.form.validateAllFormFields();
     if (this.form.valid) {
       this.savedItem = this.form.object;
-    } else {
-      this.form.validateAllFormFields();
     }
   }
 }

@@ -11,8 +11,10 @@ export class Department {
   };
 
   id: number;
+
   @IsNotEmpty()
   name: string;
+
   @ValidateNested()
   @IsOptional()
   @Type(serializeModel(Company))

@@ -63,16 +63,17 @@ export class Company {
 
 company-panel.component.html
 ```html
-<form [formGroup]="form" novalidate>
+<form [formGroup]="form" *ngIf="form?.formErrors as errors" novalidate>
     <input formControlName="name" placeholder="Name">
-    <p *ngIf="form?.formErrors?.name?.length">
-      Error: {{form.formErrors.name[0]}}
+    <p *ngIf="errors.name?.length">
+      Error: {{errors.name[0]}}
     </p>
     <p>Form status: {{ form.status | json }}</p>
-    <p *ngIf="!form.valid">
-      Form class-validator errors: {{form?.formErrors|json}}
-      <br>
-      Form native errors: {{form?.errors|json}}
+    <p>
+      Form class-validator errors: {{errors|json}}
+    </p>
+    <p>
+      Form native errors: {{form?.nativeValidateErrors|async|json}}
     </p>
     <p *ngIf="savedItem">
       Saved item: {{savedItem|json}}
@@ -124,10 +125,9 @@ export class CompanyPanelComponent {
     this.form.validateAllFormFields();
   }
   onSaveClick(): void {
+    this.form.validateAllFormFields();
     if (this.form.valid) {
       this.savedItem = this.form.object;
-    } else {
-      this.form.validateAllFormFields();
     }
   }
 }
@@ -152,14 +152,14 @@ the customValidateErrors property can be subscribed for cases in which your code
 
 company-panel.component.html
 ```html
-<form [formGroup]="form" novalidate>
+<form [formGroup]="form" *ngIf="form?.customValidateErrors | async as errors" novalidate>
     <input formControlName="name" placeholder="Name">
-    <p *ngIf="(form?.customValidateErrors | async)?.name?.length">
-      Error: {{(form.customValidateErrors | async).name[0]}}
+    <p *ngIf="errors.name?.length">
+      Error: {{errors.name[0]}}
     </p>
     <p>Form status: {{ form.status | json }}</p>
-    <p *ngIf="!form.valid">
-      Observable validation errors: {{form.customValidateErrors|async|json}}
+    <p>
+      Observable validation errors: {{errors|json}}
     </p>
     <p *ngIf="savedItem">
       Saved item: {{savedItem|json}}
@@ -226,10 +226,9 @@ export class CompanyPanelComponent implements onDestroy {
     this.form.validateAllFormFields();
   }
   onSaveClick(): void {
+    this.form.validateAllFormFields();
     if (this.form.valid) {
       this.savedItem = this.form.object;
-    } else {
-      this.form.validateAllFormFields();
     }
   }
 }

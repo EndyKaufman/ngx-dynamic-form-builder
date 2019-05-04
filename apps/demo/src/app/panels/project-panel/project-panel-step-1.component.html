@@ -1,6 +1,6 @@
 <form
     [formGroup]="form"
-    *ngIf="form?.formErrors as errors"
+    *ngIf="form?.customValidateErrors|async as errors"
     novalidate>
     <h3>Create project: step-1</h3>
     <mat-form-field class="full-width">
@@ -8,21 +8,22 @@
             matInput
             formControlName="name"
             placeholder="name">
-        <mat-error *ngIf="errors?.name?.length">{{errors?.name.join('. ')}}</mat-error>
+        <mat-error *ngIf="errors.name?.length">{{errors?.name.join(', ')}}</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
         <input
             matInput
             formControlName="description"
             placeholder="description">
-        <mat-error *ngIf="errors?.description?.length">{{errors.description.join('. ')}}</mat-error>
+        <mat-error *ngIf="errors.description?.length">{{errors.description.join(', ')}}</mat-error>
     </mat-form-field>
     <div class="full-width">
         <p>Form status: {{ form.status | json }}</p>
-        <p *ngIf="!form.valid">
-            Form class-validator errors: {{form?.formErrors|json}}
-            <br>
-            Form native errors: {{form?.errors|json}}
+        <p>
+            Form class-validator errors: {{errors|json}}
+        </p>
+        <p>
+            Form native errors: {{form?.nativeValidateErrors|async|json}}
         </p>
     </div>
     <div

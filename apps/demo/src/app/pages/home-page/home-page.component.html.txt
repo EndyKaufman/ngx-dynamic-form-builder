@@ -1,5 +1,3 @@
 <div class="home-page">
-  <markdown
-      [data]="readme"
-      lineNumbers></markdown>
+  <markdown [data]="readme"></markdown>
 </div>

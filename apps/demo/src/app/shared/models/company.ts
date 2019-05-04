@@ -10,12 +10,14 @@ export class Company {
   };
 
   id: number;
+
   @Validate(TextLengthMore15, {
     message: 'The company name must be longer than 15'
   })
   @IsNotEmpty()
   @MaxLength(20)
   name: string;
+
   @IsOptional()
   @Min(1)
   @Max(99)

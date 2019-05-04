@@ -56,11 +56,10 @@ export class ProjectPanelStep1Component implements OnDestroy {
     this._projectPanelService.clear();
   }
   onNextStepClick(): void {
+    this.form.validateAllFormFields();
     if (this.form.valid) {
       this._projectPanelService.store(this.form.object);
       this._router.navigate(['../step-2'], { relativeTo: this._activatedRoute });
-    } else {
-      this.form.validateAllFormFields();
     }
   }
   onLoadExternalClick(): void {
