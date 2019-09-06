@@ -1,5 +1,5 @@
 {
-  "name": "ngx-dynamic-form-builder",
+  "name": "@libertyware/model-form-builder",
   "version": "1.0.0",
   "description": "FormBuilder + class-transformer + class-validator = dynamic form group builder for Angular7+",
   "keywords": [
@@ -22,23 +22,23 @@
     "angular7"
   ],
   "license": "MIT",
-  "author": "EndyKaufman <admin@site15.ru>",
+  "author": "Libertyware Limited <Jordan@libertyware.co.uk>",
   "engines": {
     "node": ">=10",
     "npm": ">=6.4.0"
   },
   "bugs": {
-    "url": "https://github.com/EndyKaufman/ngx-dynamic-form-builder/issues"
+    "url": "https://github.com/libertyware-limited/model-form-builder/issues"
   },
-  "homepage": "https://github.com/EndyKaufman/ngx-dynamic-form-builder",
+  "homepage": "https://github.com/libertyware-limited/model-form-builder",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EndyKaufman/ngx-dynamic-form-builder.git"
+    "url": "git+https://github.com/libertyware-limited/model-form-builder.git"
   },
   "maintainers": [
     {
-      "name": "EndyKaufman",
-      "email": "admin@site15.ru"
+      "name": "Jordan Hall",
+      "email": "Jordan@libertyware.co.uk"
     }
   ],
   "peerDependencies": {

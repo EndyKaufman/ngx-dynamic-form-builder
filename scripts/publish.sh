@@ -1,3 +1,3 @@
 #!/bin/bash
-npm publish ./dist/ngx-dynamic-form-builder
+npm publish ./dist/model-form-builder
 read -p "Press any key to continue... " -n1 -s

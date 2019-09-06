@@ -11,6 +11,9 @@ import {
 import { DynamicFormGroup, FormModel, getClassValidators } from './dynamic-form-group';
 
 export class DynamicFormBuilder extends FormBuilder {
+
+  static FormGroupClass = DynamicFormGroup;
+
   // ******************
   // Public API
 
@@ -144,7 +147,7 @@ export class DynamicFormBuilder extends FormBuilder {
     });
 
     // Initialize the resulting group
-    const dynamicFormGroup = new DynamicFormGroup<TModel>(factoryModel, newControlsConfig, {
+    const dynamicFormGroup = new DynamicFormBuilder.FormGroupClass<TModel>(factoryModel, newControlsConfig, {
       asyncValidators,
       updateOn,
       validators
@@ -169,7 +172,7 @@ export class DynamicFormBuilder extends FormBuilder {
   /**
    * Recursively creates an empty object from the data provided
    */
-  private createEmptyObject<TModel>(factoryModel: ClassType<TModel>, data = {}) {
+  protected createEmptyObject<TModel>(factoryModel: ClassType<TModel>, data = {}) {
     let modifed = false;
 
     const object: any = factoryModel ? plainToClass(factoryModel, data) : data;

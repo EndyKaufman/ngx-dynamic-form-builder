@@ -34,16 +34,17 @@ const mergeWith = require('lodash.mergewith');
 export type FormModel<T> = { [P in keyof T]?: T[P] | DynamicFormGroup<any> | FormArray };
 
 export class DynamicFormGroup<TModel> extends FormGroup {
+  static FormControlClass = DynamicFormControl;
   public nativeValidateErrors = new BehaviorSubject<Dictionary>({});
   public customValidateErrors = new BehaviorSubject<ShortValidationErrors>({});
   public formErrors: ShortValidationErrors;
   public formFields: Dictionary;
   public objectChange = new Subject();
 
-  private _object: TModel;
-  private _externalErrors: ShortValidationErrors;
-  private _validatorOptions: ValidatorOptions;
-  private _fb = new FormBuilder();
+  protected _object: TModel;
+  protected _externalErrors: ShortValidationErrors;
+  protected _validatorOptions: ValidatorOptions;
+  protected _fb = new FormBuilder();
 
   constructor(
     public factoryModel: ClassType<TModel>,
@@ -158,7 +159,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     this.nativeValidateErrors.next(this.collectErrors(this));
   }
 
-  private collectErrors(control: Dictionary, isRoot = true): any | null {
+  protected collectErrors(control: Dictionary, isRoot = true): any | null {
     if (control.controls) {
       return {
         ...(isRoot ? this.errors : {}),
@@ -304,7 +305,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   }
 
   // Helpers
-  private onlyFields(fields: FormModel<any>): Dictionary {
+  protected onlyFields(fields: FormModel<any>): Dictionary {
     const newFields: Dictionary = {};
 
     if (fields !== undefined) {
@@ -359,7 +360,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     return customErrors;
   }
 
-  private mergeErrors(externalErrors?: ShortValidationErrors, validationErrors?: ShortValidationErrors) {
+  protected mergeErrors(externalErrors?: ShortValidationErrors, validationErrors?: ShortValidationErrors) {
     const clonedExternalErrors = cloneDeep(externalErrors);
     return mergeWith(clonedExternalErrors, validationErrors, (objValue, srcValue) => {
       if (canMerge()) {
@@ -376,7 +377,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     });
   }
 
-  private markAsInvalidForExternalErrors(errors: ShortValidationErrors, controls?: Dictionary<AbstractControl>) {
+  protected markAsInvalidForExternalErrors(errors: ShortValidationErrors, controls?: Dictionary<AbstractControl>) {
     if (!controls) {
       controls = this.controls;
     }
@@ -423,7 +424,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
    * Recursively gets all values from the form controls and all sub form group and array controls and returns it as
    * an object
    */
-  private getObject(): TModel {
+  protected getObject(): TModel {
     // Initialize the shape of the response
     const object = this._object
       ? this.classToClass(this._object)
@@ -476,7 +477,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
    *
    * @param object the data to assign to all controls of the form group and sub groups
    */
-  private setObject(object: TModel) {
+  protected setObject(object: TModel) {
     if (object instanceof this.factoryModel) {
       this._object = this.classToClass(object); // Ensure correct type
     } else {
@@ -664,7 +665,7 @@ export function getClassValidators<TModel>(
       if (fieldDefinition.data instanceof DynamicFormGroup || fieldDefinition.data instanceof FormArray) {
         formGroupFields[fieldName] = fieldDefinition.data;
       } else {
-        formGroupFields[fieldName] = new DynamicFormControl(fieldDefinition);
+        formGroupFields[fieldName] = new DynamicFormGroup.FormControlClass(fieldDefinition);
       }
     });
 
