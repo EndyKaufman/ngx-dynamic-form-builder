@@ -89,7 +89,7 @@
     "lodash.clonedeep": "^4.5.0",
     "lodash.mergewith": "^4.6.1",
     "ngx-markdown": "^7.1.5",
-    "prismjs": "^1.16.0",
+    "prismjs": "^1.18.0",
     "rxjs": "^6.5.1",
     "zone.js": "^0.9.1"
   },
