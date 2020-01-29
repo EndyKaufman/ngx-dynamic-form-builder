@@ -29,7 +29,7 @@ export class DynamicFormBuilder extends FormBuilder {
     ) {
       return this.group(factoryModel, undefined, controlsConfig);
     }
-    const extra: DynamicFormGroupConfig = options as DynamicFormGroupConfig;
+    const extra: DynamicFormGroupConfig = (options || {}) as DynamicFormGroupConfig;
 
     let validators: ValidatorFn[] | null = null;
     let asyncValidators: AsyncValidatorFn[] | null = null;
