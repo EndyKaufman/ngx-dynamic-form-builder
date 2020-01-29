@@ -65,13 +65,11 @@ export class DynamicFormBuilder extends FormBuilder {
     
     // If there is no manual controlsConfig specified, use given factoryModel to create a proto-form-model. 
 
-    let newControlsConfig: FormModel<TModel> | undefined;
-
+    let newControlsConfig: FormModel<TModel>;
     if (controlsConfig !== undefined) {
       newControlsConfig = controlsConfig as FormModel<TModel>;
     }
-
-    // experimental
+ 
     if (controlsConfig === undefined) {
       newControlsConfig = { ...this.createEmptyObject(factoryModel) };
 
@@ -89,7 +87,7 @@ export class DynamicFormBuilder extends FormBuilder {
         } else {
           if (canCreateArray()) {
             if (newControlsConfig[key][0].constructor) {
-              // recursively create an array with a group
+              // create a FormArray<FormGroup<GivenConstructor>>
               newControlsConfig[key] = super.array(
                 newControlsConfig[key].map(newControlsConfigItem =>
                   this.group(newControlsConfigItem.constructor, undefined, {
@@ -101,42 +99,43 @@ export class DynamicFormBuilder extends FormBuilder {
                 )
               );
             } else {
-              // Create an array of form controls
+			  // create a FormArray<GivenPlainData>
               newControlsConfig[key] = super.array(
                 newControlsConfig[key].map(newControlsConfigItem => this.control(newControlsConfigItem))
               );
             }
           }
+		}
+		
+		function canCreateGroup() {
+			const candidate = newControlsConfig && newControlsConfig[key];
 
-          function canCreateGroup() {
-            const candidate = newControlsConfig && newControlsConfig[key];
+			return (
+				candidate &&
+				!Array.isArray(candidate) &&
+				candidate.constructor &&
+				typeof candidate === 'object' &&
+				(candidate.length === undefined ||
+				(candidate.length !== undefined && Object.keys(candidate).length === candidate.length))
+			);
+		}
 
-            return (
-              candidate &&
-              !Array.isArray(candidate) &&
-              candidate.constructor &&
-              typeof candidate === 'object' &&
-              (candidate.length === undefined ||
-                (candidate.length !== undefined && Object.keys(candidate).length === candidate.length))
-            );
-          }
+		function canCreateArray() {
+			if (Array.isArray(newControlsConfig && newControlsConfig[key]) === false) {
+				return false;
+			}
 
-          function canCreateArray() {
-            if (Array.isArray(newControlsConfig && newControlsConfig[key]) === false) {
-              return false;
-            }
+			const candidate = newControlsConfig && newControlsConfig[key][0];
 
-            const candidate = newControlsConfig && newControlsConfig[key][0];
+			return (
+				candidate.constructor &&
+				typeof candidate === 'object' &&
+				(candidate.length === undefined ||
+				(candidate.length !== undefined && Object.keys(candidate).length === candidate.length))
+			);
+		}
 
-            return (
-              candidate.constructor &&
-              typeof candidate === 'object' &&
-              (candidate.length === undefined ||
-                (candidate.length !== undefined && Object.keys(candidate).length === candidate.length))
-            );
-          }
-        });
-      }
+      });
     }
 
     // Remove empty
