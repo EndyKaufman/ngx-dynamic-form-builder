@@ -54,6 +54,8 @@ export class DynamicFormBuilder extends FormBuilder {
         extra.customValidatorOptions = { validationError: { target: false } };
       }
     }
+    
+    // If there is no manual controlsConfig specified, use given factoryModel to create a proto-form-model. 
 
     let newControlsConfig: FormModel<TModel>;
 
@@ -65,6 +67,8 @@ export class DynamicFormBuilder extends FormBuilder {
     if (controlsConfig === undefined) {
       newControlsConfig = { ...this.createEmptyObject(factoryModel) };
 
+      // check if any given properties are objects or arrays.
+      // in this case, try to create FormArrays / sub-FormGroups for them.
       Object.keys(newControlsConfig).forEach(key => {
         if (canCreateGroup()) {
           // recursively create a dynamic group for the nested object
@@ -176,7 +180,11 @@ export class DynamicFormBuilder extends FormBuilder {
     const fields = Object.keys(object);
 
     fields.forEach((fieldName: any) => {
+		// find array fields
       if (object[fieldName] && object[fieldName].length !== undefined) {
+		  // check if field has an existing object entry with constructor
+		  // if so, createEmptyObject from entries constructor - why??
+		  // probably to find sub-arrays!
         if (
           object[fieldName].length === 1 &&
           Object.keys(object[fieldName][0]).length > 0 &&
@@ -185,6 +193,7 @@ export class DynamicFormBuilder extends FormBuilder {
           object[fieldName] = [this.createEmptyObject(object[fieldName][0].constructor)];
         }
 
+		// if length is 0, add an empty entry and run createEmptyObject with modified data again.
         if (object[fieldName].length === 0) {
           data[fieldName] = [{}];
           modifed = true;
