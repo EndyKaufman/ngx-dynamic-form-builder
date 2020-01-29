@@ -88,15 +88,16 @@ export class DynamicFormBuilder extends FormBuilder {
           if (canCreateArray()) {
             if (newControlsConfig[key][0].constructor) {
               // create a FormArray<FormGroup<GivenConstructor>>
+              const newFormArrayGroup = newControlsConfig[key].map(newControlsConfigItem =>
+                this.group(newControlsConfigItem.constructor, undefined, {
+                  ...(extra.customValidatorOptions ? { customValidatorOptions: extra.customValidatorOptions } : {}),
+                  asyncValidators,
+                  updateOn,
+                  validators
+                })
+              );
               newControlsConfig[key] = super.array(
-                newControlsConfig[key].map(newControlsConfigItem =>
-                  this.group(newControlsConfigItem.constructor, undefined, {
-                    ...(extra.customValidatorOptions ? { customValidatorOptions: extra.customValidatorOptions } : {}),
-                    asyncValidators,
-                    updateOn,
-                    validators
-                  })
-                )
+                newFormArrayGroup
               );
             } else {
 			  // create a FormArray<GivenPlainData>
@@ -180,9 +181,8 @@ export class DynamicFormBuilder extends FormBuilder {
    */
   private createEmptyObject<TModel>(factoryModel: ClassType<TModel>, data = {}) {
     let modifed = false;
-
-    const object: any = factoryModel ? plainToClass(factoryModel, data) : data;
-    const fields = Object.keys(object);
+    let object: any = factoryModel ? plainToClass(factoryModel, data) : data;
+	const fields = Object.keys(object);
 
     fields.forEach((fieldName: any) => {
 		// find array fields
@@ -206,12 +206,12 @@ export class DynamicFormBuilder extends FormBuilder {
       } else {
         data[fieldName] = undefined;
       }
-    });
+	});
+	
 
     if (modifed) {
-      return this.createEmptyObject(factoryModel, data);
+      object = this.createEmptyObject(factoryModel, data);
     }
-
-    return object;
+	return object;
   }
 }
