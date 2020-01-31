@@ -1,4 +1,4 @@
-import { AbstractControlOptions, AsyncValidatorFn, FormBuilder, ValidatorFn } from '@angular/forms';
+import { AbstractControlOptions, AsyncValidatorFn, FormBuilder, ValidatorFn, FormArray } from '@angular/forms';
 import { plainToClass } from 'class-transformer';
 import { ClassType } from 'class-transformer/ClassTransformer';
 import 'reflect-metadata';
@@ -66,15 +66,16 @@ export class DynamicFormBuilder extends FormBuilder {
     // If there is no manual controlsConfig specified, use given factoryModel to create a proto-form-model. 
 
     let newControlsConfig: FormModel<TModel>;
-    if (controlsConfig !== undefined) {
-      newControlsConfig = controlsConfig as FormModel<TModel>;
-    }
- 
-    if (controlsConfig === undefined) {
-      newControlsConfig = { ...this.createEmptyObject(factoryModel) };
+	if (controlsConfig !== undefined) {
+		newControlsConfig = controlsConfig as FormModel<TModel>;
+	} else {
+		newControlsConfig = { ...this.createEmptyObject(factoryModel) };
+	}
 
-      // check if any given properties are objects or arrays.
-      // in this case, try to create FormArrays / sub-FormGroups for them.
+	// console.log('////// newControlsConfig',controlsConfig,newControlsConfig)
+	
+    // experimental
+    if (newControlsConfig) {
       Object.keys(newControlsConfig).forEach(key => {
         if (canCreateGroup()) {
           // recursively create a dynamic group for the nested object
@@ -87,21 +88,23 @@ export class DynamicFormBuilder extends FormBuilder {
         } else {
           if (canCreateArray()) {
             if (newControlsConfig[key][0].constructor) {
-              // create a FormArray<FormGroup<GivenConstructor>>
-              const newFormArrayGroup = newControlsConfig[key].map(newControlsConfigItem =>
-                this.group(newControlsConfigItem.constructor, undefined, {
-                  ...(extra.customValidatorOptions ? { customValidatorOptions: extra.customValidatorOptions } : {}),
-                  asyncValidators,
-                  updateOn,
-                  validators
-                })
-              );
-              newControlsConfig[key] = super.array(
+			  // recursively create an array with a group
+			  const newFormArrayGroup = newControlsConfig[key].map(newControlsConfigItem =>
+				this.group(newControlsConfigItem.constructor, undefined, {
+				  ...(extra.customValidatorOptions ? { customValidatorOptions: extra.customValidatorOptions } : {}),
+				  asyncValidators,
+				  updateOn,
+				  validators
+				})
+			  );
+			//   console.log('///////// FormGroup for formArray',newFormArrayGroup,newControlsConfig[key][0].constructor)
+              newControlsConfig[key] = this.array(
                 newFormArrayGroup
               );
+			//   console.log('///////// formArray',newControlsConfig[key])
             } else {
-			  // create a FormArray<GivenPlainData>
-              newControlsConfig[key] = super.array(
+              // Create an array of form controls
+              newControlsConfig[key] = this.array(
                 newControlsConfig[key].map(newControlsConfigItem => this.control(newControlsConfigItem))
               );
             }
@@ -173,16 +176,27 @@ export class DynamicFormBuilder extends FormBuilder {
     return dynamicFormGroup;
   }
 
+  array(
+	controlsConfig: any[],
+	validatorOrOpts?: ValidatorFn|ValidatorFn[]|AbstractControlOptions|null,
+	asyncValidator?: AsyncValidatorFn|AsyncValidatorFn[]|null): FormArray
+  {
+    return super.array(controlsConfig,validatorOrOpts,asyncValidator);
+  }
   // *******************
   // Helpers
 
   /**
    * Recursively creates an empty object from the data provided
    */
-  private createEmptyObject<TModel>(factoryModel: ClassType<TModel>, data = {}) {
+  private createEmptyObject<TModel>(factoryModel: ClassType<TModel>, data = {}, first=true) {
     let modifed = false;
+    // const object: any = factoryModel ? new factoryModel(data) : data;
     let object: any = factoryModel ? plainToClass(factoryModel, data) : data;
 	const fields = Object.keys(object);
+	
+	// if(first) console.log('create empty object',object)
+	// if(!first) console.log('object created from modified', object,data)
 
     fields.forEach((fieldName: any) => {
 		// find array fields
@@ -210,8 +224,10 @@ export class DynamicFormBuilder extends FormBuilder {
 	
 
     if (modifed) {
-      object = this.createEmptyObject(factoryModel, data);
+		// console.log('xxx',data)
+      object = this.createEmptyObject(factoryModel, data, false);
     }
+	// console.log('========== Resulting object',object)
 	return object;
   }
 }
