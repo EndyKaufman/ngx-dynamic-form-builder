@@ -1,4 +1,4 @@
-import { AbstractControlOptions, AsyncValidatorFn, FormBuilder, ValidatorFn } from '@angular/forms';
+import { AbstractControlOptions, AsyncValidatorFn, FormBuilder, ValidatorFn, FormArray } from '@angular/forms';
 import { plainToClass } from 'class-transformer';
 import { ClassType } from 'class-transformer/ClassTransformer';
 import 'reflect-metadata';
@@ -79,18 +79,20 @@ export class DynamicFormBuilder extends FormBuilder {
         } else {
           if (canCreateArray()) {
             if (newControlsConfig[key][0].constructor) {
-              // create a FormArray<FormGroup<GivenConstructor>>
-              const newFormArrayGroup = newControlsConfig[key].map(newControlsConfigItem =>
-                this.group(newControlsConfigItem.constructor, undefined, {
-                  ...(extra.customValidatorOptions ? { customValidatorOptions: extra.customValidatorOptions } : {}),
-                  asyncValidators,
-                  updateOn,
-                  validators
-                })
-              );
-              newControlsConfig[key] = super.array(
+			  // create a FormArray<FormGroup<GivenConstructor>>
+			  const newFormArrayGroup = newControlsConfig[key].map(newControlsConfigItem =>
+				this.group(newControlsConfigItem.constructor, undefined, {
+				  ...(extra.customValidatorOptions ? { customValidatorOptions: extra.customValidatorOptions } : {}),
+				  asyncValidators,
+				  updateOn,
+				  validators
+				})
+			  );
+			//   console.log('///////// FormGroup for formArray',newFormArrayGroup,newControlsConfig[key][0].constructor)
+              newControlsConfig[key] = this.array(
                 newFormArrayGroup
               );
+			//   console.log('///////// formArray',newControlsConfig[key])
             } else {
 			  // create a FormArray<GivenPlainData>
               newControlsConfig[key] = super.array(
@@ -166,6 +168,13 @@ export class DynamicFormBuilder extends FormBuilder {
     return dynamicFormGroup;
   }
 
+  array(
+	controlsConfig: any[],
+	validatorOrOpts?: ValidatorFn|ValidatorFn[]|AbstractControlOptions|null,
+	asyncValidator?: AsyncValidatorFn|AsyncValidatorFn[]|null): FormArray
+  {
+    return super.array(controlsConfig,validatorOrOpts,asyncValidator);
+  }
   // *******************
   // Helpers
 

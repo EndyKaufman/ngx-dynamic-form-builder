@@ -1,6 +1,6 @@
 {
   "name": "@yoolabs/ngx-dynamic-form-builder",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "FormBuilder + class-transformer + class-validator = dynamic form group builder for Angular7+",
   "keywords": [
     "form-builder",
