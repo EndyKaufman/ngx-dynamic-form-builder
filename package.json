@@ -1,5 +1,5 @@
 {
-  "name": "ngx-dynamic-form-builder",
+  "name": "@yoolabs/ngx-dynamic-form-builder",
   "version": "1.0.0",
   "description": "FormBuilder + class-transformer + class-validator = dynamic form group builder for Angular7+",
   "keywords": [
@@ -36,10 +36,7 @@
     "url": "git+https://github.com/EndyKaufman/ngx-dynamic-form-builder.git"
   },
   "maintainers": [
-    {
-      "name": "EndyKaufman",
-      "email": "admin@site15.ru"
-    }
+    "EndyKaufman <admin@site15.ru>"
   ],
   "scripts": {
     "config:mono": "rucken config -m dev",
@@ -60,7 +57,7 @@
     "e2e": "ng e2e",
     "github:prebuild": "ng build demo --base-href /ngx-dynamic-form-builder/ --prod",
     "github:build": "run-s format:fix lib:build config:prod github:prebuild github:postbuild",
-    "github:postbuild": "./node_modules/.bin/cp-cli ./dist/demo/index.html ./dist/demo/404.html",
+    "github:postbuild": "cp-cli ./dist/demo/index.html ./dist/demo/404.html",
     "github:deploy": "gh-pages -d dist/demo",
     "format:fix": "prettier  --config ./.prettierrc --write \"{apps,libs}/**/*.ts\""
   },
@@ -136,5 +133,6 @@
     "ignore": [
       "typescript"
     ]
-  }
+  },
+  "main": "index.js"
 }
