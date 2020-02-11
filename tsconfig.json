@@ -1,6 +1,17 @@
 {
   "compileOnSave": false,
+  "angularCompilerOptions": {
+    "strictTemplates":true,
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true,
+    "disableTypeScriptVersionCheck": true,
+    "enableIvy": true
+  },
   "compilerOptions": {
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noFallthroughCasesInSwitch": true,
+    "strictNullChecks": true,
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
