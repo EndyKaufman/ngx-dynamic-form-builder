@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "angularCompilerOptions": {
-    "strictTemplates":true,
+    "strictTemplates": true,
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true,
     "disableTypeScriptVersionCheck": true,
@@ -30,7 +30,8 @@
     ],
     "lib": [
       "es2017",
-      "dom"
+      "dom",
+      "esnext.asynciterable"
     ],
     "paths": {
       "ngx-dynamic-form-builder": [

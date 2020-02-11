@@ -45,9 +45,13 @@ export class DynamicFormBuilder extends FormBuilder {
       if (isLegacyOrOpts(extra)) {
         // `extra` are legacy form group options
         validators = validators || [];
-        validators = [...validators, extra.validator != null ? extra.validator : null];
+        if (extra.validator != null) {
+          validators.push(extra.validator);
+        }
         asyncValidators = asyncValidators || [];
-        asyncValidators = [...asyncValidators, extra.asyncValidator != null ? extra.asyncValidator : null];
+        if (extra.asyncValidator != null) {
+          asyncValidators.push(extra.asyncValidator);
+        }
       }
       // Set default customValidatorOptions
       if (!isDynamicFormGroupConfig(extra)) {
@@ -55,7 +59,7 @@ export class DynamicFormBuilder extends FormBuilder {
       }
     }
 
-    let newControlsConfig: FormModel<TModel>;
+    let newControlsConfig: FormModel<TModel> | undefined;
 
     if (controlsConfig !== undefined) {
       newControlsConfig = controlsConfig as FormModel<TModel>;
@@ -64,67 +68,68 @@ export class DynamicFormBuilder extends FormBuilder {
     // experimental
     if (controlsConfig === undefined) {
       newControlsConfig = { ...this.createEmptyObject(factoryModel) };
-
-      Object.keys(newControlsConfig).forEach(key => {
-        if (canCreateGroup()) {
-          // recursively create a dynamic group for the nested object
-          newControlsConfig[key] = this.group(newControlsConfig[key].constructor, undefined, {
-            ...(extra.customValidatorOptions ? { customValidatorOptions: extra.customValidatorOptions } : {}),
-            asyncValidators,
-            updateOn,
-            validators
-          });
-        } else {
-          if (canCreateArray()) {
-            if (newControlsConfig[key][0].constructor) {
-              // recursively create an array with a group
-              newControlsConfig[key] = super.array(
-                newControlsConfig[key].map(newControlsConfigItem =>
-                  this.group(newControlsConfigItem.constructor, undefined, {
-                    ...(extra.customValidatorOptions ? { customValidatorOptions: extra.customValidatorOptions } : {}),
-                    asyncValidators,
-                    updateOn,
-                    validators
-                  })
-                )
-              );
-            } else {
-              // Create an array of form controls
-              newControlsConfig[key] = super.array(
-                newControlsConfig[key].map(newControlsConfigItem => this.control(newControlsConfigItem))
-              );
+      if (newControlsConfig !== undefined) {
+        Object.keys(newControlsConfig).forEach(key => {
+          if (canCreateGroup() && newControlsConfig) {
+            // recursively create a dynamic group for the nested object
+            newControlsConfig[key] = this.group(newControlsConfig[key].constructor, undefined, {
+              ...(extra.customValidatorOptions ? { customValidatorOptions: extra.customValidatorOptions } : {}),
+              asyncValidators,
+              updateOn,
+              validators
+            });
+          } else {
+            if (canCreateArray() && newControlsConfig) {
+              if (newControlsConfig[key][0].constructor) {
+                // recursively create an array with a group
+                newControlsConfig[key] = super.array(
+                  newControlsConfig[key].map(newControlsConfigItem =>
+                    this.group(newControlsConfigItem.constructor, undefined, {
+                      ...(extra.customValidatorOptions ? { customValidatorOptions: extra.customValidatorOptions } : {}),
+                      asyncValidators,
+                      updateOn,
+                      validators
+                    })
+                  )
+                );
+              } else {
+                // Create an array of form controls
+                newControlsConfig[key] = super.array(
+                  newControlsConfig[key].map(newControlsConfigItem => this.control(newControlsConfigItem))
+                );
+              }
             }
           }
-        }
 
-        function canCreateGroup() {
-          const candidate = newControlsConfig[key];
+          function canCreateGroup() {
+            const candidate = newControlsConfig && newControlsConfig[key];
 
-          return (
-            candidate &&
-            !Array.isArray(candidate) &&
-            candidate.constructor &&
-            typeof candidate === 'object' &&
-            (candidate.length === undefined ||
-              (candidate.length !== undefined && Object.keys(candidate).length === candidate.length))
-          );
-        }
-
-        function canCreateArray() {
-          if (Array.isArray(newControlsConfig[key]) === false) {
-            return false;
+            return (
+              candidate &&
+              !Array.isArray(candidate) &&
+              candidate.constructor &&
+              typeof candidate === 'object' &&
+              (candidate.length === undefined ||
+                (candidate.length !== undefined && Object.keys(candidate).length === candidate.length))
+            );
           }
 
-          const candidate = newControlsConfig[key][0];
+          function canCreateArray() {
+            if (Array.isArray(newControlsConfig && newControlsConfig[key]) === false) {
+              return false;
+            }
 
-          return (
-            candidate.constructor &&
-            typeof candidate === 'object' &&
-            (candidate.length === undefined ||
-              (candidate.length !== undefined && Object.keys(candidate).length === candidate.length))
-          );
-        }
-      });
+            const candidate = newControlsConfig && newControlsConfig[key][0];
+
+            return (
+              candidate.constructor &&
+              typeof candidate === 'object' &&
+              (candidate.length === undefined ||
+                (candidate.length !== undefined && Object.keys(candidate).length === candidate.length))
+            );
+          }
+        });
+      }
     }
 
     // Remove empty
