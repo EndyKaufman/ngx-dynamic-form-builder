@@ -1,13 +1,15 @@
 <form
     [formGroup]="form"
     *ngIf="form?.customValidateErrors|async as errors"
-    novalidate>
+    novalidate
+>
     <h3>Group form</h3>
     <mat-form-field class="full-width">
         <input
             matInput
             formControlName="username"
-            [placeholder]="strings.username">
+            [placeholder]="strings.username"
+        >
         <mat-error *ngIf="errors?.username?.length">{{errors?.username.join(', ')}}</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
@@ -15,7 +17,8 @@
             matInput
             type="email"
             formControlName="email"
-            [placeholder]="strings.email">
+            [placeholder]="strings.email"
+        >
         <mat-error *ngIf="errors?.email?.length">{{errors?.email.join(', ')}}</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
@@ -23,7 +26,8 @@
             matInput
             type="date"
             formControlName="dateOfBirth"
-            [placeholder]="strings.dateOfBirth">
+            [placeholder]="strings.dateOfBirth"
+        >
         <mat-error *ngIf="form.get('dateOfBirth')?.hasError('required')">
             date of birth is
             <strong>required</strong>
@@ -36,7 +40,8 @@
             <input
                 matInput
                 formControlName="name"
-                [placeholder]="strings.department">
+                [placeholder]="strings.department"
+            >
             <mat-error *ngIf="errors?.department?.name?.length">{{errors?.department.name.join(', ')}}</mat-error>
         </mat-form-field>
         <div formGroupName="company">
@@ -45,7 +50,8 @@
                 <input
                     matInput
                     formControlName="name"
-                    [placeholder]="departmentStrings.company">
+                    [placeholder]="departmentStrings.company"
+                >
                 <mat-error *ngIf="errors?.department?.company?.name?.length">
                     {{errors?.department.company.name.join(', ')}}
                 </mat-error>
@@ -55,7 +61,8 @@
                     matInput
                     formControlName="regionNum"
                     type="number"
-                    [placeholder]="companyStrings.regionNum">
+                    [placeholder]="companyStrings.regionNum"
+                >
                 <mat-error *ngIf="errors?.department?.company?.regionNum?.length">
                     {{errors?.department.company.regionNum.join(', ')}}
                 </mat-error>
@@ -80,46 +87,68 @@
         class="full-width"
         fxLayout.gt-md="row"
         fxLayout.lt-md="column"
-        fxLayoutAlign="space-evenly stretch">
+        fxLayoutAlign="space-evenly stretch"
+    >
         <div
-            fxFlex.gt-sm="30"
+            fxFlex.gt-sm="60"
             fxLayout="row"
-            fxLayoutAlign="start center">
+            fxLayoutAlign="start center"
+        >
             <button
                 mat-raised-button
-                (click)="onLoadClick()">
+                (click)="onLoadClick()"
+            >
                 Load
             </button>
             <button
                 mat-raised-button
-                (click)="onClearClick()">
+                (click)="onClearClick()"
+            >
                 Clear
             </button>
             <button
                 mat-raised-button
                 (click)="onSaveClick()"
                 [disabled]="!form.valid"
-                cdkFocusInitial>
+                cdkFocusInitial
+            >
                 Save
             </button>
         </div>
         <div
-            fxFlex.gt-sm="70"
+            fxFlex.gt-sm="40"
             fxLayout="row"
-            fxLayoutAlign="end center">
+            fxLayoutAlign="end center"
+        >
             <button
                 mat-raised-button
-                (click)="onResetValidateAllFormFields()">
+                (click)="onResetValidateAllFormFields()"
+            >
                 Reset validate states
             </button>
+        </div>
+    </div>
+    <div
+        class="full-width"
+        fxLayout.gt-md="row"
+        fxLayout.lt-md="column"
+        fxLayoutAlign="space-evenly stretch"
+    >
+        <div
+            fxFlex.gt-sm="100"
+            fxLayout="row"
+            fxLayoutAlign="start center"
+        >
             <button
                 mat-raised-button
-                (click)="onLoadExternalClick()">
+                (click)="onLoadExternalClick()"
+            >
                 Load external
             </button>
             <button
                 mat-raised-button
-                (click)="onClearExternalClick()">
+                (click)="onClearExternalClick()"
+            >
                 Clear external
             </button>
         </div>
