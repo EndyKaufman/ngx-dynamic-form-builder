@@ -8,7 +8,7 @@
             matInput
             formControlName="username"
             placeholder="Username">
-        <mat-error *ngIf="errors.username?.length">{{errors.username[0]}}</mat-error>
+        <mat-error *ngIf="errors?.username?.length">{{errors?.username[0]}}</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
         <input
@@ -16,7 +16,7 @@
             type="password"
             formControlName="password"
             placeholder="Password">
-        <mat-error *ngIf="errors.password?.length">{{errors.password[0]}}</mat-error>
+        <mat-error *ngIf="errors?.password?.length">{{errors?.password[0]}}</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
         <input
@@ -24,7 +24,7 @@
             type="email"
             formControlName="email"
             placeholder="Email">
-        <mat-error *ngIf="errors.email?.length">{{errors.email[0]}}</mat-error>
+        <mat-error *ngIf="errors?.email?.length">{{errors?.email[0]}}</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
         <input
@@ -32,11 +32,11 @@
             type="date"
             formControlName="dateOfBirth"
             placeholder="Date of birth">
-        <mat-error *ngIf="form.get('dateOfBirth').hasError('required')">
+        <mat-error *ngIf="form.get('dateOfBirth')?.hasError('required')">
             date of birth is
             <strong>required</strong>
         </mat-error>
-        <mat-error *ngIf="errors.dateOfBirth?.length">{{errors.dateOfBirth[0]}}</mat-error>
+        <mat-error *ngIf="errors?.dateOfBirth?.length">{{errors?.dateOfBirth[0]}}</mat-error>
     </mat-form-field>
     <div formGroupName="department">
         <h3>Department of user</h3>
@@ -45,7 +45,7 @@
                 matInput
                 formControlName="name"
                 placeholder="Department name">
-            <mat-error *ngIf="errors.department?.name?.length">{{errors.department.name[0]}}</mat-error>
+            <mat-error *ngIf="errors?.department?.name?.length">{{errors?.department.name[0]}}</mat-error>
         </mat-form-field>
         <div formGroupName="company">
             <h3>Company of department</h3>
@@ -54,7 +54,7 @@
                     matInput
                     formControlName="name"
                     placeholder="Company name">
-                <mat-error *ngIf="errors.department?.company?.name?.length">{{errors.department.company.name[0]}}</mat-error>
+                <mat-error *ngIf="errors?.department?.company?.name?.length">{{errors?.department.company.name[0]}}</mat-error>
             </mat-form-field>
             <mat-form-field class="full-width">
                 <input
@@ -62,8 +62,8 @@
                     formControlName="regionNum"
                     type="number"
                     placeholder="Company region num">
-                <mat-error *ngIf="errors.department?.company?.regionNum?.length">
-                    {{errors.department?.company?.regionNum[0]}}
+                <mat-error *ngIf="errors?.department?.company?.regionNum?.length">
+                    {{errors?.department?.company?.regionNum[0]}}
                 </mat-error>
             </mat-form-field>
         </div>

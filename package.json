@@ -57,12 +57,14 @@
     "build": "run-s app:build",
     "test": "run-s github:build",
     "lint": "ng lint",
+    "tslint": "tslint",
     "e2e": "ng e2e",
     "github:prebuild": "ng build demo --base-href /ngx-dynamic-form-builder/ --prod",
     "github:build": "run-s format:fix lib:build config:prod github:prebuild github:postbuild",
     "github:postbuild": "./node_modules/.bin/cp-cli ./dist/demo/index.html ./dist/demo/404.html",
     "github:deploy": "gh-pages -d dist/demo",
-    "format:fix": "prettier  --config ./.prettierrc --write \"{apps,libs}/**/*.ts\""
+    "format:fix": "prettier  --config ./.prettierrc --write \"{apps,libs}/**/*.ts\"",
+    "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points"
   },
   "private": true,
   "dependencies": {
@@ -79,7 +81,6 @@
     "@angular/pwa": "^0.900.1",
     "@angular/router": "^9.0.0",
     "@angular/service-worker": "^9.0.0",
-    "@ngx-prism/core": "^2.0.1",
     "@types/prismjs": "^1.16.0",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.11.0",
@@ -87,7 +88,7 @@
     "lodash-es": "^4.17.15",
     "lodash.clonedeep": "^4.5.0",
     "lodash.mergewith": "^4.6.2",
-    "ngx-markdown": "^8.2.2",
+    "ngx-markdown": "^9.0.0-beta.0",
     "prismjs": "^1.19.0",
     "rxjs": "^6.5.4",
     "zone.js": "^0.10.2"
@@ -98,7 +99,7 @@
     "@angular/cli": "^9.0.1",
     "@angular/compiler-cli": "^9.0.0",
     "@angular/language-service": "^9.0.0",
-    "@rucken/cli": "^4.1.5",
+    "@rucken/cli": "^4.1.6",
     "@types/jasmine": "~3.5.3",
     "@types/jasminewd2": "~2.0.8",
     "@types/lodash.clonedeep": "^4.5.6",

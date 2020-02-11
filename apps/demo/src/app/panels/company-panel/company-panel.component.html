@@ -7,7 +7,7 @@
             matInput
             formControlName="name"
             [placeholder]="strings.name">
-        <mat-error *ngIf="errors.name?.length>0">{{errors.name[0]}}</mat-error>
+        <mat-error *ngIf="errors?.name?.length>0">{{errors?.name[0]}}</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
         <input
@@ -15,7 +15,7 @@
             formControlName="regionNum"
             type="number"
             [placeholder]="strings.regionNum">
-        <mat-error *ngIf="errors.regionNum?.length">{{errors.regionNum.join(', ')}}</mat-error>
+        <mat-error *ngIf="errors?.regionNum?.length">{{errors?.regionNum.join(', ')}}</mat-error>
     </mat-form-field>
     <div class="full-width">
         <p>Form status: {{ form.status | json }}</p>

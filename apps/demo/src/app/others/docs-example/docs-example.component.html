@@ -7,20 +7,23 @@
         <button
             mat-button
             (click)="switchActive('code')"
-            matTooltip="{{view?.code?.tooltip}}">
+            matTooltip="{{view?.code?.tooltip}}"
+        >
             <mat-icon>code</mat-icon>
         </button>
         <button
             mat-button
             (click)="switchActive('debug')"
-            matTooltip="{{view?.debug?.tooltip}}">
+            matTooltip="{{view?.debug?.tooltip}}"
+        >
             <mat-icon>bug_report</mat-icon>
         </button>
         <button
             *ngIf="launch"
             mat-button
             (click)="openLocation()"
-            matTooltip="{{launch?.tooltip}}">
+            matTooltip="{{launch?.tooltip}}"
+        >
             <mat-icon>launch</mat-icon>
         </button>
     </div>
@@ -28,28 +31,26 @@
     <!-- source -->
     <div
         class="ngx-docs-example-source"
-        *ngIf="view?.code?.active === true">
+        *ngIf="view?.code?.active === true"
+    >
         <mat-tab-group>
             <mat-tab
                 label="HTML"
-                *ngIf="html">
-                <ngx-prism
-                    [language]="'html'"
-                    [code]="html"></ngx-prism>
+                *ngIf="html"
+            >
+                <div [innerHTML]="html | language :'html' | markdown"></div>
             </mat-tab>
             <mat-tab
                 label="TS"
-                *ngIf="ts">
-                <ngx-prism
-                    [language]="'javascript'"
-                    [code]="ts"></ngx-prism>
+                *ngIf="ts"
+            >
+                <div [innerHTML]="ts | language :'js' | markdown"></div>
             </mat-tab>
             <mat-tab
                 label="CSS"
-                *ngIf="css">
-                <ngx-prism
-                    [language]="'css'"
-                    [code]="css"></ngx-prism>
+                *ngIf="css"
+            >
+                <div [innerHTML]="css | language :'css' | markdown"></div>
             </mat-tab>
         </mat-tab-group>
     </div>
@@ -57,14 +58,16 @@
     <!-- body -->
     <div
         class="ngx-docs-example-body"
-        [ngClass]="customClass">
+        [ngClass]="customClass"
+    >
         <ng-content select=".body"></ng-content>
     </div>
 
     <!-- debug -->
     <div
         class="ngx-docs-example-debug"
-        *ngIf="view?.debug?.active === true">
+        *ngIf="view?.debug?.active === true"
+    >
         <ng-content select=".debug"></ng-content>
     </div>
 </div>

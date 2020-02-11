@@ -8,7 +8,7 @@
             matInput
             formControlName="username"
             placeholder="Username">
-        <mat-error *ngIf="errors.username?.length">{{errors.username[0]}}</mat-error>
+        <mat-error *ngIf="errors?.username?.length">{{errors?.username[0]}}</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
         <input
@@ -16,7 +16,7 @@
             type="password"
             formControlName="password"
             placeholder="Password">
-        <mat-error *ngIf="errors.password?.length">{{errors.password[0]}}</mat-error>
+        <mat-error *ngIf="errors?.password?.length">{{errors?.password[0]}}</mat-error>
     </mat-form-field>
     <div class="full-width">
         <p>Form status: {{ form.status | json }}</p>

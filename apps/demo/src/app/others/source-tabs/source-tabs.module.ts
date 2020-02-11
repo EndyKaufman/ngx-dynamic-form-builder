@@ -1,13 +1,21 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { SourceTabsComponent } from './source-tabs.component';
-import { PrismModule } from '@ngx-prism/core';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatButtonModule, MatIconModule } from '@angular/material';
 import { SharedModule } from '../../shared/shared.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
-  imports: [SharedModule.forRoot(), PrismModule, MatTabsModule, MatIconModule, MatButtonModule, FlexLayoutModule],
+  imports: [
+    SharedModule.forRoot(),
+    MarkdownModule.forChild(),
+    MatTabsModule,
+    MatIconModule,
+    MatButtonModule,
+    FlexLayoutModule
+  ],
   entryComponents: [SourceTabsComponent],
   exports: [SourceTabsComponent],
   declarations: [SourceTabsComponent]

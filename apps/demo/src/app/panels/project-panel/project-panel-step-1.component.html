@@ -8,14 +8,14 @@
             matInput
             formControlName="name"
             placeholder="name">
-        <mat-error *ngIf="errors.name?.length">{{errors?.name.join(', ')}}</mat-error>
+        <mat-error *ngIf="errors?.name?.length">{{errors?.name.join(', ')}}</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
         <input
             matInput
             formControlName="description"
             placeholder="description">
-        <mat-error *ngIf="errors.description?.length">{{errors.description.join(', ')}}</mat-error>
+        <mat-error *ngIf="errors?.description?.length">{{errors?.description.join(', ')}}</mat-error>
     </mat-form-field>
     <div class="full-width">
         <p>Form status: {{ form.status | json }}</p>

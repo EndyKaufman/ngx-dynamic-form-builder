@@ -32,7 +32,7 @@ export class ExpUserPanelComponent {
 
   fb = new DynamicFormBuilder();
 
-  savedItem: ExpUser;
+  savedItem?: ExpUser;
 
   constructor() {
     this.form = this.fb.group(ExpUser, {

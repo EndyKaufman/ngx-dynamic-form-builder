@@ -10,9 +10,9 @@ import { HomePageRoutes } from './home-page.routes';
 
 @NgModule({
   imports: [
+    MarkdownModule.forChild(),
     SharedModule.forRoot(),
     RouterModule.forChild(HomePageRoutes),
-    MarkdownModule.forRoot(),
     DocsExampleModule.forRoot(),
     SourceTabsModule.forRoot(),
     FlexLayoutModule

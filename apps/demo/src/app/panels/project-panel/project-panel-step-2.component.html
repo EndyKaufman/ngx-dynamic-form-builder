@@ -12,7 +12,7 @@
                 formControlName="name"
                 placeholder="name"
                 readonly="true">
-            <mat-error *ngIf="errors.name?.length">{{errors.name?.join(', ')}}</mat-error>
+            <mat-error *ngIf="errors?.name?.length">{{errors?.name?.join(', ')}}</mat-error>
         </mat-form-field>
         <mat-form-field
             class="full-width"
@@ -22,7 +22,7 @@
                 formControlName="description"
                 placeholder="description"
                 readonly="true">
-            <mat-error *ngIf="errors.description?.length">{{errors.description?.join(', ')}}</mat-error>
+            <mat-error *ngIf="errors?.description?.length">{{errors?.description?.join(', ')}}</mat-error>
         </mat-form-field>
         <h4>
             Tasks
@@ -32,8 +32,8 @@
                 color="primary">
                 +
             </button>
-            <mat-error *ngIf="errors.tasks?.length">{{errors.tasks?.join(', ')}}</mat-error>
-            <mat-error *ngIf="nativeErrors.maxLength3">Tasks max length = 3 (native angular)</mat-error>
+            <mat-error *ngIf="errors?.tasks?.length">{{errors?.tasks?.join(', ')}}</mat-error>
+            <mat-error *ngIf="nativeErrors?.maxLength3">Tasks max length = 3 (native angular)</mat-error>
         </h4>
         <mat-list role="list">
             <mat-list-item
@@ -45,8 +45,8 @@
                         matInput
                         formControlName="description"
                         placeholder="description">
-                    <mat-error *ngIf="errors.tasks && errors.tasks[i]">
-                        {{errors.tasks[i]?.description?.join(', ')}}
+                    <mat-error *ngIf="errors?.tasks && errors?.tasks[i]">
+                        {{errors?.tasks[i]?.description?.join(', ')}}
                     </mat-error>
                 </mat-form-field>
                 <mat-action-list>

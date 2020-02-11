@@ -2,11 +2,13 @@
     <div
         class="ngx-docs-example-title"
         fxLayout="row"
-        fxLayoutAlign="space-between center">
+        fxLayoutAlign="space-between center"
+    >
         <span
             class="title"
             fxHide.xs
-            fxShow.sm-xl>
+            fxShow.sm-xl
+        >
             {{title}}
         </span>
         <button mat-button>
@@ -17,11 +19,9 @@
         <mat-tab-group>
             <mat-tab
                 [label]="file.name"
-                *ngFor="let file of files">
-                <ngx-prism
-                    [language]="file.language"
-                    [code]="file.content">
-                </ngx-prism>
+                *ngFor="let file of files"
+            >
+                <div [innerHTML]="file.content | language :file.language | markdown"></div>
             </mat-tab>
         </mat-tab-group>
     </div>

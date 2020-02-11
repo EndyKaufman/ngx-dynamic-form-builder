@@ -57,7 +57,6 @@ export * from './shared/models/department';
 export * from './shared/models/exp-company';
 export * from './shared/models/exp-department';
 export * from './shared/models/exp-user';
-export * from './shared/models/group';
 export * from './shared/models/project';
 export * from './shared/models/task';
 export * from './shared/models/user';

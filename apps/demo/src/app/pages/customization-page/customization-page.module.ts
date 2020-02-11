@@ -10,9 +10,9 @@ import { CustomizationPageRoutes } from './customization-page.routes';
 
 @NgModule({
   imports: [
+    MarkdownModule.forChild(),
     SharedModule.forRoot(),
     RouterModule.forChild(CustomizationPageRoutes),
-    MarkdownModule.forRoot(),
     DocsExampleModule.forRoot(),
     SourceTabsModule.forRoot(),
     FlexLayoutModule

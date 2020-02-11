@@ -5,5 +5,5 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './home-page.component.html'
 })
 export class HomePageComponent {
-  readme = require('!!raw-loader!../../../../../../README.md').replace('# ngx-dynamic-form-builder', '');
+  readme = require('!!raw-loader!../../../../../../README.md').default.replace('# ngx-dynamic-form-builder', '');
 }
