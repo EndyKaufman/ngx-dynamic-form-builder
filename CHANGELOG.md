@@ -1,3 +1,13 @@
+# [1.1.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.0.0...1.1.0) (2020-02-11)
+
+
+### Features
+
+* update for new tslint and tsconfig rules ([3de5c31](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/3de5c3164d0e6a74011cb6bdc14fa33f19f7ad15))
+* update versions of deps ([3ab7069](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/3ab70699d659640121feb4a2e465a80d1f5760a8))
+
+
+
 # [1.0.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/0.10.1...1.0.0) (2019-05-04)
 
 

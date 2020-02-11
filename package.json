@@ -1,6 +1,6 @@
 {
   "name": "ngx-dynamic-form-builder",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "FormBuilder + class-transformer + class-validator = dynamic form group builder for Angular7+",
   "keywords": [
     "form-builder",
@@ -19,7 +19,7 @@
     "builder",
     "formarray",
     "angular",
-    "angular7"
+    "angular9"
   ],
   "license": "MIT",
   "author": "EndyKaufman <admin@site15.ru>",
