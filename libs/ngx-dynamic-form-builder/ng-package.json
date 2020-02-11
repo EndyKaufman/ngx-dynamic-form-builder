@@ -3,7 +3,11 @@
   "dest": "../../dist/ngx-dynamic-form-builder",
   "deleteDestPath": false,
   "lib": {
-    "entryFile": "src/public_api.ts"
+    "entryFile": "src/public_api.ts",
+    "umdModuleIds": {
+      "class-transformer": "class-transformer",
+      "class-validator": "class-validator"
+    }
   },
   "whitelistedNonPeerDependencies": [
     "."

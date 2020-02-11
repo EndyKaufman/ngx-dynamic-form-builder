@@ -22,7 +22,7 @@ export class User {
   username: string;
   password: string;
 
-  @Matches(RegExp('^abc$', 'ig'), { message: 'it should match the cool \'abc\' string' })
+  @Matches(RegExp('^abc$', 'ig'), { message: "it should match the cool 'abc' string" })
   abc: string;
 
   @IsEmail()
