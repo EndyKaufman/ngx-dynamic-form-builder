@@ -34,6 +34,15 @@
         </mat-error>
         <mat-error *ngIf="errors?.dateOfBirth?.length">{{errors?.dateOfBirth.join(', ')}}</mat-error>
     </mat-form-field>
+    <mat-form-field class="full-width">
+        <input
+            matInput
+            type="text"
+            formControlName="abc"
+            [placeholder]="strings.abc"
+        >
+        <mat-error *ngIf="errors?.abc?.length">{{errors?.abc.join(', ')}}</mat-error>
+    </mat-form-field>
     <div formGroupName="department">
         <h3>Department of user</h3>
         <mat-form-field class="full-width">

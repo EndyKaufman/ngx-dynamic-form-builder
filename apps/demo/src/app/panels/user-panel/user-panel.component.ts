@@ -52,6 +52,7 @@ export class UserPanelComponent {
       dateOfBirth: '',
       isSuperuser: false,
       isStaff: false,
+      abc: '',
       department: this.fb.group(Department, {
         name: '',
         company: this.fb.group(Company, {
