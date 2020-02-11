@@ -3,9 +3,10 @@
         customClass="margin-minus-16"
         title="Сustomization page"
         [html]="source.html"
-        [ts]="source.ts">
+        [ts]="source.ts"
+    >
         <div class="body">
-            <markdown [data]="customization"></markdown>
+            <div [innerHTML]="customization | markdown"></div>
         </div>
     </ngx-docs-example>
 </div>

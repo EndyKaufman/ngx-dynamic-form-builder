@@ -8,9 +8,9 @@ import { Project } from '../../shared/models/project';
 @Injectable()
 export class ProjectPanelService {
   activatedStep$ = new BehaviorSubject(ProjectPanelStepsEnum.Step1);
-  project$ = new BehaviorSubject(plainToClass(Project, environment.defaults.project));
+  project$ = new BehaviorSubject(plainToClass(Project, environment.defaults?.project));
   clear() {
-    this.project$.next(plainToClass(Project, environment.defaults.project));
+    this.project$.next(plainToClass(Project, environment.defaults?.project));
   }
   store(project: Project) {
     this.project$.next(project);

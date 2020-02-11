@@ -11,37 +11,39 @@ export const AppRoutes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   {
     path: 'home',
-    loadChildren: './pages/home-page/home-page.module#HomePageModule',
+    loadChildren: () => import('./pages/home-page/home-page.module').then(m => m.HomePageModule),
     data: HomePageRoutes[0].data
   },
   {
     path: 'simple',
-    loadChildren: './pages/simple-page/simple-page.module#SimplePageModule',
+    loadChildren: () => import('./pages/simple-page/simple-page.module').then(m => m.SimplePageModule),
     data: SimplePageRoutes[0].data
   },
   {
     path: 'combo',
-    loadChildren: './pages/combo-page/combo-page.module#ComboPageModule',
+    loadChildren: () => import('./pages/combo-page/combo-page.module').then(m => m.ComboPageModule),
     data: ComboPageRoutes[0].data
   },
   {
     path: 'advanced',
-    loadChildren: './pages/advanced-page/advanced-page.module#AdvancedPageModule',
+    loadChildren: () => import('./pages/advanced-page/advanced-page.module').then(m => m.AdvancedPageModule),
     data: AdvancedPageRoutes[0].data
   },
   {
     path: 'experimental',
-    loadChildren: './pages/experimental-page/experimental-page.module#ExperimentalPageModule',
+    loadChildren: () =>
+      import('./pages/experimental-page/experimental-page.module').then(m => m.ExperimentalPageModule),
     data: ExperimentalPageRoutes[0].data
   },
   {
     path: 'project',
-    loadChildren: './pages/project-page/project-page.module#ProjectPageModule',
+    loadChildren: () => import('./pages/project-page/project-page.module').then(m => m.ProjectPageModule),
     data: ProjectPageRoutes[0].data
   },
   {
     path: 'customization',
-    loadChildren: './pages/customization-page/customization-page.module#CustomizationPageModule',
+    loadChildren: () =>
+      import('./pages/customization-page/customization-page.module').then(m => m.CustomizationPageModule),
     data: CustomizationPageRoutes[0].data
   },
   {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material';
 import { MessageBoxComponent } from './message-box.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable()
 export class MessageBoxService {

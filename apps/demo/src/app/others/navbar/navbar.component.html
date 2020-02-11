@@ -2,20 +2,23 @@
     <mat-toolbar
         color="primary"
         fxLayout="row"
-        fxLayoutAlign="space-between center">
+        fxLayoutAlign="space-between center"
+    >
         <div>
             <span *ngIf="leftChildrenRoutes.length">
                 <button
                     mat-icon-button
                     [matMenuTriggerFor]="leftMenu"
                     fxShow
-                    fxHide.gt-sm>
+                    fxHide.gt-sm
+                >
                     <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu
                     #leftMenu
                     fxShow
-                    fxHide.lt-sm>
+                    fxHide.lt-sm
+                >
                     <span *ngFor="let item of leftChildrenRoutes">
                         <ng-container *ngTemplateOutlet="menuItem;context:{item:item}"></ng-container>
                     </span>
@@ -23,13 +26,15 @@
             </span>
             <a
                 [routerLink]="['home']"
-                mat-button>
+                mat-button
+            >
                 {{title}}
             </a>
             <span
                 *ngFor="let item of leftChildrenRoutes"
                 fxShow
-                fxHide.lt-sm>
+                fxHide.lt-sm
+            >
                 <ng-container *ngTemplateOutlet="buttonItem;context:{item:item}"></ng-container>
             </span>
         </div>
@@ -37,7 +42,8 @@
             <span
                 *ngFor="let item of childrenRoutes"
                 fxHide
-                fxShow.gt-sm>
+                fxShow.gt-sm
+            >
                 <ng-container *ngTemplateOutlet="buttonItem;context:{item:item}"></ng-container>
             </span>
             <span *ngIf="childrenRoutes.length">
@@ -45,13 +51,15 @@
                     mat-icon-button
                     [matMenuTriggerFor]="rightMenu"
                     fxShow
-                    fxHide.gt-sm>
+                    fxHide.gt-sm
+                >
                     <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu
                     #rightMenu
                     fxShow
-                    fxHide.gt-sm>
+                    fxHide.gt-sm
+                >
                     <span *ngFor="let item of childrenRoutes">
                         <ng-container *ngTemplateOutlet="menuItem;context:{item:item}"></ng-container>
                     </span>
@@ -62,47 +70,55 @@
 </div>
 <ng-template
     let-item="item"
-    #buttonItem>
+    #buttonItem
+>
     <a
         *ngIf="!item.redirectTo"
         [routerLink]="[item.name]"
         mat-button
-        [class.active]="router?.isActive(item.url)">
+        [class.active]="router?.isActive(item.url,true)"
+    >
         <ng-container *ngTemplateOutlet="menuItemContent;context:{item:item}"></ng-container>
     </a>
     <a
         *ngIf="item.redirectTo"
         target="_blank"
         [href]="item.redirectTo"
-        mat-button>
+        mat-button
+    >
         <ng-container *ngTemplateOutlet="menuItemContent;context:{item:item}"></ng-container>
     </a>
 </ng-template>
 <ng-template
     let-item="item"
-    #menuItem>
+    #menuItem
+>
     <a
         *ngIf="!item.redirectTo"
         [routerLink]="[item.name]"
         mat-menu-item
-        [class.active]="router?.isActive(item.url)">
+        [class.active]="router?.isActive(item.url, true)"
+    >
         <ng-container *ngTemplateOutlet="menuItemContent;context:{item:item}"></ng-container>
     </a>
     <a
         *ngIf="item.redirectTo"
         target="_blank"
         [href]="item.redirectTo"
-        mat-menu-item>
+        mat-menu-item
+    >
         <ng-container *ngTemplateOutlet="menuItemContent;context:{item:item}"></ng-container>
     </a>
 </ng-template>
 
 <ng-template
     let-item="item"
-    #menuItemContent>
+    #menuItemContent
+>
     <mat-icon
         [svgIcon]="item.svgIcon"
-        *ngIf="item.svgIcon"></mat-icon>
+        *ngIf="item.svgIcon"
+    ></mat-icon>
     <mat-icon *ngIf="item.icon">{{item.icon}}</mat-icon>
     <span>{{item.title}}</span>
 </ng-template>

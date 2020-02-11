@@ -3,12 +3,14 @@
         customClass="margin-minus-16"
         title="Home page"
         [html]="source.html"
-        [ts]="source.ts">
+        [ts]="source.ts"
+    >
         <div class="body">
-            <markdown [data]="readme"></markdown>
+            <div [innerHTML]="readme | markdown"></div>
         </div>
     </ngx-docs-example>
     <source-tabs
         title="Other files"
-        [files]="otherFiles"></source-tabs>
+        [files]="otherFiles"
+    ></source-tabs>
 </div>

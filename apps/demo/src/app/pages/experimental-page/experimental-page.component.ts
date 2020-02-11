@@ -7,8 +7,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 })
 export class ExperimentalPageComponent {
   source = {
-    html: require('!!raw-loader!./../../panels/exp-user-panel/exp-user-panel.component.html'),
-    ts: require('!!raw-loader!./../../panels/exp-user-panel/exp-user-panel.component.ts'),
+    html: require('!!raw-loader!./../../panels/exp-user-panel/exp-user-panel.component.html').default,
+    ts: require('!!raw-loader!./../../panels/exp-user-panel/exp-user-panel.component.ts').default,
     launch: {
       location: 'https://stackblitz.com/edit/ngx-dynamic-form-builder-experimental',
       tooltip: `Edit in http://stackblitz.com`
@@ -16,8 +16,8 @@ export class ExperimentalPageComponent {
   };
 
   loginSource = {
-    html: require('!!raw-loader!./../../panels/exp-login-panel/exp-login-panel.component.html'),
-    ts: require('!!raw-loader!./../../panels/exp-login-panel/exp-login-panel.component.ts'),
+    html: require('!!raw-loader!./../../panels/exp-login-panel/exp-login-panel.component.html').default,
+    ts: require('!!raw-loader!./../../panels/exp-login-panel/exp-login-panel.component.ts').default,
     launch: {
       location: 'https://stackblitz.com/edit/ngx-dynamic-form-builder-experimental-login',
       tooltip: `Edit in http://stackblitz.com`
@@ -28,22 +28,22 @@ export class ExperimentalPageComponent {
     {
       name: 'exp-user.ts',
       language: 'javascript',
-      content: require('!!raw-loader!../../shared/models/exp-user.ts')
+      content: require('!!raw-loader!../../shared/models/exp-user.ts').default
     },
     {
       name: 'exp-department.ts',
       language: 'javascript',
-      content: require('!!raw-loader!../../shared/models/exp-department.ts')
+      content: require('!!raw-loader!../../shared/models/exp-department.ts').default
     },
     {
       name: 'exp-company.ts',
       language: 'javascript',
-      content: require('!!raw-loader!../../shared/models/exp-company.ts')
+      content: require('!!raw-loader!../../shared/models/exp-company.ts').default
     },
     {
       name: 'custom-validators.ts',
       language: 'javascript',
-      content: require('!!raw-loader!../../shared/utils/custom-validators.ts')
+      content: require('!!raw-loader!../../shared/utils/custom-validators.ts').default
     }
   ];
 }

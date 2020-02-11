@@ -22,7 +22,7 @@ export class CompanyPanelComponent {
 
   fb = new DynamicFormBuilder();
 
-  savedItem: Company;
+  savedItem?: Company;
 
   constructor() {
     this.form = this.fb.group(Company, {

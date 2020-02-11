@@ -8,7 +8,7 @@
                 matInput
                 formControlName="name"
                 [placeholder]="strings.name">
-            <mat-error *ngIf="errors.name?.length>0">{{errors.name[0]}}</mat-error>
+            <mat-error *ngIf="errors?.name?.length>0">{{errors?.name[0]}}</mat-error>
         </mat-form-field>
         <mat-form-field class="full-width">
             <input
@@ -16,8 +16,8 @@
                 formControlName="regionNum"
                 type="number"
                 [placeholder]="strings.regionNum">
-            <mat-error *ngIf="errors.regionNum?.length">{{errors.regionNum[0]}}</mat-error>
-            <mat-error *ngIf="nativeErrors.regionNum?.required">
+            <mat-error *ngIf="errors?.regionNum?.length">{{errors?.regionNum[0]}}</mat-error>
+            <mat-error *ngIf="nativeErrors?.regionNum?.required">
                 name should not be empty (native angular)
             </mat-error>
         </mat-form-field>
