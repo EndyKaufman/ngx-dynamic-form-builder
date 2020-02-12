@@ -24,7 +24,7 @@
   "license": "MIT",
   "author": "EndyKaufman <admin@site15.ru>",
   "engines": {
-    "node": ">=10",
+    "node": ">=12",
     "npm": ">=6.4.0"
   },
   "bugs": {
