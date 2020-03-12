@@ -2405,7 +2405,7 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
                         yield this.deleteAllCaches();
                         yield this.scope.registration.unregister();
                     }
-                    else if (res.status === 504 && ignoreOfflineError) {
+                    else if ((res.status === 503 || res.status === 504) && ignoreOfflineError) {
                         return null;
                     }
                     throw new Error(`Manifest fetch failed! (status: ${res.status})`);
