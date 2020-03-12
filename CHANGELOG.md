@@ -1,3 +1,13 @@
+# [1.2.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.1.0...1.2.0) (2020-03-12)
+
+
+### Features
+
+* update dependencies ([5946cf5](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/5946cf5b06f414eeaa79246a1871250b4a3f7dbd))
+* update deps ([de6e549](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/de6e5497ee0df88eb62c82120c3fe5eeb61a4c74))
+
+
+
 # [1.1.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.0.0...1.1.0) (2020-02-11)
 
 
