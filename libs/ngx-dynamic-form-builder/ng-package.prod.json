@@ -2,7 +2,11 @@
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/ngx-dynamic-form-builder",
   "lib": {
-    "entryFile": "src/public_api.ts"
+    "entryFile": "src/public_api.ts",
+    "umdModuleIds": {
+      "class-transformer": "class-transformer",
+      "class-validator": "class-validator"
+    }
   },
   "whitelistedNonPeerDependencies": [
     "."
