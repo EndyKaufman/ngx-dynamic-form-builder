@@ -8,7 +8,8 @@ import {
   isDynamicFormGroupConfig,
   isLegacyOrOpts
 } from '../models/dynamic-form-group-config';
-import { DynamicFormGroup, FormModel, getClassValidators } from './dynamic-form-group';
+import { FormModel } from '../models/form-model';
+import { DynamicFormGroup, getClassValidators } from './dynamic-form-group';
 
 export class DynamicFormBuilder extends FormBuilder {
   // ******************
@@ -19,6 +20,9 @@ export class DynamicFormBuilder extends FormBuilder {
     controlsConfig?: FormModel<TModel> | DynamicFormGroupConfig | { [key: string]: any },
     options?: AbstractControlOptions | DynamicFormGroupConfig
   ): DynamicFormGroup<TModel> {
+    if (!controlsConfig && !options) {
+      options = {};
+    }
     // Process the group with the controlsConfig passed into extra instead. (What does this accomplish?)
     if (
       controlsConfig &&
@@ -161,9 +165,7 @@ export class DynamicFormBuilder extends FormBuilder {
     });
 
     // Add a listener to the dynamic group for value changes; on change, execute validation
-    dynamicFormGroup.valueChanges.subscribe(data => {
-      dynamicFormGroup.validate(undefined, extra && extra.customValidatorOptions);
-    });
+    dynamicFormGroup.subscribeToValueChanges(undefined, extra && extra.customValidatorOptions);
 
     return dynamicFormGroup;
   }

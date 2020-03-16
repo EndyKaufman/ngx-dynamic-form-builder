@@ -55,6 +55,7 @@
     "ng": "ng",
     "serve": "ng serve",
     "start": "run-s format:fix prepare:mono serve",
+    "start:prod": "run-s format:fix prepare:mono serve -- --prod",
     "build": "run-s app:build",
     "test": "run-s github:build",
     "lint": "ng lint",
