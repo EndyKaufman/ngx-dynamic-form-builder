@@ -7,5 +7,6 @@ export * from './lib/models/short-validation-errors';
 export * from './lib/models/validator-function-type';
 export * from './lib/utils/dynamic-form-builder';
 export * from './lib/utils/dynamic-form-control';
+export * from './lib/utils/dynamic-form-group-helpers';
 export * from './lib/utils/dynamic-form-group';
 export * from './lib/validators/forever-invalid.validator';

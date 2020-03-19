@@ -4,9 +4,10 @@ import { Observable } from 'rxjs';
 import { DynamicFormGroupField } from '../models/dynamic-form-group-field';
 
 export class DynamicFormControl extends FormControl {
+  public controlName: string;
   public validationDefinitions: ValidationMetadata[];
 
-  constructor(fieldDefinition: DynamicFormGroupField) {
+  constructor(name: string, fieldDefinition: DynamicFormGroupField) {
     super(
       fieldDefinition.data instanceof Observable ? null : fieldDefinition.data,
       fieldDefinition.validationFunctions
@@ -16,6 +17,7 @@ export class DynamicFormControl extends FormControl {
         .filter(func => func.type === 'async')
         .map(func => func.validator as AsyncValidatorFn)
     );
+    this.controlName = name;
     this.validationDefinitions = fieldDefinition.validationDefinitions;
   }
 }
