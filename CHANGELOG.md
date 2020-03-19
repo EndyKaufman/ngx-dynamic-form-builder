@@ -1,3 +1,17 @@
+# [1.3.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.2.0...1.3.0) (2020-03-19)
+
+
+### Bug Fixes
+
+* add unsubscribe from subscribe to form group changes, change transform class validator to usage async angular validator ([59270ba](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/59270ba8b50a80cea7a9aa48d213ee94ee6a2549))
+
+
+### Features
+
+* add control name to DynamicFormControl ([a033091](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/a033091f98f5296a248c7be567bf553790e8a1ff))
+
+
+
 # [1.2.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.1.0...1.2.0) (2020-03-12)
 
 
