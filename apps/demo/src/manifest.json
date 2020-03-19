@@ -5,7 +5,7 @@
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "/",
-  "start_url": "index.html",
+  "start_url": "https://endykaufman.github.io/ngx-dynamic-form-builder/index.html",
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",

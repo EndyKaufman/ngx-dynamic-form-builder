@@ -22,7 +22,8 @@ export class User {
   username: string;
   password: string;
 
-  @Matches(RegExp('^abc$', 'ig'), { message: "it should match the cool 'abc' string" })
+  // flag "g" in RegExp work incorrect, please read issue: https://github.com/typestack/class-validator/issues/484
+  @Matches(RegExp('^abc$', 'i'), { message: `it should match the cool 'abc' string` })
   abc: string;
 
   @IsEmail()

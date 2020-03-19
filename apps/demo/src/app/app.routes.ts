@@ -55,9 +55,9 @@ export const AppRoutes: Routes = [
       svgIcon: `github-circle`,
       visible: true
     }
-  } /*,
+  },
   {
     path: '**',
     redirectTo: 'home'
-  }*/
+  }
 ];
