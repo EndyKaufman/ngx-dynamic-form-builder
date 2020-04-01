@@ -655,9 +655,7 @@ export function getClassValidators<TModel>(
 
   function checkIfConditionsMatch(control,conditionalValidations) {
     if(conditionalValidations.length > 0) {
-    //   console.log('>>> run conditional validation for ',control.controlName)
       if(!control.parent) {
-        // console.log('no parent assigned yet')
         // during formGroup creation, the control has no parent.
         // as validation concept is to opt-in for validation, the best reaction here is to let it skip.
         return false;
@@ -667,15 +665,10 @@ export function getClassValidators<TModel>(
         for(let i2 = 0; i2 < conditionalValidations[i].constraints.length; i2++) {
           func = conditionalValidations[i].constraints[i2];
           if(typeof func === 'function' && !func(control.parent.value, control.value)) {
-            //   console.log(control.controlName+' - constraint not matched, skip validation.')
               return false;
-          } else {
-            //   console.log(control.controlName+' - constraint matches, run validation.')
           }
         }
       }
-    } else {
-        // console.log('no conditional validations found for',control.controlName)
     }
     return true;
   }
