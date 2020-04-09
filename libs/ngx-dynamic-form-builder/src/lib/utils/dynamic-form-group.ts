@@ -626,7 +626,7 @@ export function getClassValidators<TModel>(
 
                 // Handle Custom Validation
                 if (isCustomValidate(validationMetadata, typeKey)) {
-                  const customValidation = createCustomValidation(fieldName, validationMetadata);
+                  const customValidation = createCustomValidation(fieldName, validationMetadata, conditionalValidations);
                   setFieldData(fieldName, fieldDefinition, customValidation);
                 }
 
@@ -652,6 +652,26 @@ export function getClassValidators<TModel>(
   // ******************************************************************************************
   // Local Helper functions to help make the main code more readable
   //
+
+  function checkIfConditionsMatch(control,conditionalValidations) {
+    if(conditionalValidations.length > 0) {
+      if(!control.parent) {
+        // during formGroup creation, the control has no parent.
+        // as validation concept is to opt-in for validation, the best reaction here is to let it skip.
+        return false;
+      }
+      let func;
+      for(let i = 0; i < conditionalValidations.length; i++) {
+        for(let i2 = 0; i2 < conditionalValidations[i].constraints.length; i2++) {
+          func = conditionalValidations[i].constraints[i2];
+          if(typeof func === 'function' && !func(control.parent.value, control.value)) {
+              return false;
+          }
+        }
+      }
+    }
+    return true;
+  }
 
   function createNestedValidate(
     fieldName: string,
@@ -686,6 +706,10 @@ export function getClassValidators<TModel>(
           return of(null);
         }
 
+        if(!checkIfConditionsMatch(control,conditionalValidations)) {
+            return of(null)
+        }
+
         const isValid =
           control.parent && control.parent.value
             ? validator.validateValueByMetadata(control.value, validationMetadata)
@@ -704,10 +728,13 @@ export function getClassValidators<TModel>(
     };
   }
 
-  function createCustomValidation(fieldName: string, validationMetadata: ValidationMetadata): ValidatorFunctionType {
+  function createCustomValidation(fieldName: string, validationMetadata: ValidationMetadata, conditionalValidations: ValidationMetadata[]): ValidatorFunctionType {
     return {
       type: 'async',
       validator: function(control: FormControl) {
+        if(!checkIfConditionsMatch(control,conditionalValidations)) {
+            return of(null)
+        }
         return setObjectValueAndGetValidationErrors(fieldName, control, validatorOptions).pipe(
           map(errors => getAllErrors(errors, fieldName).length === 0),
           map(validateState => getIsValidResult(validateState, validationMetadata, 'customValidation'))
