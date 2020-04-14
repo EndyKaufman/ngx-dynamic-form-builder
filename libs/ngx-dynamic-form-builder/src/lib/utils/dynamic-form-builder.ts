@@ -6,7 +6,7 @@ import {
   DynamicFormGroupConfig,
   isAbstractControlOptions,
   isDynamicFormGroupConfig,
-  isLegacyOrOpts
+  isLegacyOrOpts,
 } from '../models/dynamic-form-group-config';
 import { FormModel } from '../models/form-model';
 import { DynamicFormGroup, getClassValidators } from './dynamic-form-group';
@@ -73,33 +73,33 @@ export class DynamicFormBuilder extends FormBuilder {
     if (controlsConfig === undefined) {
       newControlsConfig = { ...this.createEmptyObject(factoryModel) };
       if (newControlsConfig !== undefined) {
-        Object.keys(newControlsConfig).forEach(key => {
+        Object.keys(newControlsConfig).forEach((key) => {
           if (canCreateGroup() && newControlsConfig) {
             // recursively create a dynamic group for the nested object
             newControlsConfig[key] = this.group(newControlsConfig[key].constructor, undefined, {
               ...(extra.customValidatorOptions ? { customValidatorOptions: extra.customValidatorOptions } : {}),
               asyncValidators,
               updateOn,
-              validators
+              validators,
             });
           } else {
             if (canCreateArray() && newControlsConfig) {
               if (newControlsConfig[key][0].constructor) {
                 // recursively create an array with a group
                 newControlsConfig[key] = super.array(
-                  newControlsConfig[key].map(newControlsConfigItem =>
+                  newControlsConfig[key].map((newControlsConfigItem) =>
                     this.group(newControlsConfigItem.constructor, undefined, {
                       ...(extra.customValidatorOptions ? { customValidatorOptions: extra.customValidatorOptions } : {}),
                       asyncValidators,
                       updateOn,
-                      validators
+                      validators,
                     })
                   )
                 );
               } else {
                 // Create an array of form controls
                 newControlsConfig[key] = super.array(
-                  newControlsConfig[key].map(newControlsConfigItem => this.control(newControlsConfigItem))
+                  newControlsConfig[key].map((newControlsConfigItem) => this.control(newControlsConfigItem))
                 );
               }
             }
@@ -137,8 +137,8 @@ export class DynamicFormBuilder extends FormBuilder {
     }
 
     // Remove empty
-    validators = validators && validators.filter(validator => validator);
-    asyncValidators = asyncValidators && asyncValidators.filter(validator => validator);
+    validators = validators && validators.filter((validator) => validator);
+    asyncValidators = asyncValidators && asyncValidators.filter((validator) => validator);
 
     // Create an Angular group from the top-level object
     const classValidators = getClassValidators<TModel>(
@@ -149,18 +149,18 @@ export class DynamicFormBuilder extends FormBuilder {
     const formGroup = super.group(classValidators, {
       ...(asyncValidators || {}),
       ...(updateOn || {}),
-      ...(validators || {})
+      ...(validators || {}),
     });
 
     // Initialize the resulting group
     const dynamicFormGroup = new DynamicFormGroup<TModel>(factoryModel, newControlsConfig, {
       asyncValidators,
       updateOn,
-      validators
+      validators,
     });
 
     // Add all angular controls to the resulting dynamic group
-    Object.keys(formGroup.controls).forEach(key => {
+    Object.keys(formGroup.controls).forEach((key) => {
       dynamicFormGroup.addControl(key, formGroup.controls[key]);
     });
 

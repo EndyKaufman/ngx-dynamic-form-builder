@@ -5,7 +5,7 @@ import { Company } from './../../shared/models/company';
 @Component({
   selector: 'company-panel',
   templateUrl: './company-panel.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CompanyPanelComponent {
   form: DynamicFormGroup<Company>;
@@ -14,7 +14,7 @@ export class CompanyPanelComponent {
   item = new Company({
     id: 11,
     name: '123456789012345',
-    regionNum: 1
+    regionNum: 1,
   });
 
   @Input()
@@ -27,7 +27,7 @@ export class CompanyPanelComponent {
   constructor() {
     this.form = this.fb.group(Company, {
       name: '',
-      regionNum: 0
+      regionNum: 0,
     });
   }
   onLoadClick(): void {

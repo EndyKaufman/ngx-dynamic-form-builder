@@ -6,7 +6,7 @@ import {
   Inject,
   Input,
   Optional,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 // internal
 import { DocsExampleClass } from './docs-example.class';
@@ -19,7 +19,7 @@ import { PackageConfigInterface } from './package-config.interface';
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./docs-example.scss'],
   selector: 'ngx-docs-example',
-  templateUrl: './docs-example.component.html'
+  templateUrl: './docs-example.component.html',
 })
 export class DocsExampleComponent extends DocsExampleClass {
   private element: ElementRef;
@@ -62,12 +62,12 @@ export class DocsExampleComponent extends DocsExampleClass {
     super({
       code: {
         active: false,
-        tooltip: 'View code'
+        tooltip: 'View code',
       },
       debug: {
         active: false,
-        tooltip: 'Debug code'
-      }
+        tooltip: 'Debug code',
+      },
     });
     this.element = element;
     this.setStyle(config);

@@ -6,10 +6,10 @@ export class ExpCompany {
 
   @Validate(TextLengthMore15, {
     groups: ['user'],
-    message: 'The company name must be longer than 15'
+    message: 'The company name must be longer than 15',
   })
   @IsNotEmpty({
-    groups: ['user']
+    groups: ['user'],
   })
   @MaxLength(20)
   name: string;

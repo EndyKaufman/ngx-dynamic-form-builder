@@ -39,7 +39,7 @@ export function mergeErrors(externalErrors?: ShortValidationErrors, validationEr
       return (
         Array.isArray(objValue) &&
         Array.isArray(srcValue) &&
-        objValue.filter(objItem => srcValue.indexOf(objItem) !== -1).length === 0
+        objValue.filter((objItem) => srcValue.indexOf(objItem) !== -1).length === 0
       );
     }
   });

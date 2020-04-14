@@ -6,13 +6,13 @@ export class Company {
   static strings = {
     id: 'Id',
     name: 'Name',
-    regionNum: 'Region num'
+    regionNum: 'Region num',
   };
 
   id: number;
 
   @Validate(TextLengthMore15, {
-    message: 'The company name must be longer than 15'
+    message: 'The company name must be longer than 15',
   })
   @IsNotEmpty()
   @MaxLength(20)

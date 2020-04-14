@@ -16,17 +16,17 @@ import { MatMenuModule } from '@angular/material/menu';
     RouterModule,
     MatIconModule,
     FlexLayoutModule,
-    MatMenuModule
+    MatMenuModule,
   ],
   entryComponents: [NavbarComponent],
   exports: [NavbarComponent],
-  declarations: [NavbarComponent]
+  declarations: [NavbarComponent],
 })
 export class NavbarModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: NavbarModule,
-      providers: []
+      providers: [],
     };
   }
 }

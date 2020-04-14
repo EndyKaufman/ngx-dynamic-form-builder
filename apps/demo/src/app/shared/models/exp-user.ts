@@ -6,31 +6,31 @@ export class ExpUser {
   id: number;
 
   @IsNotEmpty({
-    groups: ['user', 'guest', 'new']
+    groups: ['user', 'guest', 'new'],
   })
   username: string;
 
   @IsNotEmpty({
-    groups: ['guest', 'new']
+    groups: ['guest', 'new'],
   })
   password: string;
 
-  @ValidateIf(o => o.password, {
-    groups: ['new']
+  @ValidateIf((o) => o.password, {
+    groups: ['new'],
   })
   @IsNotEmpty({
-    groups: ['new']
+    groups: ['new'],
   })
   @Validate(EqualsTo, ['password'], {
-    groups: ['new']
+    groups: ['new'],
   })
   rePassword: string;
 
   @IsEmail(undefined, {
-    groups: ['user']
+    groups: ['user'],
   })
   @IsNotEmpty({
-    groups: ['user']
+    groups: ['user'],
   })
   email: string;
 
@@ -39,10 +39,10 @@ export class ExpUser {
   isStaff: boolean;
 
   @ValidateNested({
-    groups: ['user']
+    groups: ['user'],
   })
   @IsOptional({
-    groups: ['user']
+    groups: ['user'],
   })
   department: ExpDepartment;
 

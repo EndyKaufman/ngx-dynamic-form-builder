@@ -15,15 +15,15 @@ import { HomePageRoutes } from './home-page.routes';
     RouterModule.forChild(HomePageRoutes),
     DocsExampleModule.forRoot(),
     SourceTabsModule.forRoot(),
-    FlexLayoutModule
+    FlexLayoutModule,
   ],
-  declarations: [HomePageComponent]
+  declarations: [HomePageComponent],
 })
 export class HomePageModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: HomePageModule,
-      providers: []
+      providers: [],
     };
   }
 }

@@ -5,7 +5,7 @@ import { Router, Routes } from '@angular/router';
   // tslint:disable-next-line:component-selector
   selector: 'navbar',
   templateUrl: './navbar.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent implements OnInit {
   @Input()

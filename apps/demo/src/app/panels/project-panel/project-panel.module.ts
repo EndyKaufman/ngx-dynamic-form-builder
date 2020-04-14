@@ -19,10 +19,10 @@ import { MatInputModule } from '@angular/material/input';
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    RouterModule
+    RouterModule,
   ],
   exports: [ProjectPanelStep1Component, ProjectPanelStep2Component, ProjectPanelCompleteComponent],
   declarations: [ProjectPanelStep1Component, ProjectPanelStep2Component, ProjectPanelCompleteComponent],
-  providers: [ProjectPanelService]
+  providers: [ProjectPanelService],
 })
 export class ProjectPanelModule {}

@@ -16,17 +16,17 @@ import { DocsExampleModule } from '../../others/docs-example/docs-example.module
     DocsExampleModule.forRoot(),
     UserPanelModule.forRoot(),
     RouterModule.forChild(AdvancedPageRoutes),
-    SourceTabsModule.forRoot()
+    SourceTabsModule.forRoot(),
   ],
   entryComponents: [AdvancedPageComponent],
   exports: [AdvancedPageComponent],
-  declarations: [AdvancedPageComponent]
+  declarations: [AdvancedPageComponent],
 })
 export class AdvancedPageModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: AdvancedPageModule,
-      providers: []
+      providers: [],
     };
   }
 }

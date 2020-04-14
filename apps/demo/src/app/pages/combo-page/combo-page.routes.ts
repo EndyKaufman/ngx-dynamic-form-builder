@@ -8,8 +8,8 @@ export const ComboPageRoutes: Routes = [
     data: {
       name: 'combo',
       title: 'Combo',
-      visible: true
+      visible: true,
     },
-    children: []
-  }
+    children: [],
+  },
 ];

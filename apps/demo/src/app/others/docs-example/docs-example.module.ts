@@ -20,14 +20,14 @@ import { MarkdownModule } from 'ngx-markdown';
     MatButtonModule,
     MatIconModule,
     MatTabsModule,
-    MatTooltipModule
-  ]
+    MatTooltipModule,
+  ],
 })
 export class DocsExampleModule {
   static forRoot(config?: PackageConfigInterface | undefined): ModuleWithProviders {
     return {
       ngModule: DocsExampleModule,
-      providers: [{ provide: PACKAGE_CONFIG_TOKEN, useValue: config }]
+      providers: [{ provide: PACKAGE_CONFIG_TOKEN, useValue: config }],
     };
   }
 }

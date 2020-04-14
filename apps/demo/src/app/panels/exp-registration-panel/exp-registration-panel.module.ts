@@ -16,17 +16,17 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatCheckboxModule,
     FormsModule,
     ReactiveFormsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
   ],
   entryComponents: [ExpRegistrationPanelComponent],
   exports: [ExpRegistrationPanelComponent],
-  declarations: [ExpRegistrationPanelComponent]
+  declarations: [ExpRegistrationPanelComponent],
 })
 export class ExpRegistrationPanelModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ExpRegistrationPanelModule,
-      providers: []
+      providers: [],
     };
   }
 }

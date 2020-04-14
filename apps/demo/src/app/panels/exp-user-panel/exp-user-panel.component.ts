@@ -5,7 +5,7 @@ import { ExpUser } from '../../shared/models/exp-user';
 @Component({
   selector: 'exp-user-panel',
   templateUrl: './exp-user-panel.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExpUserPanelComponent {
   form: DynamicFormGroup<ExpUser>;
@@ -25,9 +25,9 @@ export class ExpUserPanelComponent {
       company: {
         id: 3,
         name: 'company 2',
-        regionNum: 1
-      }
-    }
+        regionNum: 1,
+      },
+    },
   });
 
   fb = new DynamicFormBuilder();
@@ -37,8 +37,8 @@ export class ExpUserPanelComponent {
   constructor() {
     this.form = this.fb.group(ExpUser, {
       customValidatorOptions: {
-        groups: ['user']
-      }
+        groups: ['user'],
+      },
     });
   }
   onLoadClick(): void {

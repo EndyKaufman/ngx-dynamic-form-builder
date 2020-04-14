@@ -12,13 +12,13 @@ import { MatInputModule } from '@angular/material/input';
   providers: [MessageBoxService],
   entryComponents: [MessageBoxComponent],
   exports: [MessageBoxComponent],
-  declarations: [MessageBoxComponent]
+  declarations: [MessageBoxComponent],
 })
 export class MessageBoxModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: MessageBoxModule,
-      providers: [MessageBoxService]
+      providers: [MessageBoxService],
     };
   }
 }

@@ -3,7 +3,7 @@ import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core
 @Component({
   selector: 'source-tabs',
   templateUrl: './source-tabs.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SourceTabsComponent {
   @Input()

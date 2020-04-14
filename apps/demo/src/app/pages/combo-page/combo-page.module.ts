@@ -17,17 +17,17 @@ import { MatIconModule } from '@angular/material/icon';
     ComboCompanyPanelModule.forRoot(),
     RouterModule.forChild(ComboPageRoutes),
     SourceTabsModule.forRoot(),
-    MatIconModule
+    MatIconModule,
   ],
   entryComponents: [ComboPageComponent],
   exports: [ComboPageComponent],
-  declarations: [ComboPageComponent]
+  declarations: [ComboPageComponent],
 })
 export class ComboPageModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ComboPageModule,
-      providers: []
+      providers: [],
     };
   }
 }

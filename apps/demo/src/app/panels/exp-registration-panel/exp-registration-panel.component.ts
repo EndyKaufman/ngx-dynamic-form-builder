@@ -5,7 +5,7 @@ import { ExpUser } from '../../shared/models/exp-user';
 @Component({
   selector: 'exp-registration-panel',
   templateUrl: './exp-registration-panel.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExpRegistrationPanelComponent implements OnInit {
   form: DynamicFormGroup<ExpUser>;
@@ -17,8 +17,8 @@ export class ExpRegistrationPanelComponent implements OnInit {
   constructor() {
     this.form = this.fb.group(ExpUser, {
       customValidatorOptions: {
-        groups: ['new']
-      }
+        groups: ['new'],
+      },
     });
   }
   ngOnInit() {

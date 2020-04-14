@@ -15,15 +15,15 @@ import { CustomizationPageRoutes } from './customization-page.routes';
     RouterModule.forChild(CustomizationPageRoutes),
     DocsExampleModule.forRoot(),
     SourceTabsModule.forRoot(),
-    FlexLayoutModule
+    FlexLayoutModule,
   ],
-  declarations: [CustomizationPageComponent]
+  declarations: [CustomizationPageComponent],
 })
 export class CustomizationPageModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: CustomizationPageModule,
-      providers: []
+      providers: [],
     };
   }
 }

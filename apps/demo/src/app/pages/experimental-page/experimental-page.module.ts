@@ -20,17 +20,17 @@ import { ExpRegistrationPanelModule } from '../../panels/exp-registration-panel/
     ExpLoginPanelModule.forRoot(),
     ExpRegistrationPanelModule.forRoot(),
     RouterModule.forChild(ExperimentalPageRoutes),
-    SourceTabsModule.forRoot()
+    SourceTabsModule.forRoot(),
   ],
   entryComponents: [ExperimentalPageComponent],
   exports: [ExperimentalPageComponent],
-  declarations: [ExperimentalPageComponent]
+  declarations: [ExperimentalPageComponent],
 })
 export class ExperimentalPageModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ExperimentalPageModule,
-      providers: []
+      providers: [],
     };
   }
 }

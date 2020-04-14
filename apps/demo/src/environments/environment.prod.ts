@@ -9,13 +9,13 @@ export const environment: IEnvironment = {
       tasks: [
         {
           id: 1,
-          description: 'default 1 task description'
+          description: 'default 1 task description',
         },
         {
           id: 2,
-          description: 'default 2 task description'
-        }
-      ]
-    }
-  }
+          description: 'default 2 task description',
+        },
+      ],
+    },
+  },
 };

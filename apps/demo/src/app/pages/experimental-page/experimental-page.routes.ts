@@ -8,8 +8,8 @@ export const ExperimentalPageRoutes: Routes = [
     data: {
       name: 'experimental',
       title: 'Experimental',
-      visible: true
+      visible: true,
     },
-    children: []
-  }
+    children: [],
+  },
 ];
