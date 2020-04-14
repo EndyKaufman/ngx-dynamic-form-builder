@@ -1,3 +1,18 @@
+# [1.4.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.3.0...1.4.0) (2020-04-14)
+
+
+### Bug Fixes
+
+* add support for conditional validations ([9c738a9](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/9c738a98686e59aa2c4f3e8e2730e4871e33984e))
+* update for correct support conditional validations ([1c0e744](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/1c0e7449b6244f92c07ae87a0ca03e6b4a8f37da))
+
+
+### Features
+
+* update dependencies and fix sources for it ([6daff8e](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/6daff8ef62e03c140b33ae321975c54069c80a8e))
+
+
+
 # [1.3.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.2.0...1.3.0) (2020-03-19)
 
 
