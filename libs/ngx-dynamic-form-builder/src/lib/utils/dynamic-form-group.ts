@@ -21,7 +21,7 @@ import {
 import { ValidationMetadata } from 'class-validator/metadata/ValidationMetadata';
 import 'reflect-metadata';
 import { BehaviorSubject, from, Observable, of, Subject, Subscription } from 'rxjs';
-import { flatMap, map, mapTo, delay } from 'rxjs/operators';
+import { flatMap, map, mapTo, delay, tap } from 'rxjs/operators';
 import { Dictionary } from '../models/dictionary';
 import { DynamicFormGroupField } from '../models/dynamic-form-group-field';
 import { ErrorPropertyName } from '../models/error-property-name';
@@ -180,7 +180,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         ...(isRoot ? this.errors : {}),
         ...Object.entries(control.controls).reduce((acc, [key, childControl]: [string, Dictionary]) => {
           const childErrors = this.collectErrors(childControl, false);
-          if (childErrors && key !== 'foreverInvalid' && Object.keys(childErrors).length > 0) {
+          if (childErrors && Object.keys(childErrors).length > 0) {
             acc = {
               ...acc,
               [key]: {
@@ -626,7 +626,7 @@ export function getClassValidators<TModel>(
 
                 // Handle Custom Validation
                 if (isCustomValidate(validationMetadata, typeKey)) {
-                  const customValidation = createCustomValidation(fieldName, validationMetadata, conditionalValidations);
+                  const customValidation = createCustomValidation(fieldName, validationMetadata);
                   setFieldData(fieldName, fieldDefinition, customValidation);
                 }
 
@@ -653,26 +653,6 @@ export function getClassValidators<TModel>(
   // Local Helper functions to help make the main code more readable
   //
 
-  function checkIfConditionsMatch(control,conditionalValidations) {
-    if(conditionalValidations.length > 0) {
-      if(!control.parent) {
-        // during formGroup creation, the control has no parent.
-        // as validation concept is to opt-in for validation, the best reaction here is to let it skip.
-        return false;
-      }
-      let func;
-      for(let i = 0; i < conditionalValidations.length; i++) {
-        for(let i2 = 0; i2 < conditionalValidations[i].constraints.length; i2++) {
-          func = conditionalValidations[i].constraints[i2];
-          if(typeof func === 'function' && !func(control.parent.value, control.value)) {
-              return false;
-          }
-        }
-      }
-    }
-    return true;
-  }
-
   function createNestedValidate(
     fieldName: string,
     objectToValidate: any,
@@ -682,6 +662,7 @@ export function getClassValidators<TModel>(
       type: 'async',
       validator: function(control: FormControl) {
         return getValidateErrors(
+          control.parent,
           fieldName,
           control,
           objectToValidate !== undefined ? objectToValidate : control.value,
@@ -706,10 +687,6 @@ export function getClassValidators<TModel>(
           return of(null);
         }
 
-        if(!checkIfConditionsMatch(control,conditionalValidations)) {
-            return of(null)
-        }
-
         const isValid =
           control.parent && control.parent.value
             ? validator.validateValueByMetadata(control.value, validationMetadata)
@@ -717,7 +694,7 @@ export function getClassValidators<TModel>(
         let validateState$ = of(isValid);
         if (!isValid && conditionalValidations.length > 0) {
           validateState$ = setObjectValueAndGetValidationErrors(fieldName, control, validatorOptions).pipe(
-            map(validateErrors => (validateErrors ? !!validateErrors[fieldName] : false))
+            map(validateErrors => (validateErrors && validateErrors[fieldName] ? false : true))
           );
         }
 
@@ -728,13 +705,10 @@ export function getClassValidators<TModel>(
     };
   }
 
-  function createCustomValidation(fieldName: string, validationMetadata: ValidationMetadata, conditionalValidations: ValidationMetadata[]): ValidatorFunctionType {
+  function createCustomValidation(fieldName: string, validationMetadata: ValidationMetadata): ValidatorFunctionType {
     return {
       type: 'async',
       validator: function(control: FormControl) {
-        if(!checkIfConditionsMatch(control,conditionalValidations)) {
-            return of(null)
-        }
         return setObjectValueAndGetValidationErrors(fieldName, control, validatorOptions).pipe(
           map(errors => getAllErrors(errors, fieldName).length === 0),
           map(validateState => getIsValidResult(validateState, validationMetadata, 'customValidation'))
@@ -832,6 +806,12 @@ function setObjectValueAndGetValidationErrors(
   control: FormControl,
   validatorOptions?: ValidatorOptions
 ) {
+  const parent =
+    control.parent instanceof DynamicFormGroup
+      ? (control.parent as DynamicFormGroup<any>)
+      : control.parent
+      ? control.parent
+      : null;
   const object =
     control.parent instanceof DynamicFormGroup
       ? (control.parent as DynamicFormGroup<any>).object
@@ -843,10 +823,11 @@ function setObjectValueAndGetValidationErrors(
     object[fieldName] = control.value;
   }
 
-  return getValidateErrors(fieldName, control, object, validatorOptions);
+  return getValidateErrors(parent, fieldName, control, object, validatorOptions);
 }
 
 function getValidateErrors(
+  parent: FormGroup | FormArray | null,
   fieldName: string,
   control: FormControl,
   dataToValidate: any,
@@ -865,7 +846,7 @@ function getValidateErrors(
         : of({})
     )
   );*/
-  return (control.parent && control.parent.value ? from(validate(dataToValidate, validatorOptions)) : of([])).pipe(
+  return (parent && parent.value ? from(validate(dataToValidate, validatorOptions)) : of([])).pipe(
     map(errors => transformValidationErrors(errors))
   );
 }

@@ -41,3 +41,20 @@ export class ObjectMustBeNotEmpty implements ValidatorConstraintInterface {
     return false;
   }
 }
+
+@ValidatorConstraint({ name: 'equalsTo', async: false })
+export class EqualsTo implements ValidatorConstraintInterface {
+  validate(value: string, validationArguments: ValidationArguments) {
+    return (
+      validationArguments.constraints.length > 0 &&
+      validationArguments.constraints.filter(
+        otherField =>
+          validationArguments.object.hasOwnProperty(otherField) && validationArguments.object[otherField] === value
+      ).length > 0
+    );
+  }
+
+  defaultMessage(validationArguments: ValidationArguments) {
+    return `${validationArguments.constraints.join(',')} do not match to ${validationArguments.property}`;
+  }
+}

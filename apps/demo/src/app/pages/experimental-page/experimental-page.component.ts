@@ -24,6 +24,15 @@ export class ExperimentalPageComponent {
     }
   };
 
+  registrationSource = {
+    html: require('!!raw-loader!./../../panels/exp-registration-panel/exp-registration-panel.component.html').default,
+    ts: require('!!raw-loader!./../../panels/exp-registration-panel/exp-registration-panel.component.ts').default,
+    launch: {
+      location: 'https://stackblitz.com/edit/ngx-dynamic-form-builder-experimental-login',
+      tooltip: `Edit in http://stackblitz.com`
+    }
+  };
+
   otherFiles: { name: string; language: string; content: string }[] = [
     {
       name: 'exp-user.ts',

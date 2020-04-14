@@ -9,6 +9,7 @@ import { SourceTabsModule } from '../../others/source-tabs/source-tabs.module';
 import { ExpUserPanelModule } from '../../panels/exp-user-panel/exp-user-panel.module';
 import { ExpLoginPanelModule } from '../../panels/exp-login-panel/exp-login-panel.module';
 import { DocsExampleModule } from '../../others/docs-example/docs-example.module';
+import { ExpRegistrationPanelModule } from '../../panels/exp-registration-panel/exp-registration-panel.module';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { DocsExampleModule } from '../../others/docs-example/docs-example.module
     DocsExampleModule.forRoot(),
     ExpUserPanelModule.forRoot(),
     ExpLoginPanelModule.forRoot(),
+    ExpRegistrationPanelModule.forRoot(),
     RouterModule.forChild(ExperimentalPageRoutes),
     SourceTabsModule.forRoot()
   ],
