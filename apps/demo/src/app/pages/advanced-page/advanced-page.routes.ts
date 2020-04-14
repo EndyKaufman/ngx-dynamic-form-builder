@@ -8,8 +8,8 @@ export const AdvancedPageRoutes: Routes = [
     data: {
       name: 'advanced',
       title: 'Advanced',
-      visible: true
+      visible: true,
     },
-    children: []
-  }
+    children: [],
+  },
 ];

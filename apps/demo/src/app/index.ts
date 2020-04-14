@@ -41,6 +41,8 @@ export * from './panels/company-panel/company-panel.component';
 export * from './panels/company-panel/company-panel.module';
 export * from './panels/exp-login-panel/exp-login-panel.component';
 export * from './panels/exp-login-panel/exp-login-panel.module';
+export * from './panels/exp-registration-panel/exp-registration-panel.component';
+export * from './panels/exp-registration-panel/exp-registration-panel.module';
 export * from './panels/exp-user-panel/exp-user-panel.component';
 export * from './panels/exp-user-panel/exp-user-panel.module';
 export * from './panels/project-panel/project-panel-complete.component';

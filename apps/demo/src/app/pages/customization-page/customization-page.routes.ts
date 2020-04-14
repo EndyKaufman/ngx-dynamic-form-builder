@@ -9,8 +9,8 @@ export const CustomizationPageRoutes: Routes = [
       name: 'customization',
       title: 'Customization',
       visible: true,
-      svgIcon: 'shape-outline'
+      svgIcon: 'shape-outline',
     },
-    children: []
-  }
+    children: [],
+  },
 ];

@@ -10,7 +10,7 @@ import { ProjectPanelService } from './project-panel.service';
 @Component({
   selector: 'project-panel-step-1',
   templateUrl: './project-panel-step-1.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectPanelStep1Component implements OnDestroy {
   @Input()
@@ -29,7 +29,7 @@ export class ProjectPanelStep1Component implements OnDestroy {
   ) {
     this._activatedRoute.data
       .pipe(takeUntil(this._destroyed$))
-      .subscribe(data => this._projectPanelService.activatedStep$.next(data.step));
+      .subscribe((data) => this._projectPanelService.activatedStep$.next(data.step));
     this.form = this.createForm();
     this.project$ = this._projectPanelService.project$;
     this.subscribeToProject();
@@ -41,12 +41,12 @@ export class ProjectPanelStep1Component implements OnDestroy {
   createForm() {
     return this.fb.group(Project, {
       customValidatorOptions: {
-        groups: [ProjectPanelStepsEnum.Step1]
-      }
+        groups: [ProjectPanelStepsEnum.Step1],
+      },
     });
   }
   subscribeToProject() {
-    this.project$.pipe(takeUntil(this._destroyed$)).subscribe(project => this.loadFormData(project));
+    this.project$.pipe(takeUntil(this._destroyed$)).subscribe((project) => this.loadFormData(project));
   }
   loadFormData(project: Project): void {
     this.form.object = project;
@@ -65,7 +65,7 @@ export class ProjectPanelStep1Component implements OnDestroy {
   onLoadExternalClick(): void {
     this.form
       .setExternalErrorsAsync({
-        name: ['external error']
+        name: ['external error'],
       })
       .then(() => this.form.validateAllFormFields());
   }

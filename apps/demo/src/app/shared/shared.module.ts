@@ -6,13 +6,13 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
   imports: [CommonModule],
   providers: [],
   declarations: [SafeHtmlPipe],
-  exports: [CommonModule, SafeHtmlPipe]
+  exports: [CommonModule, SafeHtmlPipe],
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SharedModule,
-      providers: []
+      providers: [],
     };
   }
 }

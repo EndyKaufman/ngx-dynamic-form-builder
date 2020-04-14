@@ -16,17 +16,17 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatCheckboxModule,
     FormsModule,
     ReactiveFormsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
   ],
   entryComponents: [ComboCompanyPanelComponent],
   exports: [ComboCompanyPanelComponent],
-  declarations: [ComboCompanyPanelComponent]
+  declarations: [ComboCompanyPanelComponent],
 })
 export class ComboCompanyPanelModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ComboCompanyPanelModule,
-      providers: []
+      providers: [],
     };
   }
 }

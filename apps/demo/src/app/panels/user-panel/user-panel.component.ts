@@ -7,7 +7,7 @@ import { Company } from './../../shared/models/company';
 @Component({
   selector: 'user-panel',
   templateUrl: './user-panel.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserPanelComponent {
   form: DynamicFormGroup<User>;
@@ -27,9 +27,9 @@ export class UserPanelComponent {
       company: {
         id: 3,
         name: 'company 2',
-        regionNum: 1
-      }
-    }
+        regionNum: 1,
+      },
+    },
   });
 
   @Input()
@@ -57,9 +57,9 @@ export class UserPanelComponent {
         name: '',
         company: this.fb.group(Company, {
           name: '',
-          regionNum: null
-        })
-      })
+          regionNum: null,
+        }),
+      }),
     });
   }
   onLoadExternalClick(): void {
@@ -68,9 +68,9 @@ export class UserPanelComponent {
         username: ['external error'],
         department: {
           company: {
-            name: ['external error for name']
-          }
-        }
+            name: ['external error for name'],
+          },
+        },
       })
       .then(() => this.form.validateAllFormFields());
   }
@@ -88,7 +88,7 @@ export class UserPanelComponent {
     this.form.validateAllFormFields();
   }
   onSaveClick(): void {
-    this.form.validateAsync().then(_ => {
+    this.form.validateAsync().then((_) => {
       this.form.validateAllFormFields();
       if (this.form.valid) {
         this.savedItem = this.form.object;

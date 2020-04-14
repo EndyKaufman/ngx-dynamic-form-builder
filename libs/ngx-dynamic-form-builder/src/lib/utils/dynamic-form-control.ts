@@ -11,11 +11,11 @@ export class DynamicFormControl extends FormControl {
     super(
       fieldDefinition.data instanceof Observable ? null : fieldDefinition.data,
       fieldDefinition.validationFunctions
-        .filter(func => func.type === 'sync')
-        .map(func => func.validator as ValidatorFn),
+        .filter((func) => func.type === 'sync')
+        .map((func) => func.validator as ValidatorFn),
       fieldDefinition.validationFunctions
-        .filter(func => func.type === 'async')
-        .map(func => func.validator as AsyncValidatorFn)
+        .filter((func) => func.type === 'async')
+        .map((func) => func.validator as AsyncValidatorFn)
     );
     this.controlName = name;
     this.validationDefinitions = fieldDefinition.validationDefinitions;

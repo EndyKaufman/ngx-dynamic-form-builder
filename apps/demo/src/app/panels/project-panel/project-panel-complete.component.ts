@@ -8,7 +8,7 @@ import { ProjectPanelService } from './project-panel.service';
 @Component({
   selector: 'project-panel-complete',
   templateUrl: './project-panel-complete.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectPanelCompleteComponent implements OnDestroy {
   project$: Observable<Project>;
@@ -20,7 +20,7 @@ export class ProjectPanelCompleteComponent implements OnDestroy {
   ) {
     this._activatedRoute.data
       .pipe(takeUntil(this._destroyed$))
-      .subscribe(data => this._projectPanelService.activatedStep$.next(data.step));
+      .subscribe((data) => this._projectPanelService.activatedStep$.next(data.step));
     this.project$ = this._projectPanelService.project$;
   }
   ngOnDestroy(): void {

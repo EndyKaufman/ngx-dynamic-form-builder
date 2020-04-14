@@ -1,6 +1,6 @@
 {
   "name": "ngx-dynamic-form-builder",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "FormBuilder + class-transformer + class-validator = dynamic form group builder for Angular9+",
   "keywords": [
     "form-builder",
@@ -42,11 +42,11 @@
     }
   ],
   "peerDependencies": {
-    "rxjs": "^6.5.4",
-    "@angular/forms": "^9.0.7",
-    "@angular/common": "^9.0.7",
-    "@angular/compiler": "^9.0.7",
-    "@angular/core": "^9.0.7",
+    "rxjs": "^6.5.5",
+    "@angular/forms": "^9.1.1",
+    "@angular/common": "^9.1.1",
+    "@angular/compiler": "^9.1.1",
+    "@angular/core": "^9.1.1",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.11.1",
     "lodash.clonedeep": "^4.5.0",

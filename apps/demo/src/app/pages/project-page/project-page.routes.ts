@@ -12,35 +12,35 @@ export const ProjectPageRoutes: Routes = [
     data: {
       name: 'project',
       title: 'FormArray and Steps',
-      visible: true
+      visible: true,
     },
     children: [
       {
         path: '',
         redirectTo: '/project/step-1',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'step-1',
         component: ProjectPanelStep1Component,
         data: {
-          step: ProjectPanelStepsEnum.Step1
-        }
+          step: ProjectPanelStepsEnum.Step1,
+        },
       },
       {
         path: 'step-2',
         component: ProjectPanelStep2Component,
         data: {
-          step: ProjectPanelStepsEnum.Step2
-        }
+          step: ProjectPanelStepsEnum.Step2,
+        },
       },
       {
         path: 'complete',
         component: ProjectPanelCompleteComponent,
         data: {
-          step: ProjectPanelStepsEnum.Complete
-        }
-      }
-    ]
-  }
+          step: ProjectPanelStepsEnum.Complete,
+        },
+      },
+    ],
+  },
 ];

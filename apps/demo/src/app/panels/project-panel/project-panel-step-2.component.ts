@@ -12,7 +12,7 @@ import { ProjectPanelService } from './project-panel.service';
 @Component({
   selector: 'project-panel-step-2',
   templateUrl: './project-panel-step-2.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectPanelStep2Component implements OnDestroy {
   form: DynamicFormGroup<Project>;
@@ -28,7 +28,7 @@ export class ProjectPanelStep2Component implements OnDestroy {
   ) {
     this._activatedRoute.data
       .pipe(takeUntil(this._destroyed$))
-      .subscribe(data => this._projectPanelService.activatedStep$.next(data.step));
+      .subscribe((data) => this._projectPanelService.activatedStep$.next(data.step));
     this.form = this.createForm();
     this.project$ = this._projectPanelService.project$;
     this.subscribeToProject();
@@ -40,9 +40,9 @@ export class ProjectPanelStep2Component implements OnDestroy {
   createForm() {
     return this.fb.group(Project, {
       customValidatorOptions: {
-        groups: [ProjectPanelStepsEnum.Step2]
+        groups: [ProjectPanelStepsEnum.Step2],
       },
-      validator: this.classLevelValidator
+      validator: this.classLevelValidator,
     });
   }
   classLevelValidator(group: DynamicFormGroup<Project>) {
@@ -58,7 +58,7 @@ export class ProjectPanelStep2Component implements OnDestroy {
     this.getTasksArray().push(this.createTaskControl());
   }
   subscribeToProject() {
-    this.project$.pipe(takeUntil(this._destroyed$)).subscribe(project => this.loadFormData(project));
+    this.project$.pipe(takeUntil(this._destroyed$)).subscribe((project) => this.loadFormData(project));
   }
   loadFormData(project: Project): void {
     this.form.object = project;

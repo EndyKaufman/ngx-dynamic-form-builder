@@ -14,17 +14,17 @@ import { MarkdownModule } from 'ngx-markdown';
     MatTabsModule,
     MatIconModule,
     MatButtonModule,
-    FlexLayoutModule
+    FlexLayoutModule,
   ],
   entryComponents: [SourceTabsComponent],
   exports: [SourceTabsComponent],
-  declarations: [SourceTabsComponent]
+  declarations: [SourceTabsComponent],
 })
 export class SourceTabsModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SourceTabsModule,
-      providers: []
+      providers: [],
     };
   }
 }

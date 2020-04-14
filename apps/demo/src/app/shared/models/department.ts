@@ -7,7 +7,7 @@ export class Department {
   static strings = {
     id: 'Id',
     name: 'Name',
-    company: 'Company'
+    company: 'Company',
   };
 
   id: number;

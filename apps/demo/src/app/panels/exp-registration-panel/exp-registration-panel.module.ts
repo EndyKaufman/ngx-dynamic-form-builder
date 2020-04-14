@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { ModuleWithProviders } from '@angular/core';
-import { ExpLoginPanelComponent } from '../../panels/exp-login-panel/exp-login-panel.component';
+import { ExpRegistrationPanelComponent } from '../exp-registration-panel/exp-registration-panel.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
 import { MatInputModule } from '@angular/material/input';
@@ -18,14 +18,14 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     ReactiveFormsModule,
     FlexLayoutModule,
   ],
-  entryComponents: [ExpLoginPanelComponent],
-  exports: [ExpLoginPanelComponent],
-  declarations: [ExpLoginPanelComponent],
+  entryComponents: [ExpRegistrationPanelComponent],
+  exports: [ExpRegistrationPanelComponent],
+  declarations: [ExpRegistrationPanelComponent],
 })
-export class ExpLoginPanelModule {
+export class ExpRegistrationPanelModule {
   static forRoot(): ModuleWithProviders {
     return {
-      ngModule: ExpLoginPanelModule,
+      ngModule: ExpRegistrationPanelModule,
       providers: [],
     };
   }

@@ -3,11 +3,11 @@ import { DynamicFormBuilder, DynamicFormGroup } from 'ngx-dynamic-form-builder';
 import { ExpUser } from '../../shared/models/exp-user';
 
 @Component({
-  selector: 'exp-login-panel',
-  templateUrl: './exp-login-panel.component.html',
+  selector: 'exp-registration-panel',
+  templateUrl: './exp-registration-panel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExpLoginPanelComponent implements OnInit {
+export class ExpRegistrationPanelComponent implements OnInit {
   form: DynamicFormGroup<ExpUser>;
 
   fb = new DynamicFormBuilder();
@@ -17,7 +17,7 @@ export class ExpLoginPanelComponent implements OnInit {
   constructor() {
     this.form = this.fb.group(ExpUser, {
       customValidatorOptions: {
-        groups: ['guest'],
+        groups: ['new'],
       },
     });
   }
@@ -26,7 +26,7 @@ export class ExpLoginPanelComponent implements OnInit {
     this.form.object = new ExpUser();
     this.form.validateAllFormFields();
   }
-  onLoginClick(): void {
+  onRegistrationClick(): void {
     this.form.validateAllFormFields();
     if (this.form.valid) {
       this.savedItem = this.form.object;

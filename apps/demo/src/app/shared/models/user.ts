@@ -13,7 +13,7 @@ export class User {
     email: 'Email',
     department: 'Department',
     dateOfBirth: 'Date of birth',
-    abc: 'Only abc field'
+    abc: 'Only abc field',
   };
 
   id: number;

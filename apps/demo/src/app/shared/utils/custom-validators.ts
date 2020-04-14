@@ -28,16 +28,33 @@ export class ObjectMustBeNotEmpty implements ValidatorConstraintInterface {
     ) {
       return (
         objectLength !== 0 &&
-        objects.filter(object => {
+        objects.filter((object) => {
           const keys = object ? Object.keys(object) : [];
           return (
             keys.length === 0 ||
-            keys.filter(key => object[key] === undefined || object[key] === null || object[key] === '').length ===
+            keys.filter((key) => object[key] === undefined || object[key] === null || object[key] === '').length ===
               keys.length
           );
         }).length === 0
       );
     }
     return false;
+  }
+}
+
+@ValidatorConstraint({ name: 'equalsTo', async: false })
+export class EqualsTo implements ValidatorConstraintInterface {
+  validate(value: string, validationArguments: ValidationArguments) {
+    return (
+      validationArguments.constraints.length > 0 &&
+      validationArguments.constraints.filter(
+        (otherField) =>
+          validationArguments.object.hasOwnProperty(otherField) && validationArguments.object[otherField] === value
+      ).length > 0
+    );
+  }
+
+  defaultMessage(validationArguments: ValidationArguments) {
+    return `${validationArguments.constraints.join(',')} do not match to ${validationArguments.property}`;
   }
 }

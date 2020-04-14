@@ -13,7 +13,7 @@ export class MessageBoxService {
     return new Promise((resolve, reject) => {
       const dialogRef = this.dialog.open(MessageBoxComponent, {
         width: width,
-        data: null
+        data: null,
       });
       dialogRef.componentInstance.title = title;
       dialogRef.componentInstance.message = message;
@@ -35,7 +35,7 @@ export class MessageBoxService {
     return new Promise((resolve, reject) => {
       const dialogRef = this.dialog.open(MessageBoxComponent, {
         width: width,
-        data: null
+        data: null,
       });
       dialogRef.componentInstance.title = title;
       dialogRef.componentInstance.message = message;

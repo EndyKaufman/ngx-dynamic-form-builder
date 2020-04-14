@@ -5,15 +5,15 @@ export class ExpDepartment {
   id: number;
 
   @IsNotEmpty({
-    groups: ['user']
+    groups: ['user'],
   })
   name: string;
 
   @ValidateNested({
-    groups: ['user']
+    groups: ['user'],
   })
   @IsOptional({
-    groups: ['user']
+    groups: ['user'],
   })
   company: ExpCompany;
 

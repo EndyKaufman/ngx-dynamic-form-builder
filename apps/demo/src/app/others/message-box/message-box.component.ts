@@ -5,7 +5,7 @@ import {
   EventEmitter,
   Input,
   OnInit,
-  Output
+  Output,
 } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
@@ -13,7 +13,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   selector: 'message-box',
   templateUrl: './message-box.component.html',
   styleUrls: ['./message-box.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MessageBoxComponent implements OnInit {
   @Input()

@@ -17,17 +17,17 @@ import { MatIconModule } from '@angular/material/icon';
     CompanyPanelModule.forRoot(),
     RouterModule.forChild(SimplePageRoutes),
     SourceTabsModule.forRoot(),
-    MatIconModule
+    MatIconModule,
   ],
   entryComponents: [SimplePageComponent],
   exports: [SimplePageComponent],
-  declarations: [SimplePageComponent]
+  declarations: [SimplePageComponent],
 })
 export class SimplePageModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SimplePageModule,
-      providers: []
+      providers: [],
     };
   }
 }

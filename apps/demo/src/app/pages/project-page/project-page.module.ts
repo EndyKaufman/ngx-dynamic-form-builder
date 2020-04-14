@@ -17,17 +17,17 @@ import { MatIconModule } from '@angular/material/icon';
     ProjectPanelModule,
     RouterModule.forChild(ProjectPageRoutes),
     SourceTabsModule.forRoot(),
-    MatIconModule
+    MatIconModule,
   ],
   entryComponents: [ProjectPageComponent],
   exports: [ProjectPageComponent],
-  declarations: [ProjectPageComponent]
+  declarations: [ProjectPageComponent],
 })
 export class ProjectPageModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ProjectPageModule,
-      providers: []
+      providers: [],
     };
   }
 }

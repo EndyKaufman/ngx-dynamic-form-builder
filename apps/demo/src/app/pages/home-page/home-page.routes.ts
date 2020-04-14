@@ -9,8 +9,8 @@ export const HomePageRoutes: Routes = [
       name: 'home',
       title: 'Home',
       visible: false,
-      align: 'left'
+      align: 'left',
     },
-    children: []
-  }
+    children: [],
+  },
 ];
