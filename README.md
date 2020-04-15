@@ -21,6 +21,26 @@ npm i --save ngx-dynamic-form-builder
 
 ## Usage
 
+company.ts
+```js 
+import { Validate, IsNotEmpty } from 'class-validator';
+import { plainToClassFromExist } from 'class-transformer';
+import { TextLengthMore15 } from '../utils/custom-validators';
+
+export class Company {
+    id: number = undefined;
+    @Validate(TextLengthMore15, {
+        message: 'The company name must be longer than 15'
+    })
+    @IsNotEmpty()
+    name: string = undefined;
+
+    constructor(data?: any) {
+        plainToClassFromExist(this, data);
+    }
+}
+```
+
 app.module.ts
 ```js 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -43,29 +63,9 @@ import { CompanyPanelComponent } from './company-panel.component';
 export class AppModule {}
 ```
 
-company.ts
-```js 
-import { Validate, IsNotEmpty } from 'class-validator';
-import { plainToClassFromExist } from 'class-transformer';
-import { TextLengthMore15 } from '../utils/custom-validators';
-
-export class Company {
-    id: number = undefined;
-    @Validate(TextLengthMore15, {
-        message: 'The company name must be longer than 15'
-    })
-    @IsNotEmpty()
-    name: string = undefined;
-
-    constructor(data?: any) {
-        plainToClassFromExist(this, data);
-    }
-}
-```
-
 company-panel.component.html
 ```html
-<form [formGroup]="form" *ngIf="form?.formErrors as errors" novalidate>
+<form [formGroup]="form" *ngIf="form?.customValidateErrors | async as errors" novalidate>
     <input formControlName="name" placeholder="Name">
     <p *ngIf="errors.name?.length">
       Error: {{errors.name[0]}}
