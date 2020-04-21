@@ -125,7 +125,7 @@
     "markdown-loader": "^5.1.0",
     "ng-packagr": "^9.1.1",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.0.4",
+    "prettier": "^2.0.5",
     "protractor": "~5.4.3",
     "ts-node": "~8.8.2",
     "tsickle": "^0.38.1",
