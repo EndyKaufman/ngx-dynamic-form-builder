@@ -1,3 +1,12 @@
+## [1.5.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.5.0...1.5.1) (2020-05-04)
+
+
+### Bug Fixes
+
+* add ignore error on try get value from not exists control ([39a0773](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/39a07738d9fa6be93cf7c282e79ec054b7bedd7b))
+
+
+
 # [1.5.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.4.0...1.5.0) (2020-05-04)
 
 
