@@ -14,7 +14,7 @@ export function transformValidationErrors(errors: ValidationError[]): ShortValid
           customErrors[error.property] = [];
         }
 
-        if ((customErrors[error.property] as string[]).indexOf(error.constraints[key]) === -1) {
+        if (error.constraints && (customErrors[error.property] as string[]).indexOf(error.constraints[key]) === -1) {
           (customErrors[error.property] as string[]).push(error.constraints[key]);
         }
       });

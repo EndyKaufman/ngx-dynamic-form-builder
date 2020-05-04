@@ -1,4 +1,3 @@
-[![Greenkeeper badge](https://badges.greenkeeper.io/EndyKaufman/ngx-dynamic-form-builder.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/EndyKaufman/ngx-dynamic-form-builder.svg?branch=master)](https://travis-ci.org/EndyKaufman/ngx-dynamic-form-builder)
 [![npm version](https://badge.fury.io/js/ngx-dynamic-form-builder.svg)](https://badge.fury.io/js/ngx-dynamic-form-builder)
 
@@ -8,7 +7,7 @@
 ## Installation
 
 ```bash
-npm i --save ngx-dynamic-form-builder
+npm i --save class-transformer class-validator ngx-dynamic-form-builder
 ```
 
 ## Links

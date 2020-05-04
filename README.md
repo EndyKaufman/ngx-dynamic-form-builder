@@ -1,6 +1,5 @@
 # ngx-dynamic-form-builder
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/EndyKaufman/ngx-dynamic-form-builder.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/EndyKaufman/ngx-dynamic-form-builder.svg?branch=master)](https://travis-ci.org/EndyKaufman/ngx-dynamic-form-builder)
 [![npm version](https://badge.fury.io/js/ngx-dynamic-form-builder.svg)](https://badge.fury.io/js/ngx-dynamic-form-builder)
 
@@ -10,7 +9,7 @@
 ## Installation
 
 ```bash
-npm i --save ngx-dynamic-form-builder
+npm i --save class-transformer class-validator ngx-dynamic-form-builder
 ```
 
 ## Links
@@ -20,6 +19,26 @@ npm i --save ngx-dynamic-form-builder
 [Stackblitz](https://stackblitz.com/edit/ngx-dynamic-form-builder) - Simply sample of usage on https://stackblitz.com
 
 ## Usage
+
+company.ts
+```js 
+import { Validate, IsNotEmpty } from 'class-validator';
+import { plainToClassFromExist } from 'class-transformer';
+import { TextLengthMore15 } from '../utils/custom-validators';
+
+export class Company {
+    id: number = undefined;
+    @Validate(TextLengthMore15, {
+        message: 'The company name must be longer than 15'
+    })
+    @IsNotEmpty()
+    name: string = undefined;
+
+    constructor(data?: any) {
+        plainToClassFromExist(this, data);
+    }
+}
+```
 
 app.module.ts
 ```js 
@@ -43,29 +62,9 @@ import { CompanyPanelComponent } from './company-panel.component';
 export class AppModule {}
 ```
 
-company.ts
-```js 
-import { Validate, IsNotEmpty } from 'class-validator';
-import { plainToClassFromExist } from 'class-transformer';
-import { TextLengthMore15 } from '../utils/custom-validators';
-
-export class Company {
-    id: number = undefined;
-    @Validate(TextLengthMore15, {
-        message: 'The company name must be longer than 15'
-    })
-    @IsNotEmpty()
-    name: string = undefined;
-
-    constructor(data?: any) {
-        plainToClassFromExist(this, data);
-    }
-}
-```
-
 company-panel.component.html
 ```html
-<form [formGroup]="form" *ngIf="form?.formErrors as errors" novalidate>
+<form [formGroup]="form" *ngIf="form?.customValidateErrors | async as errors" novalidate>
     <input formControlName="name" placeholder="Name">
     <p *ngIf="errors.name?.length">
       Error: {{errors.name[0]}}

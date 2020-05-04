@@ -1,3 +1,18 @@
+# [1.5.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.4.0...1.5.0) (2020-05-04)
+
+
+### Bug Fixes
+
+* remove class-transformer and class-validator from production dependencies ([445b3bc](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/445b3bccd8e4375bf28630e79894f17c94b5cd89))
+
+
+### Features
+
+* update dependencies ([920fc2d](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/920fc2d65e0790d97d6c602cef1ece9378c56b65))
+* update for correct work new version of class-validator ([f7da8dd](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/f7da8ddb20e964607eecc50db9cf439fb4561c73))
+
+
+
 # [1.4.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.3.0...1.4.0) (2020-04-14)
 
 
