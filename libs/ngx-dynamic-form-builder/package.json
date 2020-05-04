@@ -43,18 +43,14 @@
   ],
   "peerDependencies": {
     "rxjs": "^6.5.5",
-    "@angular/forms": "^9.1.1",
-    "@angular/common": "^9.1.1",
-    "@angular/compiler": "^9.1.1",
-    "@angular/core": "^9.1.1",
+    "@angular/forms": "^9.1.4",
+    "@angular/common": "^9.1.4",
+    "@angular/compiler": "^9.1.4",
+    "@angular/core": "^9.1.4",
     "class-transformer": "^0.2.3",
-    "class-validator": "^0.11.1",
-    "lodash.clonedeep": "^4.5.0",
-    "lodash.mergewith": "^4.6.2"
+    "class-validator": "^0.12.2"
   },
   "dependencies": {
-    "class-transformer": "^0.2.3",
-    "class-validator": "^0.11.1",
     "lodash.clonedeep": "^4.5.0",
     "lodash.mergewith": "^4.6.2"
   }
