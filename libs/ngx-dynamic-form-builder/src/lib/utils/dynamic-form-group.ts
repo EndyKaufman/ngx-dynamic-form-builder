@@ -437,7 +437,9 @@ export class DynamicFormGroup<TModel> extends FormGroup {
 
           // Handle Control
           else {
-            object[key] = this.controls[key].value;
+            if (this.controls[key]) {
+              object[key] = this.controls[key].value;
+            }
           }
         });
     }
@@ -521,7 +523,9 @@ export class DynamicFormGroup<TModel> extends FormGroup {
       // Handle Control
       else {
         const newObject = this._object ? this._object[key] : [];
-        this.controls[key].setValue(this._object && newObject ? newObject : undefined);
+        if (this.controls[key]) {
+          this.controls[key].setValue(this._object && newObject ? newObject : undefined);
+        }
       }
     });
     this.objectChange.next(this._object);
