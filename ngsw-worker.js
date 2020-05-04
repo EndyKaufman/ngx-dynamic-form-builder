@@ -30,19 +30,27 @@
         /**
          * Wrapper around the `Response` constructor.
          */
-        newResponse(body, init) { return new Response(body, init); }
+        newResponse(body, init) {
+            return new Response(body, init);
+        }
         /**
          * Wrapper around the `Headers` constructor.
          */
-        newHeaders(headers) { return new Headers(headers); }
+        newHeaders(headers) {
+            return new Headers(headers);
+        }
         /**
          * Test if a given object is an instance of `Client`.
          */
-        isClient(source) { return (source instanceof Client); }
+        isClient(source) {
+            return (source instanceof Client);
+        }
         /**
          * Read the current UNIX time in milliseconds.
          */
-        get time() { return Date.now(); }
+        get time() {
+            return Date.now();
+        }
         /**
          * Extract the pathname of a URL.
          */
@@ -56,7 +64,9 @@
          * Wait for a given amount of time before completing a Promise.
          */
         timeout(ms) {
-            return new Promise(resolve => { setTimeout(() => resolve(), ms); });
+            return new Promise(resolve => {
+                setTimeout(() => resolve(), ms);
+            });
         }
     }
 
@@ -121,8 +131,12 @@
             this.cache = cache;
             this.adapter = adapter;
         }
-        request(key) { return this.adapter.newRequest('/' + key); }
-        'delete'(key) { return this.cache.delete(this.request(key)); }
+        request(key) {
+            return this.adapter.newRequest('/' + key);
+        }
+        'delete'(key) {
+            return this.cache.delete(this.request(key));
+        }
         keys() {
             return this.cache.keys().then(requests => requests.map(req => req.url.substr(1)));
         }
@@ -437,7 +451,9 @@
                             // This resource has no hash, and yet exists in the cache. Check how old this request is
                             // to make sure it's still usable.
                             if (yield this.needToRevalidate(req, cachedResponse)) {
-                                this.idle.schedule(`revalidate(${this.prefix}, ${this.config.name}): ${req.url}`, () => __awaiter(this, void 0, void 0, function* () { yield this.fetchAndCacheOnce(req); }));
+                                this.idle.schedule(`revalidate(${this.prefix}, ${this.config.name}): ${req.url}`, () => __awaiter(this, void 0, void 0, function* () {
+                                    yield this.fetchAndCacheOnce(req);
+                                }));
                             }
                             // In either case (revalidation or not), the cached response must be good.
                             return cachedResponse;
@@ -910,7 +926,9 @@
         /**
          * The current count of URLs in the list.
          */
-        get size() { return this.state.count; }
+        get size() {
+            return this.state.count;
+        }
         /**
          * Remove the tail.
          */
@@ -1420,7 +1438,9 @@
                 exclude: excludeUrls.map(spec => new RegExp(spec.regex)),
             };
         }
-        get okay() { return this._okay; }
+        get okay() {
+            return this._okay;
+        }
         /**
          * Fully initialize this version of the application. If this Promise resolves successfully, all
          * required
@@ -1582,7 +1602,9 @@
         /**
          * Get the opaque application data which was provided with the manifest.
          */
-        get appData() { return this.manifest.appData || null; }
+        get appData() {
+            return this.manifest.appData || null;
+        }
         /**
          * Check whether a request accepts `text/html` (based on the `Accept` header).
          */
@@ -1680,7 +1702,9 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
             // Log the message.
             this.debugLogA.push({ value, time: this.adapter.time, context });
         }
-        errorToString(err) { return `${err.name}(${err.message}, ${err.stack})`; }
+        errorToString(err) {
+            return `${err.name}(${err.message}, ${err.stack})`;
+        }
         formatDebugLog(log) {
             return log.map(entry => `[${this.since(entry.time)}] ${entry.value} ${entry.context}`)
                 .join('\n');
@@ -1753,11 +1777,17 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
         schedule(desc, run) {
             this.queue.push({ desc, run });
             if (this.emptyResolve === null) {
-                this.empty = new Promise(resolve => { this.emptyResolve = resolve; });
+                this.empty = new Promise(resolve => {
+                    this.emptyResolve = resolve;
+                });
             }
         }
-        get size() { return this.queue.length; }
-        get taskDescriptions() { return this.queue.map(task => task.desc); }
+        get size() {
+            return this.queue.length;
+        }
+        get taskDescriptions() {
+            return this.queue.map(task => task.desc);
+        }
     }
 
     /**
@@ -2034,7 +2064,9 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
         handleMessage(msg, from) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (isMsgCheckForUpdates(msg)) {
-                    const action = (() => __awaiter(this, void 0, void 0, function* () { yield this.checkForUpdate(); }))();
+                    const action = (() => __awaiter(this, void 0, void 0, function* () {
+                        yield this.checkForUpdate();
+                    }))();
                     yield this.reportStatus(from, action, msg.statusNonce);
                 }
                 else if (isMsgActivateUpdate(msg)) {
@@ -2522,10 +2554,14 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
                 const table = yield this.db.open('control');
                 // Construct a serializable map of hashes to manifests.
                 const manifests = {};
-                this.versions.forEach((version, hash) => { manifests[hash] = version.manifest; });
+                this.versions.forEach((version, hash) => {
+                    manifests[hash] = version.manifest;
+                });
                 // Construct a serializable map of client ids to version hashes.
                 const assignments = {};
-                this.clientVersionMap.forEach((hash, clientId) => { assignments[clientId] = hash; });
+                this.clientVersionMap.forEach((hash, clientId) => {
+                    assignments[clientId] = hash;
+                });
                 // Record the latest entry. Since this is a sync which is necessarily happening after
                 // initialization, latestHash should always be valid.
                 const latest = {
@@ -2675,7 +2711,9 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
         broadcast(msg) {
             return __awaiter(this, void 0, void 0, function* () {
                 const clients = yield this.scope.clients.matchAll();
-                clients.forEach(client => { client.postMessage(msg); });
+                clients.forEach(client => {
+                    client.postMessage(msg);
+                });
             });
         }
         debugState() {
@@ -2698,7 +2736,8 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
                         .map(([clientId, version]) => clientId);
                     return {
                         hash,
-                        manifest: version.manifest, clients,
+                        manifest: version.manifest,
+                        clients,
                         status: '',
                     };
                 });
