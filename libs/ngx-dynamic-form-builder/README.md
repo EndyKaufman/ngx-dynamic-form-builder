@@ -8,7 +8,7 @@
 ## Installation
 
 ```bash
-npm i --save ngx-dynamic-form-builder
+npm i --save class-transformer class-validator ngx-dynamic-form-builder
 ```
 
 ## Links

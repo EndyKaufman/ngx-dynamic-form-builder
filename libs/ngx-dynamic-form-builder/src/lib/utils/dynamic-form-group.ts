@@ -11,17 +11,17 @@ import {
 import { classToClass, plainToClass } from 'class-transformer';
 import { ClassType } from 'class-transformer/ClassTransformer';
 import {
-  getFromContainer,
-  MetadataStorage,
+  getMetadataStorage,
   validate,
   ValidationTypes,
   Validator,
   ValidatorOptions,
+  validateSync,
 } from 'class-validator';
-import { ValidationMetadata } from 'class-validator/metadata/ValidationMetadata';
+import { ValidationMetadata } from 'class-validator/types/metadata/ValidationMetadata';
 import 'reflect-metadata';
-import { BehaviorSubject, from, Observable, of, Subject, Subscription } from 'rxjs';
-import { flatMap, map, mapTo, delay, tap } from 'rxjs/operators';
+import { BehaviorSubject, from, merge, of, Subject, Subscription } from 'rxjs';
+import { flatMap, map, mapTo, tap } from 'rxjs/operators';
 import { Dictionary } from '../models/dictionary';
 import { DynamicFormGroupField } from '../models/dynamic-form-group-field';
 import { ErrorPropertyName } from '../models/error-property-name';
@@ -131,7 +131,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
       validatorOptions = cloneDeep(this._validatorOptions);
     }
 
-    return from(validate(this.object, validatorOptions))
+    return of(validateSync(this.object, validatorOptions))
       .pipe(
         map((errors) => {
           if (!externalErrors) {
@@ -450,7 +450,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
    *
    * @param object the data to assign to all controls of the form group and sub groups
    */
-  private setObject(object: TModel) {
+  private setObject(object: TModel, fromPending = false) {
     if (object instanceof this.factoryModel) {
       this._object = this.classToClass(object); // Ensure correct type
     } else {
@@ -509,7 +509,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
           } else {
             // Create control
             const controlValue = this._object && objectArray && objectArray[i] ? objectArray[i] : undefined;
-            const newFormControl = new FormControl(controlValue, formControl.validator);
+            const newFormControl = new FormControl(controlValue, formControl ? formControl.validator : undefined);
             newFormControl.setParent(this);
 
             // Add the control to the FormArray
@@ -534,18 +534,17 @@ export function getClassValidators<TModel>(
   validatorOptions?: ValidatorOptions
 ) {
   // Get the validation rules from the object decorators
-  const allValidationMetadatas: ValidationMetadata[] = getFromContainer(MetadataStorage).getTargetValidationMetadatas(
+  const allValidationMetadatas: ValidationMetadata[] = getMetadataStorage().getTargetValidationMetadatas(
     factoryModel,
     ''
   );
 
   // Get the validation rules for the validation group: https://github.com/typestack/class-validator#validation-groups
-  const validationGroupMetadatas: ValidationMetadata[] = getFromContainer(MetadataStorage).getTargetValidationMetadatas(
+  const validationGroupMetadatas: ValidationMetadata[] = getMetadataStorage().getTargetValidationMetadatas(
     factoryModel,
     '',
     validatorOptions && validatorOptions.groups ? validatorOptions.groups : undefined
   );
-
   const formGroupFields = {};
   const validator = new Validator();
 
@@ -597,7 +596,9 @@ export function getClassValidators<TModel>(
         ) {
           fieldDefinition.data
             .filter((validationFunction, index) => index > 0 && typeof validationFunction === 'function')
-            .forEach((validationFunction) => fieldDefinition.validationFunctions.push(validationFunction));
+            .forEach((validationFunction) =>
+              fieldDefinition.validationFunctions.push({ type: 'sync', validator: validationFunction })
+            );
           fieldDefinition.data = fieldDefinition.data[0];
         }
 
@@ -668,8 +669,8 @@ export function getClassValidators<TModel>(
           objectToValidate !== undefined ? objectToValidate : control.value,
           validatorOptions
         ).pipe(
-          map((errors) => errors.length === 0),
-          map((validateState) => getIsValidResult(validateState, validationMetadata, 'nestedValidate'))
+          map((errors: ShortValidationErrors) => Object.keys(errors).length === 0),
+          map((validateState: boolean) => getIsValidResult(validateState, validationMetadata, 'nestedValidate'))
         );
       },
     };
@@ -686,20 +687,9 @@ export function getClassValidators<TModel>(
         if (!control) {
           return of(null);
         }
-
-        const isValid =
-          control.parent && control.parent.value
-            ? validator.validateValueByMetadata(control.value, validationMetadata)
-            : true;
-        let validateState$ = of(isValid);
-        if (!isValid && conditionalValidations.length > 0) {
-          validateState$ = setObjectValueAndGetValidationErrors(fieldName, control, validatorOptions).pipe(
-            map((validateErrors) => (validateErrors && validateErrors[fieldName] ? false : true))
-          );
-        }
-
-        return validateState$.pipe(
-          map((validateState) => getIsValidResult(validateState, validationMetadata, 'dynamicValidate'))
+        return setObjectValueAndGetValidationErrors(fieldName, control, validatorOptions).pipe(
+          map((errors: ShortValidationErrors) => getAllErrors(errors, fieldName).length === 0),
+          map((validateState: boolean) => getIsValidResult(validateState, validationMetadata, 'dynamicValidate'))
         );
       },
     };
@@ -710,8 +700,8 @@ export function getClassValidators<TModel>(
       type: 'async',
       validator: function (control: FormControl) {
         return setObjectValueAndGetValidationErrors(fieldName, control, validatorOptions).pipe(
-          map((errors) => getAllErrors(errors, fieldName).length === 0),
-          map((validateState) => getIsValidResult(validateState, validationMetadata, 'customValidation'))
+          map((validateErrors: ShortValidationErrors) => (validateErrors && validateErrors[fieldName] ? false : true)),
+          map((validateState: boolean) => getIsValidResult(validateState, validationMetadata, 'customValidation'))
         );
       },
     };
@@ -832,7 +822,7 @@ function getValidateErrors(
   control: FormControl,
   dataToValidate: any,
   validatorOptions?: ValidatorOptions
-) {
+): ShortValidationErrors {
   /* todo: future feature - get errors from parent, without run validation again, now it is not work
   return (control?.root?.valueChanges || control?.parent?.valueChanges || control?.valueChanges || of({})).pipe(
     flatMap(() => (control.parent && control.parent.value ? from(validate(dataToValidate, validatorOptions)) : of([]))),
@@ -845,9 +835,23 @@ function getValidateErrors(
         ? control.parent.customValidateErrors
         : of({})
     )
+    // or 
+    if (false && control.parent && control.parent.value && control.parent instanceof DynamicFormGroup) {
+      return merge(of({}), control.root.valueChanges, control.parent.valueChanges, control.valueChanges).pipe(
+        map(
+          () =>
+            control.parent instanceof DynamicFormGroup && {
+              [fieldName]: control.parent.customValidateErrors.value[fieldName],
+            }
+        )
+      );
+    }
   );*/
-  return (parent && parent.value ? from(validate(dataToValidate, validatorOptions)) : of([])).pipe(
-    map((errors) => transformValidationErrors(errors))
+  return (parent && parent.value ? of(validateSync(dataToValidate, validatorOptions)) : of([])).pipe(
+    map((errors) => {
+      const customErrors = transformValidationErrors(errors);
+      return customErrors;
+    })
   );
 }
 
