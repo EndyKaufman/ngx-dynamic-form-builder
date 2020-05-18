@@ -37,9 +37,7 @@ export function mergeErrors(externalErrors?: ShortValidationErrors, validationEr
 
     function canMerge() {
       return (
-        Array.isArray(objValue) &&
-        Array.isArray(srcValue) &&
-        objValue.filter((objItem) => srcValue.indexOf(objItem) !== -1).length === 0
+        Array.isArray(objValue) && Array.isArray(srcValue) && !objValue.find((objItem) => srcValue.includes(objItem))
       );
     }
   });
