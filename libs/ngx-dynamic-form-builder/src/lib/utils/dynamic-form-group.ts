@@ -550,7 +550,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
       else {
         newObject = this._object ? this._object[key] : [];
         newValue = this._object && newObject ? newObject : undefined;
-        if (this.controls[key].value !== newValue) {
+        if (this.controls[key] && this.controls[key].value !== newValue) {
           this.controls[key].setValue(newValue);
         }
       }

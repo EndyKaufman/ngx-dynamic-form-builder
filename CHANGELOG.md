@@ -1,3 +1,12 @@
+## [1.5.3](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.5.2...1.5.3) (2020-05-18)
+
+
+### Bug Fixes
+
+* add check not exists control ([90437e3](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/90437e36d793f0e5941e1dae6547d00ff9cdf260))
+
+
+
 ## [1.5.2](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.5.1...1.5.2) (2020-05-18)
 
 
