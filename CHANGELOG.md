@@ -1,3 +1,12 @@
+## [1.5.2](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.5.1...1.5.2) (2020-05-18)
+
+
+### Bug Fixes
+
+* change validators to "synchorical" type and small optimizations for GC ([54308fc](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/54308fc9c370386bfb32fb7eec02373b95859ab8))
+
+
+
 ## [1.5.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.5.0...1.5.1) (2020-05-04)
 
 
