@@ -20,6 +20,7 @@ export class DynamicFormBuilder extends FormBuilder {
     controlsConfig?: FormModel<TModel> | DynamicFormGroupConfig | { [key: string]: any },
     options?: AbstractControlOptions | DynamicFormGroupConfig
   ): DynamicFormGroup<TModel> {
+    // console.time(factoryModel.toString());
     if (!controlsConfig && !options) {
       options = {};
     }
@@ -141,12 +142,12 @@ export class DynamicFormBuilder extends FormBuilder {
     asyncValidators = asyncValidators && asyncValidators.filter((validator) => validator);
 
     // Create an Angular group from the top-level object
-    const classValidators = getClassValidators<TModel>(
+    let classValidators: any = getClassValidators<TModel>(
       factoryModel,
       newControlsConfig,
       extra && extra.customValidatorOptions
     );
-    const formGroup = super.group(classValidators, {
+    let formGroup: any = super.group(classValidators, {
       ...(asyncValidators || {}),
       ...(updateOn || {}),
       ...(validators || {}),
@@ -167,6 +168,9 @@ export class DynamicFormBuilder extends FormBuilder {
     // Add a listener to the dynamic group for value changes; on change, execute validation
     dynamicFormGroup.subscribeToValueChanges(undefined, extra && extra.customValidatorOptions);
 
+    classValidators = null;
+    formGroup = null;
+    // console.timeEnd(factoryModel.toString());
     return dynamicFormGroup;
   }
 
@@ -179,20 +183,20 @@ export class DynamicFormBuilder extends FormBuilder {
   private createEmptyObject<TModel>(factoryModel: ClassType<TModel>, data = {}) {
     let modifed = false;
 
-    const object: any = factoryModel ? plainToClass(factoryModel, data) : data;
-    const fields = Object.keys(object);
+    let object: any = factoryModel ? plainToClass(factoryModel, data) : data;
+    let fields: any = Object.keys(object);
 
+    let objectFieldNameLength: number;
+    let objectFieldName0: any;
     fields.forEach((fieldName: any) => {
-      if (object[fieldName] && object[fieldName].length !== undefined) {
-        if (
-          object[fieldName].length === 1 &&
-          Object.keys(object[fieldName][0]).length > 0 &&
-          object[fieldName][0].constructor
-        ) {
-          object[fieldName] = [this.createEmptyObject(object[fieldName][0].constructor)];
+      objectFieldNameLength = object[fieldName] && object[fieldName].length;
+      if (objectFieldNameLength !== undefined) {
+        objectFieldName0 = object[fieldName][0];
+        if (objectFieldNameLength === 1 && Object.keys(objectFieldName0).length > 0 && objectFieldName0.constructor) {
+          object[fieldName] = [this.createEmptyObject(objectFieldName0.constructor)];
         }
 
-        if (object[fieldName].length === 0) {
+        if (objectFieldNameLength === 0) {
           data[fieldName] = [{}];
           modifed = true;
         }
@@ -202,9 +206,12 @@ export class DynamicFormBuilder extends FormBuilder {
     });
 
     if (modifed) {
+      object = null;
+      fields = null;
       return this.createEmptyObject(factoryModel, data);
     }
 
+    fields = null;
     return object;
   }
 }
