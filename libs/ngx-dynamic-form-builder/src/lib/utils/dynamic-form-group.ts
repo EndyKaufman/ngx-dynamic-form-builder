@@ -25,6 +25,8 @@ import { ValidatorFunctionType } from '../models/validator-function-type';
 import { foreverInvalid, FOREVER_INVALID_NAME } from '../validators/forever-invalid.validator';
 import { DynamicFormControl } from './dynamic-form-control';
 import { mergeErrors, transformValidationErrors } from './dynamic-form-group-helpers';
+import stringify from 'fast-safe-stringify';
+import stringHash from 'string-hash';
 
 const cloneDeep = require('lodash.clonedeep');
 const validator = new Validator();
@@ -897,7 +899,7 @@ function getValidateErrors<T>(
   dataToValidate: any,
   validatorOptions?: ValidatorOptions
 ): ShortValidationErrors {
-  let validateKey: any = safeStringify({ dataToValidate, validatorOptions });
+  let validateKey: any = stringHash(stringify({ dataToValidate, validatorOptions }));
   let ctrl: { __prevValidateKey: string; __prevValidateErrors: ShortValidationErrors } | any = (control as any) || {};
   let validatedErrors: ShortValidationErrors;
   if (ctrl.__prevValidateKey === validateKey && ctrl.__prevValidateErrors !== undefined) {
