@@ -1,4 +1,13 @@
-import { AbstractControl, AbstractControlOptions, AsyncValidatorFn, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
+import {
+  AbstractControl,
+  AbstractControlOptions,
+  AsyncValidatorFn,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidatorFn,
+} from '@angular/forms';
 import { classToClass, plainToClass } from 'class-transformer';
 import { ClassType } from 'class-transformer/ClassTransformer';
 import { getMetadataStorage, validateSync, ValidationTypes, Validator, ValidatorOptions } from 'class-validator';
@@ -376,8 +385,8 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     const object = this._object
       ? this.classToClass(this._object)
       : this.factoryModel
-        ? new this.factoryModel()
-        : undefined;
+      ? new this.factoryModel()
+      : undefined;
 
     if (object !== undefined) {
       // Recursively get the value of all fields
@@ -879,14 +888,14 @@ function setObjectValueAndGetValidationErrors(
     control.parent instanceof DynamicFormGroup
       ? (control.parent as DynamicFormGroup<any>)
       : control.parent
-        ? control.parent
-        : null;
+      ? control.parent
+      : null;
   let object =
     control.parent instanceof DynamicFormGroup
       ? (control.parent as DynamicFormGroup<any>).object
       : control.parent
-        ? control.parent.value
-        : {};
+      ? control.parent.value
+      : {};
 
   if (object) {
     object[fieldName] = control.value;
@@ -923,11 +932,11 @@ function getIsValidResult(isValid: boolean, validationMetadata: ValidationMetada
   return isValid
     ? null
     : {
-      [errorType]: {
-        valid: false,
-        type: validationMetadata.type,
-      },
-    };
+        [errorType]: {
+          valid: false,
+          type: validationMetadata.type,
+        },
+      };
 }
 
 const ValidationKeys = {
