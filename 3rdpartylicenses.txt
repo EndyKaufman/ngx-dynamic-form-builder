@@ -712,6 +712,9 @@ Apache-2.0
  
 
 
+string-hash
+CC0-1.0
+
 validator
 MIT
 Copyright (c) 2018 Chris O'Hara <cohara87@gmail.com>
