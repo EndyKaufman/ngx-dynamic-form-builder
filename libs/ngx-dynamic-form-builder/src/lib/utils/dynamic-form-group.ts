@@ -12,10 +12,11 @@ import { classToClass, plainToClass } from 'class-transformer';
 import { ClassType } from 'class-transformer/ClassTransformer';
 import { getMetadataStorage, validateSync, ValidationTypes, Validator, ValidatorOptions } from 'class-validator';
 import { ValidationMetadata } from 'class-validator/types/metadata/ValidationMetadata';
-import safeStringify from 'fast-safe-stringify';
+import stringify from 'fast-safe-stringify';
 import 'reflect-metadata';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { distinctUntilChanged, tap } from 'rxjs/operators';
+import stringHash from 'string-hash';
 import { Dictionary } from '../models/dictionary';
 import { DynamicFormGroupField } from '../models/dynamic-form-group-field';
 import { ErrorPropertyName } from '../models/error-property-name';
@@ -434,129 +435,142 @@ export class DynamicFormGroup<TModel> extends FormGroup {
    *
    * @param object the data to assign to all controls of the form group and sub groups
    */
-  private setObject(object: TModel) {
+  private setObject(object: TModel, updateValueAndValidity = true) {
     // console.time(String(object));
     if (object instanceof this.factoryModel) {
       this._object = this.classToClass(object); // Ensure correct type
     } else {
-      this._object = this.plainToClass(this.factoryModel, object as Object); // Convert to Model type
+      let objectWithOnlyFormFields: any = {};
+      // for speed up on work with short version of model
+      Object.keys(this.formFields).forEach((key) => (objectWithOnlyFormFields[key] = object[key]));
+      this._object = this.plainToClass(this.factoryModel, objectWithOnlyFormFields); // Convert to Model type
+      objectWithOnlyFormFields = null;
     }
     let newObject: any;
     let newValue: any;
     // Recursively set the value of all fields
-    Object.keys(this.controls).forEach((key) => {
-      // Handle Group
-      if (this.controls[key] instanceof DynamicFormGroup) {
-        (this.controls[key] as DynamicFormGroup<any>).setObject(this._object ? this._object[key] : {});
-      }
-
-      // Handle FormArray
-      else if (this.controls[key] instanceof FormArray) {
-        let objectArray: any = this._object ? this._object[key] : [];
-        let formArray: any = this.controls[key] as FormArray;
-        let isFormGroup: any = formArray.controls[0] instanceof DynamicFormGroup;
-        let firstFormGroup: any = formArray.controls[0] as DynamicFormGroup<any>;
-        let formControl: any = formArray.controls[0] as FormControl;
-
-        // Clear FormArray while retaining the reference
-        let objectArrayLength = objectArray.length;
-        let dynamicFormGroup: any;
-
-        let controlValue: any;
-        let newFormControl: any;
-        let classValidators: any;
-        let formGroup: any;
-        let formArrayLength = formArray.length;
-
-        for (let i = 0; i < formArrayLength; i++) {
-          if (
-            formArray.controls[i] instanceof DynamicFormGroup &&
-            (formArray.controls[i] as DynamicFormGroup<any>).valueChangesSubscription
-          ) {
-            (formArray.controls[i] as DynamicFormGroup<any>).valueChangesSubscription.unsubscribe();
-          }
+    Object.keys(this.controls)
+      .filter((name) => name !== FOREVER_INVALID_NAME)
+      .forEach((key) => {
+        // Handle Group
+        if (
+          this.controls[key] instanceof DynamicFormGroup &&
+          (this.controls[key] as DynamicFormGroup<any>)._object !== this._object[key]
+        ) {
+          (this.controls[key] as DynamicFormGroup<any>).setObject(this._object ? this._object[key] : {}, false);
         }
 
-        while (formArrayLength !== 0) {
-          formArray.removeAt(0);
-          formArrayLength--;
-        }
-        formArrayLength = null;
+        // Handle FormArray
+        else if (this.controls[key] instanceof FormArray) {
+          let objectArray: any = this._object ? this._object[key] : [];
+          let formArray: any = this.controls[key] as FormArray;
+          let isFormGroup: any = formArray.controls[0] instanceof DynamicFormGroup;
+          let firstFormGroup: any = formArray.controls[0] as DynamicFormGroup<any>;
+          let formControl: any = formArray.controls[0] as FormControl;
 
-        for (let i = 0; i < objectArrayLength; i++) {
-          if (isFormGroup) {
-            // Create FormGroup
-            dynamicFormGroup = new DynamicFormGroup(firstFormGroup.factoryModel, firstFormGroup.formFields);
+          // Clear FormArray while retaining the reference
+          let objectArrayLength = objectArray.length;
+          let dynamicFormGroup: any;
 
-            dynamicFormGroup.setParent(formArray);
+          let controlValue: any;
+          let newFormControl: any;
+          let classValidators: any;
+          let formGroup: any;
+          let formArrayLength = formArray.length;
 
-            formGroup = this._fb.group(
-              getClassValidators<TModel>(firstFormGroup.factoryModel, firstFormGroup.formFields)
-            );
-
-            // Add all controls to the form group
-            Object.keys(formGroup.controls).forEach((ctrlKey) => {
-              dynamicFormGroup.addControl(ctrlKey, formGroup.controls[ctrlKey]);
-            });
-
-            formArray.controls.push(dynamicFormGroup);
-          } else {
-            // Create control
-            controlValue = this._object && objectArray && objectArray[i] ? objectArray[i] : undefined;
-            newFormControl = new FormControl(controlValue, formControl ? formControl.validator : undefined);
-            newFormControl.setParent(formArray);
-
-            // Add the control to the FormArray
-            formArray.controls.push(newFormControl);
-          }
-        }
-        let arrayLength = formArray.length;
-        for (let i = 0; i < arrayLength; i++) {
-          if (isFormGroup) {
-            // Add a value change listener to the group. on change, validate
-            if (formArray.controls[i] instanceof DynamicFormGroup) {
-              // Recusrively set the object value
-              (formArray.controls[i] as DynamicFormGroup<any>).object =
-                this._object && objectArray && objectArray[i] ? objectArray[i] : {};
+          for (let i = 0; i < formArrayLength; i++) {
+            if (
+              formArray.controls[i] instanceof DynamicFormGroup &&
+              (formArray.controls[i] as DynamicFormGroup<any>).valueChangesSubscription
+            ) {
+              (formArray.controls[i] as DynamicFormGroup<any>).valueChangesSubscription.unsubscribe();
             }
           }
-        }
-        for (let i = 0; i < arrayLength; i++) {
-          if (isFormGroup) {
-            // Add a value change listener to the group. on change, validate
-            if (formArray.controls[i] instanceof DynamicFormGroup) {
-              (formArray.controls[i] as DynamicFormGroup<any>).subscribeToValueChanges(
-                undefined,
-                this._validatorOptions
+
+          while (formArrayLength !== 0) {
+            formArray.removeAt(0);
+            formArrayLength--;
+          }
+          formArrayLength = null;
+
+          for (let i = 0; i < objectArrayLength; i++) {
+            if (isFormGroup) {
+              // Create FormGroup
+              dynamicFormGroup = new DynamicFormGroup(firstFormGroup.factoryModel, firstFormGroup.formFields);
+
+              dynamicFormGroup.setParent(formArray);
+
+              formGroup = this._fb.group(
+                getClassValidators<TModel>(firstFormGroup.factoryModel, firstFormGroup.formFields)
               );
+
+              // Add all controls to the form group
+              Object.keys(formGroup.controls).forEach((ctrlKey) => {
+                dynamicFormGroup.addControl(ctrlKey, formGroup.controls[ctrlKey]);
+              });
+
+              formArray.controls.push(dynamicFormGroup);
+            } else {
+              // Create control
+              controlValue = this._object && objectArray && objectArray[i] ? objectArray[i] : undefined;
+              newFormControl = new FormControl(controlValue, formControl ? formControl.validator : undefined);
+              newFormControl.setParent(formArray);
+
+              // Add the control to the FormArray
+              formArray.controls.push(newFormControl);
             }
           }
+          let arrayLength = formArray.length;
+          for (let i = 0; i < arrayLength; i++) {
+            if (isFormGroup) {
+              // Add a value change listener to the group. on change, validate
+              if (formArray.controls[i] instanceof DynamicFormGroup) {
+                // Recusrively set the object value
+                (formArray.controls[i] as DynamicFormGroup<any>).setObject(
+                  this._object && objectArray && objectArray[i] ? objectArray[i] : {},
+                  false
+                );
+              }
+            }
+          }
+          for (let i = 0; i < arrayLength; i++) {
+            if (isFormGroup) {
+              // Add a value change listener to the group. on change, validate
+              if (formArray.controls[i] instanceof DynamicFormGroup) {
+                (formArray.controls[i] as DynamicFormGroup<any>).subscribeToValueChanges(
+                  undefined,
+                  this._validatorOptions
+                );
+              }
+            }
+          }
+          classValidators = null;
+          formGroup = null;
+          controlValue = null;
+          newFormControl = null;
+          dynamicFormGroup = null;
+          objectArrayLength = null;
+          arrayLength = null;
+          objectArray = null;
+          formArray = null;
+          isFormGroup = null;
+          firstFormGroup = null;
+          formControl = null;
         }
-        classValidators = null;
-        formGroup = null;
-        controlValue = null;
-        newFormControl = null;
-        dynamicFormGroup = null;
-        objectArrayLength = null;
-        arrayLength = null;
-        objectArray = null;
-        formArray = null;
-        isFormGroup = null;
-        firstFormGroup = null;
-        formControl = null;
-      }
 
-      // Handle Control
-      else {
-        newObject = this._object ? this._object[key] : [];
-        newValue = this._object && newObject ? newObject : undefined;
-        if (this.controls[key] && this.controls[key].value !== newValue) {
-          this.controls[key].setValue(newValue);
+        // Handle Control
+        else {
+          newObject = this._object ? this._object[key] : [];
+          newValue = this._object && newObject ? newObject : undefined;
+          if (this.controls[key] && this.controls[key].value !== newValue) {
+            // very slow operations :(
+            this.controls[key].setValue(newValue, { emitEvent: false, onlySelf: true });
+          }
         }
-      }
-    });
+      });
     newValue = null;
     newObject = null;
+    this.updateValueAndValidity();
     this.objectChange.next(this._object);
     // console.timeEnd(String(object));
   }
@@ -897,7 +911,7 @@ function getValidateErrors<T>(
   dataToValidate: any,
   validatorOptions?: ValidatorOptions
 ): ShortValidationErrors {
-  let validateKey: any = safeStringify({ dataToValidate, validatorOptions });
+  let validateKey: any = stringHash(stringify({ dataToValidate, validatorOptions }));
   let ctrl: { __prevValidateKey: string; __prevValidateErrors: ShortValidationErrors } | any = (control as any) || {};
   let validatedErrors: ShortValidationErrors;
   if (ctrl.__prevValidateKey === validateKey && ctrl.__prevValidateErrors !== undefined) {
