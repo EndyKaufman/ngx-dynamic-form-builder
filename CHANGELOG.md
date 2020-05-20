@@ -1,3 +1,13 @@
+## [1.5.4](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.5.3...1.5.4) (2020-05-20)
+
+
+### Bug Fixes
+
+* add hash function for calculate hache add validation ([7fb2be3](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/7fb2be33fc6462f27c3e55567ce0729925e6a667))
+* speed up on work with short version of model ([892ba43](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/892ba43c253020288e9f8bf9b714b1cd4de8cabc))
+
+
+
 ## [1.5.3](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.5.2...1.5.3) (2020-05-18)
 
 
