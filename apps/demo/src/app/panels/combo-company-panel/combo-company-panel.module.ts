@@ -23,7 +23,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   declarations: [ComboCompanyPanelComponent],
 })
 export class ComboCompanyPanelModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot() {
     return {
       ngModule: ComboCompanyPanelModule,
       providers: [],

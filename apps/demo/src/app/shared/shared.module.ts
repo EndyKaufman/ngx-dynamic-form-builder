@@ -9,7 +9,7 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
   exports: [CommonModule, SafeHtmlPipe],
 })
 export class SharedModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot() {
     return {
       ngModule: SharedModule,
       providers: [],

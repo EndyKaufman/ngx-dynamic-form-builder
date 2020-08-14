@@ -23,7 +23,7 @@ import { DocsExampleModule } from '../../others/docs-example/docs-example.module
   declarations: [AdvancedPageComponent],
 })
 export class AdvancedPageModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot() {
     return {
       ngModule: AdvancedPageModule,
       providers: [],

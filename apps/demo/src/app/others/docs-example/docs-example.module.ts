@@ -24,7 +24,7 @@ import { MarkdownModule } from 'ngx-markdown';
   ],
 })
 export class DocsExampleModule {
-  static forRoot(config?: PackageConfigInterface | undefined): ModuleWithProviders {
+  static forRoot(config?: PackageConfigInterface | undefined) {
     return {
       ngModule: DocsExampleModule,
       providers: [{ provide: PACKAGE_CONFIG_TOKEN, useValue: config }],

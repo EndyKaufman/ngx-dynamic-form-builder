@@ -1,3 +1,12 @@
+# [1.6.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.5.4...1.6.0) (2020-08-14)
+
+
+### Features
+
+* update deps (Angular 10) ([090b85b](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/090b85bc510218b64b219499fad5ff0e09737ec8))
+
+
+
 ## [1.5.4](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.5.3...1.5.4) (2020-05-20)
 
 

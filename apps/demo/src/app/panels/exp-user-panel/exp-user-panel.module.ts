@@ -23,7 +23,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   declarations: [ExpUserPanelComponent],
 })
 export class ExpUserPanelModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot() {
     return {
       ngModule: ExpUserPanelModule,
       providers: [],

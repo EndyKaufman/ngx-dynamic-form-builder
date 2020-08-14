@@ -27,7 +27,7 @@ import { ExpRegistrationPanelModule } from '../../panels/exp-registration-panel/
   declarations: [ExperimentalPageComponent],
 })
 export class ExperimentalPageModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot() {
     return {
       ngModule: ExperimentalPageModule,
       providers: [],

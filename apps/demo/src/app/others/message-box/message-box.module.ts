@@ -15,7 +15,7 @@ import { MatInputModule } from '@angular/material/input';
   declarations: [MessageBoxComponent],
 })
 export class MessageBoxModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot() {
     return {
       ngModule: MessageBoxModule,
       providers: [MessageBoxService],

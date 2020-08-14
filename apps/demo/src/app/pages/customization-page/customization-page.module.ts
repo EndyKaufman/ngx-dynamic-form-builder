@@ -20,7 +20,7 @@ import { CustomizationPageRoutes } from './customization-page.routes';
   declarations: [CustomizationPageComponent],
 })
 export class CustomizationPageModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot() {
     return {
       ngModule: CustomizationPageModule,
       providers: [],

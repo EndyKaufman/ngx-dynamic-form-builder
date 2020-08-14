@@ -20,7 +20,7 @@ import { HomePageRoutes } from './home-page.routes';
   declarations: [HomePageComponent],
 })
 export class HomePageModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot() {
     return {
       ngModule: HomePageModule,
       providers: [],
