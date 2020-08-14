@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1597385315983,
+  "timestamp": 1597385984810,
   "index": "/ngx-dynamic-form-builder/index.html",
   "assetGroups": [
     {
@@ -29,8 +29,8 @@
         "/ngx-dynamic-form-builder/common-es5.2563d771c7d6b52583ba.js",
         "/ngx-dynamic-form-builder/favicon.ico",
         "/ngx-dynamic-form-builder/index.html",
-        "/ngx-dynamic-form-builder/main-es2015.4bff4313ec270630140a.js",
-        "/ngx-dynamic-form-builder/main-es5.4bff4313ec270630140a.js",
+        "/ngx-dynamic-form-builder/main-es2015.ea47bb09741b24ecaa93.js",
+        "/ngx-dynamic-form-builder/main-es5.ea47bb09741b24ecaa93.js",
         "/ngx-dynamic-form-builder/polyfills-es2015.5ceba6875024fe5a71d9.js",
         "/ngx-dynamic-form-builder/polyfills-es5.345d1190edc4a43ea70f.js",
         "/ngx-dynamic-form-builder/runtime-es2015.8718757447b7e2742355.js",
@@ -91,9 +91,9 @@
     "/ngx-dynamic-form-builder/common-es2015.2563d771c7d6b52583ba.js": "2e8d0d3e88d0ae7366e3c252f724251968630199",
     "/ngx-dynamic-form-builder/common-es5.2563d771c7d6b52583ba.js": "d50ac1c0bf00b7467bcfcdaedf82676d6b17cbd0",
     "/ngx-dynamic-form-builder/favicon.ico": "84161b857f5c547e3699ddfbffc6d8d737542e01",
-    "/ngx-dynamic-form-builder/index.html": "a1ae604227d1fdfedbb546f867e3fe35956f10a1",
-    "/ngx-dynamic-form-builder/main-es2015.4bff4313ec270630140a.js": "8c66fc74ec0b3d1905720fe318196ae69fe99696",
-    "/ngx-dynamic-form-builder/main-es5.4bff4313ec270630140a.js": "cbbefea565200f6a0ffc5bda4720d60aa3cbc62c",
+    "/ngx-dynamic-form-builder/index.html": "97215e56b1c0cfff67609e49de798c69d91856c0",
+    "/ngx-dynamic-form-builder/main-es2015.ea47bb09741b24ecaa93.js": "598549f397972858568e3f78f8d4761eaf8a7358",
+    "/ngx-dynamic-form-builder/main-es5.ea47bb09741b24ecaa93.js": "0269abb3f0edc9b6dce4001081dc8c69a4a62e3f",
     "/ngx-dynamic-form-builder/polyfills-es2015.5ceba6875024fe5a71d9.js": "3d911d554f7c91234b80b7680220ecb424914bd9",
     "/ngx-dynamic-form-builder/polyfills-es5.345d1190edc4a43ea70f.js": "f11f2880d8572f93d07d1c4578d39fb5196594c5",
     "/ngx-dynamic-form-builder/runtime-es2015.8718757447b7e2742355.js": "f498cc9ba1798209616b246c3e21d3a0d8d2202e",
