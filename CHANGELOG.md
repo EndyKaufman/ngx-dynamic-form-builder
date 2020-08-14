@@ -1,3 +1,12 @@
+## [1.6.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.6.0...1.6.1) (2020-08-14)
+
+
+### Bug Fixes
+
+* **docs:** update version of Angular ([08d704a](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/08d704aae6820d9e56529a9e2a66578830861170))
+
+
+
 # [1.6.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.5.4...1.6.0) (2020-08-14)
 
 
