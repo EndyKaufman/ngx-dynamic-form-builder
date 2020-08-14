@@ -21,7 +21,7 @@ import { MarkdownModule } from 'ngx-markdown';
   declarations: [SourceTabsComponent],
 })
 export class SourceTabsModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot() {
     return {
       ngModule: SourceTabsModule,
       providers: [],

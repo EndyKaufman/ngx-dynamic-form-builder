@@ -23,7 +23,7 @@ import { MatMenuModule } from '@angular/material/menu';
   declarations: [NavbarComponent],
 })
 export class NavbarModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot() {
     return {
       ngModule: NavbarModule,
       providers: [],

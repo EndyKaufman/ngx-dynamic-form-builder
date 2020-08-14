@@ -24,7 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
   declarations: [SimplePageComponent],
 })
 export class SimplePageModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot() {
     return {
       ngModule: SimplePageModule,
       providers: [],

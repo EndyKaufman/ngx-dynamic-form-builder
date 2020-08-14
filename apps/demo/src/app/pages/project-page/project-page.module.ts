@@ -24,7 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
   declarations: [ProjectPageComponent],
 })
 export class ProjectPageModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot() {
     return {
       ngModule: ProjectPageModule,
       providers: [],

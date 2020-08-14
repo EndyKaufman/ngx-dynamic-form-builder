@@ -24,7 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
   declarations: [ComboPageComponent],
 })
 export class ComboPageModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot() {
     return {
       ngModule: ComboPageModule,
       providers: [],
