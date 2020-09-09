@@ -1,4 +1,4 @@
-import { IsNotEmpty, ValidateNested, IsOptional } from 'class-validator';
+import { IsNotEmpty, ValidateNested, IsOptional } from 'class-validator-multi-lang';
 import { ExpCompany } from './exp-company';
 
 export class ExpDepartment {

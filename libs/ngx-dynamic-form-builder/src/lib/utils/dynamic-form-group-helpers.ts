@@ -1,5 +1,5 @@
-import { ValidationError } from 'class-validator';
 import { ShortValidationErrors } from '../models/short-validation-errors';
+import { ValidationError } from 'class-validator-multi-lang';
 
 const cloneDeep = require('lodash.clonedeep');
 const mergeWith = require('lodash.mergewith');

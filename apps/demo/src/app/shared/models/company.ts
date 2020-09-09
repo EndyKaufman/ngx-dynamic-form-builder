@@ -1,7 +1,6 @@
-import { Validate, IsNotEmpty, MaxLength, Min, Max, IsOptional } from 'class-validator';
 import { plainToClassFromExist } from 'class-transformer';
+import { IsNotEmpty, IsOptional, Max, MaxLength, Min, Validate } from 'class-validator-multi-lang';
 import { TextLengthMore15 } from '../utils/custom-validators';
-
 export class Company {
   static strings = {
     id: 'Id',

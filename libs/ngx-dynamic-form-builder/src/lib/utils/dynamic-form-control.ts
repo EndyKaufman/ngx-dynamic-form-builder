@@ -1,7 +1,7 @@
 import { AsyncValidatorFn, FormControl, ValidatorFn } from '@angular/forms';
-import { ValidationMetadata } from 'class-validator/types/metadata/ValidationMetadata';
 import { Observable } from 'rxjs';
 import { DynamicFormGroupField } from '../models/dynamic-form-group-field';
+import { ValidationMetadata } from 'class-validator-multi-lang';
 
 export class DynamicFormControl extends FormControl {
   public controlName: string;

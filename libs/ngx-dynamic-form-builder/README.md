@@ -2,12 +2,12 @@
 [![npm version](https://badge.fury.io/js/ngx-dynamic-form-builder.svg)](https://badge.fury.io/js/ngx-dynamic-form-builder)
 
 
-[FormBuilder](https://angular.io/api/forms/FormBuilder) + [class-transformer](https://github.com/typestack/class-transformer) + [class-validator](https://github.com/typestack/class-validator) = dynamic form group builder for [Angular10+](https://angular.io)
+[FormBuilder](https://angular.io/api/forms/FormBuilder) + [class-transformer](https://github.com/typestack/class-transformer) + [class-validator-multi-lang](https://github.com/typestack/class-validator-multi-lang) = dynamic form group builder for [Angular10+](https://angular.io)
 
 ## Installation
 
 ```bash
-npm i --save class-transformer class-validator ngx-dynamic-form-builder
+npm i --save class-transformer class-validator-multi-lang ngx-dynamic-form-builder
 ```
 
 ## Links
@@ -42,7 +42,7 @@ export class AppModule {}
 
 company.ts
 ```js 
-import { Validate, IsNotEmpty } from 'class-validator';
+import { Validate, IsNotEmpty } from 'class-validator-multi-lang';
 import { plainToClassFromExist } from 'class-transformer';
 import { TextLengthMore15 } from '../utils/custom-validators';
 
@@ -69,7 +69,7 @@ company-panel.component.html
     </p>
     <p>Form status: {{ form.status | json }}</p>
     <p>
-      Form class-validator errors: {{errors|json}}
+      Form class-validator-multi-lang errors: {{errors|json}}
     </p>
     <p>
       Form native errors: {{form?.nativeValidateErrors|async|json}}
@@ -136,7 +136,7 @@ custom-validators.ts
 ```js
 import {
     ValidatorConstraintInterface, ValidatorConstraint
-} from 'class-validator';
+} from 'class-validator-multi-lang';
 
 @ValidatorConstraint()
 export class TextLengthMore15 implements ValidatorConstraintInterface {

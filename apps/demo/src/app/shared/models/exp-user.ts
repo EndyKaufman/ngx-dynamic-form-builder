@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsOptional, Validate, ValidateIf, ValidateNested } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, Validate, ValidateIf, ValidateNested } from 'class-validator-multi-lang';
 import { EqualsTo } from '../utils/custom-validators';
 import { ExpDepartment } from './exp-department';
 

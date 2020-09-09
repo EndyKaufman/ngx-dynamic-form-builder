@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsOptional, Validate, ValidateNested } from 'class-validator';
+import { IsNotEmpty, IsOptional, Validate, ValidateNested } from 'class-validator-multi-lang';
 import { ProjectPanelStepsEnum } from '../enums/project-panel-steps.enum';
 import { serializeModel } from '../utils/custom-transforms';
 import { ObjectMustBeNotEmpty } from '../utils/custom-validators';

@@ -1,7 +1,8 @@
-import { plainToClassFromExist, Transform, Type } from 'class-transformer';
-import { IsEmail, IsNotEmpty, IsOptional, Matches, ValidateNested } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, Matches, ValidateNested } from 'class-validator-multi-lang';
 import { serializeModel, transformDateToString, transformStringToDate } from '../utils/custom-transforms';
 import { Department } from './department';
+import { Type, Transform } from 'class-transformer';
+import { plainToClassFromExist } from 'class-transformer';
 
 export class User {
   static strings = {

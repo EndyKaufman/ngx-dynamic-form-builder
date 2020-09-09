@@ -10,8 +10,14 @@ import {
 } from '@angular/forms';
 import { classToClass, plainToClass } from 'class-transformer';
 import { ClassType } from 'class-transformer/ClassTransformer';
-import { getMetadataStorage, validateSync, ValidationTypes, Validator, ValidatorOptions } from 'class-validator';
-import { ValidationMetadata } from 'class-validator/types/metadata/ValidationMetadata';
+import {
+  getMetadataStorage,
+  validateSync,
+  ValidationMetadata,
+  ValidationTypes,
+  Validator,
+  ValidatorOptions,
+} from 'class-validator-multi-lang';
 import stringify from 'fast-safe-stringify';
 import 'reflect-metadata';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
@@ -581,18 +587,26 @@ export function getClassValidators<TModel>(
   fields?: Dictionary,
   validatorOptions?: ValidatorOptions
 ) {
+  const groups = validatorOptions ? validatorOptions.groups : undefined;
+  const strictGroups = (validatorOptions && validatorOptions.strictGroups) || false;
+  const always = (validatorOptions && validatorOptions.always) || false;
+
   // console.time(String(factoryModel));
   // Get the validation rules from the object decorators
   let allValidationMetadatas: ValidationMetadata[] | any = getMetadataStorage().getTargetValidationMetadatas(
     factoryModel,
-    ''
+    '',
+    always,
+    strictGroups
   );
 
-  // Get the validation rules for the validation group: https://github.com/typestack/class-validator#validation-groups
+  // Get the validation rules for the validation group: https://github.com/typestack/class-validator-multi-lang#validation-groups
   let validationGroupMetadatas: ValidationMetadata[] | any = getMetadataStorage().getTargetValidationMetadatas(
     factoryModel,
     '',
-    validatorOptions && validatorOptions.groups ? validatorOptions.groups : undefined
+    always,
+    strictGroups,
+    groups
   );
   const formGroupFields = {};
 
@@ -626,7 +640,7 @@ export function getClassValidators<TModel>(
           }
         });
 
-        // Nested Validation for the field for the requested class-validator group
+        // Nested Validation for the field for the requested class-validator-multi-lang group
         nestedGroupValidations = [];
         validationGroupMetadatas.forEach((validationMetadata) => {
           if (isPropertyValidatorOfType(validationMetadata, fieldName, ValidationKeys.nested.type)) {
@@ -814,7 +828,7 @@ export function getClassValidators<TModel>(
 
   /**
    * marked with @Validate(...)
-   * https://github.com/typestack/class-validator#custom-validation-classes
+   * https://github.com/typestack/class-validator-multi-lang#custom-validation-classes
    */
   function isCustomValidate(validationMetadata: ValidationMetadata, typeKey: string) {
     return (
@@ -826,7 +840,7 @@ export function getClassValidators<TModel>(
 
   /**
    * marked with @ValidateNested()
-   * https://github.com/typestack/class-validator#validating-nested-objects
+   * https://github.com/typestack/class-validator-multi-lang#validating-nested-objects
    */
   function isNestedValidate(validationMetadata: ValidationMetadata, typeKey: string) {
     return (

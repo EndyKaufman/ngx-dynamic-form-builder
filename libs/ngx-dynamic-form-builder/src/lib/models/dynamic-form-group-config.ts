@@ -1,5 +1,5 @@
 import { AbstractControlOptions, AsyncValidatorFn, ValidatorFn } from '@angular/forms';
-import { ValidatorOptions } from 'class-validator';
+import { ValidatorOptions } from 'class-validator-multi-lang';
 
 export interface DynamicFormGroupConfig {
   validator?: ValidatorFn | undefined;
