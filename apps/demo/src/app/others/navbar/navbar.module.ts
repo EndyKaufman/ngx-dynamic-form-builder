@@ -7,6 +7,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { MatIconModule } from '@angular/material/icon';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatMenuModule } from '@angular/material/menu';
+import { NavbarLanguagesButtonsModule } from '../navbar-languages-buttons/navbar-languages-buttons.module';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatIconModule,
     FlexLayoutModule,
     MatMenuModule,
+    NavbarLanguagesButtonsModule,
   ],
   entryComponents: [NavbarComponent],
   exports: [NavbarComponent],

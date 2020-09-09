@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router, Routes } from '@angular/router';
+import { Language } from '../../shared/interfaces/language-interface';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -39,6 +40,15 @@ export class NavbarComponent implements OnInit {
           })
       : [];
   }
+
+  @Input()
+  languages: Language[];
+
+  @Input()
+  current: Language;
+
+  @Output()
+  currentChange = new EventEmitter<Language>();
 
   private _childrenRoutes: Routes;
 

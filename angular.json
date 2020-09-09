@@ -31,7 +31,12 @@
             "assets": [
               "apps/demo/src/favicon.ico",
               "apps/demo/src/assets",
-              "apps/demo/src/manifest.json"
+              "apps/demo/src/manifest.json",
+              {
+                "glob": "**/*.json",
+                "input": "./node_modules/class-validator-multi-lang/i18n/",
+                "output": "./assets/i18n/class-validator-messages/"
+              }
             ],
             "styles": [
               "apps/demo/src/styles.scss",
