@@ -1,4 +1,7 @@
 <navbar
-    [childrenRoutes]="routes"
-    title="ngx-dynamic-form-builder"></navbar>
+  [childrenRoutes]="routes"
+  [languages]="languages"
+  (currentChange)="changeLanguage($event)"
+  title="ngx-dynamic-form-builder"
+></navbar>
 <router-outlet></router-outlet>

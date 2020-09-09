@@ -1,5 +1,6 @@
-import { Type, plainToClassFromExist } from 'class-transformer';
-import { IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
+import { plainToClassFromExist } from 'class-transformer';
+import { Type } from 'class-transformer';
+import { IsNotEmpty, IsOptional, ValidateNested } from 'class-validator-multi-lang';
 import { serializeModel } from '../utils/custom-transforms';
 import { Company } from './company';
 

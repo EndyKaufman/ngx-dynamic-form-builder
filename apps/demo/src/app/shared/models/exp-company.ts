@@ -1,4 +1,4 @@
-import { Validate, IsNotEmpty, Min, Max, MaxLength, IsOptional } from 'class-validator';
+import { Validate, IsNotEmpty, Min, Max, MaxLength, IsOptional } from 'class-validator-multi-lang';
 import { TextLengthMore15 } from '../utils/custom-validators';
 
 export class ExpCompany {

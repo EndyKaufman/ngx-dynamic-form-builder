@@ -6,7 +6,7 @@
     "entryFile": "src/public_api.ts",
     "umdModuleIds": {
       "class-transformer": "class-transformer",
-      "class-validator": "class-validator"
+      "class-validator-multi-lang": "class-validator-multi-lang"
     }
   },
   "whitelistedNonPeerDependencies": [

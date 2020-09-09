@@ -1,3 +1,13 @@
+# [1.7.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.6.1...1.7.0) (2020-09-09)
+
+
+### Features
+
+* change class-validator to class-validator-multi-lang for support i18n ([df0eab4](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/df0eab4f48f40d64c6e2ac0e5c297e23b0d13bc4))
+* support errors messages switching between languages, ​​in runtime ([ca623c4](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/ca623c4b14729ed01e95ad8d5eeb6be5601e7162))
+
+
+
 ## [1.6.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.6.0...1.6.1) (2020-08-14)
 
 

@@ -10,12 +10,18 @@ import {
 } from '@angular/forms';
 import { classToClass, plainToClass } from 'class-transformer';
 import { ClassType } from 'class-transformer/ClassTransformer';
-import { getMetadataStorage, validateSync, ValidationTypes, Validator, ValidatorOptions } from 'class-validator';
-import { ValidationMetadata } from 'class-validator/types/metadata/ValidationMetadata';
+import {
+  getMetadataStorage,
+  validateSync,
+  ValidationMetadata,
+  ValidationTypes,
+  Validator,
+  ValidatorOptions,
+} from 'class-validator-multi-lang';
 import stringify from 'fast-safe-stringify';
 import 'reflect-metadata';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
-import { distinctUntilChanged, tap } from 'rxjs/operators';
+import { distinctUntilChanged, mergeMap, tap } from 'rxjs/operators';
 import stringHash from 'string-hash';
 import { Dictionary } from '../models/dictionary';
 import { DynamicFormGroupField } from '../models/dynamic-form-group-field';
@@ -25,7 +31,7 @@ import { ShortValidationErrors } from '../models/short-validation-errors';
 import { ValidatorFunctionType } from '../models/validator-function-type';
 import { foreverInvalid, FOREVER_INVALID_NAME } from '../validators/forever-invalid.validator';
 import { DynamicFormControl } from './dynamic-form-control';
-import { mergeErrors, transformValidationErrors } from './dynamic-form-group-helpers';
+import { getClassValidatorMessages, mergeErrors, transformValidationErrors } from './dynamic-form-group-helpers';
 
 const cloneDeep = require('lodash.clonedeep');
 const validator = new Validator();
@@ -42,6 +48,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   private _externalErrors: ShortValidationErrors;
   private _validatorOptions: ValidatorOptions;
   private _fb = new FormBuilder();
+  private _validateSubscription: Subscription | undefined;
 
   constructor(
     public factoryModel: ClassType<TModel>,
@@ -76,7 +83,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
       this.valueChangesSubscription = this.valueChanges
         .pipe(
           distinctUntilChanged(),
-          tap(() => this.validate(externalErrors, validatorOptions))
+          mergeMap(() => this.validateStream(externalErrors, validatorOptions))
         )
         .subscribe({
           error: (err) => {
@@ -110,51 +117,71 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     return this.getObject();
   }
 
-  /**
-   * @deprecated
-   */
+  validateStream(externalErrors?: ShortValidationErrors, validatorOptions?: ValidatorOptions) {
+    return getClassValidatorMessages().pipe(
+      tap((messages) => {
+        if (externalErrors === undefined) {
+          externalErrors = cloneDeep(this._externalErrors);
+        }
+
+        if (validatorOptions === undefined) {
+          validatorOptions = cloneDeep(this._validatorOptions);
+        }
+
+        if (!validatorOptions) {
+          validatorOptions = {};
+        }
+
+        validatorOptions.messages = messages;
+
+        const dataToValidate = this.object;
+        const validationErrors = getValidateErrors(this, dataToValidate, validatorOptions);
+
+        if (!externalErrors) {
+          externalErrors = {};
+        }
+
+        const allErrors = mergeErrors(externalErrors, validationErrors);
+        const allErrorsKeys = Object.keys(allErrors);
+
+        this.markAsInvalidForExternalErrors(externalErrors);
+        this.setCustomErrors(allErrors);
+
+        // todo: refactor, invalidate form if exists any allErrors
+        let usedForeverInvalid = false;
+        if (!allErrorsKeys.find((key) => key !== FOREVER_INVALID_NAME) && this.get(FOREVER_INVALID_NAME)) {
+          this.removeControl(FOREVER_INVALID_NAME);
+          usedForeverInvalid = true;
+        }
+        if (this.valid && allErrorsKeys.length > 0 && !this.get(FOREVER_INVALID_NAME)) {
+          this.addControl(FOREVER_INVALID_NAME, new FormControl('', [foreverInvalid]));
+          usedForeverInvalid = true;
+        }
+        if (usedForeverInvalid) {
+          this.updateValueAndValidity({
+            onlySelf: true,
+            emitEvent: false,
+          });
+        }
+      })
+    );
+  }
+
   validateAsync(externalErrors?: ShortValidationErrors, validatorOptions?: ValidatorOptions) {
-    return Promise.resolve(this.validate(externalErrors, validatorOptions));
+    return this.validateStream(externalErrors, validatorOptions).toPromise();
   }
 
   // Public API
   validate(externalErrors?: ShortValidationErrors, validatorOptions?: ValidatorOptions) {
-    if (externalErrors === undefined) {
-      externalErrors = cloneDeep(this._externalErrors);
+    if (this._validateSubscription) {
+      this._validateSubscription.unsubscribe();
+      this._validateSubscription = undefined;
     }
-
-    if (validatorOptions === undefined) {
-      validatorOptions = cloneDeep(this._validatorOptions);
-    }
-    const dataToValidate = this.object;
-    const validationErrors = getValidateErrors(this, dataToValidate, validatorOptions);
-
-    if (!externalErrors) {
-      externalErrors = {};
-    }
-
-    const allErrors = mergeErrors(externalErrors, validationErrors);
-    const allErrorsKeys = Object.keys(allErrors);
-
-    this.markAsInvalidForExternalErrors(externalErrors);
-    this.setCustomErrors(allErrors);
-
-    // todo: refactor, invalidate form if exists any allErrors
-    let usedForeverInvalid = false;
-    if (!allErrorsKeys.find((key) => key !== FOREVER_INVALID_NAME) && this.get(FOREVER_INVALID_NAME)) {
-      this.removeControl(FOREVER_INVALID_NAME);
-      usedForeverInvalid = true;
-    }
-    if (this.valid && allErrorsKeys.length > 0 && !this.get(FOREVER_INVALID_NAME)) {
-      this.addControl(FOREVER_INVALID_NAME, new FormControl('', [foreverInvalid]));
-      usedForeverInvalid = true;
-    }
-    if (usedForeverInvalid) {
-      this.updateValueAndValidity({
-        onlySelf: true,
-        emitEvent: false,
-      });
-    }
+    this._validateSubscription = this.validateStream(externalErrors, validatorOptions).subscribe({
+      error: (err) => {
+        throw err;
+      },
+    });
   }
 
   setCustomErrors(allErrors: any) {
@@ -581,18 +608,26 @@ export function getClassValidators<TModel>(
   fields?: Dictionary,
   validatorOptions?: ValidatorOptions
 ) {
+  const groups = validatorOptions ? validatorOptions.groups : undefined;
+  const strictGroups = (validatorOptions && validatorOptions.strictGroups) || false;
+  const always = (validatorOptions && validatorOptions.always) || false;
+
   // console.time(String(factoryModel));
   // Get the validation rules from the object decorators
   let allValidationMetadatas: ValidationMetadata[] | any = getMetadataStorage().getTargetValidationMetadatas(
     factoryModel,
-    ''
+    '',
+    always,
+    strictGroups
   );
 
-  // Get the validation rules for the validation group: https://github.com/typestack/class-validator#validation-groups
+  // Get the validation rules for the validation group: https://github.com/typestack/class-validator-multi-lang#validation-groups
   let validationGroupMetadatas: ValidationMetadata[] | any = getMetadataStorage().getTargetValidationMetadatas(
     factoryModel,
     '',
-    validatorOptions && validatorOptions.groups ? validatorOptions.groups : undefined
+    always,
+    strictGroups,
+    groups
   );
   const formGroupFields = {};
 
@@ -626,7 +661,7 @@ export function getClassValidators<TModel>(
           }
         });
 
-        // Nested Validation for the field for the requested class-validator group
+        // Nested Validation for the field for the requested class-validator-multi-lang group
         nestedGroupValidations = [];
         validationGroupMetadatas.forEach((validationMetadata) => {
           if (isPropertyValidatorOfType(validationMetadata, fieldName, ValidationKeys.nested.type)) {
@@ -814,7 +849,7 @@ export function getClassValidators<TModel>(
 
   /**
    * marked with @Validate(...)
-   * https://github.com/typestack/class-validator#custom-validation-classes
+   * https://github.com/typestack/class-validator-multi-lang#custom-validation-classes
    */
   function isCustomValidate(validationMetadata: ValidationMetadata, typeKey: string) {
     return (
@@ -826,7 +861,7 @@ export function getClassValidators<TModel>(
 
   /**
    * marked with @ValidateNested()
-   * https://github.com/typestack/class-validator#validating-nested-objects
+   * https://github.com/typestack/class-validator-multi-lang#validating-nested-objects
    */
   function isNestedValidate(validationMetadata: ValidationMetadata, typeKey: string) {
     return (
