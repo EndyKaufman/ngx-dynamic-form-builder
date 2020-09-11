@@ -6,6 +6,7 @@ export * from './lib/models/form-model';
 export * from './lib/models/short-validation-errors';
 export * from './lib/models/validator-function-type';
 export * from './lib/storages/class-validator-messages.storage';
+export * from './lib/storages/class-validator-titles.storage';
 export * from './lib/utils/dynamic-form-builder';
 export * from './lib/utils/dynamic-form-control';
 export * from './lib/utils/dynamic-form-group';

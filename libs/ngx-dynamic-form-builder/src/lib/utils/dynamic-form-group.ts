@@ -20,7 +20,7 @@ import {
 } from 'class-validator-multi-lang';
 import stringify from 'fast-safe-stringify';
 import 'reflect-metadata';
-import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, combineLatest, Subject, Subscription } from 'rxjs';
 import { distinctUntilChanged, mergeMap, tap } from 'rxjs/operators';
 import stringHash from 'string-hash';
 import { Dictionary } from '../models/dictionary';
@@ -30,6 +30,7 @@ import { FormModel } from '../models/form-model';
 import { ShortValidationErrors } from '../models/short-validation-errors';
 import { ValidatorFunctionType } from '../models/validator-function-type';
 import { getValidatorMessagesStorage } from '../storages/class-validator-messages.storage';
+import { getValidatorTitlesStorage } from '../storages/class-validator-titles.storage';
 import { foreverInvalid, FOREVER_INVALID_NAME } from '../validators/forever-invalid.validator';
 import { DynamicFormControl } from './dynamic-form-control';
 import { mergeErrors, transformValidationErrors } from './dynamic-form-group.util';
@@ -119,8 +120,8 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   }
 
   validateStream(externalErrors?: ShortValidationErrors, validatorOptions?: ValidatorOptions) {
-    return getValidatorMessagesStorage().pipe(
-      tap((messages) => {
+    return combineLatest([getValidatorMessagesStorage(), getValidatorTitlesStorage()]).pipe(
+      tap(([messages, titles]) => {
         if (externalErrors === undefined) {
           externalErrors = cloneDeep(this._externalErrors);
         }
@@ -137,8 +138,16 @@ export class DynamicFormGroup<TModel> extends FormGroup {
           validatorOptions.messages = {};
         }
 
+        if (!validatorOptions.titles) {
+          validatorOptions.titles = {};
+        }
+
         if (messages) {
           validatorOptions.messages = { ...validatorOptions.messages, ...messages };
+        }
+
+        if (titles) {
+          validatorOptions.titles = { ...validatorOptions.titles, ...titles };
         }
 
         const dataToValidate = this.object;

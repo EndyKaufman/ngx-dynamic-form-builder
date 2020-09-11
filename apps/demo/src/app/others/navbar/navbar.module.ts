@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatMenuModule } from '@angular/material/menu';
 import { NavbarLanguagesButtonsModule } from '../navbar-languages-buttons/navbar-languages-buttons.module';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import { NavbarLanguagesButtonsModule } from '../navbar-languages-buttons/navbar
     FlexLayoutModule,
     MatMenuModule,
     NavbarLanguagesButtonsModule,
+    TranslocoModule,
   ],
   entryComponents: [NavbarComponent],
   exports: [NavbarComponent],

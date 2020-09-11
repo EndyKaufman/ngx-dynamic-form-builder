@@ -1,41 +1,41 @@
 <div
-    class="experimental-page"
-    fxLayout.gt-md="row"
-    fxLayout.lt-md="column"
-    fxLayoutAlign="space-evenly stretch"
-    fxLayoutAlign.lt-md="center">
-    <div
-        fxFlex.gt-sm="50">
-        <ngx-docs-example
-            title="Experimental: user panel"
-            [html]="source.html"
-            [ts]="source.ts"
-            [launch]="source.launch">
-            <div class="body">
-                <exp-user-panel></exp-user-panel>
-            </div>
-        </ngx-docs-example>
-        <ngx-docs-example
-            title="Experimental: login panel"
-            [html]="loginSource.html"
-            [ts]="loginSource.ts"
-            [launch]="loginSource.launch">
-            <div class="body">
-                <exp-login-panel></exp-login-panel>
-            </div>
-        </ngx-docs-example>
-        <ngx-docs-example
-            title="Experimental: registration panel"
-            [html]="registrationSource.html"
-            [ts]="registrationSource.ts"
-            [launch]="registrationSource.launch">
-            <div class="body">
-                <exp-registration-panel></exp-registration-panel>
-            </div>
-        </ngx-docs-example>
-    </div>
-    <source-tabs
-        title="Other files"
-        [files]="otherFiles"
-        fxFlex.gt-sm="50"></source-tabs>
+  class="experimental-page"
+  fxLayout.gt-md="row"
+  fxLayout.lt-md="column"
+  fxLayoutAlign="space-evenly stretch"
+  fxLayoutAlign.lt-md="center"
+>
+  <div fxFlex.gt-sm="50">
+    <ngx-docs-example
+      title="{{ 'Experimental: user panel' | transloco }}"
+      [html]="source.html"
+      [ts]="source.ts"
+      [launch]="source.launch"
+    >
+      <div class="body">
+        <exp-user-panel></exp-user-panel>
+      </div>
+    </ngx-docs-example>
+    <ngx-docs-example
+      title="{{ 'Experimental: login panel' | transloco }}"
+      [html]="loginSource.html"
+      [ts]="loginSource.ts"
+      [launch]="loginSource.launch"
+    >
+      <div class="body">
+        <exp-login-panel></exp-login-panel>
+      </div>
+    </ngx-docs-example>
+    <ngx-docs-example
+      title="{{ 'Experimental: registration panel' | transloco }}"
+      [html]="registrationSource.html"
+      [ts]="registrationSource.ts"
+      [launch]="registrationSource.launch"
+    >
+      <div class="body">
+        <exp-registration-panel></exp-registration-panel>
+      </div>
+    </ngx-docs-example>
+  </div>
+  <source-tabs title="{{ 'Other files' | transloco }}" [files]="otherFiles" fxFlex.gt-sm="50"></source-tabs>
 </div>

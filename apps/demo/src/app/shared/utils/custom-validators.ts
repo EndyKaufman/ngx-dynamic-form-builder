@@ -1,4 +1,9 @@
-import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator-multi-lang';
+import {
+  getText,
+  ValidationArguments,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+} from 'class-validator-multi-lang';
 
 @ValidatorConstraint()
 export class TextLengthMore15 implements ValidatorConstraintInterface {
@@ -55,6 +60,6 @@ export class EqualsTo implements ValidatorConstraintInterface {
   }
 
   defaultMessage(validationArguments: ValidationArguments) {
-    return `${validationArguments.constraints.join(',')} do not match to ${validationArguments.property}`;
+    return getText('$constraint1 do not match to $property');
   }
 }

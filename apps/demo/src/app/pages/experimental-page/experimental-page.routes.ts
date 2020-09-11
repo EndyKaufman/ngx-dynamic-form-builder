@@ -7,7 +7,10 @@ export const ExperimentalPageRoutes: Routes = [
     component: ExperimentalPageComponent,
     data: {
       name: 'experimental',
-      title: 'Experimental',
+      /**
+       * t(Experimental + i18n)
+       */
+      title: 'Experimental + i18n',
       visible: true,
     },
     children: [],

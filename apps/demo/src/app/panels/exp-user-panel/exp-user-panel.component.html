@@ -1,104 +1,69 @@
-<form
-    [formGroup]="form"
-    *ngIf="form?.customValidateErrors|async as errors"
-    novalidate>
-    <h3>Group form</h3>
+<form [formGroup]="form" *ngIf="form?.customValidateErrors | async as errors" novalidate>
+  <h3>{{ 'User form' | transloco }}</h3>
+  <mat-form-field class="full-width">
+    <!--t(username)-->
+    <input matInput formControlName="username" [placeholder]="'Username' | transloco" />
+    <mat-error *ngIf="errors?.username?.length">{{ errors?.username[0] }}</mat-error>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <!--t(password)-->
+    <input matInput type="password" formControlName="password" [placeholder]="'Password' | transloco" />
+    <mat-error *ngIf="errors?.password?.length">{{ errors?.password[0] }}</mat-error>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <!--t(email)-->
+    <input matInput type="email" formControlName="email" [placeholder]="'Email' | transloco" />
+    <mat-error *ngIf="errors?.email?.length">{{ errors?.email[0] }}</mat-error>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <!--t(dateOfBirth)-->
+    <input matInput type="date" formControlName="dateOfBirth" [placeholder]="'Date of birth' | transloco" />
+    <mat-error *ngIf="form.get('dateOfBirth')?.hasError('required')">
+      {{ 'date of birth is' | transloco }}
+      <strong>required</strong>
+    </mat-error>
+    <mat-error *ngIf="errors?.dateOfBirth?.length">{{ errors?.dateOfBirth[0] }}</mat-error>
+  </mat-form-field>
+  <div formGroupName="department">
+    <h3>{{ 'Department of user' | transloco }}</h3>
     <mat-form-field class="full-width">
-        <input
-            matInput
-            formControlName="username"
-            placeholder="Username">
-        <mat-error *ngIf="errors?.username?.length">{{errors?.username[0]}}</mat-error>
+      <!--t(name)-->
+      <input matInput formControlName="name" [placeholder]="'Department name' | transloco" />
+      <mat-error *ngIf="errors?.department?.name?.length">{{ errors?.department.name[0] }}</mat-error>
     </mat-form-field>
-    <mat-form-field class="full-width">
-        <input
-            matInput
-            type="password"
-            formControlName="password"
-            placeholder="Password">
-        <mat-error *ngIf="errors?.password?.length">{{errors?.password[0]}}</mat-error>
-    </mat-form-field>
-    <mat-form-field class="full-width">
-        <input
-            matInput
-            type="email"
-            formControlName="email"
-            placeholder="Email">
-        <mat-error *ngIf="errors?.email?.length">{{errors?.email[0]}}</mat-error>
-    </mat-form-field>
-    <mat-form-field class="full-width">
-        <input
-            matInput
-            type="date"
-            formControlName="dateOfBirth"
-            placeholder="Date of birth">
-        <mat-error *ngIf="form.get('dateOfBirth')?.hasError('required')">
-            date of birth is
-            <strong>required</strong>
+    <div formGroupName="company">
+      <h3>{{ 'Company of department' | transloco }}</h3>
+      <mat-form-field class="full-width">
+        <!--t(name)-->
+        <input matInput formControlName="name" [placeholder]="'Company name' | transloco" />
+        <mat-error *ngIf="errors?.department?.company?.name?.length">{{
+          errors?.department.company.name[0]
+        }}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <!--t(regionNum)-->
+        <input matInput formControlName="regionNum" type="number" [placeholder]="'Company region num' | transloco" />
+        <mat-error *ngIf="errors?.department?.company?.regionNum?.length">
+          {{ errors?.department?.company?.regionNum[0] }}
         </mat-error>
-        <mat-error *ngIf="errors?.dateOfBirth?.length">{{errors?.dateOfBirth[0]}}</mat-error>
-    </mat-form-field>
-    <div formGroupName="department">
-        <h3>Department of user</h3>
-        <mat-form-field class="full-width">
-            <input
-                matInput
-                formControlName="name"
-                placeholder="Department name">
-            <mat-error *ngIf="errors?.department?.name?.length">{{errors?.department.name[0]}}</mat-error>
-        </mat-form-field>
-        <div formGroupName="company">
-            <h3>Company of department</h3>
-            <mat-form-field class="full-width">
-                <input
-                    matInput
-                    formControlName="name"
-                    placeholder="Company name">
-                <mat-error *ngIf="errors?.department?.company?.name?.length">{{errors?.department.company.name[0]}}</mat-error>
-            </mat-form-field>
-            <mat-form-field class="full-width">
-                <input
-                    matInput
-                    formControlName="regionNum"
-                    type="number"
-                    placeholder="Company region num">
-                <mat-error *ngIf="errors?.department?.company?.regionNum?.length">
-                    {{errors?.department?.company?.regionNum[0]}}
-                </mat-error>
-            </mat-form-field>
-        </div>
+      </mat-form-field>
     </div>
-    <div class="full-width">
-        <mat-checkbox formControlName="isSuperuser">Administrator</mat-checkbox>
-        <mat-checkbox formControlName="isStaff">Staff</mat-checkbox>
-    </div>
-    <div class="full-width">
-        <p>Form status: {{ form.status | json }}</p>
-        <p>
-            Form class-validator errors: {{errors|json}}
-        </p>
-        <p>
-            Form native errors: {{form?.nativeValidateErrors|async|json}}
-        </p>
-        <p *ngIf="savedItem">Saved item: {{savedItem|json}}</p>
-    </div>
-    <div class="full-width">
-        <button
-            mat-raised-button
-            (click)="onLoadClick()">
-            Load
-        </button>
-        <button
-            mat-raised-button
-            (click)="onClearClick()">
-            Clear
-        </button>
-        <button
-            mat-raised-button
-            (click)="onSaveClick()"
-            [disabled]="!form.valid"
-            cdkFocusInitial>
-            Save
-        </button>
-    </div>
+  </div>
+  <div class="full-width">
+    <mat-checkbox formControlName="isSuperuser">{{ 'Administrator' | transloco }}</mat-checkbox>
+    <mat-checkbox formControlName="isStaff">{{ 'Staff' | transloco }}</mat-checkbox>
+  </div>
+  <div class="full-width">
+    <p>{{ 'Form status:' | transloco }} {{ form.status | json }}</p>
+    <p>{{ 'Form class-validator errors:' | transloco }} {{ errors | json }}</p>
+    <p>{{ 'Form native errors:' | transloco }} {{ form?.nativeValidateErrors | async | json }}</p>
+    <p *ngIf="savedItem">{{ 'Saved item:' | transloco }} {{ savedItem | json }}</p>
+  </div>
+  <div class="full-width">
+    <button mat-raised-button (click)="onLoadClick()">{{ 'Load' | transloco }}</button>
+    <button mat-raised-button (click)="onClearClick()">{{ 'Clear' | transloco }}</button>
+    <button mat-raised-button (click)="onSaveClick()" [disabled]="!form.valid" cdkFocusInitial>
+      {{ 'Save' | transloco }}
+    </button>
+  </div>
 </form>

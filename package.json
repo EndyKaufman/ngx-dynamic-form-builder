@@ -67,7 +67,8 @@
     "github:postbuild": "./node_modules/.bin/cp-cli ./dist/demo/index.html ./dist/demo/404.html",
     "github:deploy": "gh-pages -d dist/demo",
     "format:fix": "tslint -q -p tsconfig.json -c ./tslint.json  --fix && prettier  --config ./.prettierrc --write \"{apps,libs}/**/*.ts\"",
-    "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points"
+    "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
+    "i18n:extract": "transloco-keys-manager extract"
   },
   "private": true,
   "dependencies": {
@@ -84,6 +85,7 @@
     "@angular/pwa": "^0.1001.1",
     "@angular/router": "^10.1.1",
     "@angular/service-worker": "^10.1.1",
+    "@ngneat/transloco": "^2.19.1",
     "@types/prismjs": "^1.16.1",
     "class-transformer": "^0.3.1",
     "class-validator-multi-lang": "^0.122.200",
@@ -104,6 +106,7 @@
     "@angular/cli": "^10.1.1",
     "@angular/compiler-cli": "^10.1.1",
     "@angular/language-service": "^10.1.1",
+    "@ngneat/transloco-keys-manager": "^2.2.1",
     "@rucken/cli": "^4.1.6",
     "@types/jasmine": "~3.5.12",
     "@types/jasminewd2": "~2.0.8",

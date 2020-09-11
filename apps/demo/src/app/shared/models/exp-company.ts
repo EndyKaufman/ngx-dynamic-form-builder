@@ -1,4 +1,4 @@
-import { Validate, IsNotEmpty, Min, Max, MaxLength, IsOptional } from 'class-validator-multi-lang';
+import { Validate, IsNotEmpty, Min, Max, MaxLength, IsOptional, getText } from 'class-validator-multi-lang';
 import { TextLengthMore15 } from '../utils/custom-validators';
 
 export class ExpCompany {
@@ -6,7 +6,7 @@ export class ExpCompany {
 
   @Validate(TextLengthMore15, {
     groups: ['user'],
-    message: 'The company name must be longer than 15',
+    message: getText('The company name must be longer than 15'),
   })
   @IsNotEmpty({
     groups: ['user'],
