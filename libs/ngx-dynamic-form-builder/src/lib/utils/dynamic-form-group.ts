@@ -29,9 +29,10 @@ import { ErrorPropertyName } from '../models/error-property-name';
 import { FormModel } from '../models/form-model';
 import { ShortValidationErrors } from '../models/short-validation-errors';
 import { ValidatorFunctionType } from '../models/validator-function-type';
+import { getValidatorMessagesStorage } from '../storages/class-validator-messages.storage';
 import { foreverInvalid, FOREVER_INVALID_NAME } from '../validators/forever-invalid.validator';
 import { DynamicFormControl } from './dynamic-form-control';
-import { getClassValidatorMessages, mergeErrors, transformValidationErrors } from './dynamic-form-group-helpers';
+import { mergeErrors, transformValidationErrors } from './dynamic-form-group.util';
 
 const cloneDeep = require('lodash.clonedeep');
 const validator = new Validator();
@@ -118,7 +119,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   }
 
   validateStream(externalErrors?: ShortValidationErrors, validatorOptions?: ValidatorOptions) {
-    return getClassValidatorMessages().pipe(
+    return getValidatorMessagesStorage().pipe(
       tap((messages) => {
         if (externalErrors === undefined) {
           externalErrors = cloneDeep(this._externalErrors);
@@ -132,7 +133,13 @@ export class DynamicFormGroup<TModel> extends FormGroup {
           validatorOptions = {};
         }
 
-        validatorOptions.messages = messages;
+        if (!validatorOptions.messages) {
+          validatorOptions.messages = {};
+        }
+
+        if (messages) {
+          validatorOptions.messages = { ...validatorOptions.messages, ...messages };
+        }
 
         const dataToValidate = this.object;
         const validationErrors = getValidateErrors(this, dataToValidate, validatorOptions);
@@ -469,7 +476,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     } else {
       let objectWithOnlyFormFields: any = {};
       // for speed up on work with short version of model
-      Object.keys(this.formFields).forEach((key) => (objectWithOnlyFormFields[key] = object[key]));
+      Object.keys(this.formFields).forEach((key) => (objectWithOnlyFormFields[key] = object ? object[key] : undefined));
       this._object = this.plainToClass(this.factoryModel, objectWithOnlyFormFields); // Convert to Model type
       objectWithOnlyFormFields = null;
     }
@@ -480,11 +487,10 @@ export class DynamicFormGroup<TModel> extends FormGroup {
       .filter((name) => name !== FOREVER_INVALID_NAME)
       .forEach((key) => {
         // Handle Group
-        if (
-          this.controls[key] instanceof DynamicFormGroup &&
-          (this.controls[key] as DynamicFormGroup<any>)._object !== this._object[key]
-        ) {
-          (this.controls[key] as DynamicFormGroup<any>).setObject(this._object ? this._object[key] : {}, false);
+        if (this.controls[key] instanceof DynamicFormGroup) {
+          if ((this.controls[key] as DynamicFormGroup<any>)._object !== this._object[key]) {
+            (this.controls[key] as DynamicFormGroup<any>).setObject(this._object ? this._object[key] : {}, false);
+          }
         }
 
         // Handle FormArray

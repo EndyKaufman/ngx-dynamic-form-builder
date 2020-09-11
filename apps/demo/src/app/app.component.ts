@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { setClassValidatorMessages } from 'ngx-dynamic-form-builder';
+import { updateValidatorMessagesStorage } from 'ngx-dynamic-form-builder';
 import { AppRoutes } from './app.routes';
 import { Language } from './shared/interfaces/language-interface';
 
@@ -43,11 +43,11 @@ export class AppComponent {
           .subscribe((dictionaries) => {
             if (foundedLang) {
               foundedLang.dictionaries = dictionaries;
-              setClassValidatorMessages(foundedLang.dictionaries);
+              updateValidatorMessagesStorage(foundedLang.dictionaries);
             }
           });
       } else {
-        setClassValidatorMessages(foundedLang.dictionaries);
+        updateValidatorMessagesStorage(foundedLang.dictionaries);
       }
     }
   }
