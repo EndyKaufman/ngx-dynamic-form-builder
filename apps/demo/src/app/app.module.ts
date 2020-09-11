@@ -14,6 +14,7 @@ import { MyErrorStateMatcher } from './shared/utils/my-error-state-matcher';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { MarkdownModule } from 'ngx-markdown';
+import { TranslocoRootModule } from './transloco/transloco-root.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,6 +28,7 @@ import { MarkdownModule } from 'ngx-markdown';
     NavbarModule.forRoot(),
     RouterModule.forRoot(AppRoutes, { preloadingStrategy: PreloadAllModules, initialNavigation: 'enabled' }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    TranslocoRootModule,
   ],
   providers: [
     { provide: ErrorStateMatcher, useClass: MyErrorStateMatcher },

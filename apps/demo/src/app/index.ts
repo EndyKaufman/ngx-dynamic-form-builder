@@ -69,3 +69,4 @@ export * from './shared/pipes/safe-html.pipe';
 export * from './shared/utils/custom-transforms';
 export * from './shared/utils/custom-validators';
 export * from './shared/utils/my-error-state-matcher';
+export * from './transloco/transloco-root.module';

@@ -3,6 +3,8 @@
     <mat-icon svgIcon="translate"></mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item (click)="setCurrent(lang)" *ngFor="let lang of languages || []">{{ lang.title }}</button>
+    <button mat-menu-item (click)="setCurrent(lang)" *ngFor="let lang of languages || []">
+      {{ lang.title || '' | transloco }}
+    </button>
   </mat-menu>
 </ng-container>

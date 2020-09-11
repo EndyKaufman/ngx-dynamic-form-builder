@@ -12,7 +12,7 @@
         </mat-menu>
       </span>
       <a [routerLink]="['home']" mat-button>
-        {{ title }}
+        {{ title | transloco }}
       </a>
       <navbar-languages-buttons
         [languages]="languages"
@@ -65,5 +65,5 @@
 <ng-template let-item="item" #menuItemContent>
   <mat-icon [svgIcon]="item.svgIcon" *ngIf="item.svgIcon"></mat-icon>
   <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
-  <span>{{ item.title }}</span>
+  <span>{{ item.title | transloco }}</span>
 </ng-template>
