@@ -1,3 +1,17 @@
+# [1.8.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.7.0...1.8.0) (2020-09-11)
+
+
+### Bug Fixes
+
+* add support set nested object to undefined, update deps ([6c7fa3c](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/6c7fa3c993f21c8cbf1a686c6e9bbdc467c57790))
+
+
+### Features
+
+* add support translate title of properties in validation errors ([dbba241](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/dbba241203103dad8972612de43f0e12a9d13488))
+
+
+
 # [1.7.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.6.1...1.7.0) (2020-09-09)
 
 
