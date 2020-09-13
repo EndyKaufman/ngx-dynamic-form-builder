@@ -145,6 +145,8 @@ THE SOFTWARE.
 
 
 
+@ngneat/transloco-keys-manager
+
 class-transformer
 MIT
 The MIT License
