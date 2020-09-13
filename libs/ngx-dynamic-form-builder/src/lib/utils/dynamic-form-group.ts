@@ -120,8 +120,11 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   }
 
   validateStream(externalErrors?: ShortValidationErrors, validatorOptions?: ValidatorOptions) {
+    const argumentValidatorOptions = validatorOptions ? cloneDeep(validatorOptions) : validatorOptions;
     return combineLatest([getValidatorMessagesStorage(), getValidatorTitlesStorage()]).pipe(
       tap(([messages, titles]) => {
+        validatorOptions = argumentValidatorOptions;
+
         if (externalErrors === undefined) {
           externalErrors = cloneDeep(this._externalErrors);
         }
@@ -143,11 +146,11 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         }
 
         if (messages) {
-          validatorOptions.messages = { ...validatorOptions.messages, ...messages };
+          validatorOptions.messages = { ...messages, ...validatorOptions.messages };
         }
 
         if (titles) {
-          validatorOptions.titles = { ...validatorOptions.titles, ...titles };
+          validatorOptions.titles = { ...titles, ...validatorOptions.titles };
         }
 
         const dataToValidate = this.object;
@@ -308,7 +311,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   }
 
   /**
-   * @deprecated
+   * @deprecated please use sync method setExternalErrors(errors)
    */
   setExternalErrorsAsync(externalErrors: ShortValidationErrors) {
     this.setExternalErrors(externalErrors);
@@ -325,7 +328,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   }
 
   /**
-   * @deprecated
+   * @deprecated please use sync method setExternalErrors({})
    */
   clearExternalErrorsAsync() {
     this.setExternalErrors({});

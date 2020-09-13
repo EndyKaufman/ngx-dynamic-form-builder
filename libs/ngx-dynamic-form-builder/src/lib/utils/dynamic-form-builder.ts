@@ -58,9 +58,9 @@ export class DynamicFormBuilder extends FormBuilder {
           asyncValidators.push(extra.asyncValidator);
         }
       }
-      // Set default customValidatorOptions
+      // Set default classValidatorOptions
       if (!isDynamicFormGroupConfig(extra)) {
-        extra.customValidatorOptions = { validationError: { target: false } };
+        extra.classValidatorOptions = { validationError: { target: false } };
       }
     }
 
@@ -78,7 +78,7 @@ export class DynamicFormBuilder extends FormBuilder {
           if (canCreateGroup() && newControlsConfig) {
             // recursively create a dynamic group for the nested object
             newControlsConfig[key] = this.group(newControlsConfig[key].constructor, undefined, {
-              ...(extra.customValidatorOptions ? { customValidatorOptions: extra.customValidatorOptions } : {}),
+              ...(extra.classValidatorOptions ? { classValidatorOptions: extra.classValidatorOptions } : {}),
               asyncValidators,
               updateOn,
               validators,
@@ -90,7 +90,7 @@ export class DynamicFormBuilder extends FormBuilder {
                 newControlsConfig[key] = super.array(
                   newControlsConfig[key].map((newControlsConfigItem) =>
                     this.group(newControlsConfigItem.constructor, undefined, {
-                      ...(extra.customValidatorOptions ? { customValidatorOptions: extra.customValidatorOptions } : {}),
+                      ...(extra.classValidatorOptions ? { classValidatorOptions: extra.classValidatorOptions } : {}),
                       asyncValidators,
                       updateOn,
                       validators,
@@ -145,7 +145,7 @@ export class DynamicFormBuilder extends FormBuilder {
     let classValidators: any = getClassValidators<TModel>(
       factoryModel,
       newControlsConfig,
-      extra && extra.customValidatorOptions
+      extra && extra.classValidatorOptions
     );
     let formGroup: any = super.group(classValidators, {
       ...(asyncValidators || {}),
@@ -166,7 +166,7 @@ export class DynamicFormBuilder extends FormBuilder {
     });
 
     // Add a listener to the dynamic group for value changes; on change, execute validation
-    dynamicFormGroup.subscribeToValueChanges(undefined, extra && extra.customValidatorOptions);
+    dynamicFormGroup.subscribeToValueChanges(undefined, extra && extra.classValidatorOptions);
 
     classValidators = null;
     formGroup = null;
