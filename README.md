@@ -22,7 +22,7 @@ npm i --save class-transformer class-validator-multi-lang ngx-dynamic-form-build
 company.ts
 
 ```js
-import { Validate, IsNotEmptym getText } from 'class-validator-multi-lang';
+import { Validate, IsNotEmptym } from 'class-validator-multi-lang';
 import { plainToClassFromExist } from 'class-transformer';
 import { TextLengthMore15 } from '../utils/custom-validators';
 import { marker } from '@ngneat/transloco-keys-manager/marker';
@@ -30,7 +30,7 @@ import { marker } from '@ngneat/transloco-keys-manager/marker';
 export class Company {
   id: number = undefined;
   @Validate(TextLengthMore15, {
-    message: getText(marker('The company name must be longer than 15')),
+    message: marker('The company name must be longer than 15'),
   })
   @IsNotEmpty()
   name: string = undefined;
@@ -142,9 +142,58 @@ export class TextLengthMore15 implements ValidatorConstraintInterface {
 }
 ```
 
+## Support multi-language translate validation errors (I18n)
+
+Because multi-language supported in class-validator-multi-lang, now ngx-dynamic-form-builder also support this feature
+
+set validation messages as settings when create form group
+
+```js
+this.form = this.fb.group(
+  Company,
+  {
+    name: '',
+  },
+  {
+    classValidatorOptions: {
+      messages: {
+        'The company name must be longer than 15': 'company name must be longer than 15 (translate on other language)',
+      },
+    },
+  }
+);
+```
+
+set validation messages on runtime after for exists form group
+
+```js
+this.form.setValidatorOptions({
+  messages: {
+    'The company name must be longer than 15': 'company name must be longer than 15 (translate on other language)',
+  },
+});
+```
+
+set translate property name in error
+
+```js
+this.form.setValidatorOptions({
+  titles: { regionNum: 'number of region (translate property name in error on other language)' },
+});
+```
+
+set validation messages and properties name global for all instance of form group in project
+
+```js
+updateValidatorMessagesStorage({
+  'The company name must be longer than 15': 'company name must be longer than 15 (translate on other language)',
+});
+updateValidatorTitlesStorage({ regionNum: 'number of region (translate property name in error on other language)' });
+```
+
 ## Observable Errors
 
-the customValidateErrors property can be subscribed for cases in which your code should act on changes in errors
+The customValidateErrors property can be subscribed for cases in which your code should act on changes in errors
 
 company-panel.component.html
 

@@ -71,13 +71,25 @@ export class AppComponent {
               ...foundedLang.validatorMessages,
               ...foundedLang.staticValidatorMessages,
               ...foundedLang.validatorTitles,
+              ...foundedLang.staticValidatorTitles,
             });
-            updateValidatorTitlesStorage(foundedLang.validatorTitles);
+            updateValidatorTitlesStorage({
+              ...foundedLang.validatorTitles,
+              ...foundedLang.staticValidatorTitles,
+            });
           }
         });
       } else {
-        updateValidatorMessagesStorage({ ...foundedLang.validatorMessages, ...foundedLang.staticValidatorMessages });
-        updateValidatorTitlesStorage(foundedLang.validatorTitles);
+        updateValidatorMessagesStorage({
+          ...foundedLang.validatorMessages,
+          ...foundedLang.staticValidatorMessages,
+          ...foundedLang.validatorTitles,
+          ...foundedLang.staticValidatorTitles,
+        });
+        updateValidatorTitlesStorage({
+          ...foundedLang.validatorTitles,
+          ...foundedLang.staticValidatorTitles,
+        });
       }
     }
     this.translocoService.setActiveLang(newLanguage.code);

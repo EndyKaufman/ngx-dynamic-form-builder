@@ -5,8 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { TranslocoModule } from '@ngneat/transloco';
-import { ExpUserPanelComponent } from '../../panels/exp-user-panel/exp-user-panel.component';
 import { SharedModule } from '../../shared/shared.module';
+import { ExpUserPanelComponent } from './exp-user-panel.component';
 
 @NgModule({
   imports: [

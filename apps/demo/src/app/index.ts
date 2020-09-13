@@ -31,6 +31,9 @@ export * from './pages/experimental-page/experimental-page.routes';
 export * from './pages/home-page/home-page.component';
 export * from './pages/home-page/home-page.module';
 export * from './pages/home-page/home-page.routes';
+export * from './pages/i18n-page/i18n-page.component';
+export * from './pages/i18n-page/i18n-page.module';
+export * from './pages/i18n-page/i18n-page.routes';
 export * from './pages/project-page/project-page.component';
 export * from './pages/project-page/project-page.module';
 export * from './pages/project-page/project-page.routes';
@@ -47,6 +50,8 @@ export * from './panels/exp-registration-panel/exp-registration-panel.component'
 export * from './panels/exp-registration-panel/exp-registration-panel.module';
 export * from './panels/exp-user-panel/exp-user-panel.component';
 export * from './panels/exp-user-panel/exp-user-panel.module';
+export * from './panels/i18n-company-panel/i18n-company-panel.component';
+export * from './panels/i18n-company-panel/i18n-company-panel.module';
 export * from './panels/project-panel/project-panel-complete.component';
 export * from './panels/project-panel/project-panel-step-1.component';
 export * from './panels/project-panel/project-panel-step-2.component';

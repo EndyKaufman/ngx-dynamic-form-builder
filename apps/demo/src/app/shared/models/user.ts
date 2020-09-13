@@ -1,6 +1,6 @@
 import { marker } from '@ngneat/transloco-keys-manager/marker';
 import { plainToClassFromExist, Transform, Type } from 'class-transformer';
-import { getText, IsEmail, IsNotEmpty, IsOptional, Matches, ValidateNested } from 'class-validator-multi-lang';
+import { IsEmail, IsNotEmpty, IsOptional, Matches, ValidateNested } from 'class-validator-multi-lang';
 import { serializeModel, transformDateToString, transformStringToDate } from '../utils/custom-transforms';
 import { Department } from './department';
 
@@ -24,7 +24,7 @@ export class User {
   password: string;
 
   // flag "g" in RegExp work incorrect, please read issue: https://github.com/typestack/class-validator/issues/484
-  @Matches(RegExp('^abc$', 'i'), { message: getText(marker(`it should match the cool 'abc' string`)) })
+  @Matches(RegExp('^abc$', 'i'), { message: marker(`it should match the cool 'abc' string`) })
   abc: string;
 
   @IsEmail()

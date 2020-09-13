@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/EndyKaufman/ngx-dynamic-form-builder.svg?branch=master)](https://travis-ci.org/EndyKaufman/ngx-dynamic-form-builder)
 [![npm version](https://badge.fury.io/js/ngx-dynamic-form-builder.svg)](https://badge.fury.io/js/ngx-dynamic-form-builder)
 
-[FormBuilder](https://angular.io/api/forms/FormBuilder) + [class-transformer](https://github.com/typestack/class-transformer) + [class-validator-multi-lang](https://github.com/typestack/class-validator-multi-lang) = dynamic form group builder for [Angular10+](https://angular.io)
+[FormBuilder](https://angular.io/api/forms/FormBuilder) + [class-transformer](https://github.com/typestack/class-transformer) + [class-validator-multi-lang](https://github.com/endykaufman/class-validator-multi-lang) = dynamic form group builder for [Angular10+](https://angular.io)
 
 ## Installation
 
@@ -16,6 +16,28 @@ npm i --save class-transformer class-validator-multi-lang ngx-dynamic-form-build
 [Stackblitz](https://stackblitz.com/edit/ngx-dynamic-form-builder) - Simply sample of usage on https://stackblitz.com
 
 ## Usage
+
+company.ts
+
+```js
+import { Validate, IsNotEmptym } from 'class-validator-multi-lang';
+import { plainToClassFromExist } from 'class-transformer';
+import { TextLengthMore15 } from '../utils/custom-validators';
+import { marker } from '@ngneat/transloco-keys-manager/marker';
+
+export class Company {
+  id: number = undefined;
+  @Validate(TextLengthMore15, {
+    message: marker('The company name must be longer than 15'),
+  })
+  @IsNotEmpty()
+  name: string = undefined;
+
+  constructor(data?: any) {
+    plainToClassFromExist(this, data);
+  }
+}
+```
 
 app.module.ts
 
@@ -40,31 +62,10 @@ import { CompanyPanelComponent } from './company-panel.component';
 export class AppModule {}
 ```
 
-company.ts
-
-```js
-import { Validate, IsNotEmpty, getText } from 'class-validator-multi-lang';
-import { plainToClassFromExist } from 'class-transformer';
-import { TextLengthMore15 } from '../utils/custom-validators';
-
-export class Company {
-  id: number = undefined;
-  @Validate(TextLengthMore15, {
-    message: getText(marker('The company name must be longer than 15')),
-  })
-  @IsNotEmpty()
-  name: string = undefined;
-
-  constructor(data?: any) {
-    plainToClassFromExist(this, data);
-  }
-}
-```
-
 company-panel.component.html
 
 ```html
-<form [formGroup]="form" *ngIf="form?.formErrors as errors" novalidate>
+<form [formGroup]="form" *ngIf="form?.customValidateErrors | async as errors" novalidate>
   <input formControlName="name" placeholder="Name" />
   <p *ngIf="errors.name?.length">Error: {{errors.name[0]}}</p>
   <p>Form status: {{ form.status | json }}</p>
@@ -139,9 +140,58 @@ export class TextLengthMore15 implements ValidatorConstraintInterface {
 }
 ```
 
+## Support multi-language translate validation errors (I18n)
+
+Because multi-language supported in class-validator-multi-lang, now ngx-dynamic-form-builder also support this feature
+
+set validation messages as settings when create form group
+
+```js
+this.form = this.fb.group(
+  Company,
+  {
+    name: '',
+  },
+  {
+    classValidatorOptions: {
+      messages: {
+        'The company name must be longer than 15': 'company name must be longer than 15 (translate on other language)',
+      },
+    },
+  }
+);
+```
+
+set validation messages on runtime after for exists form group
+
+```js
+this.form.setValidatorOptions({
+  messages: {
+    'The company name must be longer than 15': 'company name must be longer than 15 (translate on other language)',
+  },
+});
+```
+
+set translate property name in error
+
+```js
+this.form.setValidatorOptions({
+  titles: { regionNum: 'number of region (translate property name in error on other language)' },
+});
+```
+
+set validation messages and properties name global for all instance of form group in project
+
+```js
+updateValidatorMessagesStorage({
+  'The company name must be longer than 15': 'company name must be longer than 15 (translate on other language)',
+});
+updateValidatorTitlesStorage({ regionNum: 'number of region (translate property name in error on other language)' });
+```
+
 ## Observable Errors
 
-the customValidateErrors property can be subscribed for cases in which your code should act on changes in errors
+The customValidateErrors property can be subscribed for cases in which your code should act on changes in errors
 
 company-panel.component.html
 

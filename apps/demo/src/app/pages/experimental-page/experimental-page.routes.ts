@@ -8,7 +8,7 @@ export const ExperimentalPageRoutes: Routes = [
     component: ExperimentalPageComponent,
     data: {
       name: 'experimental',
-      title: marker('Experimental + i18n'),
+      title: marker('Experimental + transloco + i18n'),
       visible: true,
     },
     children: [],

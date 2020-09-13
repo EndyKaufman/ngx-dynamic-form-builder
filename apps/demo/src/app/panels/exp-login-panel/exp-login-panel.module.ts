@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { ModuleWithProviders } from '@angular/core';
-import { ExpLoginPanelComponent } from '../../panels/exp-login-panel/exp-login-panel.component';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { SharedModule } from '../../shared/shared.module';
-import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatInputModule } from '@angular/material/input';
 import { TranslocoModule } from '@ngneat/transloco';
+import { SharedModule } from '../../shared/shared.module';
+import { ExpLoginPanelComponent } from './exp-login-panel.component';
 
 @NgModule({
   imports: [

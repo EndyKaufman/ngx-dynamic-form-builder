@@ -1,6 +1,6 @@
 import { marker } from '@ngneat/transloco-keys-manager/marker';
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsOptional, Validate, ValidateNested, getText } from 'class-validator-multi-lang';
+import { IsNotEmpty, IsOptional, Validate, ValidateNested } from 'class-validator-multi-lang';
 import { ProjectPanelStepsEnum } from '../enums/project-panel-steps.enum';
 import { serializeModel } from '../utils/custom-transforms';
 import { ObjectMustBeNotEmpty } from '../utils/custom-validators';
@@ -22,8 +22,8 @@ export class Project {
   })
   @Validate(ObjectMustBeNotEmpty, [1, 3], {
     groups: [ProjectPanelStepsEnum.Step2],
-    message: getText(
-      marker('Tasks not initialized or min length = 1 and max length = 3, and all initialized tasks must be not empty')
+    message: marker(
+      'Tasks not initialized or min length = 1 and max length = 3, and all initialized tasks must be not empty'
     ),
   })
   @IsOptional()

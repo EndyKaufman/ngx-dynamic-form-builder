@@ -4,8 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from '../../shared/shared.module';
-import { CompanyPanelComponent } from './company-panel.component';
+import { I18nCompanyPanelComponent } from './i18n-company-panel.component';
 
 @NgModule({
   imports: [
@@ -16,15 +17,16 @@ import { CompanyPanelComponent } from './company-panel.component';
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
+    MatSelectModule,
   ],
-  entryComponents: [CompanyPanelComponent],
-  exports: [CompanyPanelComponent],
-  declarations: [CompanyPanelComponent],
+  entryComponents: [I18nCompanyPanelComponent],
+  exports: [I18nCompanyPanelComponent],
+  declarations: [I18nCompanyPanelComponent],
 })
-export class CompanyPanelModule {
+export class I18nCompanyPanelModule {
   static forRoot() {
     return {
-      ngModule: CompanyPanelModule,
+      ngModule: I18nCompanyPanelModule,
       providers: [],
     };
   }

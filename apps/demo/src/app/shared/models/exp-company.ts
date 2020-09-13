@@ -2,7 +2,6 @@ import { marker } from '@ngneat/transloco-keys-manager/marker';
 import {
   ClassPropertyTitle,
   ClassTitle,
-  getText,
   IsNotEmpty,
   IsOptional,
   Max,
@@ -18,7 +17,7 @@ export class ExpCompany {
 
   @Validate(TextLengthMore15, {
     groups: ['user'],
-    message: getText(marker('The company name must be longer than 15')),
+    message: marker('The company name must be longer than 15'),
   })
   @IsNotEmpty({
     groups: ['user'],
