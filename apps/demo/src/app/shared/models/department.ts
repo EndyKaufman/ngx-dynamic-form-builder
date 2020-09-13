@@ -1,14 +1,14 @@
-import { plainToClassFromExist } from 'class-transformer';
-import { Type } from 'class-transformer';
+import { marker } from '@ngneat/transloco-keys-manager/marker';
+import { plainToClassFromExist, Type } from 'class-transformer';
 import { IsNotEmpty, IsOptional, ValidateNested } from 'class-validator-multi-lang';
 import { serializeModel } from '../utils/custom-transforms';
 import { Company } from './company';
 
 export class Department {
   static strings = {
-    id: 'Id',
-    name: 'Name',
-    company: 'Company',
+    id: marker('Id'),
+    name: marker('Name'),
+    company: marker('Company'),
   };
 
   id: number;

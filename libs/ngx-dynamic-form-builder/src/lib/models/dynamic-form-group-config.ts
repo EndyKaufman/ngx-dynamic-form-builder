@@ -7,10 +7,10 @@ export interface DynamicFormGroupConfig {
   validators?: ValidatorFn[] | undefined;
   asyncValidators?: AsyncValidatorFn[] | undefined;
   updateOn?: any | undefined;
-  customValidatorOptions?: ValidatorOptions | undefined;
+  classValidatorOptions?: ValidatorOptions | undefined;
 }
 export function isDynamicFormGroupConfig(options: AbstractControlOptions | DynamicFormGroupConfig) {
-  return options && !!options['customValidatorOptions'];
+  return options && !!options['classValidatorOptions'];
 }
 export function isLegacyOrOpts(options: AbstractControlOptions | DynamicFormGroupConfig) {
   return options && (!!options['validator'] || !!options['asyncValidator']);

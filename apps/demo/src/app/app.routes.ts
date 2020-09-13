@@ -4,6 +4,7 @@ import { ComboPageRoutes } from './pages/combo-page/combo-page.routes';
 import { CustomizationPageRoutes } from './pages/customization-page/customization-page.routes';
 import { ExperimentalPageRoutes } from './pages/experimental-page/experimental-page.routes';
 import { HomePageRoutes } from './pages/home-page/home-page.routes';
+import { I18nPageRoutes } from './pages/i18n-page/i18n-page.routes';
 import { ProjectPageRoutes } from './pages/project-page/project-page.routes';
 import { SimplePageRoutes } from './pages/simple-page/simple-page.routes';
 
@@ -28,6 +29,11 @@ export const AppRoutes: Routes = [
     path: 'advanced',
     loadChildren: () => import('./pages/advanced-page/advanced-page.module').then((m) => m.AdvancedPageModule),
     data: AdvancedPageRoutes[0].data,
+  },
+  {
+    path: 'i18n',
+    loadChildren: () => import('./pages/i18n-page/i18n-page.module').then((m) => m.I18nPageModule),
+    data: I18nPageRoutes[0].data,
   },
   {
     path: 'experimental',

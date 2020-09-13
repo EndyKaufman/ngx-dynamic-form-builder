@@ -40,7 +40,7 @@ export class ProjectPanelStep1Component implements OnDestroy {
   }
   createForm() {
     return this.fb.group(Project, {
-      customValidatorOptions: {
+      classValidatorOptions: {
         groups: [ProjectPanelStepsEnum.Step1],
       },
     });

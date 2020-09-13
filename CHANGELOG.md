@@ -1,3 +1,12 @@
+# [1.9.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.8.0...1.9.0) (2020-09-13)
+
+
+### Features
+
+* rename customValidatorOptions to classValidatorOptions, add support change messages and titles on run time with set validatorOptions ([aaf9c78](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/aaf9c7820a2b26d88317f1fbbcbf8d5735371662))
+
+
+
 # [1.8.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.7.0...1.8.0) (2020-09-11)
 
 

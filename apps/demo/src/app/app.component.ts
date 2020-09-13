@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TranslocoService } from '@ngneat/transloco';
+import { marker } from '@ngneat/transloco-keys-manager/marker';
 import { updateValidatorMessagesStorage, updateValidatorTitlesStorage } from 'ngx-dynamic-form-builder';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -18,23 +19,13 @@ export class AppComponent {
   title = 'app';
   routes = AppRoutes;
   languages: Language[] = [
-    // t(English)
     {
       code: 'en',
-      title: 'English',
-      staticValidatorMessages: {
-        '$constraint1 do not match to $property': '$constraint1 do not match to $property',
-        'The company name must be longer than 15': 'The company name must be longer than 15',
-      },
+      title: marker('English'),
     },
-    // t(Russian)
     {
       code: 'ru',
-      title: 'Russian',
-      staticValidatorMessages: {
-        '$constraint1 do not match to $property': '$constraint1 не равно $property',
-        'The company name must be longer than 15': 'Название компании должно быть длиннее 15',
-      },
+      title: marker('Russian'),
     },
   ];
 
@@ -79,13 +70,26 @@ export class AppComponent {
             updateValidatorMessagesStorage({
               ...foundedLang.validatorMessages,
               ...foundedLang.staticValidatorMessages,
+              ...foundedLang.validatorTitles,
+              ...foundedLang.staticValidatorTitles,
             });
-            updateValidatorTitlesStorage(foundedLang.validatorTitles);
+            updateValidatorTitlesStorage({
+              ...foundedLang.validatorTitles,
+              ...foundedLang.staticValidatorTitles,
+            });
           }
         });
       } else {
-        updateValidatorMessagesStorage({ ...foundedLang.validatorMessages, ...foundedLang.staticValidatorMessages });
-        updateValidatorTitlesStorage(foundedLang.validatorTitles);
+        updateValidatorMessagesStorage({
+          ...foundedLang.validatorMessages,
+          ...foundedLang.staticValidatorMessages,
+          ...foundedLang.validatorTitles,
+          ...foundedLang.staticValidatorTitles,
+        });
+        updateValidatorTitlesStorage({
+          ...foundedLang.validatorTitles,
+          ...foundedLang.staticValidatorTitles,
+        });
       }
     }
     this.translocoService.setActiveLang(newLanguage.code);
