@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { ExperimentalPageComponent } from './experimental-page.component';
+import { marker } from '@ngneat/transloco-keys-manager/marker';
 
 export const ExperimentalPageRoutes: Routes = [
   {
@@ -7,10 +8,7 @@ export const ExperimentalPageRoutes: Routes = [
     component: ExperimentalPageComponent,
     data: {
       name: 'experimental',
-      /**
-       * t(Experimental + i18n)
-       */
-      title: 'Experimental + i18n',
+      title: marker('Experimental + i18n'),
       visible: true,
     },
     children: [],

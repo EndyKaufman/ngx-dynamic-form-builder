@@ -27,21 +27,18 @@
   <div formGroupName="department">
     <h3>{{ 'Department of user' | transloco }}</h3>
     <mat-form-field class="full-width">
-      <!--t(name)-->
       <input matInput formControlName="name" [placeholder]="'Department name' | transloco" />
       <mat-error *ngIf="errors?.department?.name?.length">{{ errors?.department.name[0] }}</mat-error>
     </mat-form-field>
     <div formGroupName="company">
       <h3>{{ 'Company of department' | transloco }}</h3>
       <mat-form-field class="full-width">
-        <!--t(name)-->
         <input matInput formControlName="name" [placeholder]="'Company name' | transloco" />
         <mat-error *ngIf="errors?.department?.company?.name?.length">{{
           errors?.department.company.name[0]
         }}</mat-error>
       </mat-form-field>
       <mat-form-field class="full-width">
-        <!--t(regionNum)-->
         <input matInput formControlName="regionNum" type="number" [placeholder]="'Company region num' | transloco" />
         <mat-error *ngIf="errors?.department?.company?.regionNum?.length">
           {{ errors?.department?.company?.regionNum[0] }}

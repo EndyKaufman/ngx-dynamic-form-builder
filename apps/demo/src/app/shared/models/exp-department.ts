@@ -1,12 +1,15 @@
-import { IsNotEmpty, ValidateNested, IsOptional } from 'class-validator-multi-lang';
+import { IsNotEmpty, ValidateNested, IsOptional, ClassPropertyTitle, ClassTitle } from 'class-validator-multi-lang';
 import { ExpCompany } from './exp-company';
+import { marker } from '@ngneat/transloco-keys-manager/marker';
 
+@ClassTitle('Department')
 export class ExpDepartment {
   id: number;
 
   @IsNotEmpty({
     groups: ['user'],
   })
+  @ClassPropertyTitle(marker('department name'))
   name: string;
 
   @ValidateNested({

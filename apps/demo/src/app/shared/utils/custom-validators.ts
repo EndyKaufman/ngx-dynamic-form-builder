@@ -1,9 +1,5 @@
-import {
-  getText,
-  ValidationArguments,
-  ValidatorConstraint,
-  ValidatorConstraintInterface,
-} from 'class-validator-multi-lang';
+import { marker } from '@ngneat/transloco-keys-manager/marker';
+import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator-multi-lang';
 
 @ValidatorConstraint()
 export class TextLengthMore15 implements ValidatorConstraintInterface {
@@ -60,6 +56,6 @@ export class EqualsTo implements ValidatorConstraintInterface {
   }
 
   defaultMessage(validationArguments: ValidationArguments) {
-    return getText('$constraint1 do not match to $property');
+    return marker('$constraint1 do not match to $property');
   }
 }

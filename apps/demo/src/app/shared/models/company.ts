@@ -1,17 +1,18 @@
+import { marker } from '@ngneat/transloco-keys-manager/marker';
 import { plainToClassFromExist } from 'class-transformer';
-import { IsNotEmpty, IsOptional, Max, MaxLength, Min, Validate } from 'class-validator-multi-lang';
+import { getText, IsNotEmpty, IsOptional, Max, MaxLength, Min, Validate } from 'class-validator-multi-lang';
 import { TextLengthMore15 } from '../utils/custom-validators';
 export class Company {
   static strings = {
-    id: 'Id',
-    name: 'Name',
-    regionNum: 'Region num',
+    id: marker('Id'),
+    name: marker('Name'),
+    regionNum: marker('Region num'),
   };
 
   id: number;
 
   @Validate(TextLengthMore15, {
-    message: 'The company name must be longer than 15',
+    message: getText(marker('The company name must be longer than 15')),
   })
   @IsNotEmpty()
   @MaxLength(20)
