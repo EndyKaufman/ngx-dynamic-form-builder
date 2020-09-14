@@ -85,7 +85,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
       this.valueChangesSubscription = this.valueChanges
         .pipe(
           distinctUntilChanged(),
-          mergeMap(() => this.validateStream(externalErrors, validatorOptions))
+          tap(() => this.validate(externalErrors, validatorOptions))
         )
         .subscribe({
           error: (err) => {
@@ -123,7 +123,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     const argumentValidatorOptions = validatorOptions ? cloneDeep(validatorOptions) : validatorOptions;
     return combineLatest([getValidatorMessagesStorage(), getValidatorTitlesStorage()]).pipe(
       tap(([messages, titles]) => {
-        validatorOptions = argumentValidatorOptions;
+        validatorOptions = cloneDeep(argumentValidatorOptions);
 
         if (externalErrors === undefined) {
           externalErrors = cloneDeep(this._externalErrors);
@@ -146,11 +146,11 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         }
 
         if (messages) {
-          validatorOptions.messages = { ...messages, ...validatorOptions.messages };
+          validatorOptions.messages = { ...cloneDeep(messages), ...validatorOptions.messages };
         }
 
         if (titles) {
-          validatorOptions.titles = { ...titles, ...validatorOptions.titles };
+          validatorOptions.titles = { ...cloneDeep(titles), ...validatorOptions.titles };
         }
 
         const dataToValidate = this.object;
@@ -204,9 +204,14 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   }
 
   setCustomErrors(allErrors: any) {
-    this.formErrors = allErrors;
-    this.customValidateErrors.next(this.formErrors);
-    this.nativeValidateErrors.next(this.collectErrors(this));
+    if (stringify(allErrors) !== stringify(this.customValidateErrors.value)) {
+      this.formErrors = allErrors;
+      this.customValidateErrors.next(this.formErrors);
+    }
+    const nativeValidateErrors = this.collectErrors(this);
+    if (stringify(nativeValidateErrors) !== stringify(this.nativeValidateErrors.value)) {
+      this.nativeValidateErrors.next(this.collectErrors(this));
+    }
   }
 
   private collectErrors(control: Dictionary, isRoot = true) {

@@ -1,3 +1,12 @@
+## [1.9.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.9.0...1.9.1) (2020-09-14)
+
+
+### Bug Fixes
+
+* add cloneDeep for argumentValidatorOptions on receive ([86723c4](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/86723c44ffb45f60d92c9e55495e0d9abb9d1e4b))
+
+
+
 # [1.9.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.8.0...1.9.0) (2020-09-13)
 
 
