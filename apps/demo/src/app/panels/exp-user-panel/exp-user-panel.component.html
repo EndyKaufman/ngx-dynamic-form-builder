@@ -17,12 +17,15 @@
   </mat-form-field>
   <mat-form-field class="full-width">
     <!--t(dateOfBirth)-->
-    <input matInput type="date" formControlName="dateOfBirth" [placeholder]="'Date of birth' | transloco" />
+    <mat-label>{{ 'Date of birth' | transloco }}</mat-label>
+    <input matInput formControlName="dateOfBirth" matInput [matDatepicker]="dp" />
     <mat-error *ngIf="form.get('dateOfBirth')?.hasError('required')">
       {{ 'date of birth is' | transloco }}
       <strong>required</strong>
     </mat-error>
     <mat-error *ngIf="errors?.dateOfBirth?.length">{{ errors?.dateOfBirth[0] }}</mat-error>
+    <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+    <mat-datepicker #dp></mat-datepicker>
   </mat-form-field>
   <div formGroupName="department">
     <h3>{{ 'Department of user' | transloco }}</h3>

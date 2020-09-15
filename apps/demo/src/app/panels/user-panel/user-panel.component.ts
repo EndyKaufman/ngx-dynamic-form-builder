@@ -13,7 +13,7 @@ export class UserPanelComponent {
   form: DynamicFormGroup<User>;
 
   @Input()
-  item = new User({
+  jsonItem = {
     username: 'admin',
     isStaff: true,
     id: 1,
@@ -30,7 +30,7 @@ export class UserPanelComponent {
         regionNum: 1,
       },
     },
-  });
+  };
 
   @Input()
   strings = User.strings;
@@ -43,7 +43,7 @@ export class UserPanelComponent {
 
   fb = new DynamicFormBuilder();
 
-  savedItem?: User;
+  savedItem?: Object;
 
   constructor() {
     this.form = this.fb.group(User, {
@@ -79,7 +79,7 @@ export class UserPanelComponent {
   }
   onLoadClick(): void {
     this.savedItem = undefined;
-    this.form.object = this.item;
+    this.form.json = this.jsonItem;
     this.form.validateAllFormFields();
   }
   onClearClick(): void {
@@ -91,7 +91,7 @@ export class UserPanelComponent {
     this.form.validateAsync().then((_) => {
       this.form.validateAllFormFields();
       if (this.form.valid) {
-        this.savedItem = this.form.object;
+        this.savedItem = this.form.json;
       }
     });
   }

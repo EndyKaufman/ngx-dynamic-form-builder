@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { DateAdapter } from '@angular/material/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TranslocoService } from '@ngneat/transloco';
@@ -30,22 +31,23 @@ export class AppComponent {
   ];
 
   constructor(
-    iconRegistry: MatIconRegistry,
-    sanitizer: DomSanitizer,
-    public httpClient: HttpClient,
-    private readonly translocoService: TranslocoService
+    private readonly iconRegistry: MatIconRegistry,
+    private readonly sanitizer: DomSanitizer,
+    private readonly httpClient: HttpClient,
+    private readonly translocoService: TranslocoService,
+    private readonly dateAdapter: DateAdapter<any>
   ) {
-    iconRegistry.addSvgIcon(
+    this.iconRegistry.addSvgIcon(
       'github-circle',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/github-circle.svg')
+      this.sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/github-circle.svg')
     );
-    iconRegistry.addSvgIcon(
+    this.iconRegistry.addSvgIcon(
       'shape-outline',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/shape-outline.svg')
+      this.sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/shape-outline.svg')
     );
-    iconRegistry.addSvgIcon(
+    this.iconRegistry.addSvgIcon(
       'translate',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/g_translate-24px.svg')
+      this.sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/g_translate-24px.svg')
     );
     // translocoService.setFallbackLangForMissingTranslation({ fallbackLang: 'en' });
   }
@@ -93,5 +95,6 @@ export class AppComponent {
       }
     }
     this.translocoService.setActiveLang(newLanguage.code);
+    this.dateAdapter.setLocale(newLanguage.code);
   }
 }

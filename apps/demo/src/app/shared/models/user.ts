@@ -40,7 +40,7 @@ export class User {
 
   @Transform(transformStringToDate, { toClassOnly: true })
   @Transform(transformDateToString, { toPlainOnly: true })
-  dateOfBirth: string;
+  dateOfBirth: Date;
 
   toString() {
     return this.username;

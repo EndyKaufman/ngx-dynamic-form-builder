@@ -1,6 +1,9 @@
 export function getOrSetEmptyObject(factoryModel: any) {
-  if (factoryModel && !factoryModel.emptyObject) {
+  if (!factoryModel) {
+    return undefined;
+  }
+  if (!factoryModel.emptyObject) {
     factoryModel.emptyObject = new factoryModel();
   }
-  return factoryModel ? factoryModel.emptyObject : undefined;
+  return factoryModel.emptyObject;
 }

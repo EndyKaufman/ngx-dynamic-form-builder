@@ -1,12 +1,4 @@
-import {
-  ClassPropertyTitle,
-  IsEmail,
-  IsNotEmpty,
-  IsOptional,
-  Validate,
-  ValidateIf,
-  ValidateNested,
-} from 'class-validator-multi-lang';
+import { IsEmail, IsNotEmpty, IsOptional, Validate, ValidateIf, ValidateNested } from 'class-validator-multi-lang';
 import { EqualsTo } from '../utils/custom-validators';
 import { ExpDepartment } from './exp-department';
 
@@ -54,7 +46,7 @@ export class ExpUser {
   })
   department: ExpDepartment;
 
-  dateOfBirth: string;
+  dateOfBirth?: Date;
 
   constructor(data?: any) {
     if (data === undefined) {
@@ -67,6 +59,21 @@ export class ExpUser {
     this.isSuperuser = data.isSuperuser;
     this.isStaff = data.isStaff;
     this.department = new ExpDepartment(data.department);
-    this.dateOfBirth = data.substring ? data.substring(0, 10) : undefined;
+
+    if (data.dateOfBirth) {
+      const dateOfBirth = new Date(data.dateOfBirth);
+      const userTimezoneOffset = dateOfBirth.getTimezoneOffset() * 60000;
+      this.dateOfBirth = new Date(dateOfBirth.getTime() - userTimezoneOffset);
+    } else {
+      this.dateOfBirth = undefined;
+    }
+  }
+
+  toJSON() {
+    return {
+      ...this,
+      department: this.department ? this.department.toJSON() : this.department,
+      dateOfBirth: this.dateOfBirth ? this.dateOfBirth.toISOString() : undefined,
+    };
   }
 }

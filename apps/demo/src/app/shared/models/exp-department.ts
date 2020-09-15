@@ -27,4 +27,8 @@ export class ExpDepartment {
     this.name = data.name;
     this.company = new ExpCompany(data.company);
   }
+
+  toJSON() {
+    return { ...this, company: this.company ? this.company.toJSON() : this.company };
+  }
 }

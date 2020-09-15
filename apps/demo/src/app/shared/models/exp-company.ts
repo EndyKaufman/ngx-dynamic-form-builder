@@ -40,4 +40,8 @@ export class ExpCompany {
     this.name = data.name;
     this.regionNum = data.regionNum;
   }
+
+  toJSON() {
+    return { ...this };
+  }
 }
