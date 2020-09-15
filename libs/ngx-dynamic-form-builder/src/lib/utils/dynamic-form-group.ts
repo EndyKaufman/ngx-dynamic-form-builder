@@ -180,7 +180,6 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         const dataToValidate = this.object;
         const validationErrors = getValidateErrors(this, dataToValidate, validatorOptions);
 
-        console.log({ validationErrors, dataToValidate });
         if (!externalErrors) {
           externalErrors = {};
         }

@@ -11,10 +11,22 @@ import { FormModel } from '../models/form-model';
 import { DynamicFormGroup, getClassValidators } from './dynamic-form-group';
 const cloneDeep = require('lodash.clonedeep');
 
+export interface DynamicFormBuilderOptions {
+  factoryDynamicFormGroup?: <TModel, TDynamicFormGroup extends DynamicFormGroup<TModel>>(
+    factoryModel: ClassType<TModel>,
+    fields?: FormModel<TModel>,
+    validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
+    asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null
+  ) => TDynamicFormGroup;
+}
+
 export class DynamicFormBuilder extends FormBuilder {
   // need for createEmptyObject
   private emptyDynamicFormGroup = this.factoryDynamicFormGroup(Object);
 
+  constructor(private options?: DynamicFormBuilderOptions) {
+    super();
+  }
   // ******************
   // Public API
 
@@ -183,7 +195,9 @@ export class DynamicFormBuilder extends FormBuilder {
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
     asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null
   ) {
-    const formGroup = new DynamicFormGroup<TModel>(factoryModel, fields, validatorOrOpts, asyncValidator);
+    const formGroup = this.options?.factoryDynamicFormGroup
+      ? this.options.factoryDynamicFormGroup(factoryModel, fields, validatorOrOpts, asyncValidator)
+      : new DynamicFormGroup<TModel>(factoryModel, fields, validatorOrOpts, asyncValidator);
     formGroup.dynamicFormBuilder = this;
     return formGroup;
   }
