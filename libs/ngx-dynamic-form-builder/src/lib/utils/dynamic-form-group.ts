@@ -8,7 +8,7 @@ import {
   FormGroup,
   ValidatorFn,
 } from '@angular/forms';
-import { classToClass, plainToClass } from 'class-transformer';
+import { plainToClass } from 'class-transformer';
 import { ClassType } from 'class-transformer/ClassTransformer';
 import {
   getMetadataStorage,
@@ -21,7 +21,7 @@ import {
 import stringify from 'fast-safe-stringify';
 import 'reflect-metadata';
 import { BehaviorSubject, combineLatest, Subject, Subscription } from 'rxjs';
-import { distinctUntilChanged, mergeMap, tap } from 'rxjs/operators';
+import { distinctUntilChanged, tap } from 'rxjs/operators';
 import stringHash from 'string-hash';
 import { Dictionary } from '../models/dictionary';
 import { DynamicFormGroupField } from '../models/dynamic-form-group-field';
@@ -32,8 +32,10 @@ import { ValidatorFunctionType } from '../models/validator-function-type';
 import { getValidatorMessagesStorage } from '../storages/class-validator-messages.storage';
 import { getValidatorTitlesStorage } from '../storages/class-validator-titles.storage';
 import { foreverInvalid, FOREVER_INVALID_NAME } from '../validators/forever-invalid.validator';
+import { DynamicFormBuilder } from './dynamic-form-builder';
 import { DynamicFormControl } from './dynamic-form-control';
 import { mergeErrors, transformValidationErrors } from './dynamic-form-group.util';
+import { getOrSetEmptyObject } from './get-or-set-empty-object';
 
 const cloneDeep = require('lodash.clonedeep');
 const validator = new Validator();
@@ -45,6 +47,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   public formFields: Dictionary;
   public objectChange = new Subject();
   public valueChangesSubscription: Subscription;
+  public dynamicFormBuilder: DynamicFormBuilder;
 
   private _object: TModel;
   private _externalErrors: ShortValidationErrors;
@@ -308,10 +311,19 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   }
 
   classToClass<TClassModel>(object: TClassModel) {
-    return classToClass(object, { ignoreDecorators: true });
+    return cloneDeep(object);
   }
 
   plainToClass<TClassModel, Object>(cls: ClassType<TClassModel>, plain: Object) {
+    if (Object.keys(plain || {}).length === 0) {
+      return this.classToClass(getOrSetEmptyObject(cls));
+    }
+    if (plain instanceof cls) {
+      return this.classToClass(plain);
+    }
+    if (stringify(plain) === stringify(getOrSetEmptyObject(cls))) {
+      return this.classToClass(getOrSetEmptyObject(cls));
+    }
     return plainToClass(cls, plain, { ignoreDecorators: true });
   }
 
@@ -433,11 +445,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
    */
   private getObject(): TModel {
     // Initialize the shape of the response
-    const object = this._object
-      ? this.classToClass(this._object)
-      : this.factoryModel
-      ? new this.factoryModel()
-      : undefined;
+    const object = this.classToClass(this._object || getOrSetEmptyObject(this.factoryModel) || undefined);
 
     if (object !== undefined) {
       // Recursively get the value of all fields
@@ -478,6 +486,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         });
     }
     return this.factoryModel ? this.plainToClass(this.factoryModel, object) : <TModel>object;
+    // todo: try change to return this.classToClass(object);
   }
 
   /**
@@ -486,16 +495,20 @@ export class DynamicFormGroup<TModel> extends FormGroup {
    *
    * @param object the data to assign to all controls of the form group and sub groups
    */
-  private setObject(object: TModel, updateValueAndValidity = true) {
+  private setObject(object: TModel) {
     // console.time(String(object));
     if (object instanceof this.factoryModel) {
       this._object = this.classToClass(object); // Ensure correct type
     } else {
+      this._object = this.plainToClass(this.factoryModel, object); // Convert to Model type
+      /*
+      todo: remove later if speed is normal
       let objectWithOnlyFormFields: any = {};
       // for speed up on work with short version of model
       Object.keys(this.formFields).forEach((key) => (objectWithOnlyFormFields[key] = object ? object[key] : undefined));
       this._object = this.plainToClass(this.factoryModel, objectWithOnlyFormFields); // Convert to Model type
       objectWithOnlyFormFields = null;
+      */
     }
     let newObject: any;
     let newValue: any;
@@ -506,7 +519,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         // Handle Group
         if (this.controls[key] instanceof DynamicFormGroup) {
           if ((this.controls[key] as DynamicFormGroup<any>)._object !== this._object[key]) {
-            (this.controls[key] as DynamicFormGroup<any>).setObject(this._object ? this._object[key] : {}, false);
+            (this.controls[key] as DynamicFormGroup<any>).setObject(this._object ? this._object[key] : {});
           }
         }
 
@@ -546,7 +559,10 @@ export class DynamicFormGroup<TModel> extends FormGroup {
           for (let i = 0; i < objectArrayLength; i++) {
             if (isFormGroup) {
               // Create FormGroup
-              dynamicFormGroup = new DynamicFormGroup(firstFormGroup.factoryModel, firstFormGroup.formFields);
+              dynamicFormGroup = this.dynamicFormBuilder.factoryDynamicFormGroup(
+                firstFormGroup.factoryModel,
+                firstFormGroup.formFields
+              );
 
               dynamicFormGroup.setParent(formArray);
 
@@ -577,8 +593,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
               if (formArray.controls[i] instanceof DynamicFormGroup) {
                 // Recusrively set the object value
                 (formArray.controls[i] as DynamicFormGroup<any>).setObject(
-                  this._object && objectArray && objectArray[i] ? objectArray[i] : {},
-                  false
+                  this._object && objectArray && objectArray[i] ? objectArray[i] : {}
                 );
               }
             }

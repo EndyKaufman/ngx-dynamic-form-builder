@@ -1,5 +1,4 @@
 import { AbstractControlOptions, AsyncValidatorFn, FormBuilder, ValidatorFn } from '@angular/forms';
-import { plainToClass } from 'class-transformer';
 import { ClassType } from 'class-transformer/ClassTransformer';
 import 'reflect-metadata';
 import {
@@ -10,8 +9,12 @@ import {
 } from '../models/dynamic-form-group-config';
 import { FormModel } from '../models/form-model';
 import { DynamicFormGroup, getClassValidators } from './dynamic-form-group';
+const cloneDeep = require('lodash.clonedeep');
 
 export class DynamicFormBuilder extends FormBuilder {
+  // need for createEmptyObject
+  private emptyDynamicFormGroup = this.factoryDynamicFormGroup(Object);
+
   // ******************
   // Public API
 
@@ -154,7 +157,7 @@ export class DynamicFormBuilder extends FormBuilder {
     });
 
     // Initialize the resulting group
-    const dynamicFormGroup = new DynamicFormGroup<TModel>(factoryModel, newControlsConfig, {
+    const dynamicFormGroup = this.factoryDynamicFormGroup<TModel>(factoryModel, newControlsConfig, {
       asyncValidators,
       updateOn,
       validators,
@@ -174,6 +177,17 @@ export class DynamicFormBuilder extends FormBuilder {
     return dynamicFormGroup;
   }
 
+  public factoryDynamicFormGroup<TModel>(
+    factoryModel: ClassType<TModel>,
+    fields?: FormModel<TModel>,
+    validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
+    asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null
+  ) {
+    const formGroup = new DynamicFormGroup<TModel>(factoryModel, fields, validatorOrOpts, asyncValidator);
+    formGroup.dynamicFormBuilder = this;
+    return formGroup;
+  }
+
   // *******************
   // Helpers
 
@@ -183,7 +197,7 @@ export class DynamicFormBuilder extends FormBuilder {
   private createEmptyObject<TModel>(factoryModel: ClassType<TModel>, data = {}) {
     let modifed = false;
 
-    let object: any = factoryModel ? plainToClass(factoryModel, data) : data;
+    let object: any = factoryModel ? this.emptyDynamicFormGroup.plainToClass(factoryModel, data) : data;
     let fields: any = Object.keys(object);
 
     let objectFieldNameLength: number;
