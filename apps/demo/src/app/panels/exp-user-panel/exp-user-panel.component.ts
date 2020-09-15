@@ -38,6 +38,7 @@ export class ExpUserPanelComponent {
     this.form = this.fb.group(ExpUser, {
       classValidatorOptions: {
         groups: ['user'],
+        always: true,
       },
     });
   }

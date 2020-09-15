@@ -18,6 +18,7 @@ export class ExpRegistrationPanelComponent implements OnInit {
     this.form = this.fb.group(ExpUser, {
       classValidatorOptions: {
         groups: ['new'],
+        always: true,
       },
     });
   }

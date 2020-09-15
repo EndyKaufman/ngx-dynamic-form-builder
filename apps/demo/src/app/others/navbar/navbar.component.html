@@ -25,7 +25,7 @@
     </div>
     <div>
       <span *ngFor="let item of childrenRoutes" fxHide fxShow.gt-sm>
-        <ng-container *ngTemplateOutlet="buttonItem; context: { item: item }"></ng-container>
+        <ng-container *ngTemplateOutlet="buttonItem; context: { item: item, hideTitle: item.hideTitle }"></ng-container>
       </span>
       <span *ngIf="childrenRoutes.length">
         <button mat-icon-button [matMenuTriggerFor]="rightMenu" fxShow fxHide.gt-sm>
@@ -40,13 +40,28 @@
     </div>
   </mat-toolbar>
 </div>
-<ng-template let-item="item" #buttonItem>
-  <a *ngIf="!item.redirectTo" [routerLink]="[item.name]" mat-button [class.active]="router?.isActive(item.url, true)">
-    <ng-container *ngTemplateOutlet="menuItemContent; context: { item: item }"></ng-container>
-  </a>
-  <a *ngIf="item.redirectTo" target="_blank" [href]="item.redirectTo" mat-button>
-    <ng-container *ngTemplateOutlet="menuItemContent; context: { item: item }"></ng-container>
-  </a>
+<ng-template let-item="item" let-hideTitle="hideTitle" #buttonItem>
+  <ng-container *ngIf="!hideTitle">
+    <a *ngIf="!item.redirectTo" [routerLink]="[item.name]" mat-button [class.active]="router?.isActive(item.url, true)">
+      <ng-container *ngTemplateOutlet="menuItemContent; context: { item: item, hideTitle: hideTitle }"></ng-container>
+    </a>
+    <a *ngIf="item.redirectTo" target="_blank" [href]="item.redirectTo" mat-button>
+      <ng-container *ngTemplateOutlet="menuItemContent; context: { item: item, hideTitle: hideTitle }"></ng-container>
+    </a>
+  </ng-container>
+  <ng-container *ngIf="hideTitle">
+    <a
+      *ngIf="!item.redirectTo"
+      [routerLink]="[item.name]"
+      mat-icon-button
+      [class.active]="router?.isActive(item.url, true)"
+    >
+      <ng-container *ngTemplateOutlet="menuItemContent; context: { item: item, hideTitle: hideTitle }"></ng-container>
+    </a>
+    <a *ngIf="item.redirectTo" target="_blank" [href]="item.redirectTo" mat-icon-button>
+      <ng-container *ngTemplateOutlet="menuItemContent; context: { item: item, hideTitle: hideTitle }"></ng-container>
+    </a>
+  </ng-container>
 </ng-template>
 <ng-template let-item="item" #menuItem>
   <a
@@ -62,8 +77,11 @@
   </a>
 </ng-template>
 
-<ng-template let-item="item" #menuItemContent>
-  <mat-icon [svgIcon]="item.svgIcon" *ngIf="item.svgIcon"></mat-icon>
-  <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
-  <span>{{ item.title | transloco }}</span>
+<ng-template let-item="item" let-hideTitle="hideTitle" #menuItemContent>
+  <mat-icon [svgIcon]="item.svgIcon" *ngIf="hideTitle"></mat-icon>
+  <ng-container *ngIf="!hideTitle">
+    <mat-icon [svgIcon]="item.svgIcon" *ngIf="item.svgIcon"></mat-icon>
+    <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
+    <span>{{ item.title | transloco }}</span>
+  </ng-container>
 </ng-template>
