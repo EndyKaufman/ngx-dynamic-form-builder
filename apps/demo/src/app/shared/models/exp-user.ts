@@ -72,7 +72,7 @@ export class ExpUser {
   toJSON() {
     return {
       ...this,
-      department: this.department ? this.department.toJSON() : this.department,
+      department: this.department instanceof ExpDepartment ? this.department.toJSON() : this.department,
       dateOfBirth: this.dateOfBirth ? this.dateOfBirth.toISOString() : undefined,
     };
   }

@@ -1,4 +1,3 @@
-import { plainToClassFromExist } from 'class-transformer';
 import { IsNotEmpty } from 'class-validator-multi-lang';
 
 export class Task {

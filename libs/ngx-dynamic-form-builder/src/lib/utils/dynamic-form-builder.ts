@@ -1,5 +1,7 @@
 import { AbstractControlOptions, AsyncValidatorFn, FormBuilder, ValidatorFn } from '@angular/forms';
+import { ClassTransformOptions } from 'class-transformer';
 import { ClassType } from 'class-transformer/ClassTransformer';
+import { ValidatorOptions } from 'class-validator-multi-lang';
 import 'reflect-metadata';
 import {
   DynamicFormGroupConfig,
@@ -11,13 +13,21 @@ import { FormModel } from '../models/form-model';
 import { DynamicFormGroup, getClassValidators } from './dynamic-form-group';
 const cloneDeep = require('lodash.clonedeep');
 
+export const DEFAULT_CLASS_TRANSFORM_OPTIONS: ClassTransformOptions = {
+  strategy: 'excludeAll',
+};
+export const DEFAULT_CLASS_VALIDATOR_OPTIONS: ValidatorOptions = { validationError: { target: false }, always: true };
+
 export interface DynamicFormBuilderOptions {
+  factoryFormBuilder?: () => FormBuilder;
   factoryDynamicFormGroup?: <TModel, TDynamicFormGroup extends DynamicFormGroup<TModel>>(
     factoryModel: ClassType<TModel>,
     fields?: FormModel<TModel>,
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
     asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null
   ) => TDynamicFormGroup;
+  classValidatorOptions?: ValidatorOptions;
+  classTransformOptions?: ClassTransformOptions;
 }
 
 export class DynamicFormBuilder extends FormBuilder {
@@ -27,6 +37,7 @@ export class DynamicFormBuilder extends FormBuilder {
   constructor(private options?: DynamicFormBuilderOptions) {
     super();
   }
+
   // ******************
   // Public API
 
@@ -49,7 +60,7 @@ export class DynamicFormBuilder extends FormBuilder {
     ) {
       return this.group(factoryModel, undefined, controlsConfig);
     }
-    const extra: DynamicFormGroupConfig = options as DynamicFormGroupConfig;
+    let extra: DynamicFormGroupConfig = cloneDeep(options) as DynamicFormGroupConfig;
 
     let validators: ValidatorFn[] | null = null;
     let asyncValidators: AsyncValidatorFn[] | null = null;
@@ -73,10 +84,24 @@ export class DynamicFormBuilder extends FormBuilder {
           asyncValidators.push(extra.asyncValidator);
         }
       }
-      // Set default classValidatorOptions
-      if (!isDynamicFormGroupConfig(extra)) {
-        extra.classValidatorOptions = { validationError: { target: false } };
+      if (isDynamicFormGroupConfig(extra)) {
+        if (!this.options?.classValidatorOptions && !extra.classValidatorOptions) {
+          extra.classValidatorOptions = this.options?.classValidatorOptions;
+        }
+        if (!this.options?.classTransformOptions && !extra.classTransformOptions) {
+          extra.classTransformOptions = this.options?.classTransformOptions;
+        }
       }
+    } else {
+      extra = {};
+    }
+
+    // Set default classValidatorOptions
+    if (!extra.classValidatorOptions) {
+      extra.classValidatorOptions = DEFAULT_CLASS_VALIDATOR_OPTIONS;
+    }
+    if (!extra.classTransformOptions) {
+      extra.classTransformOptions = DEFAULT_CLASS_TRANSFORM_OPTIONS;
     }
 
     let newControlsConfig: FormModel<TModel> | undefined;
@@ -93,7 +118,8 @@ export class DynamicFormBuilder extends FormBuilder {
           if (canCreateGroup() && newControlsConfig) {
             // recursively create a dynamic group for the nested object
             newControlsConfig[key] = this.group(newControlsConfig[key].constructor, undefined, {
-              ...(extra.classValidatorOptions ? { classValidatorOptions: extra.classValidatorOptions } : {}),
+              classValidatorOptions: extra.classValidatorOptions,
+              classTransformOptions: extra.classTransformOptions,
               asyncValidators,
               updateOn,
               validators,
@@ -105,7 +131,8 @@ export class DynamicFormBuilder extends FormBuilder {
                 newControlsConfig[key] = super.array(
                   newControlsConfig[key].map((newControlsConfigItem) =>
                     this.group(newControlsConfigItem.constructor, undefined, {
-                      ...(extra.classValidatorOptions ? { classValidatorOptions: extra.classValidatorOptions } : {}),
+                      classValidatorOptions: extra.classValidatorOptions,
+                      classTransformOptions: extra.classTransformOptions,
                       asyncValidators,
                       updateOn,
                       validators,
@@ -189,6 +216,10 @@ export class DynamicFormBuilder extends FormBuilder {
     return dynamicFormGroup;
   }
 
+  private factoryFormBuilder() {
+    return new FormBuilder();
+  }
+
   public factoryDynamicFormGroup<TModel>(
     factoryModel: ClassType<TModel>,
     fields?: FormModel<TModel>,
@@ -199,6 +230,9 @@ export class DynamicFormBuilder extends FormBuilder {
       ? this.options.factoryDynamicFormGroup(factoryModel, fields, validatorOrOpts, asyncValidator)
       : new DynamicFormGroup<TModel>(factoryModel, fields, validatorOrOpts, asyncValidator);
     formGroup.dynamicFormBuilder = this;
+    formGroup.originalFormBuilder = this.options?.factoryFormBuilder
+      ? this.options?.factoryFormBuilder()
+      : this.factoryFormBuilder();
     return formGroup;
   }
 

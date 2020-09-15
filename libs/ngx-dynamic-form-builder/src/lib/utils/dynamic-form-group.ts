@@ -49,12 +49,12 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   public objectChange = new Subject();
   public valueChangesSubscription: Subscription;
   public dynamicFormBuilder: DynamicFormBuilder;
+  public originalFormBuilder: FormBuilder;
 
   private _object: TModel;
   private _externalErrors: ShortValidationErrors;
   private _validatorOptions: ValidatorOptions;
   private _classTransformOptions: ClassTransformOptions;
-  private _fb = new FormBuilder();
   private _validateSubscription: Subscription | undefined;
 
   constructor(
@@ -600,7 +600,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
 
               dynamicFormGroup.setParent(formArray);
 
-              formGroup = this._fb.group(
+              formGroup = this.originalFormBuilder.group(
                 getClassValidators<TModel>(firstFormGroup.factoryModel, firstFormGroup.formFields)
               );
 

@@ -29,6 +29,6 @@ export class ExpDepartment {
   }
 
   toJSON() {
-    return { ...this, company: this.company ? this.company.toJSON() : this.company };
+    return { ...this, company: this.company instanceof ExpCompany ? this.company.toJSON() : this.company };
   }
 }

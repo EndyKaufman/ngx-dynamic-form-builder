@@ -12,4 +12,6 @@ export * from './lib/utils/dynamic-form-control';
 export * from './lib/utils/dynamic-form-group';
 export * from './lib/utils/dynamic-form-group.util';
 export * from './lib/utils/get-global.util';
+export * from './lib/utils/get-or-set-empty-object';
+export * from './lib/utils/has-to-json';
 export * from './lib/validators/forever-invalid.validator';

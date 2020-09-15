@@ -23,7 +23,6 @@ company.ts
 
 ```typescript
 import { Validate, IsNotEmptym } from 'class-validator-multi-lang';
-import { plainToClassFromExist } from 'class-transformer';
 import { TextLengthMore15 } from '../utils/custom-validators';
 import { marker } from '@ngneat/transloco-keys-manager/marker';
 
@@ -36,7 +35,13 @@ export class Company {
   name: string = undefined;
 
   constructor(data?: any) {
-    plainToClassFromExist(this, data);
+    Object.keys(data || {}).map((key) => (this[key] = data ? data[key] : undefined));
+  }
+
+  toJSON() {
+    return {
+      ...this,
+    };
   }
 }
 ```

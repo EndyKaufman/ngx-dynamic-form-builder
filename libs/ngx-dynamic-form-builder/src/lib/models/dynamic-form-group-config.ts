@@ -1,4 +1,5 @@
 import { AbstractControlOptions, AsyncValidatorFn, ValidatorFn } from '@angular/forms';
+import { ClassTransformOptions } from 'class-transformer';
 import { ValidatorOptions } from 'class-validator-multi-lang';
 
 export interface DynamicFormGroupConfig {
@@ -8,9 +9,10 @@ export interface DynamicFormGroupConfig {
   asyncValidators?: AsyncValidatorFn[] | undefined;
   updateOn?: any | undefined;
   classValidatorOptions?: ValidatorOptions | undefined;
+  classTransformOptions?: ClassTransformOptions | undefined;
 }
 export function isDynamicFormGroupConfig(options: AbstractControlOptions | DynamicFormGroupConfig) {
-  return options && !!options['classValidatorOptions'];
+  return options && (!!options['classValidatorOptions'] || !!options['classTransformOptions']);
 }
 export function isLegacyOrOpts(options: AbstractControlOptions | DynamicFormGroupConfig) {
   return options && (!!options['validator'] || !!options['asyncValidator']);
