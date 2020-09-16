@@ -10,9 +10,13 @@ export interface DynamicFormGroupConfig {
   updateOn?: any | undefined;
   classValidatorOptions?: ValidatorOptions | undefined;
   classTransformOptions?: ClassTransformOptions | undefined;
+  validateAllFormFields?: boolean | undefined;
 }
 export function isDynamicFormGroupConfig(options: AbstractControlOptions | DynamicFormGroupConfig) {
-  return options && (!!options['classValidatorOptions'] || !!options['classTransformOptions']);
+  return (
+    options &&
+    (!!options['classValidatorOptions'] || !!options['classTransformOptions'] || !!options['validateAllFormFields'])
+  );
 }
 export function isLegacyOrOpts(options: AbstractControlOptions | DynamicFormGroupConfig) {
   return options && (!!options['validator'] || !!options['asyncValidator']);

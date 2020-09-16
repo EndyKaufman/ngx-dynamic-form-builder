@@ -87,7 +87,7 @@ company-panel.component.ts
 
 ```typescript
 import { DynamicFormGroup, DynamicFormBuilder } from 'ngx-dynamic-form-builder';
-import { Company } from './../../shared/models/company';
+import { Company } from './../../shared/types/company';
 import { Input, Component } from '@angular/core';
 import { Validators } from '@angular/forms';
 
@@ -127,6 +127,8 @@ export class CompanyPanelComponent {
     this.form.validateAllFormFields();
     if (this.form.valid) {
       this.savedItem = this.form.object;
+    } else {
+      this.savedItem = undefined;
     }
   }
 }
@@ -217,7 +219,7 @@ company-panel.component.ts
 
 ```typescript
 import { DynamicFormGroup, DynamicFormBuilder } from 'ngx-dynamic-form-builder';
-import { Company } from './../../shared/models/company';
+import { Company } from './../../shared/types/company';
 import { Input, Component } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -272,6 +274,8 @@ export class CompanyPanelComponent implements onDestroy {
     this.form.validateAllFormFields();
     if (this.form.valid) {
       this.savedItem = this.form.object;
+    } else {
+      this.savedItem = undefined;
     }
   }
 }

@@ -78,6 +78,8 @@ export class I18nCompanyPanelComponent implements OnInit {
     this.form.validateAllFormFields();
     if (this.form.valid) {
       this.savedItem = this.form.object;
+    } else {
+      this.savedItem = undefined;
     }
   }
   changeLanguage(newLanguageCode: MatSelectChange) {

@@ -23,12 +23,12 @@ import 'reflect-metadata';
 import { BehaviorSubject, combineLatest, Subject, Subscription } from 'rxjs';
 import { distinctUntilChanged, tap, take } from 'rxjs/operators';
 import stringHash from 'string-hash';
-import { Dictionary } from '../models/dictionary';
-import { DynamicFormGroupField } from '../models/dynamic-form-group-field';
-import { ErrorPropertyName } from '../models/error-property-name';
-import { FormModel } from '../models/form-model';
-import { ShortValidationErrors } from '../models/short-validation-errors';
-import { ValidatorFunctionType } from '../models/validator-function-type';
+import { Dictionary } from '../types/dictionary';
+import { DynamicFormGroupField } from '../types/dynamic-form-group-field';
+import { ErrorPropertyName } from '../types/error-property-name';
+import { FormModel } from '../types/form-model';
+import { ShortValidationErrors } from '../types/short-validation-errors';
+import { ValidatorFunctionType } from '../types/validator-function-type';
 import { getValidatorMessagesStorage } from '../storages/class-validator-messages.storage';
 import { getValidatorTitlesStorage } from '../storages/class-validator-titles.storage';
 import { foreverInvalid, FOREVER_INVALID_NAME } from '../validators/forever-invalid.validator';
@@ -37,6 +37,7 @@ import { DynamicFormControl } from './dynamic-form-control';
 import { mergeErrors, transformValidationErrors } from './dynamic-form-group.util';
 import { getOrSetEmptyObject } from './get-or-set-empty-object';
 import { hasToJSON } from './has-to-json';
+import { DynamicFormGroupConfig } from '../types/dynamic-form-group-config';
 
 const cloneDeep = require('lodash.clonedeep');
 const validator = new Validator();
@@ -56,14 +57,16 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   private _validatorOptions: ValidatorOptions;
   private _classTransformOptions: ClassTransformOptions;
   private _validateSubscription: Subscription | undefined;
+  private _validateAllFormFields: boolean;
 
   constructor(
     public factoryModel: ClassType<TModel>,
     public fields?: FormModel<TModel>,
-    validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
-    asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null
+    private _validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
+    private _asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null,
+    private readonly options?: DynamicFormGroupConfig
   ) {
-    super({}, validatorOrOpts, asyncValidator);
+    super({}, _validatorOrOpts, _asyncValidator);
     /*
     const classValidators = DynamicFormGroup.getClassValidators<TModel>(
       this.factoryModel,
@@ -82,6 +85,15 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         this.defaultValidatorOptions
       );
     });*/
+    if (options?.classTransformOptions) {
+      this._classTransformOptions = options.classTransformOptions;
+    }
+    if (options?.classValidatorOptions) {
+      this._validatorOptions = options.classValidatorOptions;
+    }
+    if (options?.validateAllFormFields !== undefined) {
+      this._validateAllFormFields = options.validateAllFormFields;
+    }
     this.formFields = this.onlyFields(fields);
   }
 
@@ -206,6 +218,9 @@ export class DynamicFormGroup<TModel> extends FormGroup {
             emitEvent: false,
           });
         }
+        if (this._validateAllFormFields) {
+          this.validateAllFormFields();
+        }
       })
     );
   }
@@ -227,13 +242,13 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     });
   }
 
-  setCustomErrors(allErrors: any) {
-    if (stringify(allErrors) !== stringify(this.customValidateErrors.value)) {
+  setCustomErrors(allErrors: any, force = false) {
+    if (force || stringify(allErrors) !== stringify(this.customValidateErrors.value)) {
       this.formErrors = allErrors;
       this.customValidateErrors.next(this.formErrors);
     }
     const nativeValidateErrors = this.collectErrors(this);
-    if (stringify(nativeValidateErrors) !== stringify(this.nativeValidateErrors.value)) {
+    if (force || stringify(nativeValidateErrors) !== stringify(this.nativeValidateErrors.value)) {
       this.nativeValidateErrors.next(this.collectErrors(this));
     }
   }
@@ -371,7 +386,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
 
   setExternalErrors(externalErrors: ShortValidationErrors) {
     this._externalErrors = externalErrors;
-    return this.validate();
+    this.validate();
   }
 
   getExternalErrors(): ShortValidationErrors {
@@ -671,6 +686,9 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     newObject = null;
     this.updateValueAndValidity();
     this.objectChange.next(this._object);
+    if (this._validateAllFormFields) {
+      this.validateAllFormFields();
+    }
     // console.timeEnd(String(object));
   }
 

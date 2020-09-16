@@ -44,6 +44,8 @@ export class CompanyPanelComponent {
     this.form.validateAllFormFields();
     if (this.form.valid) {
       this.savedItem = this.form.object;
+    } else {
+      this.savedItem = undefined;
     }
   }
 }

@@ -41,7 +41,7 @@ export class UserPanelComponent {
   @Input()
   companyStrings = Company.strings;
 
-  fb = new DynamicFormBuilder();
+  fb = new DynamicFormBuilder({ validateAllFormFields: true });
 
   savedItem?: Object;
 
@@ -63,35 +63,32 @@ export class UserPanelComponent {
     });
   }
   onLoadExternalClick(): void {
-    this.form
-      .setExternalErrorsAsync({
-        username: ['external error'],
-        department: {
-          company: {
-            name: ['external error for name'],
-          },
+    this.form.setExternalErrors({
+      username: ['external error'],
+      department: {
+        company: {
+          name: ['external error for name'],
         },
-      })
-      .then(() => this.form.validateAllFormFields());
+      },
+    });
   }
   onClearExternalClick(): void {
-    this.form.clearExternalErrorsAsync().then(() => this.form.validateAllFormFields());
+    this.form.clearExternalErrors();
   }
   onLoadClick(): void {
     this.savedItem = undefined;
     this.form.json = this.jsonItem;
-    this.form.validateAllFormFields();
   }
   onClearClick(): void {
     this.savedItem = undefined;
     this.form.object = new User();
-    this.form.validateAllFormFields();
   }
   onSaveClick(): void {
     this.form.validateAsync().then((_) => {
-      this.form.validateAllFormFields();
       if (this.form.valid) {
         this.savedItem = this.form.json;
+      } else {
+        this.savedItem = undefined;
       }
     });
   }

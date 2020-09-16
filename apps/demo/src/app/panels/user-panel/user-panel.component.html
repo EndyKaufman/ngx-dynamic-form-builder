@@ -59,7 +59,7 @@
     <div fxFlex.gt-sm="60" fxLayout="row" fxLayoutAlign="start center">
       <button mat-raised-button (click)="onLoadClick()">Load</button>
       <button mat-raised-button (click)="onClearClick()">Clear</button>
-      <button mat-raised-button (click)="onSaveClick()" [disabled]="!form.valid" cdkFocusInitial>Save</button>
+      <button mat-raised-button (click)="onSaveClick()" cdkFocusInitial>Save</button>
     </div>
     <div fxFlex.gt-sm="40" fxLayout="row" fxLayoutAlign="end center">
       <button mat-raised-button (click)="onResetValidateAllFormFields()">Reset validate states</button>

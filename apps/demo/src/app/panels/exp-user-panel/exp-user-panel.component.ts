@@ -55,6 +55,8 @@ export class ExpUserPanelComponent {
     this.form.validateAllFormFields();
     if (this.form.valid) {
       this.savedItem = this.form.json;
+    } else {
+      this.savedItem = undefined;
     }
   }
 }
