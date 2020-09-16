@@ -10,6 +10,7 @@ export const CustomizationPageRoutes: Routes = [
       title: 'Customization',
       visible: true,
       svgIcon: 'shape-outline',
+      hideTitle: true,
     },
     children: [],
   },

@@ -1,7 +1,5 @@
 import { marker } from '@ngneat/transloco-keys-manager/marker';
-import { plainToClassFromExist, Type } from 'class-transformer';
 import { IsNotEmpty, IsOptional, ValidateNested } from 'class-validator-multi-lang';
-import { serializeModel } from '../utils/custom-transforms';
 import { Company } from './company';
 
 export class Department {
@@ -18,7 +16,6 @@ export class Department {
 
   @ValidateNested()
   @IsOptional()
-  @Type(serializeModel(Company))
   company: Company;
 
   toString() {
@@ -26,6 +23,14 @@ export class Department {
   }
 
   constructor(data?: any) {
-    plainToClassFromExist(this, data);
+    Object.keys(data || {}).map((key) => (this[key] = data ? data[key] : undefined));
+    this.company = new Company(this.company);
+  }
+
+  toJSON() {
+    return {
+      ...this,
+      company: this.company instanceof Company ? this.company.toJSON() : this.company,
+    };
   }
 }

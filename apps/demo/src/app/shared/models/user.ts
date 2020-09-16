@@ -1,5 +1,5 @@
 import { marker } from '@ngneat/transloco-keys-manager/marker';
-import { plainToClassFromExist, Transform, Type } from 'class-transformer';
+import { Transform, Type, Expose, Exclude } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsOptional, Matches, ValidateNested } from 'class-validator-multi-lang';
 import { serializeModel, transformDateToString, transformStringToDate } from '../utils/custom-transforms';
 import { Department } from './department';
@@ -17,20 +17,30 @@ export class User {
     abc: marker('Only abc field'),
   };
 
+  @Expose()
   id: number;
 
   @IsNotEmpty()
+  @Expose()
   username: string;
+
+  @Expose()
   password: string;
 
   // flag "g" in RegExp work incorrect, please read issue: https://github.com/typestack/class-validator/issues/484
   @Matches(RegExp('^abc$', 'i'), { message: marker(`it should match the cool 'abc' string`) })
+  @Expose()
   abc: string;
 
   @IsEmail()
   @IsNotEmpty()
+  @Expose()
   email: string;
+
+  @Exclude()
   isSuperuser: boolean;
+
+  @Expose()
   isStaff: boolean;
 
   @ValidateNested()
@@ -40,13 +50,9 @@ export class User {
 
   @Transform(transformStringToDate, { toClassOnly: true })
   @Transform(transformDateToString, { toPlainOnly: true })
-  dateOfBirth: string;
+  dateOfBirth: Date;
 
   toString() {
     return this.username;
-  }
-
-  constructor(data?: any) {
-    plainToClassFromExist(this, data);
   }
 }

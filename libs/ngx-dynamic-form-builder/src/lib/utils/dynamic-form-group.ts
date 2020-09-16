@@ -8,7 +8,7 @@ import {
   FormGroup,
   ValidatorFn,
 } from '@angular/forms';
-import { classToClass, plainToClass } from 'class-transformer';
+import { classToPlain, ClassTransformOptions, plainToClass } from 'class-transformer';
 import { ClassType } from 'class-transformer/ClassTransformer';
 import {
   getMetadataStorage,
@@ -21,19 +21,23 @@ import {
 import stringify from 'fast-safe-stringify';
 import 'reflect-metadata';
 import { BehaviorSubject, combineLatest, Subject, Subscription } from 'rxjs';
-import { distinctUntilChanged, mergeMap, tap } from 'rxjs/operators';
+import { distinctUntilChanged, tap, take } from 'rxjs/operators';
 import stringHash from 'string-hash';
-import { Dictionary } from '../models/dictionary';
-import { DynamicFormGroupField } from '../models/dynamic-form-group-field';
-import { ErrorPropertyName } from '../models/error-property-name';
-import { FormModel } from '../models/form-model';
-import { ShortValidationErrors } from '../models/short-validation-errors';
-import { ValidatorFunctionType } from '../models/validator-function-type';
+import { Dictionary } from '../types/dictionary';
+import { DynamicFormGroupField } from '../types/dynamic-form-group-field';
+import { ErrorPropertyName } from '../types/error-property-name';
+import { FormModel } from '../types/form-model';
+import { ShortValidationErrors } from '../types/short-validation-errors';
+import { ValidatorFunctionType } from '../types/validator-function-type';
 import { getValidatorMessagesStorage } from '../storages/class-validator-messages.storage';
 import { getValidatorTitlesStorage } from '../storages/class-validator-titles.storage';
 import { foreverInvalid, FOREVER_INVALID_NAME } from '../validators/forever-invalid.validator';
+import { DynamicFormBuilder } from './dynamic-form-builder';
 import { DynamicFormControl } from './dynamic-form-control';
 import { mergeErrors, transformValidationErrors } from './dynamic-form-group.util';
+import { getOrSetEmptyObject } from './get-or-set-empty-object';
+import { hasToJSON } from './has-to-json';
+import { DynamicFormGroupConfig } from '../types/dynamic-form-group-config';
 
 const cloneDeep = require('lodash.clonedeep');
 const validator = new Validator();
@@ -45,20 +49,24 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   public formFields: Dictionary;
   public objectChange = new Subject();
   public valueChangesSubscription: Subscription;
+  public dynamicFormBuilder: DynamicFormBuilder;
+  public originalFormBuilder: FormBuilder;
 
   private _object: TModel;
   private _externalErrors: ShortValidationErrors;
   private _validatorOptions: ValidatorOptions;
-  private _fb = new FormBuilder();
+  private _classTransformOptions: ClassTransformOptions;
   private _validateSubscription: Subscription | undefined;
+  private _validateAllFormFields: boolean;
 
   constructor(
     public factoryModel: ClassType<TModel>,
     public fields?: FormModel<TModel>,
-    validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
-    asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null
+    private _validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
+    private _asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null,
+    private readonly options?: DynamicFormGroupConfig
   ) {
-    super({}, validatorOrOpts, asyncValidator);
+    super({}, _validatorOrOpts, _asyncValidator);
     /*
     const classValidators = DynamicFormGroup.getClassValidators<TModel>(
       this.factoryModel,
@@ -77,6 +85,15 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         this.defaultValidatorOptions
       );
     });*/
+    if (options?.classTransformOptions) {
+      this._classTransformOptions = options.classTransformOptions;
+    }
+    if (options?.classValidatorOptions) {
+      this._validatorOptions = options.classValidatorOptions;
+    }
+    if (options?.validateAllFormFields !== undefined) {
+      this._validateAllFormFields = options.validateAllFormFields;
+    }
     this.formFields = this.onlyFields(fields);
   }
 
@@ -104,10 +121,20 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     return this._externalErrors;
   }
 
+  set classTransformOptions(classTransformOptions: ClassTransformOptions) {
+    this._classTransformOptions = classTransformOptions;
+    this.validate();
+  }
+
+  get classTransformOptions(): ClassTransformOptions {
+    return this._classTransformOptions;
+  }
+
   set validatorOptions(validatorOptions: ValidatorOptions) {
     this._validatorOptions = validatorOptions;
     this.validate();
   }
+
   get validatorOptions(): ValidatorOptions {
     return this._validatorOptions;
   }
@@ -115,8 +142,17 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   set object(object: TModel) {
     this.setObject(object);
   }
+
   get object() {
     return this.getObject();
+  }
+
+  set json(jsonData: any) {
+    this.setJSON(jsonData);
+  }
+
+  get json() {
+    return this.getJSON();
   }
 
   validateStream(externalErrors?: ShortValidationErrors, validatorOptions?: ValidatorOptions) {
@@ -182,12 +218,15 @@ export class DynamicFormGroup<TModel> extends FormGroup {
             emitEvent: false,
           });
         }
+        if (this._validateAllFormFields) {
+          this.validateAllFormFields();
+        }
       })
     );
   }
 
   validateAsync(externalErrors?: ShortValidationErrors, validatorOptions?: ValidatorOptions) {
-    return this.validateStream(externalErrors, validatorOptions).toPromise();
+    return this.validateStream(externalErrors, validatorOptions).pipe(take(1)).toPromise();
   }
 
   // Public API
@@ -203,13 +242,13 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     });
   }
 
-  setCustomErrors(allErrors: any) {
-    if (stringify(allErrors) !== stringify(this.customValidateErrors.value)) {
+  setCustomErrors(allErrors: any, force = false) {
+    if (force || stringify(allErrors) !== stringify(this.customValidateErrors.value)) {
       this.formErrors = allErrors;
       this.customValidateErrors.next(this.formErrors);
     }
     const nativeValidateErrors = this.collectErrors(this);
-    if (stringify(nativeValidateErrors) !== stringify(this.nativeValidateErrors.value)) {
+    if (force || stringify(nativeValidateErrors) !== stringify(this.nativeValidateErrors.value)) {
       this.nativeValidateErrors.next(this.collectErrors(this));
     }
   }
@@ -308,11 +347,33 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   }
 
   classToClass<TClassModel>(object: TClassModel) {
-    return classToClass(object, { ignoreDecorators: true });
+    if (hasToJSON(object)) {
+      return new (object as any).constructor((object as any).toJSON());
+    }
+    return cloneDeep(object);
   }
 
   plainToClass<TClassModel, Object>(cls: ClassType<TClassModel>, plain: Object) {
-    return plainToClass(cls, plain, { ignoreDecorators: true });
+    if (hasToJSON(getOrSetEmptyObject(cls))) {
+      return new cls(plain);
+    }
+    if (Object.keys(plain || {}).length === 0) {
+      return this.classToClass(getOrSetEmptyObject(cls));
+    }
+    if (plain instanceof cls) {
+      return this.classToClass(plain);
+    }
+    if (stringify(plain) === stringify(getOrSetEmptyObject(cls))) {
+      return this.classToClass(getOrSetEmptyObject(cls));
+    }
+    return plainToClass(cls, plain, { ...this._classTransformOptions, ignoreDecorators: true });
+  }
+
+  classToPlain<TClassModel>(object: TClassModel) {
+    if (hasToJSON(object)) {
+      return (object as any).toJSON();
+    }
+    return classToPlain(object, this._classTransformOptions);
   }
 
   /**
@@ -325,7 +386,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
 
   setExternalErrors(externalErrors: ShortValidationErrors) {
     this._externalErrors = externalErrors;
-    return this.validate();
+    this.validate();
   }
 
   getExternalErrors(): ShortValidationErrors {
@@ -433,11 +494,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
    */
   private getObject(): TModel {
     // Initialize the shape of the response
-    const object = this._object
-      ? this.classToClass(this._object)
-      : this.factoryModel
-      ? new this.factoryModel()
-      : undefined;
+    const object = this.classToClass(this._object || getOrSetEmptyObject(this.factoryModel) || undefined);
 
     if (object !== undefined) {
       // Recursively get the value of all fields
@@ -478,6 +535,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         });
     }
     return this.factoryModel ? this.plainToClass(this.factoryModel, object) : <TModel>object;
+    // todo: try change to return this.classToClass(object);
   }
 
   /**
@@ -486,16 +544,20 @@ export class DynamicFormGroup<TModel> extends FormGroup {
    *
    * @param object the data to assign to all controls of the form group and sub groups
    */
-  private setObject(object: TModel, updateValueAndValidity = true) {
+  private setObject(object: TModel) {
     // console.time(String(object));
     if (object instanceof this.factoryModel) {
       this._object = this.classToClass(object); // Ensure correct type
     } else {
+      this._object = this.plainToClass(this.factoryModel, object); // Convert to Model type
+      /*
+      todo: remove later if speed is normal
       let objectWithOnlyFormFields: any = {};
       // for speed up on work with short version of model
       Object.keys(this.formFields).forEach((key) => (objectWithOnlyFormFields[key] = object ? object[key] : undefined));
       this._object = this.plainToClass(this.factoryModel, objectWithOnlyFormFields); // Convert to Model type
       objectWithOnlyFormFields = null;
+      */
     }
     let newObject: any;
     let newValue: any;
@@ -506,7 +568,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
         // Handle Group
         if (this.controls[key] instanceof DynamicFormGroup) {
           if ((this.controls[key] as DynamicFormGroup<any>)._object !== this._object[key]) {
-            (this.controls[key] as DynamicFormGroup<any>).setObject(this._object ? this._object[key] : {}, false);
+            (this.controls[key] as DynamicFormGroup<any>).setObject(this._object ? this._object[key] : {});
           }
         }
 
@@ -546,11 +608,14 @@ export class DynamicFormGroup<TModel> extends FormGroup {
           for (let i = 0; i < objectArrayLength; i++) {
             if (isFormGroup) {
               // Create FormGroup
-              dynamicFormGroup = new DynamicFormGroup(firstFormGroup.factoryModel, firstFormGroup.formFields);
+              dynamicFormGroup = this.dynamicFormBuilder.factoryDynamicFormGroup(
+                firstFormGroup.factoryModel,
+                firstFormGroup.formFields
+              );
 
               dynamicFormGroup.setParent(formArray);
 
-              formGroup = this._fb.group(
+              formGroup = this.originalFormBuilder.group(
                 getClassValidators<TModel>(firstFormGroup.factoryModel, firstFormGroup.formFields)
               );
 
@@ -577,8 +642,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
               if (formArray.controls[i] instanceof DynamicFormGroup) {
                 // Recusrively set the object value
                 (formArray.controls[i] as DynamicFormGroup<any>).setObject(
-                  this._object && objectArray && objectArray[i] ? objectArray[i] : {},
-                  false
+                  this._object && objectArray && objectArray[i] ? objectArray[i] : {}
                 );
               }
             }
@@ -622,7 +686,18 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     newObject = null;
     this.updateValueAndValidity();
     this.objectChange.next(this._object);
+    if (this._validateAllFormFields) {
+      this.validateAllFormFields();
+    }
     // console.timeEnd(String(object));
+  }
+
+  private getJSON() {
+    return this.classToPlain(this.getObject());
+  }
+
+  private setJSON(jsonData: any) {
+    this.setObject(this.plainToClass(this.factoryModel, jsonData));
   }
 }
 

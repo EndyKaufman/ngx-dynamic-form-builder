@@ -1,5 +1,4 @@
 import { marker } from '@ngneat/transloco-keys-manager/marker';
-import { plainToClassFromExist } from 'class-transformer';
 import { IsNotEmpty, IsOptional, Max, MaxLength, Min, Validate } from 'class-validator-multi-lang';
 import { TextLengthMore15 } from '../utils/custom-validators';
 export class Company {
@@ -32,6 +31,12 @@ export class Company {
   }
 
   constructor(data?: any) {
-    plainToClassFromExist(this, data);
+    Object.keys(data || {}).map((key) => (this[key] = data ? data[key] : undefined));
+  }
+
+  toJSON() {
+    return {
+      ...this,
+    };
   }
 }

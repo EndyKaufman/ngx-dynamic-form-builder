@@ -6,6 +6,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { SharedModule } from '../../shared/shared.module';
 import { UserPanelComponent } from './user-panel.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { UserPanelComponent } from './user-panel.component';
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
+    MatDatepickerModule,
   ],
   entryComponents: [UserPanelComponent],
   exports: [UserPanelComponent],

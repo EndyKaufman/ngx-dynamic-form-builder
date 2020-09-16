@@ -19,9 +19,8 @@ npm i --save class-transformer class-validator-multi-lang ngx-dynamic-form-build
 
 company.ts
 
-```js
+```typescript
 import { Validate, IsNotEmptym } from 'class-validator-multi-lang';
-import { plainToClassFromExist } from 'class-transformer';
 import { TextLengthMore15 } from '../utils/custom-validators';
 import { marker } from '@ngneat/transloco-keys-manager/marker';
 
@@ -34,14 +33,20 @@ export class Company {
   name: string = undefined;
 
   constructor(data?: any) {
-    plainToClassFromExist(this, data);
+    Object.keys(data || {}).map((key) => (this[key] = data ? data[key] : undefined));
+  }
+
+  toJSON() {
+    return {
+      ...this,
+    };
   }
 }
 ```
 
 app.module.ts
 
-```js
+```typescript
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CompanyPanelComponent } from './company-panel.component';
 
@@ -80,9 +85,9 @@ company-panel.component.html
 
 company-panel.component.ts
 
-```js
+```typescript
 import { DynamicFormGroup, DynamicFormBuilder } from 'ngx-dynamic-form-builder';
-import { Company } from './../../shared/models/company';
+import { Company } from './../../shared/types/company';
 import { Input, Component } from '@angular/core';
 import { Validators } from '@angular/forms';
 
@@ -122,6 +127,8 @@ export class CompanyPanelComponent {
     this.form.validateAllFormFields();
     if (this.form.valid) {
       this.savedItem = this.form.object;
+    } else {
+      this.savedItem = undefined;
     }
   }
 }
@@ -129,7 +136,7 @@ export class CompanyPanelComponent {
 
 custom-validators.ts
 
-```js
+```typescript
 import { ValidatorConstraintInterface, ValidatorConstraint } from 'class-validator-multi-lang';
 
 @ValidatorConstraint()
@@ -146,7 +153,7 @@ Because multi-language supported in class-validator-multi-lang, now ngx-dynamic-
 
 set validation messages as settings when create form group
 
-```js
+```typescript
 this.form = this.fb.group(
   Company,
   {
@@ -164,7 +171,7 @@ this.form = this.fb.group(
 
 set validation messages on runtime after for exists form group
 
-```js
+```typescript
 this.form.setValidatorOptions({
   messages: {
     'The company name must be longer than 15': 'company name must be longer than 15 (translate on other language)',
@@ -174,7 +181,7 @@ this.form.setValidatorOptions({
 
 set translate property name in error
 
-```js
+```typescript
 this.form.setValidatorOptions({
   titles: { regionNum: 'number of region (translate property name in error on other language)' },
 });
@@ -182,7 +189,7 @@ this.form.setValidatorOptions({
 
 set validation messages and properties name global for all instance of form group in project
 
-```js
+```typescript
 updateValidatorMessagesStorage({
   'The company name must be longer than 15': 'company name must be longer than 15 (translate on other language)',
 });
@@ -210,9 +217,9 @@ company-panel.component.html
 
 company-panel.component.ts
 
-```js
+```typescript
 import { DynamicFormGroup, DynamicFormBuilder } from 'ngx-dynamic-form-builder';
-import { Company } from './../../shared/models/company';
+import { Company } from './../../shared/types/company';
 import { Input, Component } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -267,6 +274,8 @@ export class CompanyPanelComponent implements onDestroy {
     this.form.validateAllFormFields();
     if (this.form.valid) {
       this.savedItem = this.form.object;
+    } else {
+      this.savedItem = undefined;
     }
   }
 }

@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { TranslocoModule } from '@ngneat/transloco';
 import { SharedModule } from '../../shared/shared.module';
 import { ExpUserPanelComponent } from './exp-user-panel.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { ExpUserPanelComponent } from './exp-user-panel.component';
     ReactiveFormsModule,
     FlexLayoutModule,
     TranslocoModule,
+    MatDatepickerModule,
   ],
   entryComponents: [ExpUserPanelComponent],
   exports: [ExpUserPanelComponent],

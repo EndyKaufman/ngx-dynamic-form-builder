@@ -32,7 +32,7 @@ export class ExpUserPanelComponent {
 
   fb = new DynamicFormBuilder();
 
-  savedItem?: ExpUser;
+  savedItem?: Object;
 
   constructor() {
     this.form = this.fb.group(ExpUser, {
@@ -54,7 +54,9 @@ export class ExpUserPanelComponent {
   onSaveClick(): void {
     this.form.validateAllFormFields();
     if (this.form.valid) {
-      this.savedItem = this.form.object;
+      this.savedItem = this.form.json;
+    } else {
+      this.savedItem = undefined;
     }
   }
 }

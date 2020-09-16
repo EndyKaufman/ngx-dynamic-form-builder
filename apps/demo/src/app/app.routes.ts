@@ -60,6 +60,7 @@ export const AppRoutes: Routes = [
       title: 'github',
       svgIcon: `github-circle`,
       visible: true,
+      hideTitle: true,
     },
   },
   {
