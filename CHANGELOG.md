@@ -1,3 +1,16 @@
+# [1.10.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.9.1...1.10.0) (2020-09-16)
+
+
+### Features
+
+* add factoryFormBuilder for customizations, add classValidatorOptions and classTransformOptions to DynamicFormBuilderOptions for set base options for all groups ([5b2dd39](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/5b2dd398c1c28298392e1a9689a3c6e241a18fbc))
+* add options on constructor in DynamicFormBuilder for use custom dynamic form group ([5befeab](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/5befeab1c736a35e2e2f75f9d7733757a34655b3))
+* add serialize from/to json ([0ca3a22](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/0ca3a22100284a0493d3a05637ecc2bbf18eff84))
+* add validateAllFormFields for builder and form group options for force run validate after create form group ([08ba24a](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/08ba24a8130b6417c91520c679fadd1c368f43e6))
+* improved performance by disabling unnecessary class transformations ([e61c39e](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/e61c39efe4110d36e8c145c4de2033a6e9131a81))
+
+
+
 ## [1.9.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.9.0...1.9.1) (2020-09-14)
 
 
