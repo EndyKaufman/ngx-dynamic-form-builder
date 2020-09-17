@@ -366,7 +366,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     if (stringify(plain) === stringify(getOrSetEmptyObject(cls))) {
       return this.classToClass(getOrSetEmptyObject(cls));
     }
-    return plainToClass(cls, plain, { ...this._classTransformOptions, ignoreDecorators: true });
+    return plainToClass(cls, plain, { ...this._classTransformOptions });
   }
 
   classToPlain<TClassModel>(object: TClassModel) {

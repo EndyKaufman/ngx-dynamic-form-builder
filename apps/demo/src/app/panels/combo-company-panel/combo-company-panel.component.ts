@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Validators } from '@angular/forms';
 import { DynamicFormBuilder, DynamicFormGroup } from 'ngx-dynamic-form-builder';
-import { Company } from './../../shared/models/company';
+import { ComboCompany } from './../../shared/models/combo-company';
 
 @Component({
   selector: 'combo-company-panel',
@@ -9,42 +8,53 @@ import { Company } from './../../shared/models/company';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ComboCompanyPanelComponent {
-  form: DynamicFormGroup<Company>;
+  form: DynamicFormGroup<ComboCompany>;
 
   @Input()
-  item = new Company({
+  jsonItem = {
     id: 11,
     name: '123456789012345',
     regionNum: 1,
-  });
+  };
 
   @Input()
-  strings = Company.strings;
+  strings = ComboCompany.strings;
 
   fb = new DynamicFormBuilder();
 
-  savedItem?: Company;
+  savedItem?: Object;
 
   constructor() {
-    this.form = this.fb.group(Company, {
-      name: 'name',
-      regionNum: ['', Validators.required],
-    });
+    this.form = this.fb.group(ComboCompany);
   }
   onLoadClick(): void {
     this.savedItem = undefined;
-    this.form.object = this.item;
+    this.form.json = this.jsonItem;
+    this.form.validateAllFormFields();
+  }
+  onLoadAsObjectClick(): void {
+    this.savedItem = undefined;
+    const object = new ComboCompany();
+    object.id = this.jsonItem.id;
+    object.name = this.jsonItem.name;
+    object.regionNum = this.jsonItem.regionNum;
+    this.form.object = object;
     this.form.validateAllFormFields();
   }
   onClearClick(): void {
     this.savedItem = undefined;
-    this.form.object = new Company();
+    this.form.json = {};
+    this.form.validateAllFormFields();
+  }
+  onClearAsObjectClick(): void {
+    this.savedItem = undefined;
+    this.form.object = new ComboCompany();
     this.form.validateAllFormFields();
   }
   onSaveClick(): void {
     this.form.validateAllFormFields();
     if (this.form.valid) {
-      this.savedItem = this.form.object;
+      this.savedItem = this.form.json;
     } else {
       this.savedItem = undefined;
     }

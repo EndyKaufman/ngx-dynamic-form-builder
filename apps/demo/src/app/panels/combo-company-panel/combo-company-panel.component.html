@@ -18,9 +18,14 @@
       <p *ngIf="savedItem">Saved item: {{ savedItem | json }}</p>
     </div>
     <div class="full-width">
-      <button mat-raised-button (click)="onLoadClick()">Load</button>
-      <button mat-raised-button (click)="onClearClick()">Clear</button>
+      <button mat-raised-button (click)="onLoadAsObjectClick()">Load as object</button>
+      <button mat-raised-button (click)="onClearAsObjectClick()">Clear as object</button>
       <button mat-raised-button (click)="onSaveClick()" cdkFocusInitial>Save</button>
+    </div>
+    <div class="full-width">
+      <button mat-raised-button (click)="onLoadClick()">Load as json</button>
+      <button mat-raised-button (click)="onClearClick()">Clearas json</button>
+      <button mat-raised-button (click)="onSaveClick()">Save</button>
     </div>
   </ng-container>
 </form>

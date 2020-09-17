@@ -39,7 +39,7 @@ export class DynamicFormBuilder extends FormBuilder {
       (isAbstractControlOptions(controlsConfig) ||
         isLegacyOrOpts(controlsConfig) ||
         isDynamicFormGroupConfig(controlsConfig)) &&
-      !options
+      Object.keys(options || {}).length === 0
     ) {
       return this.group(factoryModel, undefined, controlsConfig);
     }
@@ -99,7 +99,7 @@ export class DynamicFormBuilder extends FormBuilder {
 
     // experimental
     if (controlsConfig === undefined) {
-      newControlsConfig = { ...this.createEmptyObject(factoryModel) };
+      newControlsConfig = { ...this.createEmptyObject(factoryModel, { __experimental__: true }) };
       if (newControlsConfig !== undefined) {
         Object.keys(newControlsConfig).forEach((key) => {
           if (canCreateGroup() && newControlsConfig) {

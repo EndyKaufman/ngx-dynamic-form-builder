@@ -35,7 +35,11 @@ export class Company {
   name: string = undefined;
 
   constructor(data?: any) {
-    Object.keys(data || {}).map((key) => (this[key] = data ? data[key] : undefined));
+    if (data === undefined) {
+      data = {};
+    }
+    this.id = data.id;
+    this.name = data.name;
   }
 
   toJSON() {
