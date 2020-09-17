@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/EndyKaufman/ngx-dynamic-form-builder.svg?branch=master)](https://travis-ci.org/EndyKaufman/ngx-dynamic-form-builder)
 [![npm version](https://badge.fury.io/js/ngx-dynamic-form-builder.svg)](https://badge.fury.io/js/ngx-dynamic-form-builder)
+[![monthly downloads](https://badgen.net/npm/dm/ngx-dynamic-form-builder)](https://www.npmjs.com/package/ngx-dynamic-form-builder)
 
 [FormBuilder](https://angular.io/api/forms/FormBuilder) + [class-transformer](https://github.com/typestack/class-transformer) + [class-validator-multi-lang](https://github.com/endykaufman/class-validator-multi-lang) = dynamic form group builder for [Angular10+](https://angular.io)
 
@@ -35,7 +36,11 @@ export class Company {
   name: string = undefined;
 
   constructor(data?: any) {
-    Object.keys(data || {}).map((key) => (this[key] = data ? data[key] : undefined));
+    if (data === undefined) {
+      data = {};
+    }
+    this.id = data.id;
+    this.name = data.name;
   }
 
   toJSON() {

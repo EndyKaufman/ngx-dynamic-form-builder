@@ -23,7 +23,11 @@ export class Department {
   }
 
   constructor(data?: any) {
-    Object.keys(data || {}).map((key) => (this[key] = data ? data[key] : undefined));
+    if (data === undefined) {
+      data = {};
+    }
+    this.id = data.id;
+    this.name = data.name;
     this.company = new Company(this.company);
   }
 

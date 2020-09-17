@@ -15,7 +15,9 @@ export interface DynamicFormGroupConfig {
 export function isDynamicFormGroupConfig(options: AbstractControlOptions | DynamicFormGroupConfig) {
   return (
     options &&
-    (!!options['classValidatorOptions'] || !!options['classTransformOptions'] || !!options['validateAllFormFields'])
+    (Object.getOwnPropertyDescriptor(options, 'classValidatorOptions') ||
+      Object.getOwnPropertyDescriptor(options, 'classTransformOptions') ||
+      Object.getOwnPropertyDescriptor(options, 'validateAllFormFields'))
   );
 }
 export function isLegacyOrOpts(options: AbstractControlOptions | DynamicFormGroupConfig) {
