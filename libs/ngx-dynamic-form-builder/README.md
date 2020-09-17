@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/EndyKaufman/ngx-dynamic-form-builder.svg?branch=master)](https://travis-ci.org/EndyKaufman/ngx-dynamic-form-builder)
 [![npm version](https://badge.fury.io/js/ngx-dynamic-form-builder.svg)](https://badge.fury.io/js/ngx-dynamic-form-builder)
+[![monthly downloads](https://badgen.net/npm/dm/ngx-dynamic-form-builder)](https://www.npmjs.com/package/ngx-dynamic-form-builder)
 
 [FormBuilder](https://angular.io/api/forms/FormBuilder) + [class-transformer](https://github.com/typestack/class-transformer) + [class-validator-multi-lang](https://github.com/endykaufman/class-validator-multi-lang) = dynamic form group builder for [Angular10+](https://angular.io)
 
@@ -91,7 +92,7 @@ company-panel.component.ts
 
 ```typescript
 import { DynamicFormGroup, DynamicFormBuilder } from 'ngx-dynamic-form-builder';
-import { Company } from './../../shared/types/company';
+import { Company } from './../../shared/models/company';
 import { Input, Component } from '@angular/core';
 import { Validators } from '@angular/forms';
 
@@ -223,7 +224,7 @@ company-panel.component.ts
 
 ```typescript
 import { DynamicFormGroup, DynamicFormBuilder } from 'ngx-dynamic-form-builder';
-import { Company } from './../../shared/types/company';
+import { Company } from './../../shared/models/company';
 import { Input, Component } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';

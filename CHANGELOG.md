@@ -1,3 +1,12 @@
+## [1.10.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.10.0...1.10.1) (2020-09-17)
+
+
+### Bug Fixes
+
+* remove ignoreDecorators from transform objects ([d8cbeda](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/d8cbedab69250bbe6cf1f2cb2ea74f93b2ecb1a5))
+
+
+
 # [1.10.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.9.1...1.10.0) (2020-09-16)
 
 
