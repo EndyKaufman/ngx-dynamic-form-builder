@@ -15,6 +15,7 @@ export class ComboCompanyPanelComponent {
     id: 11,
     name: '123456789012345',
     regionNum: 1,
+    nameLocale: { ru: 'ru:123456789012345', en: 'en:123456789012345' },
   };
 
   @Input()
@@ -38,6 +39,7 @@ export class ComboCompanyPanelComponent {
     object.id = this.jsonItem.id;
     object.name = this.jsonItem.name;
     object.regionNum = this.jsonItem.regionNum;
+    object.nameLocale = this.jsonItem.nameLocale;
     this.form.object = object;
     this.form.validateAllFormFields();
   }

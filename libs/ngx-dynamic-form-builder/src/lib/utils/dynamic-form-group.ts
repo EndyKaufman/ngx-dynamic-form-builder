@@ -56,6 +56,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   private _externalErrors: ShortValidationErrors;
   private _validatorOptions: ValidatorOptions;
   private _classTransformOptions: ClassTransformOptions;
+  private _classTransformToPlainOptions: ClassTransformOptions;
   private _validateSubscription: Subscription | undefined;
   private _validateAllFormFields: boolean;
 
@@ -87,6 +88,9 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     });*/
     if (options?.classTransformOptions) {
       this._classTransformOptions = options.classTransformOptions;
+    }
+    if (options?.classTransformToPlainOptions) {
+      this._classTransformToPlainOptions = options.classTransformToPlainOptions;
     }
     if (options?.classValidatorOptions) {
       this._validatorOptions = options.classValidatorOptions;
@@ -128,6 +132,15 @@ export class DynamicFormGroup<TModel> extends FormGroup {
 
   get classTransformOptions(): ClassTransformOptions {
     return this._classTransformOptions;
+  }
+
+  set classTransformToPlainOptions(classTransformToPlainOptions: ClassTransformOptions) {
+    this._classTransformToPlainOptions = classTransformToPlainOptions;
+    this.validate();
+  }
+
+  get classTransformToPlainOptions(): ClassTransformOptions {
+    return this._classTransformToPlainOptions;
   }
 
   set validatorOptions(validatorOptions: ValidatorOptions) {
@@ -373,7 +386,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     if (hasToJSON(object)) {
       return (object as any).toJSON();
     }
-    return classToPlain(object, this._classTransformOptions);
+    return classToPlain(object, { ...this._classTransformToPlainOptions });
   }
 
   /**

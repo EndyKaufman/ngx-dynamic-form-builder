@@ -1,3 +1,4 @@
+export * from './lib/decorators/expose-nested.decorator';
 export * from './lib/constants/default';
 export * from './lib/storages/class-validator-messages.storage';
 export * from './lib/storages/class-validator-titles.storage';
