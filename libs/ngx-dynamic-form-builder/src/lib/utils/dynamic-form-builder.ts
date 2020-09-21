@@ -19,9 +19,9 @@ const cloneDeep = require('lodash.clonedeep');
 
 export class DynamicFormBuilder extends FormBuilder {
   // need for createEmptyObject
-  private emptyDynamicFormGroup = this.factoryDynamicFormGroup(Object);
+  protected emptyDynamicFormGroup = this.factoryDynamicFormGroup(Object);
 
-  constructor(private options?: DynamicFormBuilderOptions) {
+  constructor(protected options?: DynamicFormBuilderOptions) {
     super();
   }
 
@@ -227,7 +227,7 @@ export class DynamicFormBuilder extends FormBuilder {
     return dynamicFormGroup;
   }
 
-  private factoryFormBuilder() {
+  protected factoryFormBuilder() {
     return new FormBuilder();
   }
 
@@ -254,7 +254,7 @@ export class DynamicFormBuilder extends FormBuilder {
   /**
    * Recursively creates an empty object from the data provided
    */
-  private createEmptyObject<TModel>(factoryModel: ClassType<TModel>, data = {}) {
+  protected createEmptyObject<TModel>(factoryModel: ClassType<TModel>, data = {}) {
     let modifed = false;
 
     let object: any = factoryModel ? this.emptyDynamicFormGroup.plainToClass(factoryModel, data) : data;
