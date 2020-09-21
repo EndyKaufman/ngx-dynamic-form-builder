@@ -1,3 +1,20 @@
+# [1.11.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.10.1...1.11.0) (2020-09-21)
+
+
+### Bug Fixes
+
+* chnage priority of validator options on run validate ([2105da5](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/2105da500377b9b776816ed6a6ccf771820d4608))
+* update dependencies ([6518784](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/65187844f4c601b150910efabd0a25e91fd9571f))
+* update detect logic object property value in ExposeNested ([63b6445](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/63b64455692898f9e5bf824dd76824cc45c09cdf))
+
+
+### Features
+
+* add classTransformToPlainOptions for custom logic in convert to object to class, add  decorator ExposeNested ([bce8fb8](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/bce8fb89c54a1a79d90a7a0c77ca24a516b08472))
+* change all private methods and fields to protected for extends and customization ([bf81463](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/bf814631424b28268881f054a6c720cf61e7411b))
+
+
+
 ## [1.10.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.10.0...1.10.1) (2020-09-17)
 
 

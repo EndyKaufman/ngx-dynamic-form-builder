@@ -10,7 +10,7 @@ import { ClassType } from 'class-transformer/ClassTransformer';
 import { classToClass, plainToClass } from 'class-transformer';
 
 export class DynamicFormGroup<TModel> extends FormGroup {
-    ...
+  ...
 
   classToClass<TClassModel>(object: TClassModel) {
     if (hasToJSON(object)) {
@@ -39,9 +39,10 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     if (hasToJSON(object)) {
       return (object as any).toJSON();
     }
-    return classToPlain(object, this._classTransformOptions);
+    return classToPlain(object, { ...this._classTransformToPlainOptions });
   }
-    ...
+
+  ...
 }
 ```
 

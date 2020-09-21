@@ -17,5 +17,6 @@ export interface DynamicFormBuilderOptions {
   ) => TDynamicFormGroup;
   classValidatorOptions?: ValidatorOptions;
   classTransformOptions?: ClassTransformOptions;
+  classTransformToPlainOptions?: ClassTransformOptions | undefined;
   validateAllFormFields?: boolean | undefined;
 }

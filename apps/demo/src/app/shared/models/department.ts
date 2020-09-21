@@ -28,7 +28,7 @@ export class Department {
     }
     this.id = data.id;
     this.name = data.name;
-    this.company = new Company(this.company);
+    this.company = new Company(data.company);
   }
 
   toJSON() {

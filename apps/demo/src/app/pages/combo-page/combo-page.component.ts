@@ -14,9 +14,9 @@ export class ComboPageComponent {
 
   otherFiles: { name: string; language: string; content: string }[] = [
     {
-      name: 'company.ts',
+      name: 'combo-company.ts',
       language: 'javascript',
-      content: require('!!raw-loader!../../shared/models/company.ts').default,
+      content: require('!!raw-loader!../../shared/models/combo-company.ts').default,
     },
     {
       name: 'custom-validators.ts',

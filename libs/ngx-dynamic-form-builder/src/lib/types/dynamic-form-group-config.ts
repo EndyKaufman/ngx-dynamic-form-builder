@@ -10,6 +10,7 @@ export interface DynamicFormGroupConfig {
   updateOn?: any | undefined;
   classValidatorOptions?: ValidatorOptions | undefined;
   classTransformOptions?: ClassTransformOptions | undefined;
+  classTransformToPlainOptions?: ClassTransformOptions | undefined;
   validateAllFormFields?: boolean | undefined;
 }
 export function isDynamicFormGroupConfig(options: AbstractControlOptions | DynamicFormGroupConfig) {
@@ -17,6 +18,7 @@ export function isDynamicFormGroupConfig(options: AbstractControlOptions | Dynam
     options &&
     (Object.getOwnPropertyDescriptor(options, 'classValidatorOptions') ||
       Object.getOwnPropertyDescriptor(options, 'classTransformOptions') ||
+      Object.getOwnPropertyDescriptor(options, 'classTransformToPlainOptions') ||
       Object.getOwnPropertyDescriptor(options, 'validateAllFormFields'))
   );
 }

@@ -1,7 +1,11 @@
 import { AbstractControlOptions, AsyncValidatorFn, FormBuilder, ValidatorFn } from '@angular/forms';
 import { ClassType } from 'class-transformer/ClassTransformer';
 import 'reflect-metadata';
-import { DEFAULT_CLASS_TRANSFORM_OPTIONS, DEFAULT_CLASS_VALIDATOR_OPTIONS } from '../constants/default';
+import {
+  DEFAULT_CLASS_TRANSFORM_OPTIONS,
+  DEFAULT_CLASS_VALIDATOR_OPTIONS,
+  DEFAULT_CLASS_TRANSFORM_TO_PLAIN_OPTIONS,
+} from '../constants/default';
 import { DynamicFormBuilderOptions } from '../types/dynamic-form-builder-options';
 import {
   DynamicFormGroupConfig,
@@ -15,9 +19,9 @@ const cloneDeep = require('lodash.clonedeep');
 
 export class DynamicFormBuilder extends FormBuilder {
   // need for createEmptyObject
-  private emptyDynamicFormGroup = this.factoryDynamicFormGroup(Object);
+  protected emptyDynamicFormGroup = this.factoryDynamicFormGroup(Object);
 
-  constructor(private options?: DynamicFormBuilderOptions) {
+  constructor(protected options?: DynamicFormBuilderOptions) {
     super();
   }
 
@@ -77,6 +81,9 @@ export class DynamicFormBuilder extends FormBuilder {
     if (this.options?.classTransformOptions && !extra.classTransformOptions) {
       extra.classTransformOptions = this.options?.classTransformOptions;
     }
+    if (this.options?.classTransformToPlainOptions && !extra.classTransformToPlainOptions) {
+      extra.classTransformToPlainOptions = this.options?.classTransformToPlainOptions;
+    }
     if (this.options?.validateAllFormFields !== undefined && extra.validateAllFormFields === undefined) {
       extra.validateAllFormFields = this.options?.validateAllFormFields;
     }
@@ -86,6 +93,9 @@ export class DynamicFormBuilder extends FormBuilder {
     }
     if (!extra.classTransformOptions) {
       extra.classTransformOptions = DEFAULT_CLASS_TRANSFORM_OPTIONS;
+    }
+    if (!extra.classTransformToPlainOptions) {
+      extra.classTransformToPlainOptions = DEFAULT_CLASS_TRANSFORM_TO_PLAIN_OPTIONS;
     }
     if (extra.validateAllFormFields === undefined) {
       extra.validateAllFormFields = false;
@@ -107,6 +117,7 @@ export class DynamicFormBuilder extends FormBuilder {
             newControlsConfig[key] = this.group(newControlsConfig[key].constructor, undefined, {
               classValidatorOptions: extra.classValidatorOptions,
               classTransformOptions: extra.classTransformOptions,
+              classTransformToPlainOptions: extra.classTransformToPlainOptions,
               validateAllFormFields: extra.validateAllFormFields,
               asyncValidators,
               updateOn,
@@ -121,6 +132,7 @@ export class DynamicFormBuilder extends FormBuilder {
                     this.group(newControlsConfigItem.constructor, undefined, {
                       classValidatorOptions: extra.classValidatorOptions,
                       classTransformOptions: extra.classTransformOptions,
+                      classTransformToPlainOptions: extra.classTransformToPlainOptions,
                       validateAllFormFields: extra.validateAllFormFields,
                       asyncValidators,
                       updateOn,
@@ -215,7 +227,7 @@ export class DynamicFormBuilder extends FormBuilder {
     return dynamicFormGroup;
   }
 
-  private factoryFormBuilder() {
+  protected factoryFormBuilder() {
     return new FormBuilder();
   }
 
@@ -242,18 +254,19 @@ export class DynamicFormBuilder extends FormBuilder {
   /**
    * Recursively creates an empty object from the data provided
    */
-  private createEmptyObject<TModel>(factoryModel: ClassType<TModel>, data = {}) {
+  protected createEmptyObject<TModel>(factoryModel: ClassType<TModel>, data = {}) {
     let modifed = false;
 
     let object: any = factoryModel ? this.emptyDynamicFormGroup.plainToClass(factoryModel, data) : data;
     let fields: any = Object.keys(object);
 
-    let objectFieldNameLength: number;
+    let objectFieldNameLength: number | undefined;
     let objectFieldName0: any;
     fields.forEach((fieldName: any) => {
-      objectFieldNameLength = object[fieldName] && object[fieldName].length;
+      const object1 = object[fieldName];
+      objectFieldNameLength = object1 && Array.isArray(object1) ? object1.length : undefined;
       if (objectFieldNameLength !== undefined) {
-        objectFieldName0 = object[fieldName][0];
+        objectFieldName0 = object1[0];
         if (objectFieldNameLength === 1 && Object.keys(objectFieldName0).length > 0 && objectFieldName0.constructor) {
           object[fieldName] = [this.createEmptyObject(objectFieldName0.constructor)];
         }

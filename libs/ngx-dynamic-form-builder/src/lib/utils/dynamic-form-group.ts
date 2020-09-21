@@ -21,23 +21,23 @@ import {
 import stringify from 'fast-safe-stringify';
 import 'reflect-metadata';
 import { BehaviorSubject, combineLatest, Subject, Subscription } from 'rxjs';
-import { distinctUntilChanged, tap, take } from 'rxjs/operators';
+import { distinctUntilChanged, take, tap } from 'rxjs/operators';
 import stringHash from 'string-hash';
+import { getValidatorMessagesStorage } from '../storages/class-validator-messages.storage';
+import { getValidatorTitlesStorage } from '../storages/class-validator-titles.storage';
 import { Dictionary } from '../types/dictionary';
+import { DynamicFormGroupConfig } from '../types/dynamic-form-group-config';
 import { DynamicFormGroupField } from '../types/dynamic-form-group-field';
 import { ErrorPropertyName } from '../types/error-property-name';
 import { FormModel } from '../types/form-model';
 import { ShortValidationErrors } from '../types/short-validation-errors';
 import { ValidatorFunctionType } from '../types/validator-function-type';
-import { getValidatorMessagesStorage } from '../storages/class-validator-messages.storage';
-import { getValidatorTitlesStorage } from '../storages/class-validator-titles.storage';
 import { foreverInvalid, FOREVER_INVALID_NAME } from '../validators/forever-invalid.validator';
 import { DynamicFormBuilder } from './dynamic-form-builder';
 import { DynamicFormControl } from './dynamic-form-control';
 import { mergeErrors, transformValidationErrors } from './dynamic-form-group.util';
 import { getOrSetEmptyObject } from './get-or-set-empty-object';
 import { hasToJSON } from './has-to-json';
-import { DynamicFormGroupConfig } from '../types/dynamic-form-group-config';
 
 const cloneDeep = require('lodash.clonedeep');
 const validator = new Validator();
@@ -52,19 +52,20 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   public dynamicFormBuilder: DynamicFormBuilder;
   public originalFormBuilder: FormBuilder;
 
-  private _object: TModel;
-  private _externalErrors: ShortValidationErrors;
-  private _validatorOptions: ValidatorOptions;
-  private _classTransformOptions: ClassTransformOptions;
-  private _validateSubscription: Subscription | undefined;
-  private _validateAllFormFields: boolean;
+  protected _object: TModel;
+  protected _externalErrors: ShortValidationErrors;
+  protected _validatorOptions: ValidatorOptions;
+  protected _classTransformOptions: ClassTransformOptions;
+  protected _classTransformToPlainOptions: ClassTransformOptions;
+  protected _validateSubscription: Subscription | undefined;
+  protected _validateAllFormFields: boolean;
 
   constructor(
     public factoryModel: ClassType<TModel>,
     public fields?: FormModel<TModel>,
-    private _validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
-    private _asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null,
-    private readonly options?: DynamicFormGroupConfig
+    protected _validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
+    protected _asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null,
+    protected readonly options?: DynamicFormGroupConfig
   ) {
     super({}, _validatorOrOpts, _asyncValidator);
     /*
@@ -87,6 +88,9 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     });*/
     if (options?.classTransformOptions) {
       this._classTransformOptions = options.classTransformOptions;
+    }
+    if (options?.classTransformToPlainOptions) {
+      this._classTransformToPlainOptions = options.classTransformToPlainOptions;
     }
     if (options?.classValidatorOptions) {
       this._validatorOptions = options.classValidatorOptions;
@@ -130,6 +134,15 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     return this._classTransformOptions;
   }
 
+  set classTransformToPlainOptions(classTransformToPlainOptions: ClassTransformOptions) {
+    this._classTransformToPlainOptions = classTransformToPlainOptions;
+    this.validate();
+  }
+
+  get classTransformToPlainOptions(): ClassTransformOptions {
+    return this._classTransformToPlainOptions;
+  }
+
   set validatorOptions(validatorOptions: ValidatorOptions) {
     this._validatorOptions = validatorOptions;
     this.validate();
@@ -156,18 +169,15 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   }
 
   validateStream(externalErrors?: ShortValidationErrors, validatorOptions?: ValidatorOptions) {
-    const argumentValidatorOptions = validatorOptions ? cloneDeep(validatorOptions) : validatorOptions;
+    const argumentExternalErrors: ShortValidationErrors = externalErrors ? cloneDeep(externalErrors) : externalErrors;
+    const argumentValidatorOptions: ValidatorOptions = validatorOptions
+      ? cloneDeep(validatorOptions)
+      : validatorOptions;
+
     return combineLatest([getValidatorMessagesStorage(), getValidatorTitlesStorage()]).pipe(
       tap(([messages, titles]) => {
-        validatorOptions = cloneDeep(argumentValidatorOptions);
-
-        if (externalErrors === undefined) {
-          externalErrors = cloneDeep(this._externalErrors);
-        }
-
-        if (validatorOptions === undefined) {
-          validatorOptions = cloneDeep(this._validatorOptions);
-        }
+        validatorOptions = cloneDeep(this._validatorOptions || argumentValidatorOptions);
+        externalErrors = cloneDeep(this._externalErrors || argumentExternalErrors);
 
         if (!validatorOptions) {
           validatorOptions = {};
@@ -253,7 +263,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     }
   }
 
-  private collectErrors(control: Dictionary, isRoot = true) {
+  protected collectErrors(control: Dictionary, isRoot = true) {
     if (control.controls) {
       return {
         ...(isRoot ? this.errors : {}),
@@ -373,7 +383,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     if (hasToJSON(object)) {
       return (object as any).toJSON();
     }
-    return classToPlain(object, this._classTransformOptions);
+    return classToPlain(object, { ...this._classTransformToPlainOptions });
   }
 
   /**
@@ -415,7 +425,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   }
 
   // Helpers
-  private onlyFields(fields?: FormModel<any>): Dictionary {
+  protected onlyFields(fields?: FormModel<any>): Dictionary {
     const newFields: Dictionary = {};
 
     if (fields !== undefined) {
@@ -446,7 +456,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     return newFields;
   }
 
-  private markAsInvalidForExternalErrors(errors: ShortValidationErrors, controls?: Dictionary<AbstractControl>) {
+  protected markAsInvalidForExternalErrors(errors: ShortValidationErrors, controls?: Dictionary<AbstractControl>) {
     const currentControls = controls ? controls : this.controls;
     Object.keys(currentControls).forEach((field) => {
       const control = currentControls[field];
@@ -492,7 +502,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
    * Recursively gets all values from the form controls and all sub form group and array controls and returns it as
    * an object
    */
-  private getObject(): TModel {
+  protected getObject(): TModel {
     // Initialize the shape of the response
     const object = this.classToClass(this._object || getOrSetEmptyObject(this.factoryModel) || undefined);
 
@@ -544,7 +554,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
    *
    * @param object the data to assign to all controls of the form group and sub groups
    */
-  private setObject(object: TModel) {
+  protected setObject(object: TModel) {
     // console.time(String(object));
     if (object instanceof this.factoryModel) {
       this._object = this.classToClass(object); // Ensure correct type
@@ -692,11 +702,11 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     // console.timeEnd(String(object));
   }
 
-  private getJSON() {
+  protected getJSON() {
     return this.classToPlain(this.getObject());
   }
 
-  private setJSON(jsonData: any) {
+  protected setJSON(jsonData: any) {
     this.setObject(this.plainToClass(this.factoryModel, jsonData));
   }
 }
