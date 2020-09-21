@@ -1,6 +1,7 @@
 import { marker } from '@ngneat/transloco-keys-manager/marker';
 import { Transform, Type, Expose, Exclude } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsOptional, Matches, ValidateNested } from 'class-validator-multi-lang';
+import { ExposeNested } from 'ngx-dynamic-form-builder';
 import { serializeModel, transformDateToString, transformStringToDate } from '../utils/custom-transforms';
 import { Department } from './department';
 
@@ -46,6 +47,7 @@ export class User {
   @ValidateNested()
   @IsOptional()
   @Type(serializeModel(Department))
+  @ExposeNested()
   department: Department = new Department();
 
   @Transform(transformStringToDate, { toClassOnly: true })
