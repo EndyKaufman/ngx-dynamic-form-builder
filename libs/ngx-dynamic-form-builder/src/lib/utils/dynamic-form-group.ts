@@ -881,7 +881,7 @@ export function getClassValidators<TModel>(
     return {
       type: 'sync',
       validator: function (control: FormControl) {
-        let parent: any = control.parent;
+        let parent: any = control.parent!;
         let validateErrors: any =
           (parent &&
             parent.value &&
