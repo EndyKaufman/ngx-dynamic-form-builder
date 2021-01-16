@@ -9,7 +9,7 @@ import {
   ValidatorFn,
 } from '@angular/forms';
 import { classToPlain, ClassTransformOptions, plainToClass } from 'class-transformer';
-import { ClassType } from 'class-transformer/ClassTransformer';
+import { ClassConstructor } from 'class-transformer';
 import {
   getMetadataStorage,
   validateSync,
@@ -61,7 +61,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
   protected _validateAllFormFields: boolean;
 
   constructor(
-    public factoryModel: ClassType<TModel>,
+    public factoryModel: ClassConstructor<TModel>,
     public fields?: FormModel<TModel>,
     protected _validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
     protected _asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null,
@@ -363,7 +363,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     return cloneDeep(object);
   }
 
-  plainToClass<TClassModel, Object>(cls: ClassType<TClassModel>, plain: Object) {
+  plainToClass<TClassModel, Object>(cls: ClassConstructor<TClassModel>, plain: Object) {
     if (hasToJSON(getOrSetEmptyObject(cls))) {
       return new cls(plain);
     }
@@ -712,7 +712,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
 }
 
 export function getClassValidators<TModel>(
-  factoryModel: ClassType<TModel>,
+  factoryModel: ClassConstructor<TModel>,
   fields?: Dictionary,
   validatorOptions?: ValidatorOptions
 ) {
@@ -881,8 +881,8 @@ export function getClassValidators<TModel>(
     return {
       type: 'sync',
       validator: function (control: FormControl) {
-        let parent: any = control.parent!;
-        let validateErrors: any =
+        let parent = control.parent;
+        let validateErrors: ShortValidationErrors | null =
           (parent &&
             parent.value &&
             getValidateErrors(
@@ -891,7 +891,7 @@ export function getClassValidators<TModel>(
               validatorOptions
             )) ||
           {};
-        let validateState: any = Object.keys(validateErrors).length === 0;
+        let validateState: boolean | null = Object.keys(validateErrors || {}).length === 0;
         const result = getIsValidResult(validateState, validationMetadata, 'nestedValidate');
         parent = null;
         validateErrors = null;
