@@ -1,10 +1,10 @@
 import { AbstractControlOptions, AsyncValidatorFn, FormBuilder, ValidatorFn } from '@angular/forms';
-import { ClassType } from 'class-transformer/ClassTransformer';
+import { ClassConstructor } from 'class-transformer';
 import 'reflect-metadata';
 import {
   DEFAULT_CLASS_TRANSFORM_OPTIONS,
-  DEFAULT_CLASS_VALIDATOR_OPTIONS,
   DEFAULT_CLASS_TRANSFORM_TO_PLAIN_OPTIONS,
+  DEFAULT_CLASS_VALIDATOR_OPTIONS,
 } from '../constants/default';
 import { DynamicFormBuilderOptions } from '../types/dynamic-form-builder-options';
 import {
@@ -29,7 +29,7 @@ export class DynamicFormBuilder extends FormBuilder {
   // Public API
 
   group<TModel>(
-    factoryModel: ClassType<TModel>,
+    factoryModel: ClassConstructor<TModel>,
     controlsConfig?: FormModel<TModel> | DynamicFormGroupConfig | { [key: string]: any },
     options?: AbstractControlOptions | DynamicFormGroupConfig
   ): DynamicFormGroup<TModel> {
@@ -232,7 +232,7 @@ export class DynamicFormBuilder extends FormBuilder {
   }
 
   public factoryDynamicFormGroup<TModel>(
-    factoryModel: ClassType<TModel>,
+    factoryModel: ClassConstructor<TModel>,
     fields?: FormModel<TModel>,
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
     asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null,
@@ -254,7 +254,7 @@ export class DynamicFormBuilder extends FormBuilder {
   /**
    * Recursively creates an empty object from the data provided
    */
-  protected createEmptyObject<TModel>(factoryModel: ClassType<TModel>, data = {}) {
+  protected createEmptyObject<TModel>(factoryModel: ClassConstructor<TModel>, data = {}) {
     let modifed = false;
 
     let object: any = factoryModel ? this.emptyDynamicFormGroup.plainToClass(factoryModel, data) : data;

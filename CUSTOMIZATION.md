@@ -6,7 +6,7 @@
 
 ```typescript
 import { FormGroup } from '@angular/forms';
-import { ClassType } from 'class-transformer/ClassTransformer';
+import { ClassConstructor } from 'class-transformer';
 import { classToClass, plainToClass } from 'class-transformer';
 
 export class DynamicFormGroup<TModel> extends FormGroup {
@@ -19,7 +19,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
     return cloneDeep(object);
   }
 
-  plainToClass<TClassModel, Object>(cls: ClassType<TClassModel>, plain: Object) {
+  plainToClass<TClassModel, Object>(cls: ClassConstructor<TClassModel>, plain: Object) {
     if (hasToJSON(getOrSetEmptyObject(cls))) {
       return new cls(plain);
     }
@@ -49,7 +49,7 @@ export class DynamicFormGroup<TModel> extends FormGroup {
 ### custom-dynamic-form-group
 
 ```typescript
-import { ClassType } from 'class-transformer/ClassTransformer';
+import { ClassConstructor } from 'class-transformer';
 import { JsonConvert } from 'json2typescript';
 import { DynamicFormGroup } from 'ngx-dynamic-form-builder';
 const cloneDeep = require('lodash.clonedeep');
@@ -59,8 +59,8 @@ export class CustomDynamicFormGroup<TModel> extends DynamicFormGroup<TModel> {
   classToClass<TClassModel>(object: TClassModel) {
     return cloneDeep(object);
   }
-  plainToClass<TClassModel, Object>(cls: ClassType<TClassModel>, plain: Object) {
-    let object: ClassType<TClassModel>;
+  plainToClass<TClassModel, Object>(cls: ClassConstructor<TClassModel>, plain: Object) {
+    let object: ClassConstructor<TClassModel>;
     try {
       object = jsonConvert.deserialize(plain, cls);
     } catch (e) {

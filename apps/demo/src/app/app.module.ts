@@ -29,7 +29,11 @@ import { TranslocoRootModule } from './transloco/transloco-root.module';
     BrowserAnimationsModule,
     BrowserModule.withServerTransition({ appId: 'ngx-dynamic-form-builder' }),
     NavbarModule.forRoot(),
-    RouterModule.forRoot(AppRoutes, { preloadingStrategy: PreloadAllModules, initialNavigation: 'enabled' }),
+    RouterModule.forRoot(AppRoutes, {
+      preloadingStrategy: PreloadAllModules,
+      initialNavigation: 'enabled',
+      relativeLinkResolution: 'legacy',
+    }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     TranslocoRootModule,
     MatDatepickerModule,
