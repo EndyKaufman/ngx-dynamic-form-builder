@@ -30,7 +30,7 @@ MIT
 MIT
 The MIT License
 
-Copyright (c) 2020 Google LLC.
+Copyright (c) 2021 Google LLC.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -89,7 +89,7 @@ MIT
 MIT
 The MIT License
 
-Copyright (c) 2020 Google LLC.
+Copyright (c) 2021 Google LLC.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -114,7 +114,7 @@ THE SOFTWARE.
 MIT
 The MIT License
 
-Copyright (c) 2020 Google LLC.
+Copyright (c) 2021 Google LLC.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -171,12 +171,13 @@ THE SOFTWARE.
 
 
 @ngneat/transloco-keys-manager
+MIT
 
 class-transformer
 MIT
 The MIT License
 
-Copyright (c) 2015-2020 Umed Khudoiberdiev
+Copyright (c) 2015-2020 TypeStack
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -425,6 +426,7 @@ all code is your original work. `</legalese>`
 
 ## Marked
 
+Copyright (c) 2018+, MarkedJS (https://github.com/markedjs/)
 Copyright (c) 2011-2018, Christopher Jeffrey (https://github.com/chjj/)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -447,8 +449,8 @@ THE SOFTWARE.
 
 ## Markdown
 
-Copyright © 2004, John Gruber 
-http://daringfireball.net/ 
+Copyright © 2004, John Gruber
+http://daringfireball.net/
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:

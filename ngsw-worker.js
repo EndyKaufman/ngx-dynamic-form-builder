@@ -244,6 +244,12 @@
             return `${error}`;
         }
     }
+    class SwUnrecoverableStateError extends SwCriticalError {
+        constructor() {
+            super(...arguments);
+            this.isUnrecoverableState = true;
+        }
+    }
 
     /**
      * @license
@@ -255,7 +261,7 @@
     /**
      * Compute the SHA1 of the given string
      *
-     * see http://csrc.nist.gov/publications/fips/fips180-4/fips-180-4.pdf
+     * see https://csrc.nist.gov/publications/fips/fips180-4/fips-180-4.pdf
      *
      * WARNING: this function has not been designed not tested with security in mind.
      *          DO NOT USE IT IN A SECURITY SENSITIVE CONTEXT.
@@ -725,17 +731,16 @@
                     // without the risk of stale data, at the expense of a duplicate request in the event of
                     // a stale response.
                     // Fetch the resource from the network (possibly hitting the HTTP cache).
-                    const networkResult = yield this.safeFetch(req);
-                    // Decide whether a cache-busted request is necessary. It might be for two independent
-                    // reasons: either the non-cache-busted request failed (hopefully transiently) or if the
-                    // hash of the content retrieved does not match the canonical hash from the manifest. It's
-                    // only valid to access the content of the first response if the request was successful.
-                    let makeCacheBustedRequest = networkResult.ok;
+                    let response = yield this.safeFetch(req);
+                    // Decide whether a cache-busted request is necessary. A cache-busted request is necessary
+                    // only if the request was successful but the hash of the retrieved contents does not match
+                    // the canonical hash from the manifest.
+                    let makeCacheBustedRequest = response.ok;
                     if (makeCacheBustedRequest) {
                         // The request was successful. A cache-busted request is only necessary if the hashes
-                        // don't match. Compare them, making sure to clone the response so it can be used later
-                        // if it proves to be valid.
-                        const fetchedHash = sha1Binary(yield networkResult.clone().arrayBuffer());
+                        // don't match.
+                        // (Make sure to clone the response so it can be used later if it proves to be valid.)
+                        const fetchedHash = sha1Binary(yield response.clone().arrayBuffer());
                         makeCacheBustedRequest = (fetchedHash !== canonicalHash);
                     }
                     // Make a cache busted request to the network, if necessary.
@@ -746,24 +751,27 @@
                         // request will differentiate these two situations.
                         // TODO: handle case where the URL has parameters already (unlikely for assets).
                         const cacheBustReq = this.adapter.newRequest(this.cacheBust(req.url));
-                        const cacheBustedResult = yield this.safeFetch(cacheBustReq);
-                        // If the response was unsuccessful, there's nothing more that can be done.
-                        if (!cacheBustedResult.ok) {
-                            throw new SwCriticalError(`Response not Ok (cacheBustedFetchFromNetwork): cache busted request for ${req.url} returned response ${cacheBustedResult.status} ${cacheBustedResult.statusText}`);
+                        response = yield this.safeFetch(cacheBustReq);
+                        // If the response was successful, check the contents against the canonical hash.
+                        if (response.ok) {
+                            // Hash the contents.
+                            // (Make sure to clone the response so it can be used later if it proves to be valid.)
+                            const cacheBustedHash = sha1Binary(yield response.clone().arrayBuffer());
+                            // If the cache-busted version doesn't match, then the manifest is not an accurate
+                            // representation of the server's current set of files, and the SW should give up.
+                            if (canonicalHash !== cacheBustedHash) {
+                                throw new SwCriticalError(`Hash mismatch (cacheBustedFetchFromNetwork): ${req.url}: expected ${canonicalHash}, got ${cacheBustedHash} (after cache busting)`);
+                            }
                         }
-                        // Hash the contents.
-                        const cacheBustedHash = sha1Binary(yield cacheBustedResult.clone().arrayBuffer());
-                        // If the cache-busted version doesn't match, then the manifest is not an accurate
-                        // representation of the server's current set of files, and the SW should give up.
-                        if (canonicalHash !== cacheBustedHash) {
-                            throw new SwCriticalError(`Hash mismatch (cacheBustedFetchFromNetwork): ${req.url}: expected ${canonicalHash}, got ${cacheBustedHash} (after cache busting)`);
-                        }
-                        // If it does match, then use the cache-busted result.
-                        return cacheBustedResult;
                     }
-                    // Excellent, the version from the network matched on the first try, with no need for
-                    // cache-busting. Use it.
-                    return networkResult;
+                    // At this point, `response` is either successful with a matching hash or is unsuccessful.
+                    // Before returning it, check whether it failed with a 404 status. This would signify an
+                    // unrecoverable state.
+                    if (!response.ok && (response.status === 404)) {
+                        throw new SwUnrecoverableStateError(`Failed to retrieve hashed resource from the server. (AssetGroup: ${this.config.name} | URL: ${url})`);
+                    }
+                    // Return the response (successful or unsuccessful).
+                    return response;
                 }
                 else {
                     // This URL doesn't exist in our hash database, so it must be requested directly.
@@ -1536,6 +1544,18 @@
                 // Next, check if this is a navigation request for a route. Detect circular
                 // navigations by checking if the request URL is the same as the index URL.
                 if (this.adapter.normalizeUrl(req.url) !== this.indexUrl && this.isNavigationRequest(req)) {
+                    if (this.manifest.navigationRequestStrategy === 'freshness') {
+                        // For navigation requests the freshness was configured. The request will always go trough
+                        // the network and fallback to default `handleFetch` behavior in case of failure.
+                        try {
+                            return yield this.scope.fetch(req);
+                        }
+                        catch (_a) {
+                            // Navigation request failed - application is likely offline.
+                            // Proceed forward to the default `handleFetch` behavior, where
+                            // `indexUrl` will be requested and it should be available in the cache.
+                        }
+                    }
                     // This was a navigation request. Re-enter `handleFetch` with a request for
                     // the URL.
                     return this.handleFetch(this.adapter.newRequest(this.indexUrl), context);
@@ -1745,9 +1765,10 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
      * found in the LICENSE file at https://angular.io/license
      */
     class IdleScheduler {
-        constructor(adapter, threshold, debug) {
+        constructor(adapter, delay, maxDelay, debug) {
             this.adapter = adapter;
-            this.threshold = threshold;
+            this.delay = delay;
+            this.maxDelay = maxDelay;
             this.debug = debug;
             this.queue = [];
             this.scheduled = null;
@@ -1755,8 +1776,10 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
             this.emptyResolve = null;
             this.lastTrigger = null;
             this.lastRun = null;
+            this.oldestScheduledAt = null;
         }
         trigger() {
+            var _a;
             return __awaiter(this, void 0, void 0, function* () {
                 this.lastTrigger = this.adapter.time;
                 if (this.queue.length === 0) {
@@ -1769,7 +1792,11 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
                     cancel: false,
                 };
                 this.scheduled = scheduled;
-                yield this.adapter.timeout(this.threshold);
+                // Ensure that no task remains pending for longer than `this.maxDelay` ms.
+                const now = this.adapter.time;
+                const maxDelay = Math.max(0, ((_a = this.oldestScheduledAt) !== null && _a !== void 0 ? _a : now) + this.maxDelay - now);
+                const delay = Math.min(maxDelay, this.delay);
+                yield this.adapter.timeout(delay);
                 if (scheduled.cancel) {
                     return;
                 }
@@ -1798,6 +1825,7 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
                     this.emptyResolve = null;
                 }
                 this.empty = Promise.resolve();
+                this.oldestScheduledAt = null;
             });
         }
         schedule(desc, run) {
@@ -1806,6 +1834,9 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
                 this.empty = new Promise(resolve => {
                     this.emptyResolve = resolve;
                 });
+            }
+            if (this.oldestScheduledAt === null) {
+                this.oldestScheduledAt = this.adapter.time;
             }
         }
         get size() {
@@ -1848,7 +1879,8 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
      * Use of this source code is governed by an MIT-style license that can be
      * found in the LICENSE file at https://angular.io/license
      */
-    const IDLE_THRESHOLD = 5000;
+    const IDLE_DELAY = 5000;
+    const MAX_IDLE_DELAY = 30000;
     const SUPPORTED_CONFIG_VERSION = 1;
     const NOTIFICATION_OPTION_NAMES = [
         'actions', 'badge', 'body', 'data', 'dir', 'icon', 'image', 'lang', 'renotify',
@@ -1960,7 +1992,7 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
             // The debugger generates debug pages in response to debugging requests.
             this.debugger = new DebugHandler(this, this.adapter);
             // The IdleScheduler will execute idle tasks after a given delay.
-            this.idle = new IdleScheduler(this.adapter, IDLE_THRESHOLD, this.debugger);
+            this.idle = new IdleScheduler(this.adapter, IDLE_DELAY, MAX_IDLE_DELAY, this.debugger);
         }
         /**
          * The handler for fetch events.
@@ -2195,39 +2227,42 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
                 // Decide which version of the app to use to serve this request. This is asynchronous as in
                 // some cases, a record will need to be written to disk about the assignment that is made.
                 const appVersion = yield this.assignVersion(event);
-                // Bail out
-                if (appVersion === null) {
-                    event.waitUntil(this.idle.trigger());
-                    return this.safeFetch(event.request);
-                }
                 let res = null;
                 try {
-                    // Handle the request. First try the AppVersion. If that doesn't work, fall back on the
-                    // network.
-                    res = yield appVersion.handleFetch(event.request, event);
-                }
-                catch (err) {
-                    if (err.isCritical) {
-                        // Something went wrong with the activation of this version.
-                        yield this.versionFailed(appVersion, err);
-                        event.waitUntil(this.idle.trigger());
+                    if (appVersion !== null) {
+                        try {
+                            // Handle the request. First try the AppVersion. If that doesn't work, fall back on the
+                            // network.
+                            res = yield appVersion.handleFetch(event.request, event);
+                        }
+                        catch (err) {
+                            if (err.isUnrecoverableState) {
+                                yield this.notifyClientsAboutUnrecoverableState(appVersion, err.message);
+                            }
+                            if (err.isCritical) {
+                                // Something went wrong with the activation of this version.
+                                yield this.versionFailed(appVersion, err);
+                                return this.safeFetch(event.request);
+                            }
+                            throw err;
+                        }
+                    }
+                    // The response will be `null` only if no `AppVersion` can be assigned to the request or if
+                    // the assigned `AppVersion`'s manifest doesn't specify what to do about the request.
+                    // In that case, just fall back on the network.
+                    if (res === null) {
                         return this.safeFetch(event.request);
                     }
-                    throw err;
+                    // The `AppVersion` returned a usable response, so return it.
+                    return res;
                 }
-                // The AppVersion will only return null if the manifest doesn't specify what to do about this
-                // request. In that case, just fall back on the network.
-                if (res === null) {
+                finally {
+                    // Trigger the idle scheduling system. The Promise returned by `trigger()` will resolve after
+                    // a specific amount of time has passed. If `trigger()` hasn't been called again by then (e.g.
+                    // on a subsequent request), the idle task queue will be drained and the `Promise` won't
+                    // be resolved until that operation is complete as well.
                     event.waitUntil(this.idle.trigger());
-                    return this.safeFetch(event.request);
                 }
-                // Trigger the idle scheduling system. The Promise returned by trigger() will resolve after
-                // a specific amount of time has passed. If trigger() hasn't been called again by then (e.g.
-                // on a subsequent request), the idle task queue will be drained and the Promise won't resolve
-                // until that operation is complete as well.
-                event.waitUntil(this.idle.trigger());
-                // The AppVersion returned a usable response, so return it.
-                return res;
             });
         }
         /**
@@ -2452,18 +2487,9 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
         }
         deleteAllCaches() {
             return __awaiter(this, void 0, void 0, function* () {
-                yield (yield this.scope.caches.keys())
-                    // The Chrome debugger is not able to render the syntax properly when the
-                    // code contains backticks. This is a known issue in Chrome and they have an
-                    // open [issue](https://bugs.chromium.org/p/chromium/issues/detail?id=659515) for that.
-                    // As a work-around for the time being, we can use \\ ` at the end of the line.
-                    .filter(key => key.startsWith(`${this.adapter.cacheNamePrefix}:`)) // `
-                    .reduce((previous, key) => __awaiter(this, void 0, void 0, function* () {
-                    yield Promise.all([
-                        previous,
-                        this.scope.caches.delete(key),
-                    ]);
-                }), Promise.resolve());
+                const cacheNames = yield this.scope.caches.keys();
+                const ownCacheNames = cacheNames.filter(name => name.startsWith(`${this.adapter.cacheNamePrefix}:`));
+                yield Promise.all(ownCacheNames.map(name => this.scope.caches.delete(name)));
             });
         }
         /**
@@ -2718,12 +2744,28 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
                 appData: manifest.appData,
             };
         }
+        notifyClientsAboutUnrecoverableState(appVersion, reason) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const broken = Array.from(this.versions.entries()).find(([hash, version]) => version === appVersion);
+                if (broken === undefined) {
+                    // This version is no longer in use anyway, so nobody cares.
+                    return;
+                }
+                const brokenHash = broken[0];
+                const affectedClients = Array.from(this.clientVersionMap.entries())
+                    .filter(([clientId, hash]) => hash === brokenHash)
+                    .map(([clientId]) => clientId);
+                yield Promise.all(affectedClients.map((clientId) => __awaiter(this, void 0, void 0, function* () {
+                    const client = yield this.scope.clients.get(clientId);
+                    client.postMessage({ type: 'UNRECOVERABLE_STATE', reason });
+                })));
+            });
+        }
         notifyClientsAboutUpdate(next) {
             return __awaiter(this, void 0, void 0, function* () {
                 yield this.initialized;
                 const clients = yield this.scope.clients.matchAll();
-                yield clients.reduce((previous, client) => __awaiter(this, void 0, void 0, function* () {
-                    yield previous;
+                yield Promise.all(clients.map((client) => __awaiter(this, void 0, void 0, function* () {
                     // Firstly, determine which version this client is on.
                     const version = this.clientVersionMap.get(client.id);
                     if (version === undefined) {
@@ -2742,7 +2784,7 @@ ${msgIdle}`, { headers: this.adapter.newHeaders({ 'Content-Type': 'text/plain' }
                         available: this.mergeHashWithAppData(next.manifest, this.latestHash),
                     };
                     client.postMessage(notice);
-                }), Promise.resolve());
+                })));
             });
         }
         broadcast(msg) {
