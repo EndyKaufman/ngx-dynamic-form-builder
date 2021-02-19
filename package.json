@@ -95,7 +95,7 @@
     "lodash-es": "^4.17.20",
     "lodash.clonedeep": "^4.5.0",
     "lodash.mergewith": "^4.6.2",
-    "ngx-markdown": "^11.0.1",
+    "ngx-markdown": "^11.1.0",
     "prismjs": "^1.23.0",
     "rxjs": "^6.6.3",
     "string-hash": "^1.1.3",
