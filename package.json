@@ -86,7 +86,7 @@
     "@angular/pwa": "^0.1100.7",
     "@angular/router": "^11.0.9",
     "@angular/service-worker": "^11.0.9",
-    "@ngneat/transloco": "^2.20.0",
+    "@ngneat/transloco": "^3.0.0",
     "@types/prismjs": "^1.16.2",
     "class-transformer": "^0.3.2",
     "class-validator-multi-lang": "^0.130.100",
