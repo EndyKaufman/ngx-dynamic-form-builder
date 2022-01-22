@@ -1,7 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
-import { marker } from '@ngneat/transloco-keys-manager/marker';
 import { DynamicFormBuilder, DynamicFormGroup } from 'ngx-dynamic-form-builder';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -43,7 +47,7 @@ export class I18nCompanyPanelComponent implements OnInit {
   savedItem?: Company;
 
   constructor(private httpClient: HttpClient) {
-    this.form = this.fb.group(
+    this.form = this.fb.rootFormGroup(
       Company,
       {
         name: '',
@@ -62,28 +66,26 @@ export class I18nCompanyPanelComponent implements OnInit {
       name: '',
       regionNum: 0,
     });
-    this.form.validateAllFormFields();
   }
   onLoadClick(): void {
-    this.savedItem = undefined;
+    this.savedItem;
     this.form.object = this.item;
-    this.form.validateAllFormFields();
   }
   onClearClick(): void {
-    this.savedItem = undefined;
+    this.savedItem;
     this.form.object = new Company();
-    this.form.validateAllFormFields();
   }
   onSaveClick(): void {
-    this.form.validateAllFormFields();
     if (this.form.valid) {
       this.savedItem = this.form.object;
     } else {
-      this.savedItem = undefined;
+      this.savedItem;
     }
   }
   changeLanguage(newLanguageCode: MatSelectChange) {
-    const foundedLang = this.langs.find((lang) => lang.code === newLanguageCode.value);
+    const foundedLang = this.langs.find(
+      (lang) => lang.code === newLanguageCode.value
+    );
     if (foundedLang) {
       if (!foundedLang.validatorMessages) {
         forkJoin({
@@ -93,37 +95,43 @@ export class I18nCompanyPanelComponent implements OnInit {
             )
             .pipe(catchError(() => of({}))),
           titles: this.httpClient
-            .get<{ [key: string]: string }>(`${document.baseURI}assets/i18n/${newLanguageCode.value}.json`)
+            .get<{ [key: string]: string }>(
+              `${document.baseURI}assets/i18n/${newLanguageCode.value}.json`
+            )
             .pipe(catchError(() => of({}))),
         }).subscribe(({ messages, titles }) => {
           if (foundedLang) {
             foundedLang.validatorMessages = messages;
             foundedLang.validatorTitles = titles;
-            this.form.setValidatorOptions({
-              messages: {
-                ...foundedLang.validatorMessages,
-                ...foundedLang.staticValidatorMessages,
-                ...foundedLang.validatorTitles,
-                ...foundedLang.staticValidatorTitles,
-              },
-              titles: {
-                ...foundedLang.validatorTitles,
-                ...foundedLang.staticValidatorTitles,
+            this.form.patchDynamicFormBuilderOptions({
+              classValidatorOptions: {
+                messages: {
+                  ...foundedLang.validatorMessages,
+                  ...foundedLang.staticValidatorMessages,
+                  ...foundedLang.validatorTitles,
+                  ...foundedLang.staticValidatorTitles,
+                },
+                titles: {
+                  ...foundedLang.validatorTitles,
+                  ...foundedLang.staticValidatorTitles,
+                },
               },
             });
           }
         });
       } else {
-        this.form.setValidatorOptions({
-          messages: {
-            ...foundedLang.validatorMessages,
-            ...foundedLang.staticValidatorMessages,
-            ...foundedLang.validatorTitles,
-            ...foundedLang.staticValidatorTitles,
-          },
-          titles: {
-            ...foundedLang.validatorTitles,
-            ...foundedLang.staticValidatorTitles,
+        this.form.patchDynamicFormBuilderOptions({
+          classValidatorOptions: {
+            messages: {
+              ...foundedLang.validatorMessages,
+              ...foundedLang.staticValidatorMessages,
+              ...foundedLang.validatorTitles,
+              ...foundedLang.staticValidatorTitles,
+            },
+            titles: {
+              ...foundedLang.validatorTitles,
+              ...foundedLang.staticValidatorTitles,
+            },
           },
         });
       }

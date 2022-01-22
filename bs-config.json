@@ -1,6 +1,6 @@
 {
   "port": 4201,
   "server": {
-    "baseDir": "./dist/demo"
+    "baseDir": "./dist/apps/demo"
   }
 }

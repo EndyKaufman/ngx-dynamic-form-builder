@@ -7,28 +7,37 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 })
 export class ExperimentalPageComponent {
   source = {
-    html: require('!!raw-loader!./../../panels/exp-user-panel/exp-user-panel.component.html').default,
-    ts: require('!!raw-loader!./../../panels/exp-user-panel/exp-user-panel.component.ts').default,
+    html: require('!!raw-loader!./../../panels/exp-user-panel/exp-user-panel.component.html')
+      .default,
+    ts: require('!!raw-loader!./../../panels/exp-user-panel/exp-user-panel.component.ts')
+      .default,
     launch: {
-      location: 'https://stackblitz.com/edit/ngx-dynamic-form-builder-experimental',
+      location:
+        'https://stackblitz.com/edit/ngx-dynamic-form-builder-experimental',
       tooltip: `Edit in http://stackblitz.com`,
     },
   };
 
   loginSource = {
-    html: require('!!raw-loader!./../../panels/exp-login-panel/exp-login-panel.component.html').default,
-    ts: require('!!raw-loader!./../../panels/exp-login-panel/exp-login-panel.component.ts').default,
+    html: require('!!raw-loader!./../../panels/exp-login-panel/exp-login-panel.component.html')
+      .default,
+    ts: require('!!raw-loader!./../../panels/exp-login-panel/exp-login-panel.component.ts')
+      .default,
     launch: {
-      location: 'https://stackblitz.com/edit/ngx-dynamic-form-builder-experimental-login',
+      location:
+        'https://stackblitz.com/edit/ngx-dynamic-form-builder-experimental-login',
       tooltip: `Edit in http://stackblitz.com`,
     },
   };
 
   registrationSource = {
-    html: require('!!raw-loader!./../../panels/exp-registration-panel/exp-registration-panel.component.html').default,
-    ts: require('!!raw-loader!./../../panels/exp-registration-panel/exp-registration-panel.component.ts').default,
+    html: require('!!raw-loader!./../../panels/exp-registration-panel/exp-registration-panel.component.html')
+      .default,
+    ts: require('!!raw-loader!./../../panels/exp-registration-panel/exp-registration-panel.component.ts')
+      .default,
     launch: {
-      location: 'https://stackblitz.com/edit/ngx-dynamic-form-builder-experimental-login',
+      location:
+        'https://stackblitz.com/edit/ngx-dynamic-form-builder-experimental-login',
       tooltip: `Edit in http://stackblitz.com`,
     },
   };
@@ -42,17 +51,20 @@ export class ExperimentalPageComponent {
     {
       name: 'exp-department.ts',
       language: 'javascript',
-      content: require('!!raw-loader!../../shared/models/exp-department.ts').default,
+      content: require('!!raw-loader!../../shared/models/exp-department.ts')
+        .default,
     },
     {
       name: 'exp-company.ts',
       language: 'javascript',
-      content: require('!!raw-loader!../../shared/models/exp-company.ts').default,
+      content: require('!!raw-loader!../../shared/models/exp-company.ts')
+        .default,
     },
     {
       name: 'custom-validators.ts',
       language: 'javascript',
-      content: require('!!raw-loader!../../shared/utils/custom-validators.ts').default,
+      content: require('!!raw-loader!../../shared/utils/custom-validators.ts')
+        .default,
     },
   ];
 }

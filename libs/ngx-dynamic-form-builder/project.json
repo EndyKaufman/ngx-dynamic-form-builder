@@ -1,0 +1,42 @@
+{
+  "projectType": "library",
+  "root": "libs/ngx-dynamic-form-builder",
+  "sourceRoot": "libs/ngx-dynamic-form-builder/src",
+  "prefix": "ngx-dynamic-form-builder-workspace",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:package",
+      "outputs": ["dist/libs/ngx-dynamic-form-builder"],
+      "options": {
+        "project": "libs/ngx-dynamic-form-builder/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/ngx-dynamic-form-builder/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/ngx-dynamic-form-builder/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/ngx-dynamic-form-builder"],
+      "options": {
+        "jestConfig": "libs/ngx-dynamic-form-builder/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/ngx-dynamic-form-builder/src/**/*.ts",
+          "libs/ngx-dynamic-form-builder/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

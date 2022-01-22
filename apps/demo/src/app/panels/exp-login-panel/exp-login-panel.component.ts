@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { DynamicFormBuilder, DynamicFormGroup } from 'ngx-dynamic-form-builder';
 import { ExpUser } from '../../shared/models/exp-user';
 
@@ -15,23 +15,25 @@ export class ExpLoginPanelComponent implements OnInit {
   savedItem?: ExpUser;
 
   constructor() {
-    this.form = this.fb.group(ExpUser, {
-      classValidatorOptions: {
-        groups: ['guest'],
-      },
-    });
+    this.form = this.fb.rootFormGroup(
+      ExpUser,
+      {},
+      {
+        classValidatorOptions: {
+          groups: ['guest'],
+        },
+      }
+    );
   }
   ngOnInit() {
-    this.savedItem = undefined;
+    this.savedItem;
     this.form.object = new ExpUser();
-    this.form.validateAllFormFields();
   }
   onLoginClick(): void {
-    this.form.validateAllFormFields();
     if (this.form.valid) {
       this.savedItem = this.form.object;
     } else {
-      this.savedItem = undefined;
+      this.savedItem;
     }
   }
 }

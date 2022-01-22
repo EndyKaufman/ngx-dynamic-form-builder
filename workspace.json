@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "projects": {
+    "demo": "apps/demo",
+    "ngx-dynamic-form-builder": "libs/ngx-dynamic-form-builder"
+  }
+}

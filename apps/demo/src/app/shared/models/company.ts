@@ -1,5 +1,13 @@
 import { marker } from '@ngneat/transloco-keys-manager/marker';
-import { IsNotEmpty, IsOptional, Max, MaxLength, Min, Validate } from 'class-validator-multi-lang';
+import { Expose } from 'class-transformer-global-storage';
+import {
+  IsNotEmpty,
+  IsOptional,
+  Max,
+  MaxLength,
+  Min,
+  Validate,
+} from 'class-validator-multi-lang';
 import { TextLengthMore15 } from '../utils/custom-validators';
 export class Company {
   static strings = {
@@ -8,6 +16,7 @@ export class Company {
     regionNum: marker('Region num'),
   };
 
+  @Expose()
   id: number;
 
   @Validate(TextLengthMore15, {
@@ -15,11 +24,13 @@ export class Company {
   })
   @IsNotEmpty()
   @MaxLength(20)
+  @Expose()
   name: string;
 
   @IsOptional()
   @Min(1)
   @Max(99)
+  @Expose()
   regionNum: number;
 
   toString() {
@@ -30,6 +41,7 @@ export class Company {
     return arr.join(' ');
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(data?: any) {
     if (data === undefined) {
       data = {};
@@ -37,11 +49,5 @@ export class Company {
     this.id = data.id;
     this.name = data.name;
     this.regionNum = data.regionNum;
-  }
-
-  toJSON() {
-    return {
-      ...this,
-    };
   }
 }

@@ -1,7 +1,7 @@
-
 :root {
-  --ngx-docs-example-box-shadow: 0 2px 2px rgba(0,0,0,.24), 0 0 2px rgba(0,0,0,.12);
-  --ngx-docs-example-border: 1px solid rgba(0,0,0,.03);
+  --ngx-docs-example-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24),
+    0 0 2px rgba(0, 0, 0, 0.12);
+  --ngx-docs-example-border: 1px solid rgba(0, 0, 0, 0.03);
 }
 
 .ngx-docs-example {
@@ -16,15 +16,15 @@
     align-items: center;
     flex-direction: row;
     padding: 8px 16px;
-    color: rgba(0,0,0,.54);
-    background: rgba(0,0,0,.03);
+    color: rgba(0, 0, 0, 0.54);
+    background: rgba(0, 0, 0, 0.03);
 
     span.spacer {
       flex: 1 1 auto;
     }
 
     button {
-      min-width: 44px
+      min-width: 44px;
     }
   }
   > .ngx-docs-example-source {
@@ -41,7 +41,7 @@
     padding: 16px 32px;
     box-sizing: border-box;
     border-top: 1px solid #f1f1f1;
-    background: rgba(0,0,0,.03);
+    background: rgba(0, 0, 0, 0.03);
   }
   > .ngx-docs-example-body {
     display: block;
@@ -49,7 +49,7 @@
     padding: 16px 16px;
     box-sizing: border-box;
     border-top: 1px solid #f1f1f1;
-    &.margin-minus-16{
+    &.margin-minus-16 {
       margin-top: -16px;
     }
   }

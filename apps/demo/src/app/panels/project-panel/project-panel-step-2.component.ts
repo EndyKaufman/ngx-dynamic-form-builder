@@ -6,7 +6,6 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ProjectPanelStepsEnum } from '../../shared/enums/project-panel-steps.enum';
 import { Project } from '../../shared/models/project';
-import { Task } from '../../shared/models/task';
 import { ProjectPanelService } from './project-panel.service';
 
 @Component({
@@ -28,7 +27,9 @@ export class ProjectPanelStep2Component implements OnDestroy {
   ) {
     this._activatedRoute.data
       .pipe(takeUntil(this._destroyed$))
-      .subscribe((data) => this._projectPanelService.activatedStep$.next(data.step));
+      .subscribe((data) =>
+        this._projectPanelService.activatedStep$.next(data['step'])
+      );
     this.form = this.createForm();
     this.project$ = this._projectPanelService.project$;
     this.subscribeToProject();
@@ -38,31 +39,37 @@ export class ProjectPanelStep2Component implements OnDestroy {
     this._destroyed$.complete();
   }
   createForm() {
-    return this.fb.group(Project, {
-      classValidatorOptions: {
-        groups: [ProjectPanelStepsEnum.Step2],
-      },
-      validator: this.classLevelValidator,
-    });
+    return this.fb.rootFormGroup(
+      Project,
+      {},
+      {
+        classValidatorOptions: {
+          groups: [ProjectPanelStepsEnum.Step2],
+        },
+        validator: this.classLevelValidator,
+      }
+    );
   }
   classLevelValidator(group: DynamicFormGroup<Project>) {
-    return group.object && group.object.tasks && group.object.tasks.length > 3 ? { maxLength3: true } : null;
-  }
-  createTaskControl() {
-    return this.fb.group(Task);
+    return group.object && group.object.tasks && group.object.tasks.length > 3
+      ? { maxLength3: true }
+      : null;
   }
   getTasksArray() {
     return this.form.get('tasks') as FormArray;
   }
   addTask(): void {
-    this.getTasksArray().push(this.createTaskControl());
+    this.getTasksArray().push(this.fb.group({}));
+    this.form.refresh();
   }
   subscribeToProject() {
-    this.project$.pipe(takeUntil(this._destroyed$)).subscribe((project) => this.loadFormData(project));
+    this.project$
+      .pipe(takeUntil(this._destroyed$))
+      .subscribe((project) => this.loadFormData(project));
   }
   loadFormData(project: Project): void {
     this.form.object = project;
-    this.form.validateAllFormFields();
+    this.form.refresh();
   }
   onPrevStepClick(): void {
     this._projectPanelService.store(this.form.object);
@@ -70,6 +77,8 @@ export class ProjectPanelStep2Component implements OnDestroy {
   }
   onNextStepClick(): void {
     this._projectPanelService.store(this.form.object);
-    this._router.navigate(['../complete'], { relativeTo: this._activatedRoute });
+    this._router.navigate(['../complete'], {
+      relativeTo: this._activatedRoute,
+    });
   }
 }

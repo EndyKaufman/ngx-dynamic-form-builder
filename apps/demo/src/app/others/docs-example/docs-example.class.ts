@@ -7,7 +7,8 @@ export abstract class DocsExampleClass {
     this.view = view;
   }
 
-  switchActive(property: string): boolean {
-    return (this.view[property].active = this.view[property].active === true ? false : true);
+  switchActive(property: keyof ViewInterface): boolean {
+    return (this.view[property].active =
+      this.view[property].active === true ? false : true);
   }
 }

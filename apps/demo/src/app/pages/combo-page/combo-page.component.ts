@@ -8,20 +8,24 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 })
 export class ComboPageComponent {
   source = {
-    html: require('!!raw-loader!./../../panels/combo-company-panel/combo-company-panel.component.html').default,
-    ts: require('!!raw-loader!./../../panels/combo-company-panel/combo-company-panel.component.ts').default,
+    html: require('!!raw-loader!./../../panels/combo-company-panel/combo-company-panel.component.html')
+      .default,
+    ts: require('!!raw-loader!./../../panels/combo-company-panel/combo-company-panel.component.ts')
+      .default,
   };
 
   otherFiles: { name: string; language: string; content: string }[] = [
     {
       name: 'combo-company.ts',
       language: 'javascript',
-      content: require('!!raw-loader!../../shared/models/combo-company.ts').default,
+      content: require('!!raw-loader!../../shared/models/combo-company.ts')
+        .default,
     },
     {
       name: 'custom-validators.ts',
       language: 'javascript',
-      content: require('!!raw-loader!../../shared/utils/custom-validators.ts').default,
+      content: require('!!raw-loader!../../shared/utils/custom-validators.ts')
+        .default,
     },
   ];
 }

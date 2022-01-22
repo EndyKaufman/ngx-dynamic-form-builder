@@ -1,19 +1,22 @@
 <div
-    class="simple-page"
-    fxLayout.gt-md="row"
-    fxLayout.lt-md="column"
-    fxLayoutAlign="space-evenly stretch">
-    <ngx-docs-example
-        title="Simple: company panel"
-        [html]="source.html"
-        [ts]="source.ts"
-        fxFlex.gt-sm="50">
-        <div class="body">
-            <company-panel></company-panel>
-        </div>
-    </ngx-docs-example>
-    <source-tabs
-        title="Other files"
-        [files]="otherFiles"
-        fxFlex.gt-sm="50"></source-tabs>
+  class="simple-page"
+  fxLayout.gt-md="row"
+  fxLayout.lt-md="column"
+  fxLayoutAlign="space-evenly stretch"
+>
+  <ngx-docs-example
+    title="Simple: company panel"
+    [html]="source.html"
+    [ts]="source.ts"
+    fxFlex.gt-sm="50"
+  >
+    <div class="body">
+      <company-panel></company-panel>
+    </div>
+  </ngx-docs-example>
+  <source-tabs
+    title="Other files"
+    [files]="otherFiles"
+    fxFlex.gt-sm="50"
+  ></source-tabs>
 </div>

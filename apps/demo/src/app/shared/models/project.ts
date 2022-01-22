@@ -1,21 +1,28 @@
 import { marker } from '@ngneat/transloco-keys-manager/marker';
-import { Type } from 'class-transformer';
-import { IsNotEmpty, IsOptional, Validate, ValidateNested } from 'class-validator-multi-lang';
+import { Expose, Type } from 'class-transformer-global-storage';
+import {
+  IsNotEmpty,
+  IsOptional,
+  Validate,
+  ValidateNested,
+} from 'class-validator-multi-lang';
 import { ProjectPanelStepsEnum } from '../enums/project-panel-steps.enum';
-import { serializeModel } from '../utils/custom-transforms';
 import { ObjectMustBeNotEmpty } from '../utils/custom-validators';
 import { Task } from './task';
 
 export class Project {
-  id?: number = undefined;
+  @Expose()
+  id?: number;
 
   @IsNotEmpty({
     groups: [ProjectPanelStepsEnum.Step1],
   })
-  name?: string = undefined;
+  @Expose()
+  name?: string;
 
   @IsNotEmpty({ always: true })
-  description?: string = undefined;
+  @Expose()
+  description?: string;
 
   @ValidateNested({
     groups: [ProjectPanelStepsEnum.Step2],
@@ -27,7 +34,8 @@ export class Project {
     ),
   })
   @IsOptional()
-  @Type(serializeModel(Task))
+  @Type(() => Task)
+  @Expose()
   tasks?: Task[] = [];
 
   toString() {

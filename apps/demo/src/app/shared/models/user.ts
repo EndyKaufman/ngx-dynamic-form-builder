@@ -1,8 +1,22 @@
 import { marker } from '@ngneat/transloco-keys-manager/marker';
-import { Transform, Type, Expose, Exclude } from 'class-transformer';
-import { IsEmail, IsNotEmpty, IsOptional, Matches, ValidateNested } from 'class-validator-multi-lang';
+import {
+  Exclude,
+  Expose,
+  Transform,
+  Type,
+} from 'class-transformer-global-storage';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  Matches,
+  ValidateNested,
+} from 'class-validator-multi-lang';
 import { ExposeNested } from 'ngx-dynamic-form-builder';
-import { serializeModel, transformDateToString, transformStringToDate } from '../utils/custom-transforms';
+import {
+  transformDateToString,
+  transformStringToDate,
+} from '../utils/custom-transforms';
 import { Department } from './department';
 
 export class User {
@@ -19,40 +33,43 @@ export class User {
   };
 
   @Expose()
-  id: number;
+  id!: number;
 
   @IsNotEmpty()
   @Expose()
-  username: string;
+  username!: string;
 
   @Expose()
-  password: string;
+  password!: string;
 
   // flag "g" in RegExp work incorrect, please read issue: https://github.com/typestack/class-validator/issues/484
-  @Matches(RegExp('^abc$', 'i'), { message: marker(`it should match the cool 'abc' string`) })
+  @Matches(RegExp('^abc$', 'i'), {
+    message: marker(`it should match the cool 'abc' string`),
+  })
   @Expose()
-  abc: string;
+  abc!: string;
 
   @IsEmail()
   @IsNotEmpty()
   @Expose()
-  email: string;
+  email!: string;
 
   @Exclude()
-  isSuperuser: boolean;
+  isSuperuser!: boolean;
 
   @Expose()
-  isStaff: boolean;
+  isStaff!: boolean;
 
   @ValidateNested()
   @IsOptional()
-  @Type(serializeModel(Department))
+  @Type(() => Department)
   @ExposeNested()
   department: Department = new Department();
 
   @Transform(transformStringToDate, { toClassOnly: true })
   @Transform(transformDateToString, { toPlainOnly: true })
-  dateOfBirth: Date;
+  @Expose()
+  dateOfBirth!: Date;
 
   toString() {
     return this.username;

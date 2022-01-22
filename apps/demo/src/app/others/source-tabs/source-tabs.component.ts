@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'source-tabs',
@@ -7,8 +7,8 @@ import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core
 })
 export class SourceTabsComponent {
   @Input()
-  title: string;
+  title: string | undefined;
 
   @Input()
-  files: { name: string; language: string; content: string }[];
+  files: { name: string; language: string; content: string }[] | undefined;
 }

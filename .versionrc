@@ -1,0 +1,12 @@
+{
+  "bumpFiles": [
+    {
+      "filename": "./libs/ngx-dynamic-form-builder/package.json",
+      "type": "json"
+    },
+    {
+      "filename": "./package.json",
+      "type": "json"
+    }
+  ]
+}

@@ -6,7 +6,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePageComponent {
-  readme = require('!!raw-loader!../../../../../../README.md').default.replace('# ngx-dynamic-form-builder', '');
+  readme = require('!!raw-loader!../../../../../../README.md').default.replace(
+    '# ngx-dynamic-form-builder',
+    ''
+  );
 
   source = {
     html: require('!!raw-loader!./home-page.component.html.txt').default,
@@ -17,7 +20,8 @@ export class HomePageComponent {
     {
       name: 'safe-html.pipe.ts',
       language: 'javascript',
-      content: require('!!raw-loader!../../shared/pipes/safe-html.pipe.ts').default,
+      content: require('!!raw-loader!../../shared/pipes/safe-html.pipe.ts')
+        .default,
     },
     {
       name: 'README.md',

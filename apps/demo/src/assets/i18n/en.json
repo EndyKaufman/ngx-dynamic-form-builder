@@ -8,7 +8,7 @@
   "Username": "Username",
   "Password": "Password",
   "Form status:": "Form status:",
-  "Form class-validator errors:": "Form class-validator errors:",
+  "Form custom validate errors:": "Form custom validate errors:",
   "Form native errors:": "Form native errors:",
   "Login user data:": "Login user data:",
   "Login": "Login",

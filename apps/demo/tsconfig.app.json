@@ -1,16 +1,11 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../out-tsc/app",
-    "target": "es2015",
-    "module": "esnext",
-    "types": [
-      "jasmine",
-      "node"
-    ]
+    "outDir": "../../dist/out-tsc",
+    "types": ["node"],
+    "target": "ES2017"
   },
-  "exclude": [
-    "src/test.ts",
-    "**/*.spec.ts"
-  ]
+  "files": ["src/main.ts", "src/polyfills.ts"],
+  "include": ["src/**/*.d.ts"],
+  "exclude": ["**/*.test.ts", "**/*.spec.ts"]
 }

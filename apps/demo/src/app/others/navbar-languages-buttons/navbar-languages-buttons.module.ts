@@ -7,7 +7,13 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { NavbarLanguagesButtonsComponent } from './navbar-languages-buttons.component';
 
 @NgModule({
-  imports: [CommonModule, MatMenuModule, MatButtonModule, MatIconModule, TranslocoModule],
+  imports: [
+    CommonModule,
+    MatMenuModule,
+    MatButtonModule,
+    MatIconModule,
+    TranslocoModule,
+  ],
   declarations: [NavbarLanguagesButtonsComponent],
   exports: [NavbarLanguagesButtonsComponent],
 })

@@ -1,20 +1,23 @@
 <div
-    class="advanced-page"
-    fxLayout.gt-md="row"
-    fxLayout.lt-md="column"
-    fxLayoutAlign="space-evenly stretch">
-    <ngx-docs-example
-        title="Advanced: user panel"
-        [html]="source.html"
-        [ts]="source.ts"
-        [launch]="source.launch"
-        fxFlex.gt-sm="50">
-        <div class="body">
-            <user-panel></user-panel>
-        </div>
-    </ngx-docs-example>
-    <source-tabs
-        title="Other files"
-        [files]="otherFiles"
-        fxFlex.gt-sm="50"></source-tabs>
+  class="advanced-page"
+  fxLayout.gt-md="row"
+  fxLayout.lt-md="column"
+  fxLayoutAlign="space-evenly stretch"
+>
+  <ngx-docs-example
+    title="Advanced: user panel"
+    [html]="source.html"
+    [ts]="source.ts"
+    [launch]="source.launch"
+    fxFlex.gt-sm="50"
+  >
+    <div class="body">
+      <user-panel></user-panel>
+    </div>
+  </ngx-docs-example>
+  <source-tabs
+    title="Other files"
+    [files]="otherFiles"
+    fxFlex.gt-sm="50"
+  ></source-tabs>
 </div>

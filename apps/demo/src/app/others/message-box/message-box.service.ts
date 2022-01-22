@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
-import { MessageBoxComponent } from './message-box.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MessageBoxComponent } from './message-box.component';
 
 @Injectable()
 export class MessageBoxService {
   constructor(public dialog: MatDialog) {}
 
-  async infoSync(message: string, title: string = 'Info', width: string = '300px') {
+  async infoSync(
+    message: string,
+    title: string = 'Info',
+    width: string = '300px'
+  ) {
     return await this.info(message, title, width);
   }
   info(message: string, title: string = 'Info', width: string = '300px') {
@@ -18,17 +22,21 @@ export class MessageBoxService {
       dialogRef.componentInstance.title = title;
       dialogRef.componentInstance.message = message;
       dialogRef.componentInstance.isInfo = true;
-      dialogRef.componentInstance.yes.subscribe((modal: MessageBoxComponent) => {
+      dialogRef.componentInstance.yes.subscribe(() => {
         dialogRef.close();
         resolve(true);
       });
-      dialogRef.componentInstance.no.subscribe((modal: MessageBoxComponent) => {
+      dialogRef.componentInstance.no.subscribe(() => {
         dialogRef.close();
         reject();
       });
     });
   }
-  async errorSync(message: string, title: string = 'Error', width: string = '300px') {
+  async errorSync(
+    message: string,
+    title: string = 'Error',
+    width: string = '300px'
+  ) {
     return await this.error(message, title, width);
   }
   error(message: string, title: string = 'Error', width: string = '300px') {
@@ -40,11 +48,11 @@ export class MessageBoxService {
       dialogRef.componentInstance.title = title;
       dialogRef.componentInstance.message = message;
       dialogRef.componentInstance.isError = true;
-      dialogRef.componentInstance.yes.subscribe((modal: MessageBoxComponent) => {
+      dialogRef.componentInstance.yes.subscribe(() => {
         dialogRef.close();
         resolve(true);
       });
-      dialogRef.componentInstance.no.subscribe((modal: MessageBoxComponent) => {
+      dialogRef.componentInstance.no.subscribe(() => {
         dialogRef.close();
         reject();
       });

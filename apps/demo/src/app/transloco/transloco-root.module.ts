@@ -3,7 +3,6 @@ import { Injectable, NgModule } from '@angular/core';
 import {
   Translation,
   translocoConfig,
-  TranslocoConfig,
   TranslocoLoader,
   TranslocoMissingHandler,
   TranslocoModule,
@@ -16,7 +15,7 @@ import { catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 export class CustomHandler implements TranslocoMissingHandler {
-  handle(key: string, config: TranslocoConfig) {
+  handle(key: string) {
     return key;
   }
 }
@@ -26,7 +25,9 @@ export class TranslocoHttpLoader implements TranslocoLoader {
   constructor(private http: HttpClient) {}
 
   getTranslation(lang: string) {
-    return this.http.get<Translation>(`${document.baseURI}assets/i18n/${lang}.json`).pipe(catchError(() => of({})));
+    return this.http
+      .get<Translation>(`${document.baseURI}assets/i18n/${lang}.json`)
+      .pipe(catchError(() => of({})));
   }
 }
 

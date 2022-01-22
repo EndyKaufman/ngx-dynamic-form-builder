@@ -7,10 +7,10 @@ import { Language } from '../../shared/interfaces/language-interface';
 })
 export class NavbarLanguagesButtonsComponent {
   @Input()
-  languages: Language[];
+  languages!: Language[];
 
   @Input()
-  current: Language;
+  current!: Language;
 
   @Output()
   currentChange = new EventEmitter<Language>();

@@ -2,13 +2,27 @@
 [![npm version](https://badge.fury.io/js/ngx-dynamic-form-builder.svg)](https://badge.fury.io/js/ngx-dynamic-form-builder)
 [![monthly downloads](https://badgen.net/npm/dm/ngx-dynamic-form-builder)](https://www.npmjs.com/package/ngx-dynamic-form-builder)
 
-[FormBuilder](https://angular.io/api/forms/FormBuilder) + [class-transformer](https://github.com/typestack/class-transformer) + [class-validator-multi-lang](https://github.com/endykaufman/class-validator-multi-lang) = dynamic form group builder for [Angular10+](https://angular.io)
+[FormBuilder](https://angular.io/api/forms/FormBuilder) + [class-transformer-global-storage](https://github.com/petrzjunior/class-transformer) + [class-validator-multi-lang](https://github.com/endykaufman/class-validator-multi-lang) = dynamic form group builder for [Angular12+](https://angular.io)
 
 ## Installation
 
 ```bash
-npm i --save class-transformer class-validator-multi-lang ngx-dynamic-form-builder
+npm i --save class-transformer-global-storage class-validator-multi-lang ngx-dynamic-form-builder
 ```
+
+## BREAKING CHANGE
+
+Version above 2 has a completely rewritten code, partially backwards compatible
+
+Now `@Expose` and `@Exclude` decorators are used to define model fields, the new version is rigidly dependent on class-transform
+
+Dependencies are not used original, but forks with additional necessary properties, when using this library, you need to replace all original imports with forks with modifications
+
+Fork [class-validator-multi-lang](https://github.com/EndyKaufman/class-validator-multi-lang) - adds translation capability for errors (PR:[https://github.com/typestack/class-validator/pull/743](https://github.com/typestack/class-validator/pull/743))
+
+Fork [class-transformer-global-storage](https://github.com/petrzjunior/class-transformer) - adds the ability to get meta information about all used classes (PR:[https://github.com/typestack/class-transformer/pull/929](https://github.com/typestack/class-transformer/pull/929))
+
+For correct parse metadata, need remove `compilerOptions.downlevelIteration` and append `compilerOptions.emitDecoratorMetadata: true` in `tsconfig.json`
 
 ## Links
 
@@ -24,14 +38,18 @@ company.ts
 import { Validate, IsNotEmptym } from 'class-validator-multi-lang';
 import { TextLengthMore15 } from '../utils/custom-validators';
 import { marker } from '@ngneat/transloco-keys-manager/marker';
+import { Expose, Type } from 'class-transformer-global-storage';
 
 export class Company {
-  id: number = undefined;
+  @Expose()
+  id: number;
+
   @Validate(TextLengthMore15, {
     message: marker('The company name must be longer than 15'),
   })
   @IsNotEmpty()
-  name: string = undefined;
+  @Expose()
+  name: string;
 
   constructor(data?: any) {
     if (data === undefined) {
@@ -39,12 +57,6 @@ export class Company {
     }
     this.id = data.id;
     this.name = data.name;
-  }
-
-  toJSON() {
-    return {
-      ...this,
-    };
   }
 }
 ```
@@ -75,12 +87,15 @@ export class AppModule {}
 company-panel.component.html
 
 ```html
-<form [formGroup]="form" *ngIf="form?.customValidateErrors | async as errors" novalidate>
+<form
+  [formGroup]="form"
+  *ngIf="form?.customValidateErrors | async as errors"
+  novalidate
+>
   <input formControlName="name" placeholder="Name" />
   <p *ngIf="errors.name?.length">Error: {{errors.name[0]}}</p>
   <p>Form status: {{ form.status | json }}</p>
   <p>Form class-validator-multi-lang errors: {{errors|json}}</p>
-  <p>Form native errors: {{form?.nativeValidateErrors|async|json}}</p>
   <p *ngIf="savedItem">Saved item: {{savedItem|json}}</p>
   <button (click)="onLoadClick()">Load</button>
   <button (click)="onClearClick()">Clear</button>
@@ -119,21 +134,18 @@ export class CompanyPanelComponent {
     });
   }
   onLoadClick(): void {
-    this.savedItem = undefined;
+    this.savedItem;
     this.form.object = this.item;
-    this.form.validateAllFormFields();
   }
   onClearClick(): void {
-    this.savedItem = undefined;
+    this.savedItem;
     this.form.object = new Company();
-    this.form.validateAllFormFields();
   }
   onSaveClick(): void {
-    this.form.validateAllFormFields();
     if (this.form.valid) {
       this.savedItem = this.form.object;
     } else {
-      this.savedItem = undefined;
+      this.savedItem;
     }
   }
 }
@@ -142,7 +154,10 @@ export class CompanyPanelComponent {
 custom-validators.ts
 
 ```typescript
-import { ValidatorConstraintInterface, ValidatorConstraint } from 'class-validator-multi-lang';
+import {
+  ValidatorConstraintInterface,
+  ValidatorConstraint,
+} from 'class-validator-multi-lang';
 
 @ValidatorConstraint()
 export class TextLengthMore15 implements ValidatorConstraintInterface {
@@ -167,7 +182,8 @@ this.form = this.fb.group(
   {
     classValidatorOptions: {
       messages: {
-        'The company name must be longer than 15': 'company name must be longer than 15 (translate on other language)',
+        'The company name must be longer than 15':
+          'company name must be longer than 15 (translate on other language)',
       },
     },
   }
@@ -177,9 +193,12 @@ this.form = this.fb.group(
 set validation messages on runtime after for exists form group
 
 ```typescript
-this.form.setValidatorOptions({
-  messages: {
-    'The company name must be longer than 15': 'company name must be longer than 15 (translate on other language)',
+this.form.patchDynamicFormBuilderOptions({
+  classValidatorOptions: {
+    messages: {
+      'The company name must be longer than 15':
+        'company name must be longer than 15 (translate on other language)',
+    },
   },
 });
 ```
@@ -187,18 +206,31 @@ this.form.setValidatorOptions({
 set translate property name in error
 
 ```typescript
-this.form.setValidatorOptions({
-  titles: { regionNum: 'number of region (translate property name in error on other language)' },
+this.form.patchDynamicFormBuilderOptions({
+  classValidatorOptions: {
+    titles: {
+      regionNum:
+        'number of region (translate property name in error on other language)',
+    },
+  },
 });
 ```
 
 set validation messages and properties name global for all instance of form group in project
 
 ```typescript
-updateValidatorMessagesStorage({
-  'The company name must be longer than 15': 'company name must be longer than 15 (translate on other language)',
+setGlobalDynamicFormBuilderOptions({
+  classValidatorOptions: {
+    messages: {
+      'The company name must be longer than 15':
+        'company name must be longer than 15 (translate on other language)',
+    },
+    titles: {
+      regionNum:
+        'number of region (translate property name in error on other language)',
+    },
+  },
 });
-updateValidatorTitlesStorage({ regionNum: 'number of region (translate property name in error on other language)' });
 ```
 
 ## Observable Errors
@@ -208,7 +240,11 @@ The customValidateErrors property can be subscribed for cases in which your code
 company-panel.component.html
 
 ```html
-<form [formGroup]="form" *ngIf="form?.customValidateErrors | async as errors" novalidate>
+<form
+  [formGroup]="form"
+  *ngIf="form?.customValidateErrors | async as errors"
+  novalidate
+>
   <input formControlName="name" placeholder="Name" />
   <p *ngIf="errors.name?.length">Error: {{errors.name[0]}}</p>
   <p>Form status: {{ form.status | json }}</p>
@@ -256,22 +292,27 @@ export class CompanyPanelComponent implements onDestroy {
       name: '',
     });
 
-    this.errorChangeSubscription = this.form.customValidateErrors.subscribe((allErrors) => {
-      console.log(`Errors changed: ${allErrors}`);
-    });
+    this.errorChangeSubscription = this.form.customValidateErrors.subscribe(
+      (allErrors) => {
+        console.log(`Errors changed: ${allErrors}`);
+      }
+    );
   }
   ngOnDestroy() {
-    if (this.errorChangeSubscription != null && this.errorChangeSubscription.closed === false) {
+    if (
+      this.errorChangeSubscription != null &&
+      this.errorChangeSubscription.closed === false
+    ) {
       this.errorChangeSubscription.unsubscribe();
     }
   }
   onLoadClick(): void {
-    this.savedItem = undefined;
+    this.savedItem;
     this.form.object = this.item;
     this.form.validateAllFormFields();
   }
   onClearClick(): void {
-    this.savedItem = undefined;
+    this.savedItem;
     this.form.object = new Company();
     this.form.validateAllFormFields();
   }
@@ -280,7 +321,7 @@ export class CompanyPanelComponent implements onDestroy {
     if (this.form.valid) {
       this.savedItem = this.form.object;
     } else {
-      this.savedItem = undefined;
+      this.savedItem;
     }
   }
 }

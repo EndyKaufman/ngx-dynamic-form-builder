@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 
 @NgModule({

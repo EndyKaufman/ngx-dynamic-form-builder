@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
-import { AdvancedPageComponent } from './advanced-page.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { ModuleWithProviders } from '@angular/core';
-import { SharedModule } from '../../shared/shared.module';
 import { RouterModule } from '@angular/router';
-import { AdvancedPageRoutes } from './advanced-page.routes';
-import { UserPanelModule } from '../../panels/user-panel/user-panel.module';
-import { SourceTabsModule } from '../../others/source-tabs/source-tabs.module';
 import { DocsExampleModule } from '../../others/docs-example/docs-example.module';
+import { SourceTabsModule } from '../../others/source-tabs/source-tabs.module';
+import { UserPanelModule } from '../../panels/user-panel/user-panel.module';
+import { SharedModule } from '../../shared/shared.module';
+import { AdvancedPageComponent } from './advanced-page.component';
+import { AdvancedPageRoutes } from './advanced-page.routes';
 
 @NgModule({
   imports: [
