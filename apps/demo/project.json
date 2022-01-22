@@ -2,7 +2,7 @@
   "projectType": "application",
   "root": "apps/demo",
   "sourceRoot": "apps/demo/src",
-  "prefix": "ngx-dynamic-form-builder-workspace",
+  "prefix": "ngx-dynamic-form-builder",
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",

@@ -1,5 +1,5 @@
 {
-  "npmScope": "ngx-dynamic-form-builder-workspace",
+  "npmScope": "ngx-dynamic-form-builder",
   "affected": {
     "defaultBase": "master"
   },

@@ -21,7 +21,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "ngx-dynamic-form-builder-workspace",
+            "prefix": "ngx-dynamic-form-builder",
             "style": "kebab-case"
           }
         ]
