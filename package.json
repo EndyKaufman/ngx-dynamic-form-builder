@@ -68,7 +68,7 @@
     "test": "npm run lib:build && npm run test:integrations-prepare && npm run test:integrations-run",
     "release": "standard-version",
     "publish": "npm publish ./dist/libs/ngx-dynamic-form-builder",
-    "create-release": "run-s lib:build release && git push --follow-tags origin master",
+    "create-release": "run-s lib:build release && git push --follow-tags origin develop",
     "github:prebuild": "nx build demo --base-href /ngx-dynamic-form-builder/ --prod",
     "github:build": "run-s lint:fix i18n:extract lib:build github:prebuild prepare:code github:postbuild",
     "github:postbuild": "./node_modules/.bin/cp-cli ./dist/apps/demo/index.html ./dist/apps/demo/404.html",
