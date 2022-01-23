@@ -2,6 +2,10 @@ name: Check code
 
 on:
   push:
+    branches:
+      - 'master'
+      - 'develop'
+      - 'feature/**'
     tags-ignore:
       - v*
 
