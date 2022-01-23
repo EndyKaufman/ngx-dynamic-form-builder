@@ -1,6 +1,6 @@
 {
   "name": "ngx-dynamic-form-builder",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "FormBuilder + class-transformer-global-storage + class-validator-multi-lang = dynamic form group builder for Angular12+",
   "keywords": [
     "form-builder",

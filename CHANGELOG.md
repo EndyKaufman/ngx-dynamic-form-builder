@@ -2,12 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## 2.0.0 (2022-01-23)
+### [2.0.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/v2.0.0...v2.0.1) (2022-01-23)
 
+
+### Bug Fixes
+
+* update readme ([f7f9ca3](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/f7f9ca3e3abf955a6c4425c679aaa5c216d4c5e8))
+
+## 2.0.0 (2022-01-23)
 
 ### ⚠ BREAKING CHANGES
 
-* Version above 2 has a completely rewritten code, partially backwards compatible
+- Version above 2 has a completely rewritten code, partially backwards compatible
 
 Now `@Expose` and `@Exclude` decorators are used to define model fields, the new version is rigidly dependent on class-transform
 
@@ -21,7 +27,7 @@ For correct parse metadata, need remove `compilerOptions.downlevelIteration` and
 
 ### Features
 
-* rewrite all project ([b5c4831](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/b5c4831e1cf485e72c280e4b0327fd299fb310c1))
+- rewrite all project ([b5c4831](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/b5c4831e1cf485e72c280e4b0327fd299fb310c1))
 
 # [1.12.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/1.11.0...1.12.0) (2021-01-16)
 
