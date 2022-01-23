@@ -1,0 +1,551 @@
+<form [formGroup]="form" novalidate>
+  <ng-container *ngIf="form?.classValidatorErrorsSubject | async as errors">
+    <fieldset class="Department">
+      <legend>Department</legend>
+      <fieldset class="name">
+        <legend>Department name (with async validation)</legend>
+        <input formControlName="name" placeholder="Department name" />
+        <br />
+        <span
+          class="error"
+          style="color: red"
+          *ngIf="(errors?.['name']?.messages)?.length"
+        >
+          {{ (errors?.['name']?.messages)?.[0] }}
+        </span>
+      </fieldset>
+      <div formGroupName="company">
+        <fieldset class="Company">
+          <legend>Company</legend>
+          <fieldset class="Jurisdiction">
+            <legend>Jurisdiction</legend>
+            <fieldset class="Country">
+              <legend>Country</legend>
+              <input formControlName="country" placeholder="Country name" />
+              <br />
+              <span
+                class="error"
+                style="color: red"
+                *ngIf="
+                  form.getClassValidatorErrors(
+                    form.get('company')!.get('country')!,
+                    true
+                  ) | async as errorMessages
+                "
+              >
+                {{ errorMessages?.messages }}
+              </span>
+            </fieldset>
+            <fieldset class="State">
+              <legend>State (with ValidateIf or|and external errors)</legend>
+              <input formControlName="state" placeholder="State name" />
+              <br />
+              <span
+                class="error"
+                style="color: red"
+                *ngIf="
+                  form.getClassValidatorErrors(
+                    form.get('company')!.get('state')!,
+                    true
+                  ) | async as errorMessages
+                "
+              >
+                {{ errorMessages?.messages }}
+              </span>
+            </fieldset>
+            <fieldset class="House">
+              <legend>House</legend>
+              <input formControlName="house" placeholder="House" />
+              <br />
+              <span
+                class="error"
+                style="color: red"
+                *ngIf="
+                  form.getClassValidatorErrors(
+                    form.get('company')!.get('house')!,
+                    true
+                  ) | async as errorMessages
+                "
+              >
+                {{ errorMessages?.messages }}
+              </span>
+            </fieldset>
+          </fieldset>
+
+          <fieldset class="name">
+            <legend>Company name</legend>
+            <input formControlName="name" placeholder="Company name" />
+            <br />
+            <span
+              class="error"
+              style="color: red"
+              *ngIf="
+                form.getClassValidatorErrors(
+                  form.get('company')!.get('name')!,
+                  true
+                ) | async as errorMessages
+              "
+            >
+              {{ errorMessages?.messages }}
+            </span>
+          </fieldset>
+
+          <ng-container
+            *ngIf="this.form.get('company')?.get('permissions')"
+            formArrayName="permissions"
+          >
+            <fieldset class="Permissions">
+              <legend>Permissions (arrays with booleans)</legend>
+              <ng-container
+                *ngFor="let permission of permissions.controls; let i = index"
+              >
+                <fieldset class="Permissions-item">
+                  <legend>Permission #{{ i }}</legend>
+                  <input [formControlName]="i" />
+                  <button
+                    (click)="
+                      savePermission(i, permissions!.get(i.toString())?.value)
+                    "
+                  >
+                    save
+                  </button>
+                  <button (click)="deletePermission(i)">delete</button>
+                  <br />
+                  <span
+                    class="error"
+                    style="color: red"
+                    *ngIf="
+                      form.getClassValidatorErrors(
+                        permissions.get(i.toString())!,
+                        true
+                      ) | async as errorMessages
+                    "
+                  >
+                    {{ errorMessages?.messages }}
+                  </span>
+                </fieldset>
+              </ng-container>
+              <span
+                class="error"
+                style="color: red"
+                *ngIf="
+                  form.getClassValidatorErrors(permissions, true)
+                    | async as errorMessages
+                "
+              >
+                {{ errorMessages?.messages }}
+              </span>
+              <fieldset class="Permissions-new">
+                <legend>New permission</legend>
+                <input
+                  ngModel
+                  #permissionValue="ngModel"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+                <button
+                  (click)="
+                    addPermission(permissionValue.value);
+                    permissionValue.control.setValue('')
+                  "
+                >
+                  add
+                </button>
+              </fieldset>
+            </fieldset>
+          </ng-container>
+        </fieldset>
+      </div>
+
+      <ng-container formArrayName="cabinets">
+        <fieldset class="Cabinets">
+          <legend>Cabinets (arrays with numbers)</legend>
+          <ng-container
+            *ngFor="let cabinet of cabinets.controls; let i = index"
+          >
+            <fieldset class="Cabinets-item">
+              <legend>Cabinet #{{ i }}</legend>
+              <input [formControlName]="i" />
+              <button
+                (click)="saveCabinet(i, cabinets.get(i.toString())?.value)"
+              >
+                save
+              </button>
+              <button (click)="deleteCabinet(i)">delete</button>
+              <br />
+              <span
+                class="error"
+                style="color: red"
+                *ngIf="
+                  form.getClassValidatorErrors(
+                    cabinets.get(i.toString())!,
+                    true
+                  ) | async as errorMessages
+                "
+              >
+                {{ errorMessages?.messages }}
+              </span>
+            </fieldset>
+          </ng-container>
+          <span
+            class="error"
+            style="color: red"
+            *ngIf="
+              form.getClassValidatorErrors(cabinets, true)
+                | async as errorMessages
+            "
+          >
+            {{ errorMessages?.messages }}
+          </span>
+          <fieldset class="Cabinets-new">
+            <legend>New cabinet</legend>
+            <input
+              ngModel
+              #cabinetNumber="ngModel"
+              [ngModelOptions]="{ standalone: true }"
+            />
+            <button
+              (click)="
+                addCabinet(cabinetNumber.value);
+                cabinetNumber.control.setValue('')
+              "
+            >
+              add
+            </button>
+          </fieldset>
+        </fieldset>
+      </ng-container>
+
+      <ng-container formArrayName="peopleAges">
+        <fieldset class="PeopleAges">
+          <legend>
+            People ages (arrays with numbers as property of object)
+          </legend>
+          <ng-container
+            *ngFor="let peopleAge of peopleAges.controls; let i = index"
+          >
+            <fieldset [formGroupName]="i.toString()" class="PeopleAges-item">
+              <legend>People age #{{ i }}</legend>
+              <input formControlName="age" />
+              <button
+                (click)="savePeopleAge(i, peopleAges.get(i.toString())?.value)"
+              >
+                save
+              </button>
+              <button (click)="deletePeopleAge(i)">delete</button>
+              <br />
+              <span
+                class="error"
+                style="color: red"
+                *ngIf="
+                  form.getClassValidatorErrors(
+                    peopleAges.get(i.toString())!.get('age')!,
+                    true
+                  ) | async as errorMessages
+                "
+              >
+                {{ errorMessages?.messages }}
+              </span>
+            </fieldset>
+          </ng-container>
+          <span
+            class="error"
+            style="color: red"
+            *ngIf="
+              form.getClassValidatorErrors(peopleAges, true)
+                | async as errorMessages
+            "
+          >
+            {{ errorMessages?.messages }}
+          </span>
+          <fieldset class="PeopleAges-new">
+            <legend>New people age</legend>
+            <input
+              ngModel
+              #peopleAgeNumber="ngModel"
+              [ngModelOptions]="{ standalone: true }"
+            />
+            <button
+              (click)="
+                addPeopleAge({ age: peopleAgeNumber.value });
+                peopleAgeNumber.control.setValue('')
+              "
+            >
+              add
+            </button>
+          </fieldset>
+        </fieldset>
+      </ng-container>
+
+      <ng-container formArrayName="transports">
+        <fieldset class="Transports">
+          <legend>Transports (arrays with multiple class types)</legend>
+          <ng-container
+            *ngFor="let transport of transports.controls; let i = index"
+          >
+            <fieldset [formGroupName]="i.toString()" class="Transports-item">
+              <legend>Transport #{{ i }}</legend>
+              <fieldset>
+                <legend>Type</legend>
+                <select formControlName="type">
+                  <option [ngValue]="null">Choose type</option>
+                  <option
+                    *ngFor="let transportTypeEnumKey of transportTypeEnumKeys"
+                    [ngValue]="transportTypeEnumKey"
+                  >
+                    {{ TransportTypeEnum[transportTypeEnumKey] }}
+                  </option>
+                </select>
+                <br />
+                <span
+                  class="error"
+                  style="color: red"
+                  *ngIf="
+                    form.getClassValidatorErrors(
+                      transports.get(i.toString())!.get('type')!,
+                      true
+                    ) | async as errorMessages
+                  "
+                >
+                  {{ errorMessages?.messages }}
+                </span>
+              </fieldset>
+              <fieldset class="transportNumber">
+                <legend>Number</legend>
+                <input formControlName="transportNumber" />
+                <br />
+                <span
+                  class="error"
+                  style="color: red"
+                  *ngIf="
+                    form.getClassValidatorErrors(
+                      transports.get(i.toString())!.get('transportNumber')!,
+                      true
+                    ) | async as errorMessages
+                  "
+                >
+                  {{ errorMessages?.messages }}
+                </span>
+              </fieldset>
+              <fieldset
+                *ngIf="transports.get(i.toString())?.get('numberOfWheels')"
+                [hidden]="
+                  transports.get(i.toString())?.get('type')?.value !==
+                  TransportTypeEnum.car
+                "
+                class="numberOfWheels"
+              >
+                <legend>Number of wheels</legend>
+                <input formControlName="numberOfWheels" />
+                <br />
+                <span
+                  class="error"
+                  style="color: red"
+                  *ngIf="
+                    form.getClassValidatorErrors(
+                      transports.get(i.toString())!.get('numberOfWheels')!,
+                      true
+                    ) | async as errorMessages
+                  "
+                >
+                  {{ errorMessages?.messages }}
+                </span>
+              </fieldset>
+              <fieldset
+                *ngIf="transports.get(i.toString())?.get('numberOfTurbines')"
+                [hidden]="
+                  transports.get(i.toString())?.get('type')?.value !==
+                  TransportTypeEnum.airplane
+                "
+                class="numberOfTurbines"
+              >
+                <legend>Number of turbines</legend>
+                <input formControlName="numberOfTurbines" />
+                <br />
+                <span
+                  class="error"
+                  style="color: red"
+                  *ngIf="
+                    form.getClassValidatorErrors(
+                      transports.get(i.toString())!.get('numberOfTurbines')!,
+                      true
+                    ) | async as errorMessages
+                  "
+                >
+                  {{ errorMessages?.messages }}
+                </span>
+              </fieldset>
+              <button
+                (click)="
+                  saveTransport(
+                    i,
+                    transports.get(i.toString())?.get('type')?.value ===
+                      TransportTypeEnum.airplane
+                      ? {
+                          type: TransportTypeEnum.airplane,
+                          transportNumber: transports
+                            .get(i.toString())
+                            ?.get('transportNumber')?.value,
+                          numberOfTurbines: transports
+                            .get(i.toString())
+                            ?.get('numberOfTurbines')?.value
+                        }
+                      : {
+                          type: TransportTypeEnum.car,
+                          transportNumber: transports
+                            .get(i.toString())
+                            ?.get('transportNumber')?.value,
+                          numberOfWheels: transports
+                            .get(i.toString())
+                            ?.get('numberOfWheels')?.value
+                        }
+                  )
+                "
+              >
+                save
+              </button>
+              <button (click)="deleteTransport(i)">delete</button>
+              <br />
+              <span
+                class="error"
+                style="color: red"
+                *ngIf="
+                  form.getClassValidatorErrors(
+                    transports.get(i.toString())!.get('number')!,
+                    true
+                  ) | async as errorMessages
+                "
+              >
+                {{ errorMessages?.messages }}
+              </span>
+            </fieldset>
+          </ng-container>
+          <span
+            class="error"
+            style="color: red"
+            *ngIf="
+              form.getClassValidatorErrors(transports, true)
+                | async as errorMessages
+            "
+          >
+            {{ errorMessages?.messages }}
+          </span>
+          <fieldset class="Transport-new">
+            <legend>New transport</legend>
+            <fieldset class="type">
+              <legend>Type</legend>
+              <select
+                ngModel
+                #transportType="ngModel"
+                [ngModelOptions]="{ standalone: true }"
+              >
+                <option [ngValue]="null">Choose type</option>
+                <option
+                  *ngFor="let transportTypeEnumKey of transportTypeEnumKeys"
+                  [ngValue]="transportTypeEnumKey"
+                >
+                  {{ TransportTypeEnum[transportTypeEnumKey] }}
+                </option>
+              </select>
+            </fieldset>
+            <fieldset class="transportNumber">
+              <legend>Number</legend>
+              <input
+                ngModel
+                #transportNumber="ngModel"
+                [ngModelOptions]="{ standalone: true }"
+              />
+            </fieldset>
+            <fieldset
+              [hidden]="transportType.value !== TransportTypeEnum.car"
+              class="numberOfWheels"
+            >
+              <legend>Number of wheels</legend>
+              <input
+                ngModel
+                #numberOfWheels="ngModel"
+                [ngModelOptions]="{ standalone: true }"
+              />
+            </fieldset>
+            <fieldset
+              [hidden]="transportType.value !== TransportTypeEnum.airplane"
+              class="numberOfTurbines"
+            >
+              <legend>Number of turbines</legend>
+              <input
+                ngModel
+                #numberOfTurbines="ngModel"
+                [ngModelOptions]="{ standalone: true }"
+              />
+            </fieldset>
+            <button
+              (click)="
+                addTransport(
+                  transportType.value === TransportTypeEnum.airplane
+                    ? {
+                        type: TransportTypeEnum.airplane,
+                        transportNumber: transportNumber.value,
+                        numberOfTurbines: numberOfTurbines.value
+                      }
+                    : {
+                        type: TransportTypeEnum.car,
+                        transportNumber: transportNumber.value,
+                        numberOfWheels: numberOfWheels.value
+                      }
+                );
+                transportNumber.control.setValue('');
+                numberOfTurbines.control.setValue('');
+                numberOfWheels.control.setValue('')
+              "
+            >
+              add
+            </button>
+          </fieldset>
+        </fieldset>
+      </ng-container>
+    </fieldset>
+    <p>
+      Form status: <span class="form-status">{{ form.status | json }}</span>
+    </p>
+    <p>
+      Form values:
+      <span class="form-values">{{ form.valueChanges | async | json }}</span>
+    </p>
+    <p>
+      Form class validator errors:
+      <span class="form-class-validator-errors">{{ errors | json }}</span>
+    </p>
+    <p>
+      Form custom validate errors:
+      <span class="form-custom-validate-errors">{{
+        form.customValidateErrors | async | json
+      }}</span>
+    </p>
+    <p *ngIf="savedItem$ | async as savedItem">
+      Saved item:
+      <span class="form-saved-item">{{ savedItem | json }}</span>
+    </p>
+    <button class="onLoadClick" (click)="onLoadClick()">Load</button>
+    <button class="onClearClick" (click)="onClearClick()">Clear</button>
+    <button class="onSaveClick" (click)="onSaveClick()">Save</button>
+    <br />
+    <button class="setExternalErrors" (click)="setExternalErrors()">
+      Set external errors
+    </button>
+    <button class="unsetExternalErrors" (click)="unsetExternalErrors()">
+      Unset external errors
+    </button>
+    <br />
+    <button class="setGlobalPropertyText" (click)="setGlobalPropertyText()">
+      Change global property text "name" to Tatar language
+    </button>
+    <button
+      class="restoreGlobalPropertyText"
+      (click)="restoreGlobalPropertyText()"
+    >
+      Change global property text "name" to English language
+    </button>
+    <button class="setLocalPropertyText" (click)="setLocalPropertyText()">
+      Change local property text "name" to Russian language (override global)
+    </button>
+  </ng-container>
+</form>

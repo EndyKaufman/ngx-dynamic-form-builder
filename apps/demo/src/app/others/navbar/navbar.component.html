@@ -1,13 +1,24 @@
 <div class="navbar">
-  <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center">
+  <mat-toolbar
+    color="primary"
+    fxLayout="row"
+    fxLayoutAlign="space-between center"
+  >
     <div>
       <span *ngIf="leftChildrenRoutes.length">
-        <button mat-icon-button [matMenuTriggerFor]="leftMenu" fxShow fxHide.gt-sm>
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="leftMenu"
+          fxShow
+          fxHide.gt-sm
+        >
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #leftMenu fxShow fxHide.lt-sm>
           <span *ngFor="let item of leftChildrenRoutes">
-            <ng-container *ngTemplateOutlet="menuItem; context: { item: item }"></ng-container>
+            <ng-container
+              *ngTemplateOutlet="menuItem; context: { item: item }"
+            ></ng-container>
           </span>
         </mat-menu>
       </span>
@@ -15,25 +26,39 @@
         {{ title | transloco }}
       </a>
       <navbar-languages-buttons
-        [languages]="languages"
+        [languages]="languages!"
         (currentChange)="currentChange.next($event)"
-        [current]="current"
+        [current]="current!"
       ></navbar-languages-buttons>
       <span *ngFor="let item of leftChildrenRoutes" fxShow fxHide.lt-sm>
-        <ng-container *ngTemplateOutlet="buttonItem; context: { item: item }"></ng-container>
+        <ng-container
+          *ngTemplateOutlet="buttonItem; context: { item: item }"
+        ></ng-container>
       </span>
     </div>
     <div>
       <span *ngFor="let item of childrenRoutes" fxHide fxShow.gt-sm>
-        <ng-container *ngTemplateOutlet="buttonItem; context: { item: item, hideTitle: item.hideTitle }"></ng-container>
+        <ng-container
+          *ngTemplateOutlet="
+            buttonItem;
+            context: { item: item, hideTitle: item.hideTitle }
+          "
+        ></ng-container>
       </span>
       <span *ngIf="childrenRoutes.length">
-        <button mat-icon-button [matMenuTriggerFor]="rightMenu" fxShow fxHide.gt-sm>
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="rightMenu"
+          fxShow
+          fxHide.gt-sm
+        >
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #rightMenu fxShow fxHide.gt-sm>
           <span *ngFor="let item of childrenRoutes">
-            <ng-container *ngTemplateOutlet="menuItem; context: { item: item }"></ng-container>
+            <ng-container
+              *ngTemplateOutlet="menuItem; context: { item: item }"
+            ></ng-container>
           </span>
         </mat-menu>
       </span>
@@ -42,11 +67,31 @@
 </div>
 <ng-template let-item="item" let-hideTitle="hideTitle" #buttonItem>
   <ng-container *ngIf="!hideTitle">
-    <a *ngIf="!item.redirectTo" [routerLink]="[item.name]" mat-button [class.active]="router?.isActive(item.url, true)">
-      <ng-container *ngTemplateOutlet="menuItemContent; context: { item: item, hideTitle: hideTitle }"></ng-container>
+    <a
+      *ngIf="!item.redirectTo"
+      [routerLink]="[item.name]"
+      mat-button
+      [class.active]="router?.isActive(item.url, true)"
+    >
+      <ng-container
+        *ngTemplateOutlet="
+          menuItemContent;
+          context: { item: item, hideTitle: hideTitle }
+        "
+      ></ng-container>
     </a>
-    <a *ngIf="item.redirectTo" target="_blank" [href]="item.redirectTo" mat-button>
-      <ng-container *ngTemplateOutlet="menuItemContent; context: { item: item, hideTitle: hideTitle }"></ng-container>
+    <a
+      *ngIf="item.redirectTo"
+      target="_blank"
+      [href]="item.redirectTo"
+      mat-button
+    >
+      <ng-container
+        *ngTemplateOutlet="
+          menuItemContent;
+          context: { item: item, hideTitle: hideTitle }
+        "
+      ></ng-container>
     </a>
   </ng-container>
   <ng-container *ngIf="hideTitle">
@@ -56,10 +101,25 @@
       mat-icon-button
       [class.active]="router?.isActive(item.url, true)"
     >
-      <ng-container *ngTemplateOutlet="menuItemContent; context: { item: item, hideTitle: hideTitle }"></ng-container>
+      <ng-container
+        *ngTemplateOutlet="
+          menuItemContent;
+          context: { item: item, hideTitle: hideTitle }
+        "
+      ></ng-container>
     </a>
-    <a *ngIf="item.redirectTo" target="_blank" [href]="item.redirectTo" mat-icon-button>
-      <ng-container *ngTemplateOutlet="menuItemContent; context: { item: item, hideTitle: hideTitle }"></ng-container>
+    <a
+      *ngIf="item.redirectTo"
+      target="_blank"
+      [href]="item.redirectTo"
+      mat-icon-button
+    >
+      <ng-container
+        *ngTemplateOutlet="
+          menuItemContent;
+          context: { item: item, hideTitle: hideTitle }
+        "
+      ></ng-container>
     </a>
   </ng-container>
 </ng-template>
@@ -70,10 +130,19 @@
     mat-menu-item
     [class.active]="router?.isActive(item.url, true)"
   >
-    <ng-container *ngTemplateOutlet="menuItemContent; context: { item: item }"></ng-container>
+    <ng-container
+      *ngTemplateOutlet="menuItemContent; context: { item: item }"
+    ></ng-container>
   </a>
-  <a *ngIf="item.redirectTo" target="_blank" [href]="item.redirectTo" mat-menu-item>
-    <ng-container *ngTemplateOutlet="menuItemContent; context: { item: item }"></ng-container>
+  <a
+    *ngIf="item.redirectTo"
+    target="_blank"
+    [href]="item.redirectTo"
+    mat-menu-item
+  >
+    <ng-container
+      *ngTemplateOutlet="menuItemContent; context: { item: item }"
+    ></ng-container>
   </a>
 </ng-template>
 

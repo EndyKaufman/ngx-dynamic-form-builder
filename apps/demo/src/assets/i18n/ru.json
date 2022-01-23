@@ -8,7 +8,7 @@
   "Username": "Имя пользователя",
   "Password": "Пароль",
   "Form status:": "Статус формы:",
-  "Form class-validator errors:": "Ошибки класс валидатора:",
+  "Form custom validate errors:": "Короткие ошибки класс валидатора:",
   "Form native errors:": "Нативные ошибки:",
   "Login user data:": "Данные пользователя для входа:",
   "Login": "Авторизоваться",

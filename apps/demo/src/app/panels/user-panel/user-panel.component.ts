@@ -41,58 +41,57 @@ export class UserPanelComponent {
   @Input()
   companyStrings = Company.strings;
 
-  fb = new DynamicFormBuilder({ validateAllFormFields: true });
+  fb = new DynamicFormBuilder();
 
-  savedItem?: Object;
+  savedItem?: User;
 
   constructor() {
-    this.form = this.fb.group(User, {
+    this.form = this.fb.rootFormGroup(User, {
       username: '',
       email: '',
       dateOfBirth: '',
       isSuperuser: false,
       isStaff: false,
       abc: '',
-      department: this.fb.group(Department, {
+      department: {
         name: '',
-        company: this.fb.group(Company, {
+        company: {
           name: '',
           regionNum: null,
-        }),
-      }),
+        },
+      },
     });
   }
   onLoadExternalClick(): void {
     this.form.setExternalErrors({
-      username: ['external error'],
+      username: { messages: ['external error'] },
       department: {
-        company: {
-          name: ['external error for name'],
+        children: {
+          company: {
+            children: {
+              name: { messages: ['external error for name'] },
+            },
+          },
         },
       },
     });
   }
   onClearExternalClick(): void {
-    this.form.clearExternalErrors();
+    this.form.setExternalErrors({});
   }
   onLoadClick(): void {
-    this.savedItem = undefined;
-    this.form.json = this.jsonItem;
+    this.savedItem;
+    this.form.json = this.jsonItem as unknown as User;
   }
   onClearClick(): void {
-    this.savedItem = undefined;
+    this.savedItem;
     this.form.object = new User();
   }
   onSaveClick(): void {
-    this.form.validateAsync().then((_) => {
-      if (this.form.valid) {
-        this.savedItem = this.form.json;
-      } else {
-        this.savedItem = undefined;
-      }
-    });
-  }
-  onResetValidateAllFormFields(): void {
-    this.form.resetValidateAllFormFields();
+    if (this.form.valid) {
+      this.savedItem = { ...this.form.json };
+    } else {
+      this.savedItem;
+    }
   }
 }

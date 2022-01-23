@@ -1,4 +1,8 @@
-<form [formGroup]="form" *ngIf="form?.customValidateErrors | async as errors" novalidate>
+<form
+  [formGroup]="form"
+  *ngIf="form?.customValidateErrors | async as errors"
+  novalidate
+>
   <mat-form-field appearance="fill" class="full-width">
     <mat-label>Language validation errors</mat-label>
     <mat-select (selectionChange)="changeLanguage($event)">
@@ -9,21 +13,36 @@
   </mat-form-field>
   <mat-form-field class="full-width">
     <input matInput formControlName="name" [placeholder]="strings.name" />
-    <mat-error *ngIf="errors?.name?.length > 0">{{ errors?.name[0] }}</mat-error>
+    <mat-error *ngIf="errors?.['name']?.messages?.length > 0">{{
+      errors?.['name'][0]
+    }}</mat-error>
   </mat-form-field>
   <mat-form-field class="full-width">
-    <input matInput formControlName="regionNum" type="number" [placeholder]="strings.regionNum" />
-    <mat-error *ngIf="errors?.regionNum?.length">{{ errors?.regionNum.join(', ') }}</mat-error>
+    <input
+      matInput
+      formControlName="regionNum"
+      type="number"
+      [placeholder]="strings.regionNum"
+    />
+    <mat-error *ngIf="errors?.['regionNum']?.length">{{
+      errors?.['regionNum'].join(', ')
+    }}</mat-error>
   </mat-form-field>
   <div class="full-width">
     <p>Form status: {{ form.status | json }}</p>
-    <p>Form class-validator errors: {{ errors | json }}</p>
-    <p>Form native errors: {{ form?.nativeValidateErrors | async | json }}</p>
+    <p>Form custom validate errors: {{ errors | json }}</p>
     <p *ngIf="savedItem">Saved item: {{ savedItem | json }}</p>
   </div>
   <div class="full-width">
     <button mat-raised-button (click)="onLoadClick()">Load</button>
     <button mat-raised-button (click)="onClearClick()">Clear</button>
-    <button mat-raised-button (click)="onSaveClick()" [disabled]="!form.valid" cdkFocusInitial>Save</button>
+    <button
+      mat-raised-button
+      (click)="onSaveClick()"
+      [disabled]="!form.valid"
+      cdkFocusInitial
+    >
+      Save
+    </button>
   </div>
 </form>

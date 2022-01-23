@@ -1,14 +1,13 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { DocsExampleModule } from '../../others/docs-example/docs-example.module';
 import { SourceTabsModule } from '../../others/source-tabs/source-tabs.module';
-import { CompanyPanelModule } from '../../panels/company-panel/company-panel.module';
+import { I18nCompanyPanelModule } from '../../panels/i18n-company-panel/i18n-company-panel.module';
 import { SharedModule } from '../../shared/shared.module';
 import { I18nPageComponent } from './i18n-page.component';
 import { I18nPageRoutes } from './i18n-page.routes';
-import { MatIconModule } from '@angular/material/icon';
-import { I18nCompanyPanelModule } from '../../panels/i18n-company-panel/i18n-company-panel.module';
 
 @NgModule({
   imports: [

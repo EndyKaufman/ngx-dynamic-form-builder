@@ -1,18 +1,29 @@
-import { IsEmail, IsNotEmpty, IsOptional, Validate, ValidateIf, ValidateNested } from 'class-validator-multi-lang';
+import { Expose, Type } from 'class-transformer-global-storage';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  Validate,
+  ValidateIf,
+  ValidateNested,
+} from 'class-validator-multi-lang';
 import { EqualsTo } from '../utils/custom-validators';
 import { ExpDepartment } from './exp-department';
 
 export class ExpUser {
-  id: number;
+  @Expose()
+  id: number | undefined;
 
   @IsNotEmpty({
     groups: ['user', 'guest', 'new'],
   })
+  @Expose()
   username: string;
 
   @IsNotEmpty({
     groups: ['guest', 'new'],
   })
+  @Expose()
   password: string;
 
   @ValidateIf((o) => o.password, {
@@ -24,6 +35,7 @@ export class ExpUser {
   @Validate(EqualsTo, ['password'], {
     groups: ['new'],
   })
+  @Expose()
   rePassword: string;
 
   @IsEmail(undefined, {
@@ -32,10 +44,13 @@ export class ExpUser {
   @IsNotEmpty({
     groups: ['user'],
   })
+  @Expose()
   email: string;
 
+  @Expose()
   isSuperuser: boolean;
 
+  @Expose()
   isStaff: boolean;
 
   @ValidateNested({
@@ -44,10 +59,15 @@ export class ExpUser {
   @IsOptional({
     groups: ['user'],
   })
+  @Type(() => ExpDepartment)
+  @Expose()
   department: ExpDepartment;
 
+  @Type(() => Date)
+  @Expose()
   dateOfBirth?: Date;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(data?: any) {
     if (data === undefined) {
       data = {};
@@ -65,15 +85,7 @@ export class ExpUser {
       const userTimezoneOffset = dateOfBirth.getTimezoneOffset() * 60000;
       this.dateOfBirth = new Date(dateOfBirth.getTime() - userTimezoneOffset);
     } else {
-      this.dateOfBirth = undefined;
+      this.dateOfBirth;
     }
-  }
-
-  toJSON() {
-    return {
-      ...this,
-      department: this.department instanceof ExpDepartment ? this.department.toJSON() : this.department,
-      dateOfBirth: this.dateOfBirth ? this.dateOfBirth.toISOString() : undefined,
-    };
   }
 }

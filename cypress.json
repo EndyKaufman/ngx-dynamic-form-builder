@@ -1,0 +1,15 @@
+{
+  "viewportWidth": 1024,
+  "viewportHeight": 1024,
+  "reporter": "cypress-multi-reporters",
+  "reporterOptions": {
+    "reporterEnabled": "mochawesome",
+    "mochawesomeReporterOptions": {
+      "reportDir": "cypress/reports/mocha",
+      "quiet": true,
+      "overwrite": false,
+      "html": false,
+      "json": true
+    }
+  }
+}

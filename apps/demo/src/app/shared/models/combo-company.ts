@@ -1,6 +1,13 @@
 import { marker } from '@ngneat/transloco-keys-manager/marker';
-import { Expose } from 'class-transformer';
-import { IsNotEmpty, IsOptional, Max, MaxLength, Min, Validate } from 'class-validator-multi-lang';
+import { Expose } from 'class-transformer-global-storage';
+import {
+  IsNotEmpty,
+  IsOptional,
+  Max,
+  MaxLength,
+  Min,
+  Validate,
+} from 'class-validator-multi-lang';
 import { ExposeNested } from 'ngx-dynamic-form-builder';
 import { TextLengthMore15 } from '../utils/custom-validators';
 
@@ -12,7 +19,7 @@ export class ComboCompany {
   };
 
   @Expose()
-  id: number;
+  id: number | undefined;
 
   @Validate(TextLengthMore15, {
     message: marker('The company name must be longer than 15'),
@@ -20,16 +27,17 @@ export class ComboCompany {
   @IsNotEmpty()
   @MaxLength(20)
   @Expose()
-  name: string;
+  name: string | undefined;
 
   @ExposeNested()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   nameLocale: any;
 
   @IsOptional()
   @Min(1)
   @Max(99)
   @Expose()
-  regionNum: number;
+  regionNum: number | undefined;
 
   toString() {
     const arr: string[] = [];

@@ -32,31 +32,32 @@ export class ExpUserPanelComponent {
 
   fb = new DynamicFormBuilder();
 
-  savedItem?: Object;
+  savedItem?: ExpUser;
 
   constructor() {
-    this.form = this.fb.group(ExpUser, {
-      classValidatorOptions: {
-        groups: ['user'],
-      },
-    });
+    this.form = this.fb.rootFormGroup(
+      ExpUser,
+      {},
+      {
+        classValidatorOptions: {
+          groups: ['user'],
+        },
+      }
+    );
   }
   onLoadClick(): void {
-    this.savedItem = undefined;
+    this.savedItem;
     this.form.object = this.item;
-    this.form.validateAllFormFields();
   }
   onClearClick(): void {
-    this.savedItem = undefined;
+    this.savedItem;
     this.form.object = new ExpUser();
-    this.form.validateAllFormFields();
   }
   onSaveClick(): void {
-    this.form.validateAllFormFields();
     if (this.form.valid) {
       this.savedItem = this.form.json;
     } else {
-      this.savedItem = undefined;
+      this.savedItem;
     }
   }
 }

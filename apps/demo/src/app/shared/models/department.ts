@@ -1,5 +1,10 @@
 import { marker } from '@ngneat/transloco-keys-manager/marker';
-import { IsNotEmpty, IsOptional, ValidateNested } from 'class-validator-multi-lang';
+import { Expose, Type } from 'class-transformer-global-storage';
+import {
+  IsNotEmpty,
+  IsOptional,
+  ValidateNested,
+} from 'class-validator-multi-lang';
 import { Company } from './company';
 
 export class Department {
@@ -9,19 +14,24 @@ export class Department {
     company: marker('Company'),
   };
 
+  @Expose()
   id: number;
 
   @IsNotEmpty()
+  @Expose()
   name: string;
 
   @ValidateNested()
   @IsOptional()
+  @Type(() => Company)
+  @Expose()
   company: Company;
 
   toString() {
     return this.name;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(data?: any) {
     if (data === undefined) {
       data = {};
@@ -29,12 +39,5 @@ export class Department {
     this.id = data.id;
     this.name = data.name;
     this.company = new Company(data.company);
-  }
-
-  toJSON() {
-    return {
-      ...this,
-      company: this.company instanceof Company ? this.company.toJSON() : this.company,
-    };
   }
 }

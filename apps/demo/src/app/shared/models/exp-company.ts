@@ -1,4 +1,5 @@
 import { marker } from '@ngneat/transloco-keys-manager/marker';
+import { Expose } from 'class-transformer-global-storage';
 import {
   ClassPropertyTitle,
   ClassTitle,
@@ -13,6 +14,7 @@ import { TextLengthMore15 } from '../utils/custom-validators';
 
 @ClassTitle('Company')
 export class ExpCompany {
+  @Expose()
   id: number;
 
   @Validate(TextLengthMore15, {
@@ -24,14 +26,17 @@ export class ExpCompany {
   })
   @MaxLength(20)
   @ClassPropertyTitle(marker('company name'))
+  @Expose()
   name: string;
 
   @IsOptional()
   @Min(1)
   @Max(99)
   @ClassPropertyTitle(marker('company region name'))
+  @Expose()
   regionNum: number;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(data?: any) {
     if (data === undefined) {
       data = {};
@@ -39,9 +44,5 @@ export class ExpCompany {
     this.id = data.id;
     this.name = data.name;
     this.regionNum = data.regionNum;
-  }
-
-  toJSON() {
-    return { ...this };
   }
 }

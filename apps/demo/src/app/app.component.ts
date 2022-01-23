@@ -5,7 +5,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TranslocoService } from '@ngneat/transloco';
 import { marker } from '@ngneat/transloco-keys-manager/marker';
-import { updateValidatorMessagesStorage, updateValidatorTitlesStorage } from 'ngx-dynamic-form-builder';
+import { setGlobalDynamicFormBuilderOptions } from 'ngx-dynamic-form-builder';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AppRoutes } from './app.routes';
@@ -35,25 +35,34 @@ export class AppComponent {
     private readonly sanitizer: DomSanitizer,
     private readonly httpClient: HttpClient,
     private readonly translocoService: TranslocoService,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private readonly dateAdapter: DateAdapter<any>
   ) {
     this.iconRegistry.addSvgIcon(
       'github-circle',
-      this.sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/github-circle.svg')
+      this.sanitizer.bypassSecurityTrustResourceUrl(
+        'assets/img/icons/github-circle.svg'
+      )
     );
     this.iconRegistry.addSvgIcon(
       'shape-outline',
-      this.sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/shape-outline.svg')
+      this.sanitizer.bypassSecurityTrustResourceUrl(
+        'assets/img/icons/shape-outline.svg'
+      )
     );
     this.iconRegistry.addSvgIcon(
       'translate',
-      this.sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/g_translate-24px.svg')
+      this.sanitizer.bypassSecurityTrustResourceUrl(
+        'assets/img/icons/g_translate-24px.svg'
+      )
     );
     // translocoService.setFallbackLangForMissingTranslation({ fallbackLang: 'en' });
   }
 
   changeLanguage(newLanguage: Language) {
-    const foundedLang = this.languages.find((lang) => lang.code === newLanguage.code);
+    const foundedLang = this.languages.find(
+      (lang) => lang.code === newLanguage.code
+    );
     if (foundedLang) {
       if (!foundedLang.validatorMessages) {
         forkJoin({
@@ -63,34 +72,44 @@ export class AppComponent {
             )
             .pipe(catchError(() => of({}))),
           titles: this.httpClient
-            .get<{ [key: string]: string }>(`${document.baseURI}assets/i18n/${newLanguage.code}.json`)
+            .get<{ [key: string]: string }>(
+              `${document.baseURI}assets/i18n/${newLanguage.code}.json`
+            )
             .pipe(catchError(() => of({}))),
         }).subscribe(({ messages, titles }) => {
           if (foundedLang) {
             foundedLang.validatorMessages = messages;
             foundedLang.validatorTitles = titles;
-            updateValidatorMessagesStorage({
-              ...foundedLang.validatorMessages,
-              ...foundedLang.staticValidatorMessages,
-              ...foundedLang.validatorTitles,
-              ...foundedLang.staticValidatorTitles,
-            });
-            updateValidatorTitlesStorage({
-              ...foundedLang.validatorTitles,
-              ...foundedLang.staticValidatorTitles,
+            setGlobalDynamicFormBuilderOptions({
+              classValidatorOptions: {
+                messages: {
+                  ...foundedLang.validatorMessages,
+                  ...foundedLang.staticValidatorMessages,
+                  ...foundedLang.validatorTitles,
+                  ...foundedLang.staticValidatorTitles,
+                },
+                titles: {
+                  ...foundedLang.validatorTitles,
+                  ...foundedLang.staticValidatorTitles,
+                },
+              },
             });
           }
         });
       } else {
-        updateValidatorMessagesStorage({
-          ...foundedLang.validatorMessages,
-          ...foundedLang.staticValidatorMessages,
-          ...foundedLang.validatorTitles,
-          ...foundedLang.staticValidatorTitles,
-        });
-        updateValidatorTitlesStorage({
-          ...foundedLang.validatorTitles,
-          ...foundedLang.staticValidatorTitles,
+        setGlobalDynamicFormBuilderOptions({
+          classValidatorOptions: {
+            messages: {
+              ...foundedLang.validatorMessages,
+              ...foundedLang.staticValidatorMessages,
+              ...foundedLang.validatorTitles,
+              ...foundedLang.staticValidatorTitles,
+            },
+            titles: {
+              ...foundedLang.validatorTitles,
+              ...foundedLang.staticValidatorTitles,
+            },
+          },
         });
       }
     }

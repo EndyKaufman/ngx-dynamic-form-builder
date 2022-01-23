@@ -1,0 +1,19 @@
+<div
+  fxLayout.gt-md="row"
+  fxLayout.lt-md="column"
+  fxLayoutAlign="space-evenly stretch"
+  fxLayoutAlign.lt-md="center"
+>
+  <div fxFlex.gt-sm="100">
+    <ngx-docs-example
+      title="{{ 'New API' | transloco }}"
+      [html]="source.html"
+      [ts]="source.ts"
+      [launch]="source.launch"
+    >
+      <div class="body">
+        <new-api></new-api>
+      </div>
+    </ngx-docs-example>
+  </div>
+</div>

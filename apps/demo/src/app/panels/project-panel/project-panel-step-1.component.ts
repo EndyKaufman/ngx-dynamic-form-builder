@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnDestroy,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DynamicFormBuilder, DynamicFormGroup } from 'ngx-dynamic-form-builder';
 import { Observable, Subject } from 'rxjs';
@@ -14,7 +19,7 @@ import { ProjectPanelService } from './project-panel.service';
 })
 export class ProjectPanelStep1Component implements OnDestroy {
   @Input()
-  clear: boolean;
+  clear: boolean | undefined;
 
   form: DynamicFormGroup<Project>;
   project$: Observable<Project>;
@@ -29,7 +34,9 @@ export class ProjectPanelStep1Component implements OnDestroy {
   ) {
     this._activatedRoute.data
       .pipe(takeUntil(this._destroyed$))
-      .subscribe((data) => this._projectPanelService.activatedStep$.next(data.step));
+      .subscribe((data) =>
+        this._projectPanelService.activatedStep$.next(data['step'])
+      );
     this.form = this.createForm();
     this.project$ = this._projectPanelService.project$;
     this.subscribeToProject();
@@ -39,37 +46,41 @@ export class ProjectPanelStep1Component implements OnDestroy {
     this._destroyed$.complete();
   }
   createForm() {
-    return this.fb.group(Project, {
-      classValidatorOptions: {
-        groups: [ProjectPanelStepsEnum.Step1],
-      },
-    });
+    return this.fb.rootFormGroup(
+      Project,
+      {},
+      {
+        classValidatorOptions: {
+          groups: [ProjectPanelStepsEnum.Step1],
+        },
+      }
+    );
   }
   subscribeToProject() {
-    this.project$.pipe(takeUntil(this._destroyed$)).subscribe((project) => this.loadFormData(project));
+    this.project$
+      .pipe(takeUntil(this._destroyed$))
+      .subscribe((project) => this.loadFormData(project));
   }
   loadFormData(project: Project): void {
     this.form.object = project;
-    this.form.validateAllFormFields();
   }
   onClearClick(): void {
     this._projectPanelService.clear();
   }
   onNextStepClick(): void {
-    this.form.validateAllFormFields();
     if (this.form.valid) {
       this._projectPanelService.store(this.form.object);
-      this._router.navigate(['../step-2'], { relativeTo: this._activatedRoute });
+      this._router.navigate(['../step-2'], {
+        relativeTo: this._activatedRoute,
+      });
     }
   }
   onLoadExternalClick(): void {
-    this.form
-      .setExternalErrorsAsync({
-        name: ['external error'],
-      })
-      .then(() => this.form.validateAllFormFields());
+    this.form.setExternalErrors({
+      name: { messages: ['external error'] },
+    });
   }
   onClearExternalClick(): void {
-    this.form.clearExternalErrorsAsync().then(() => this.form.validateAllFormFields());
+    this.form.setExternalErrors({});
   }
 }

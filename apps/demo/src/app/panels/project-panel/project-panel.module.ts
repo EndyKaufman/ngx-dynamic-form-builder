@@ -23,8 +23,16 @@ import { ProjectPanelService } from './project-panel.service';
     RouterModule,
     TranslocoModule,
   ],
-  exports: [ProjectPanelStep1Component, ProjectPanelStep2Component, ProjectPanelCompleteComponent],
-  declarations: [ProjectPanelStep1Component, ProjectPanelStep2Component, ProjectPanelCompleteComponent],
+  exports: [
+    ProjectPanelStep1Component,
+    ProjectPanelStep2Component,
+    ProjectPanelCompleteComponent,
+  ],
+  declarations: [
+    ProjectPanelStep1Component,
+    ProjectPanelStep2Component,
+    ProjectPanelCompleteComponent,
+  ],
   providers: [ProjectPanelService],
 })
 export class ProjectPanelModule {}

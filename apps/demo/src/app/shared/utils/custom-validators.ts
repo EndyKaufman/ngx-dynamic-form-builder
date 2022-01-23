@@ -1,5 +1,9 @@
 import { marker } from '@ngneat/transloco-keys-manager/marker';
-import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator-multi-lang';
+import {
+  ValidationArguments,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+} from 'class-validator-multi-lang';
 
 @ValidatorConstraint()
 export class TextLengthMore15 implements ValidatorConstraintInterface {
@@ -9,7 +13,8 @@ export class TextLengthMore15 implements ValidatorConstraintInterface {
 }
 @ValidatorConstraint()
 export class ObjectMustBeNotEmpty implements ValidatorConstraintInterface {
-  validate(data: Object | ArrayLike<Object>, validationArguments: ValidationArguments) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  validate(data: any | any[], validationArguments: ValidationArguments) {
     let objects;
     if (!Array.isArray(data)) {
       objects = [data];
@@ -33,8 +38,12 @@ export class ObjectMustBeNotEmpty implements ValidatorConstraintInterface {
           const keys = object ? Object.keys(object) : [];
           return (
             keys.length === 0 ||
-            keys.filter((key) => object[key] === undefined || object[key] === null || object[key] === '').length ===
-              keys.length
+            keys.filter(
+              (key) =>
+                object[key] === undefined ||
+                object[key] === null ||
+                object[key] === ''
+            ).length === keys.length
           );
         }).length === 0
       );
@@ -50,12 +59,15 @@ export class EqualsTo implements ValidatorConstraintInterface {
       validationArguments.constraints.length > 0 &&
       validationArguments.constraints.filter(
         (otherField) =>
-          validationArguments.object.hasOwnProperty(otherField) && validationArguments.object[otherField] === value
+          // eslint-disable-next-line no-prototype-builtins
+          validationArguments.object.hasOwnProperty(otherField) &&
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (validationArguments.object as any)[otherField] === value
       ).length > 0
     );
   }
 
-  defaultMessage(validationArguments: ValidationArguments) {
+  defaultMessage() {
     return marker('$constraint1 do not match to $property');
   }
 }

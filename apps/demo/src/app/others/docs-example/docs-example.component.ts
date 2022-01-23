@@ -24,28 +24,28 @@ import { PackageConfigInterface } from './package-config.interface';
 export class DocsExampleComponent extends DocsExampleClass {
   private element: ElementRef;
 
-  @Input('config')
+  @Input()
   set config(config: PackageConfigInterface | undefined) {
     this.setStyle(config);
   }
 
   @Input()
-  css: string | undefined = undefined;
+  css: string | undefined;
 
   @Input()
-  html: string | undefined = undefined;
+  html: string | undefined;
 
   @Input()
-  launch: LaunchInterface | undefined = undefined;
+  launch: LaunchInterface | undefined;
 
   @Input()
-  title: string | undefined = undefined;
+  title: string | undefined;
 
   @Input()
-  ts: string | undefined = undefined;
+  ts: string | undefined;
 
   @Input()
-  customClass: string;
+  customClass!: string;
 
   openLocation() {
     if (this.launch) {
@@ -57,7 +57,9 @@ export class DocsExampleComponent extends DocsExampleClass {
 
   constructor(
     element: ElementRef,
-    @Optional() @Inject(PACKAGE_CONFIG_TOKEN) config?: PackageConfigInterface | undefined
+    @Optional()
+    @Inject(PACKAGE_CONFIG_TOKEN)
+    config?: PackageConfigInterface | undefined
   ) {
     super({
       code: {
@@ -77,15 +79,21 @@ export class DocsExampleComponent extends DocsExampleClass {
     if (config) {
       for (const key in config) {
         if (key) {
-          this.setProperty(key, config);
+          this.setProperty(key as keyof PackageConfigInterface, config);
         }
       }
     }
   }
 
-  private setProperty(name: string, config: PackageConfigInterface | undefined): void {
+  private setProperty(
+    name: keyof PackageConfigInterface,
+    config: PackageConfigInterface | undefined
+  ): void {
     if (config) {
-      this.element.nativeElement.style.setProperty(`--ngx-docs-example-${name.replace(/_/g, '-')}`, config[name]);
+      this.element.nativeElement.style.setProperty(
+        `--ngx-docs-example-${name.replace(/_/g, '-')}`,
+        config[name]
+      );
     }
   }
 }

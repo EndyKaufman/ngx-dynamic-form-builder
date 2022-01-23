@@ -1,23 +1,46 @@
-<form [formGroup]="form" *ngIf="form?.customValidateErrors | async as errors" novalidate>
+<form
+  [formGroup]="form"
+  *ngIf="form?.customValidateErrors | async as errors"
+  novalidate
+>
   <h3>{{ 'Login form' | transloco }}</h3>
   <mat-form-field class="full-width">
     <!--t(username)-->
-    <input matInput formControlName="username" [placeholder]="'Username' | transloco" />
-    <mat-error *ngIf="errors?.username?.length">{{ errors?.username[0] }}</mat-error>
+    <input
+      matInput
+      formControlName="username"
+      [placeholder]="'Username' | transloco"
+    />
+    <mat-error *ngIf="errors?.['username']?.length">{{
+      errors?.['username'][0]
+    }}</mat-error>
   </mat-form-field>
   <mat-form-field class="full-width">
     <!--t(password)-->
-    <input matInput type="password" formControlName="password" [placeholder]="'Password' | transloco" />
-    <mat-error *ngIf="errors?.password?.length">{{ errors?.password[0] }}</mat-error>
+    <input
+      matInput
+      type="password"
+      formControlName="password"
+      [placeholder]="'Password' | transloco"
+    />
+    <mat-error *ngIf="errors?.['password']?.length">{{
+      errors?.['password'][0]
+    }}</mat-error>
   </mat-form-field>
   <div class="full-width">
     <p>{{ 'Form status:' | transloco }} {{ form.status | json }}</p>
-    <p>{{ 'Form class-validator errors:' | transloco }} {{ errors | json }}</p>
-    <p>{{ 'Form native errors:' | transloco }} {{ form?.nativeValidateErrors | async | json }}</p>
-    <p *ngIf="savedItem">{{ 'Login user data:' | transloco }} {{ savedItem | json }}</p>
+    <p>{{ 'Form custom validate errors:' | transloco }} {{ errors | json }}</p>
+    <p *ngIf="savedItem">
+      {{ 'Login user data:' | transloco }} {{ savedItem | json }}
+    </p>
   </div>
   <div class="full-width">
-    <button mat-raised-button (click)="onLoginClick()" [disabled]="!form.valid" cdkFocusInitial>
+    <button
+      mat-raised-button
+      (click)="onLoginClick()"
+      [disabled]="!form.valid"
+      cdkFocusInitial
+    >
       {{ 'Login' | transloco }}
     </button>
   </div>

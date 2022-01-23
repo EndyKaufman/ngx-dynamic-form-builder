@@ -23,42 +23,40 @@ export class ComboCompanyPanelComponent {
 
   fb = new DynamicFormBuilder();
 
-  savedItem?: Object;
+  savedItem?: ComboCompany;
 
   constructor() {
-    this.form = this.fb.group(ComboCompany);
+    this.form = this.fb.rootFormGroup(ComboCompany, {
+      name: '',
+      regionNum: '',
+    });
   }
   onLoadClick(): void {
-    this.savedItem = undefined;
+    this.savedItem;
     this.form.json = this.jsonItem;
-    this.form.validateAllFormFields();
   }
   onLoadAsObjectClick(): void {
-    this.savedItem = undefined;
+    this.savedItem;
     const object = new ComboCompany();
     object.id = this.jsonItem.id;
     object.name = this.jsonItem.name;
     object.regionNum = this.jsonItem.regionNum;
     object.nameLocale = this.jsonItem.nameLocale;
     this.form.object = object;
-    this.form.validateAllFormFields();
   }
   onClearClick(): void {
-    this.savedItem = undefined;
-    this.form.json = {};
-    this.form.validateAllFormFields();
+    this.savedItem;
+    this.form.json = {} as ComboCompany;
   }
   onClearAsObjectClick(): void {
-    this.savedItem = undefined;
+    this.savedItem;
     this.form.object = new ComboCompany();
-    this.form.validateAllFormFields();
   }
   onSaveClick(): void {
-    this.form.validateAllFormFields();
     if (this.form.valid) {
       this.savedItem = this.form.json;
     } else {
-      this.savedItem = undefined;
+      this.savedItem;
     }
   }
 }

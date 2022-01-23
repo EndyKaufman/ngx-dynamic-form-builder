@@ -1,5 +1,6 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { DocsExampleModule } from '../../others/docs-example/docs-example.module';
 import { SourceTabsModule } from '../../others/source-tabs/source-tabs.module';
@@ -7,7 +8,6 @@ import { ComboCompanyPanelModule } from '../../panels/combo-company-panel/combo-
 import { SharedModule } from '../../shared/shared.module';
 import { ComboPageComponent } from './combo-page.component';
 import { ComboPageRoutes } from './combo-page.routes';
-import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   imports: [

@@ -25,27 +25,24 @@ export class CompanyPanelComponent {
   savedItem?: Company;
 
   constructor() {
-    this.form = this.fb.group(Company, {
+    this.form = this.fb.rootFormGroup(Company, {
       name: '',
       regionNum: 0,
     });
   }
   onLoadClick(): void {
-    this.savedItem = undefined;
+    this.savedItem;
     this.form.object = this.item;
-    this.form.validateAllFormFields();
   }
   onClearClick(): void {
-    this.savedItem = undefined;
+    this.savedItem;
     this.form.object = new Company();
-    this.form.validateAllFormFields();
   }
   onSaveClick(): void {
-    this.form.validateAllFormFields();
     if (this.form.valid) {
       this.savedItem = this.form.object;
     } else {
-      this.savedItem = undefined;
+      this.savedItem;
     }
   }
 }

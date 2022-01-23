@@ -29,10 +29,10 @@ export class MessageBoxComponent implements OnInit {
   hideOnYes = false;
 
   @Input()
-  title: string;
+  title!: string;
 
   @Input()
-  message: string;
+  message!: string;
 
   @Input()
   noTitle = 'Cancel';
@@ -46,7 +46,10 @@ export class MessageBoxComponent implements OnInit {
   @Output()
   yes = new EventEmitter<MessageBoxComponent>();
 
-  constructor(public dialogRef: MatDialogRef<MessageBoxComponent>, public changeDetectorRef: ChangeDetectorRef) {}
+  constructor(
+    public dialogRef: MatDialogRef<MessageBoxComponent>,
+    public changeDetectorRef: ChangeDetectorRef
+  ) {}
   ngOnInit() {
     this.changeDetectorRef.detectChanges();
   }

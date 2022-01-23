@@ -8,8 +8,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 })
 export class I18nPageComponent {
   source = {
-    html: require('!!raw-loader!./../../panels/i18n-company-panel/i18n-company-panel.component.html').default,
-    ts: require('!!raw-loader!./../../panels/i18n-company-panel/i18n-company-panel.component.ts').default,
+    html: require('!!raw-loader!./../../panels/i18n-company-panel/i18n-company-panel.component.html')
+      .default,
+    ts: require('!!raw-loader!./../../panels/i18n-company-panel/i18n-company-panel.component.ts')
+      .default,
   };
 
   otherFiles: { name: string; language: string; content: string }[] = [
@@ -21,7 +23,8 @@ export class I18nPageComponent {
     {
       name: 'custom-validators.ts',
       language: 'javascript',
-      content: require('!!raw-loader!../../shared/utils/custom-validators.ts').default,
+      content: require('!!raw-loader!../../shared/utils/custom-validators.ts')
+        .default,
     },
   ];
 }

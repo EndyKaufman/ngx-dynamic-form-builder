@@ -1,11 +1,14 @@
+import { Expose } from 'class-transformer-global-storage';
 import { IsNotEmpty } from 'class-validator-multi-lang';
 
 export class Task {
-  id?: number = undefined;
+  @Expose()
+  id?: number;
 
   // If remove this decorator, ObjectMustBeNotEmpty custom validator on parent class detect error if value is null|undefined|empty string
   @IsNotEmpty({ always: true })
-  description?: string = undefined;
+  @Expose()
+  description?: string;
 
   toString() {
     return `Task #${this.id} ${this.description}`;

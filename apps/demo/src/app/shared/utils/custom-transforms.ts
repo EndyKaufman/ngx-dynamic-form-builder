@@ -1,4 +1,4 @@
-import { TransformFnParams } from 'class-transformer';
+import { TransformFnParams } from 'class-transformer-global-storage';
 
 export function transformStringToDate(params: TransformFnParams) {
   if (params.value) {
@@ -11,9 +11,4 @@ export function transformStringToDate(params: TransformFnParams) {
 }
 export function transformDateToString(params: TransformFnParams) {
   return params.value ? params.value.toISOString() : undefined;
-}
-export function serializeModel<T>(object: T) {
-  return function () {
-    return object;
-  };
 }

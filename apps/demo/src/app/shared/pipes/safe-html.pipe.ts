@@ -5,7 +5,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class SafeHtmlPipe implements PipeTransform {
   constructor(public _sanitizer: DomSanitizer) {}
 
-  transform(value: string, args: any): any {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  transform(value: string): any {
     if (this._sanitizer) {
       return this._sanitizer.bypassSecurityTrustHtml(value);
     } else {

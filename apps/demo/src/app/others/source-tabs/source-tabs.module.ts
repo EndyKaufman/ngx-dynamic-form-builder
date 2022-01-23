@@ -1,11 +1,11 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
-import { SourceTabsComponent } from './source-tabs.component';
-import { MatTabsModule } from '@angular/material/tabs';
-import { SharedModule } from '../../shared/shared.module';
+import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MarkdownModule } from 'ngx-markdown';
+import { SharedModule } from '../../shared/shared.module';
+import { SourceTabsComponent } from './source-tabs.component';
 
 @NgModule({
   imports: [
