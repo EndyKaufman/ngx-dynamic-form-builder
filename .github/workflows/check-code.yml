@@ -2,6 +2,8 @@ name: Check code
 
 on:
   push:
+    tags-ignore:
+      - v*
 
 jobs:
   check-code:
