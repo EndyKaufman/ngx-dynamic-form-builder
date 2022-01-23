@@ -10,7 +10,7 @@
 npm i --save class-transformer-global-storage class-validator-multi-lang ngx-dynamic-form-builder
 ```
 
-## BREAKING CHANGE
+## BREAKING CHANGE !!!
 
 Version above 2 has a completely rewritten code, partially backwards compatible
 
@@ -23,6 +23,8 @@ Fork [class-validator-multi-lang](https://github.com/EndyKaufman/class-validator
 Fork [class-transformer-global-storage](https://github.com/petrzjunior/class-transformer) - adds the ability to get meta information about all used classes (PR:[https://github.com/typestack/class-transformer/pull/929](https://github.com/typestack/class-transformer/pull/929))
 
 For correct parse metadata, need remove `compilerOptions.downlevelIteration` and append `compilerOptions.emitDecoratorMetadata: true` in `tsconfig.json`
+
+Native Angular validators not supported
 
 ## Links
 
