@@ -31,18 +31,18 @@ export class CompanyPanelComponent {
     });
   }
   onLoadClick(): void {
-    this.savedItem;
+    this.savedItem = undefined;
     this.form.object = this.item;
   }
   onClearClick(): void {
-    this.savedItem;
+    this.savedItem = undefined;
     this.form.object = new Company();
   }
   onSaveClick(): void {
     if (this.form.valid) {
       this.savedItem = this.form.object;
     } else {
-      this.savedItem;
+      this.savedItem = undefined;
     }
   }
 }

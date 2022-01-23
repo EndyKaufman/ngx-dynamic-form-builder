@@ -80,18 +80,18 @@ export class UserPanelComponent {
     this.form.setExternalErrors({});
   }
   onLoadClick(): void {
-    this.savedItem;
+    this.savedItem = undefined;
     this.form.json = this.jsonItem as unknown as User;
   }
   onClearClick(): void {
-    this.savedItem;
+    this.savedItem = undefined;
     this.form.object = new User();
   }
   onSaveClick(): void {
     if (this.form.valid) {
       this.savedItem = { ...this.form.json };
     } else {
-      this.savedItem;
+      this.savedItem = undefined;
     }
   }
 }

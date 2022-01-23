@@ -26,14 +26,14 @@ export class ExpLoginPanelComponent implements OnInit {
     );
   }
   ngOnInit() {
-    this.savedItem;
+    this.savedItem = undefined;
     this.form.object = new ExpUser();
   }
   onLoginClick(): void {
     if (this.form.valid) {
       this.savedItem = this.form.object;
     } else {
-      this.savedItem;
+      this.savedItem = undefined;
     }
   }
 }

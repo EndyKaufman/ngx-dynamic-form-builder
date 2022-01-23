@@ -46,18 +46,18 @@ export class ExpUserPanelComponent {
     );
   }
   onLoadClick(): void {
-    this.savedItem;
+    this.savedItem = undefined;
     this.form.object = this.item;
   }
   onClearClick(): void {
-    this.savedItem;
+    this.savedItem = undefined;
     this.form.object = new ExpUser();
   }
   onSaveClick(): void {
     if (this.form.valid) {
       this.savedItem = this.form.json;
     } else {
-      this.savedItem;
+      this.savedItem = undefined;
     }
   }
 }

@@ -32,11 +32,11 @@ export class ComboCompanyPanelComponent {
     });
   }
   onLoadClick(): void {
-    this.savedItem;
+    this.savedItem = undefined;
     this.form.json = this.jsonItem;
   }
   onLoadAsObjectClick(): void {
-    this.savedItem;
+    this.savedItem = undefined;
     const object = new ComboCompany();
     object.id = this.jsonItem.id;
     object.name = this.jsonItem.name;
@@ -45,18 +45,18 @@ export class ComboCompanyPanelComponent {
     this.form.object = object;
   }
   onClearClick(): void {
-    this.savedItem;
+    this.savedItem = undefined;
     this.form.json = {} as ComboCompany;
   }
   onClearAsObjectClick(): void {
-    this.savedItem;
+    this.savedItem = undefined;
     this.form.object = new ComboCompany();
   }
   onSaveClick(): void {
     if (this.form.valid) {
       this.savedItem = this.form.json;
     } else {
-      this.savedItem;
+      this.savedItem = undefined;
     }
   }
 }

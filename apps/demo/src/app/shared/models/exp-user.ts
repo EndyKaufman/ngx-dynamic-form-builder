@@ -85,7 +85,7 @@ export class ExpUser {
       const userTimezoneOffset = dateOfBirth.getTimezoneOffset() * 60000;
       this.dateOfBirth = new Date(dateOfBirth.getTime() - userTimezoneOffset);
     } else {
-      this.dateOfBirth;
+      this.dateOfBirth = undefined;
     }
   }
 }

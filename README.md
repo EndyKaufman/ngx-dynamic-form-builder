@@ -128,7 +128,7 @@ export class CompanyPanelComponent {
 
   fb = new DynamicFormBuilder();
 
-  savedItem: Company;
+  savedItem?: Company;
 
   constructor() {
     this.form = this.fb.group(Company, {
@@ -136,18 +136,18 @@ export class CompanyPanelComponent {
     });
   }
   onLoadClick(): void {
-    this.savedItem;
+    this.savedItem = undefined;
     this.form.object = this.item;
   }
   onClearClick(): void {
-    this.savedItem;
+    this.savedItem = undefined;
     this.form.object = new Company();
   }
   onSaveClick(): void {
     if (this.form.valid) {
       this.savedItem = this.form.object;
     } else {
-      this.savedItem;
+      this.savedItem = undefined;
     }
   }
 }
@@ -285,7 +285,7 @@ export class CompanyPanelComponent implements onDestroy {
 
   fb = new DynamicFormBuilder();
 
-  savedItem: Company;
+  savedItem?: Company;
 
   errorChangeSubscription: Subscription;
 
@@ -309,12 +309,12 @@ export class CompanyPanelComponent implements onDestroy {
     }
   }
   onLoadClick(): void {
-    this.savedItem;
+    this.savedItem = undefined;
     this.form.object = this.item;
     this.form.validateAllFormFields();
   }
   onClearClick(): void {
-    this.savedItem;
+    this.savedItem = undefined;
     this.form.object = new Company();
     this.form.validateAllFormFields();
   }
@@ -323,7 +323,7 @@ export class CompanyPanelComponent implements onDestroy {
     if (this.form.valid) {
       this.savedItem = this.form.object;
     } else {
-      this.savedItem;
+      this.savedItem = undefined;
     }
   }
 }
