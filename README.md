@@ -171,6 +171,117 @@ export class TextLengthMore15 implements ValidatorConstraintInterface {
 }
 ```
 
+
+## Nested Forms and Models
+
+### Depth limiting
+
+By default, ngx-dynamic-form-builder will create all Submodels that it can find in specified model, with a max depth of 2.
+
+```ts
+class Company {
+	@Expose()
+	@Type(()=>User)
+	manager?:any;
+}
+
+class User {
+	@Expose()
+	name?: string;
+
+	@Type(type => Company)
+	@Expose()
+	company?: Company;
+}
+
+const form = new DynamicFormBuilder().rootFormGroup(User,{})
+
+/*
+  form.value will look like:
+  { 
+    name: '', 
+    company: { <-- sub model level 1
+      manager: { <-- sub model level 2
+        name: ''
+        --> no sub model level 3
+      }
+    }
+  }
+*/
+
+```
+
+You can change the depth by specifying a different value for maxNestedModelDepth:
+
+```ts
+const form = new DynamicFormBuilder().rootFormGroup(User,{}, {maxNestedModelDepth:0})
+
+/*
+  form.value will look like:
+  { 
+    name: '', 
+    --> no sub models at all
+  }
+*/
+```
+
+### Create only specific submodels
+
+Sometimes the form model may contain @Type decorated props, but you don't want these submodels to appear in the form.
+
+Use _allowedNestedModels_ to specify a list of props / dot-separated prop paths that you want to be created.
+
+All other submodels will be excluded.
+
+```ts
+
+/* Company + User from above example */
+
+class Package {
+	@Type(type => User)
+	@Expose()
+	user?: User;
+
+	@Type(type => Company)
+	@Expose()
+	company?: Company;
+}
+
+const form = new DynamicFormBuilder().rootFormGroup(Package,{}, {allowedNestedModels:[]})
+
+/*
+  form.value will look like:
+  { 
+    --> no sub models at all
+  }
+*/
+
+const form = new DynamicFormBuilder().rootFormGroup(Package,{}, {allowedNestedModels:['user','company']})
+
+/*
+  form.value will look like:
+  { 
+    user:{ name : '' },
+    company:{ },
+  }
+*/
+
+const form = new DynamicFormBuilder().rootFormGroup(Package,{}, {allowedNestedModels:['user','company','company.manager']})
+
+/*
+  form.value will look like:
+  { 
+    user: { name : '' },
+    company:{ 
+      manager: { name : '' }
+	},
+  }
+*/
+```
+
+
+
+
 ## Support multi-language translate validation errors (I18n)
 
 Because multi-language supported in class-validator-multi-lang, now ngx-dynamic-form-builder also support this feature

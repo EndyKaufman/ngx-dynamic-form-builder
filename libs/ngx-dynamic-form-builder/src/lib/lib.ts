@@ -524,8 +524,9 @@ export function validateAllFormFields(form: FormGroup) {
 
 function getMetadata(
   classType: ClassConstructor<unknown>,
+  dynamicFormBuilderOptions: DynamicFormBuilderOptions,
   currentDepth:number,
-  maxDepth:number,
+  currentPath:string[],
   classTransformOptions?: ClassTransformOptions,
 ): IDynamicControlMetadata {
   const classTransformerMetadataStorage =
@@ -552,6 +553,7 @@ function getMetadata(
   let prevMultiTypes: any[] | null = [];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let multiTypes: any[] | null = null;
+  
 
   // need for create all link for multi types
   if (classTransformOptions) {
@@ -672,36 +674,67 @@ function getMetadata(
       )
   );
 
-  if(currentDepth < maxDepth) {
-    properties.forEach(
-      (
-        exposeMetadataItem: {
-          propertyName: string;
-          target: ClassConstructor<unknown>;
-        },
-        index: number
-      ) => {
-        const propertyMetadata = classTransformerMetadataStorage.findTypeMetadata(
-          exposeMetadataItem.target,
-          exposeMetadataItem.propertyName
-        );
-        if (propertyMetadata) {
-          properties[index] = {
-            ...getMetadata(propertyMetadata.typeFunction(),currentDepth+1,maxDepth,undefined),
-            isArray: Array === propertyMetadata.reflectedType,
-            propertyName: exposeMetadataItem.propertyName,
-          };
-        } else {
-          properties[index] = {
-            classType: null,
-            properties: [],
-            isArray: false,
-            propertyName: exposeMetadataItem.propertyName,
-          };
-        }
+  const depthLimitExceeded = currentDepth >= (dynamicFormBuilderOptions.maxNestedModelDepth as number);
+
+  properties.forEach(
+    (
+      exposeMetadataItem: {
+        propertyName: string;
+        target: ClassConstructor<unknown>;
+      },
+      index: number
+    ) => {
+      const propertyMetadata = classTransformerMetadataStorage.findTypeMetadata(
+        exposeMetadataItem.target,
+        exposeMetadataItem.propertyName
+      );
+
+	  
+	  if (propertyMetadata) {
+		if(depthLimitExceeded) {
+	      // prop exceeds limit, it should not be created at all, so remove it from list
+		  delete properties[index];
+		} else {
+		  const propertyPath = [...currentPath,exposeMetadataItem.propertyName];
+		  // only include submodel type data if allowedNestedModels is not set
+		  // or, if it is defined, only allow if the property path is on list.
+		  if(!Array.isArray(dynamicFormBuilderOptions.allowedNestedModels))
+		  {
+		  	properties[index] = {
+		  	  ...getMetadata(propertyMetadata.typeFunction(),dynamicFormBuilderOptions,currentDepth+1,propertyPath,undefined),
+		  	  isArray: Array === propertyMetadata.reflectedType,
+		  	  propertyName: exposeMetadataItem.propertyName,
+		  	};
+		  } else {
+		    if(dynamicFormBuilderOptions.allowedNestedModels.includes(propertyPath.join('.'))) {
+		  	  properties[index] = {
+		  		...getMetadata(propertyMetadata.typeFunction(),dynamicFormBuilderOptions,currentDepth+1,propertyPath,undefined),
+		  		isArray: Array === propertyMetadata.reflectedType,
+		  		propertyName: exposeMetadataItem.propertyName,
+		  	  };
+		    } else {
+		      // prop should be excluded, add no metadata info at all
+		      delete properties[index];
+		      // properties[index] = {
+		      //   classType: null,
+		      //   properties: [],
+		      //   isArray: false,
+		      //   propertyName: exposeMetadataItem.propertyName,
+		      // };
+		    }
+		  }
+		}
+      } else {
+        properties[index] = {
+          classType: null,
+          properties: [],
+          isArray: false,
+          propertyName: exposeMetadataItem.propertyName,
+        };
       }
-    );
-  }
+
+    }
+  );
 
   return {
     classType,
@@ -726,10 +759,9 @@ function setupClassTransformMetadata<T = Record<string, unknown>>({
   if (!defaultMetadata && classType) {
     dynamicForm.classTransformMetadata = getMetadata(
       classType,
+      dynamicForm.dynamicFormBuilderOptions,
 	  0,
-      dynamicForm.dynamicFormBuilderOptions.maxNestedModelDepth as number,
-      dynamicForm.dynamicFormBuilderOptions.classTransformOptions,
-
+	  [],
     );
   } else {
     dynamicForm.classTransformMetadata =
@@ -765,7 +797,10 @@ function setupDynamicFormBuilderOptions<T = Record<string, unknown>>({
       {}),
   };
   dynamicForm.dynamicFormBuilderOptions.maxNestedModelDepth = 
-    (dynamicForm.dynamicFormBuilderOptions.maxNestedModelDepth || 2);
+    (typeof dynamicForm.dynamicFormBuilderOptions.maxNestedModelDepth==='number' ? 
+	  dynamicForm.dynamicFormBuilderOptions.maxNestedModelDepth : 2);
+
+	// dynamicFormBuilderOptions.allowedNestedModels defaults to undefined
 }
 
 function createAllFormGroupChildrenControls<T = Record<string, unknown>>({
