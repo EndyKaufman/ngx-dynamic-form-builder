@@ -44,6 +44,7 @@ import {
   IDynamicControlMetadata,
   ShortValidationErrors,
 } from './types/types';
+import { getGlobal } from './utils/get-global.util';
 import {
   getGlobalDynamicFormBuilderOptions,
   getGlobalDynamicFormBuilderOptionsSubject,
@@ -529,7 +530,7 @@ function getMetadata(
 ): IDynamicControlMetadata {
   const classTransformerMetadataStorage =
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any)['classTransformerMetadataStorage'] || undefined;
+   getGlobal()['classTransformerMetadataStorage'] || undefined;
   if (!classTransformerMetadataStorage) {
     throw new Error(
       'classTransformerMetadataStorage not set in windows, please use the "class-transformer-global-storage" instead of "class-transformer"'
@@ -537,7 +538,8 @@ function getMetadata(
   }
   const classValidatorMetadataStorage =
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any)['classValidatorMetadataStorage'] || undefined;
+    getGlobal()['classValidatorMetadataStorage'] || undefined;
+    // (window as any)['classValidatorMetadataStorage'] || undefined;
   if (!classValidatorMetadataStorage) {
     throw new Error('classValidatorMetadataStorage not set in windows');
   }
