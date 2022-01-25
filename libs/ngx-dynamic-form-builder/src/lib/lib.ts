@@ -523,7 +523,9 @@ export function validateAllFormFields(form: FormGroup) {
 
 function getMetadata(
   classType: ClassConstructor<unknown>,
-  classTransformOptions?: ClassTransformOptions
+  currentDepth:number,
+  maxDepth:number,
+  classTransformOptions?: ClassTransformOptions,
 ): IDynamicControlMetadata {
   const classTransformerMetadataStorage =
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -668,34 +670,36 @@ function getMetadata(
       )
   );
 
-  properties.forEach(
-    (
-      exposeMetadataItem: {
-        propertyName: string;
-        target: ClassConstructor<unknown>;
-      },
-      index: number
-    ) => {
-      const propertyMetadata = classTransformerMetadataStorage.findTypeMetadata(
-        exposeMetadataItem.target,
-        exposeMetadataItem.propertyName
-      );
-      if (propertyMetadata) {
-        properties[index] = {
-          ...getMetadata(propertyMetadata.typeFunction()),
-          isArray: Array === propertyMetadata.reflectedType,
-          propertyName: exposeMetadataItem.propertyName,
-        };
-      } else {
-        properties[index] = {
-          classType: null,
-          properties: [],
-          isArray: false,
-          propertyName: exposeMetadataItem.propertyName,
-        };
+  if(currentDepth < maxDepth) {
+    properties.forEach(
+      (
+        exposeMetadataItem: {
+          propertyName: string;
+          target: ClassConstructor<unknown>;
+        },
+        index: number
+      ) => {
+        const propertyMetadata = classTransformerMetadataStorage.findTypeMetadata(
+          exposeMetadataItem.target,
+          exposeMetadataItem.propertyName
+        );
+        if (propertyMetadata) {
+          properties[index] = {
+            ...getMetadata(propertyMetadata.typeFunction(),currentDepth+1,maxDepth,undefined),
+            isArray: Array === propertyMetadata.reflectedType,
+            propertyName: exposeMetadataItem.propertyName,
+          };
+        } else {
+          properties[index] = {
+            classType: null,
+            properties: [],
+            isArray: false,
+            propertyName: exposeMetadataItem.propertyName,
+          };
+        }
       }
-    }
-  );
+    );
+  }
 
   return {
     classType,
@@ -720,7 +724,10 @@ function setupClassTransformMetadata<T = Record<string, unknown>>({
   if (!defaultMetadata && classType) {
     dynamicForm.classTransformMetadata = getMetadata(
       classType,
-      dynamicForm.dynamicFormBuilderOptions.classTransformOptions
+	  0,
+      dynamicForm.dynamicFormBuilderOptions.maxNestedModelDepth as number,
+      dynamicForm.dynamicFormBuilderOptions.classTransformOptions,
+
     );
   } else {
     dynamicForm.classTransformMetadata =
@@ -755,6 +762,8 @@ function setupDynamicFormBuilderOptions<T = Record<string, unknown>>({
     ...(dynamicForm.dynamicFormBuilderOptions.classTransformToPlainOptions ||
       {}),
   };
+  dynamicForm.dynamicFormBuilderOptions.maxNestedModelDepth = 
+    (dynamicForm.dynamicFormBuilderOptions.maxNestedModelDepth || 2);
 }
 
 function createAllFormGroupChildrenControls<T = Record<string, unknown>>({
