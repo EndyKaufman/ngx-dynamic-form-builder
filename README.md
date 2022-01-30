@@ -26,8 +26,6 @@ Fork [class-transformer-global-storage](https://github.com/petrzjunior/class-tra
 
 For correct parse metadata, need remove `compilerOptions.downlevelIteration` and append `compilerOptions.emitDecoratorMetadata: true` in `tsconfig.json`
 
-Native Angular validators not supported
-
 ## Links
 
 [Demo](https://endykaufman.github.io/ngx-dynamic-form-builder) - Demo application with ngx-dynamic-form-builder.
