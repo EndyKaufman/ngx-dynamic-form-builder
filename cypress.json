@@ -1,6 +1,6 @@
 {
   "viewportWidth": 1024,
-  "viewportHeight": 1024,
+  "viewportHeight": 1524,
   "reporter": "cypress-multi-reporters",
   "reporterOptions": {
     "reporterEnabled": "mochawesome",

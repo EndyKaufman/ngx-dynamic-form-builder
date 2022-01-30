@@ -4,7 +4,8 @@
  * Note: `globalThis` is the standardized approach however it has been added to
  * Node.js in version 12. We need to include this snippet until Node 12 EOL.
  */
-export function getGlobal() {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function getGlobal(): any {
   if (typeof globalThis !== 'undefined') {
     return globalThis;
   }

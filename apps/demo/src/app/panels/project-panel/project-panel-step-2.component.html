@@ -27,9 +27,9 @@
     <mat-error *ngIf="errors?.['tasks']?.length">{{
       errors?.['tasks']?.join(', ')
     }}</mat-error>
-    <!--mat-error *ngIf="nativeErrors?.maxLength3">{{
-      'Tasks max length = 3 (native angular)' | transloco
-    }}</mat-error-->
+    <mat-error *ngIf="form.errors?.['maxLength3']">
+      {{ 'Tasks max length = 3 (native angular)' | transloco }}
+    </mat-error>
   </h4>
   <mat-list role="list">
     <mat-list-item

@@ -46,14 +46,12 @@ export class ProjectPanelStep2Component implements OnDestroy {
         classValidatorOptions: {
           groups: [ProjectPanelStepsEnum.Step2],
         },
-        validator: this.classLevelValidator,
+        validators: this.classLevelValidator,
       }
     );
   }
   classLevelValidator(group: DynamicFormGroup<Project>) {
-    return group.object && group.object.tasks && group.object.tasks.length > 3
-      ? { maxLength3: true }
-      : null;
+    return group?.value?.tasks?.length > 3 ? { maxLength3: true } : null;
   }
   getTasksArray() {
     return this.form.get('tasks') as FormArray;

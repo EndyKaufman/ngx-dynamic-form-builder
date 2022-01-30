@@ -2,6 +2,7 @@
 describe('Check external errors', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000');
+    cy.wait(600);
   });
 
   it('load default data and set external errors', () => {
@@ -58,13 +59,13 @@ describe('Check external errors', () => {
       "type": "car",
       "transportNumber": "DMC-12",
       "numberOfWheels": 4,
-      "numberOfTurbines": ""
+      "numberOfTurbines": null
     },
     {
       "type": "airplane",
       "transportNumber": "Boeing 737",
       "numberOfTurbines": 2,
-      "numberOfWheels": ""
+      "numberOfWheels": null
     }
   ]
 }`
@@ -156,13 +157,13 @@ describe('Check external errors', () => {
       "type": "car",
       "transportNumber": "DMC-12",
       "numberOfWheels": 4,
-      "numberOfTurbines": ""
+      "numberOfTurbines": null
     },
     {
       "type": "airplane",
       "transportNumber": "Boeing 737",
       "numberOfTurbines": 2,
-      "numberOfWheels": ""
+      "numberOfWheels": null
     }
   ]
 }`
@@ -240,13 +241,13 @@ describe('Check external errors', () => {
       "type": "car",
       "transportNumber": "DMC-12",
       "numberOfWheels": 4,
-      "numberOfTurbines": ""
+      "numberOfTurbines": null
     },
     {
       "type": "airplane",
       "transportNumber": "Boeing 737",
       "numberOfTurbines": 2,
-      "numberOfWheels": ""
+      "numberOfWheels": null
     }
   ]
 }`

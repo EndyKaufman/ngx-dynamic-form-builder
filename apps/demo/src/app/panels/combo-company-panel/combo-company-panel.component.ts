@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Validators } from '@angular/forms';
 import { DynamicFormBuilder, DynamicFormGroup } from 'ngx-dynamic-form-builder';
 import { ComboCompany } from './../../shared/models/combo-company';
 
@@ -26,14 +27,19 @@ export class ComboCompanyPanelComponent {
   savedItem?: ComboCompany;
 
   constructor() {
-    this.form = this.fb.rootFormGroup(ComboCompany, {
-      name: '',
-      regionNum: '',
-    });
+    this.form = this.fb.rootFormGroup(
+      ComboCompany,
+      {
+        name: undefined,
+        regionNum: undefined,
+      },
+      { angularValidators: { regionNum: [Validators.required] } }
+    );
   }
   onLoadClick(): void {
     this.savedItem = undefined;
     this.form.json = this.jsonItem;
+    console.log(this.form);
   }
   onLoadAsObjectClick(): void {
     this.savedItem = undefined;
@@ -43,6 +49,7 @@ export class ComboCompanyPanelComponent {
     object.regionNum = this.jsonItem.regionNum;
     object.nameLocale = this.jsonItem.nameLocale;
     this.form.object = object;
+    console.log(this.form);
   }
   onClearClick(): void {
     this.savedItem = undefined;
@@ -53,6 +60,7 @@ export class ComboCompanyPanelComponent {
     this.form.object = new ComboCompany();
   }
   onSaveClick(): void {
+    console.log(this.form);
     if (this.form.valid) {
       this.savedItem = this.form.json;
     } else {

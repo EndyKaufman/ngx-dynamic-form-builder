@@ -1,12 +1,13 @@
 import { AbstractControl } from '@angular/forms';
 import { ValidationError } from 'class-validator-multi-lang';
-import lodashSet from 'lodash.set';
-import mergeWith from 'lodash.mergewith';
 import cloneDeep from 'lodash.clonedeep';
+import mergeWith from 'lodash.mergewith';
+import lodashSet from 'lodash.set';
 import { __dynamicControlOptions__ } from '../constants/constants';
 import {
   ClassValidatorErrors,
   DynamicControlOptions,
+  DynamicFormGroup,
   DynamicFormProperties,
   IDynamicControlMetadata,
   ShortValidationErrors,
@@ -179,18 +180,25 @@ export function transformClassValidatorErrorsToShortValidationErrors(
   return customErrors;
 }
 
-export function mergeErrors(
-  externalErrors?: ClassValidatorErrors,
-  validationErrors?: ClassValidatorErrors
-) {
+export function mergeErrors<T>(externalErrors?: T, validationErrors?: T) {
   const clonedExternalErrors = cloneDeep(externalErrors);
+  const clonedValidationErrors = cloneDeep(validationErrors);
   return mergeWith(
     clonedExternalErrors,
-    validationErrors,
+    clonedValidationErrors,
     (objValue, srcValue) => {
+      if (Array.isArray(objValue) && !Array.isArray(srcValue)) {
+        return [...objValue, ...Object.keys(srcValue || {})].filter(Boolean);
+      }
+      if (Array.isArray(srcValue) && !Array.isArray(objValue)) {
+        return [...Object.keys(objValue || {}), ...srcValue].filter(Boolean);
+      }
+
       if (canMerge()) {
         return objValue.concat(srcValue);
       }
+
+      return undefined;
 
       function canMerge() {
         return (
@@ -201,6 +209,42 @@ export function mergeErrors(
       }
     }
   );
+}
+
+export function collectDynamicFormGroupErrors<T>(
+  control: DynamicFormGroup<T, T>
+) {
+  if (control.controls) {
+    return {
+      ...Object.keys(control.controls).reduce((all, key) => {
+        const childErrors = collectDynamicFormGroupErrors(
+          control.controls[key] as DynamicFormGroup
+        );
+        if (childErrors && Object.keys(childErrors).length > 0) {
+          all = {
+            ...all,
+            [key]: {
+              ...childErrors,
+            },
+          };
+        }
+        return all;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      }, {} as any),
+    };
+  } else {
+    // todo: need check
+    const key = control?.classTransformMetadata?.propertyName;
+    const childErrors = control.errors;
+    if (
+      key &&
+      childErrors?.[key]?.messages &&
+      Array.isArray(childErrors[key]?.messages)
+    ) {
+      delete childErrors[key];
+    }
+    return childErrors;
+  }
 }
 
 export function isPrimitiveClass(

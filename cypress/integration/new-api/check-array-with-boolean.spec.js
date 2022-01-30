@@ -2,6 +2,7 @@
 describe('Check array with boolean', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000');
+    cy.wait(600);
   });
 
   it('add new boolean invalid value as string', () => {

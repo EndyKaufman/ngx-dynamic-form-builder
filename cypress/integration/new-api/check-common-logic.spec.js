@@ -2,6 +2,7 @@
 describe('Check common logic', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000');
+    cy.wait(1000);
   });
 
   it('display errors after first init', () => {
@@ -124,13 +125,13 @@ describe('Check common logic', () => {
       "type": "car",
       "transportNumber": "DMC-12",
       "numberOfWheels": 4,
-      "numberOfTurbines": ""
+      "numberOfTurbines": null
     },
     {
       "type": "airplane",
       "transportNumber": "Boeing 737",
       "numberOfTurbines": 2,
-      "numberOfWheels": ""
+      "numberOfWheels": null
     }
   ]
 }`
@@ -270,13 +271,13 @@ describe('Check common logic', () => {
       "type": "car",
       "transportNumber": "DMC-12",
       "numberOfWheels": 4,
-      "numberOfTurbines": ""
+      "numberOfTurbines": null
     },
     {
       "type": "airplane",
       "transportNumber": "Boeing 737",
       "numberOfTurbines": 2,
-      "numberOfWheels": ""
+      "numberOfWheels": null
     }
   ]
 }`
@@ -317,13 +318,13 @@ describe('Check common logic', () => {
       "type": "car",
       "transportNumber": "DMC-12",
       "numberOfWheels": 4,
-      "numberOfTurbines": ""
+      "numberOfTurbines": null
     },
     {
       "type": "airplane",
       "transportNumber": "Boeing 737",
       "numberOfTurbines": 2,
-      "numberOfWheels": ""
+      "numberOfWheels": null
     }
   ]
 }`
