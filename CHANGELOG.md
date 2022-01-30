@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/v2.0.1...v2.1.0) (2022-01-30)
+
+
+### Features
+
+* add support native Angular validators ([#183](https://github.com/EndyKaufman/ngx-dynamic-form-builder/issues/183)), support correct work with isOptional ([#188](https://github.com/EndyKaufman/ngx-dynamic-form-builder/issues/188)), add excludeGroups for fix recursive errors and unexpected creation of submodels ([#185](https://github.com/EndyKaufman/ngx-dynamic-form-builder/issues/185)) ([d9d8c77](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/d9d8c77b2d8b1c6967448b0271279f6608cb3098))
+
 ### [2.0.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/v2.0.0...v2.0.1) (2022-01-23)
 
 ### Bug Fixes
