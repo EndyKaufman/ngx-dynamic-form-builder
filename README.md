@@ -133,7 +133,7 @@ export class CompanyPanelComponent {
   savedItem?: Company;
 
   constructor() {
-    this.form = this.fb.group(Company, {
+    this.form = this.fb.rootFormGroup(Company, {
       name: '',
     });
   }
@@ -178,7 +178,7 @@ Because multi-language supported in class-validator-multi-lang, now ngx-dynamic-
 set validation messages as settings when create form group
 
 ```typescript
-this.form = this.fb.group(
+this.form = this.fb.rootFormGroup(
   Company,
   {
     name: '',
@@ -292,7 +292,7 @@ export class CompanyPanelComponent implements onDestroy {
   errorChangeSubscription: Subscription;
 
   constructor() {
-    this.form = this.fb.group(Company, {
+    this.form = this.fb.rootFormGroup(Company, {
       name: '',
     });
 
