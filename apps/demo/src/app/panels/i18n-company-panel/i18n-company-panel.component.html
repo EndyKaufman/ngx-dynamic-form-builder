@@ -13,7 +13,7 @@
   </mat-form-field>
   <mat-form-field class="full-width">
     <input matInput formControlName="name" [placeholder]="strings.name" />
-    <mat-error *ngIf="errors?.['name']?.messages?.length > 0">{{
+    <mat-error *ngIf="errors?.['name']?.length > 0">{{
       errors?.['name'][0]
     }}</mat-error>
   </mat-form-field>

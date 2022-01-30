@@ -4,10 +4,9 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [2.0.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/v2.0.0...v2.0.1) (2022-01-23)
 
-
 ### Bug Fixes
 
-* update readme ([f7f9ca3](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/f7f9ca3e3abf955a6c4425c679aaa5c216d4c5e8))
+- update readme ([f7f9ca3](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/f7f9ca3e3abf955a6c4425c679aaa5c216d4c5e8))
 
 ## 2.0.0 (2022-01-23)
 

@@ -17,6 +17,7 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator-multi-lang';
 import {
+  DeepPartial,
   DynamicFormBuilder,
   DynamicFormGroup,
   getCustomDataToRootFormGroup,
@@ -106,6 +107,11 @@ export class Company {
   @IsBoolean({ each: true })
   @Expose()
   permissions!: boolean[];
+
+  @ValidateNested()
+  @Type(() => Department)
+  @Expose({ groups: ['nested'] })
+  department?: Department | undefined;
 }
 
 export class PeopleAge {
@@ -224,7 +230,12 @@ export class NewApiComponent {
   constructor() {
     this.form = this.formBuilder.rootFormGroup(
       Department,
-      this.getEmptyDepartment()
+      this.getEmptyDepartment(),
+      {
+        classTransformOptions: {
+          excludeGroups: ['nested'],
+        },
+      }
     );
     console.log(this.form);
   }
@@ -250,7 +261,7 @@ export class NewApiComponent {
   }
 
   onLoadClick(): void {
-    this.form.json = this.getExampleDepartment();
+    this.form.json = this.getExampleDepartment() as Department;
     console.log(this.form);
   }
 
@@ -267,7 +278,7 @@ export class NewApiComponent {
   onClearClick(): void {
     this.savedItem$.next(undefined);
 
-    this.form.json = this.getEmptyDepartment();
+    this.form.json = this.getEmptyDepartment() as Department;
     console.log(this.form);
   }
 
@@ -281,7 +292,7 @@ export class NewApiComponent {
 
   //
 
-  private getExampleDepartment(): Department {
+  private getExampleDepartment(): DeepPartial<Department> {
     return {
       id: 11,
       name: 'dep name 1',
@@ -292,6 +303,7 @@ export class NewApiComponent {
         state: 'California',
         house: '221b',
         permissions: [true, false],
+        department: { name: 'name' },
       },
       groups: [
         { id: 33, name: 'group name 1' },
@@ -314,7 +326,7 @@ export class NewApiComponent {
     };
   }
 
-  private getEmptyDepartment(): Department {
+  private getEmptyDepartment(): DeepPartial<Department> {
     return {
       name: '',
       company: {
@@ -327,7 +339,7 @@ export class NewApiComponent {
       cabinets: [],
       peopleAges: [],
       transports: [],
-    } as unknown as Department;
+    } as DeepPartial<Department>;
   }
 
   // permissions

@@ -44,3 +44,14 @@ readFile(tsconfigJson, function (err, content) {
     if (err) throw err;
   });
 });
+
+const browserslistrc = join(__dirname, '..', 'app', '.browserslistrc');
+readFile(browserslistrc, function (err, content) {
+  if (err) throw err;
+  const browserslistrcLines = content.toString().split('\n');
+  browserslistrcLines.push(`not ios_saf 15.2-15.3`);
+  browserslistrcLines.push(`not safari 15.2-15.3`);
+  writeFile(browserslistrc, browserslistrcLines.join('\n'), function (err) {
+    if (err) throw err;
+  });
+});

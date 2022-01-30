@@ -5,11 +5,11 @@ import {
   FormControl,
   FormGroup,
   ValidationErrors,
+  ValidatorFn,
 } from '@angular/forms';
 import {
   ClassConstructor,
   classToPlain,
-  ClassTransformOptions,
   plainToClass,
 } from 'class-transformer-global-storage';
 import {
@@ -25,6 +25,7 @@ import {
   BehaviorSubject,
   catchError,
   debounceTime,
+  delay,
   from,
   map,
   Observable,
@@ -36,6 +37,7 @@ import { DEFAULT_CLASS_TRANSFORM_OPTIONS } from './constants/constants';
 import {
   ClassValidatorErrors,
   DeepPartial,
+  DynamicClassTransformOptions,
   DynamicFormArray,
   DynamicFormBuilderOptions,
   DynamicFormControl,
@@ -44,11 +46,13 @@ import {
   IDynamicControlMetadata,
   ShortValidationErrors,
 } from './types/types';
+import { getGlobal } from './utils/get-global.util';
 import {
   getGlobalDynamicFormBuilderOptions,
   getGlobalDynamicFormBuilderOptionsSubject,
 } from './utils/global-dynamic-form-builder-options';
 import {
+  collectDynamicFormGroupErrors,
   isPrimitiveClass,
   isPrimitiveType,
   mergeErrors,
@@ -75,7 +79,7 @@ export function createFormControls<T = Record<string, unknown>>({
   rootFormGroup?: DynamicFormGroup<any>;
   metadata?: IDynamicControlMetadata;
   defaultValue: DeepPartial<T>;
-  dynamicFormBuilderOptions?: DynamicFormBuilderOptions;
+  dynamicFormBuilderOptions?: DynamicFormBuilderOptions<T>;
 }): DynamicFormGroup<T> {
   const isRoot = !rootFormGroup;
 
@@ -191,9 +195,14 @@ export function setValuesForControls<T = Record<string, unknown>>(
             ) {
               try {
                 control.patchValue(
-                  value !== undefined
+                  value !== undefined &&
+                    Object.getOwnPropertyDescriptor(
+                      value || {},
+                      metadataItem.propertyName
+                    )
                     ? (value as never)[metadataItem.propertyName]
-                    : ''
+                    : null,
+                  { emitEvent: false }
                 );
               } catch (err) {
                 console.log({ err, metadataItem, form });
@@ -229,9 +238,13 @@ export function setValuesForControls<T = Record<string, unknown>>(
               isPrimitiveClass(metadataItem.classType)
             ) {
               try {
-                (value !== undefined
-                  ? (value as never)[metadataItem.propertyName] || []
-                  : []
+                (
+                  (Object.getOwnPropertyDescriptor(
+                    value || {},
+                    metadataItem.propertyName
+                  )
+                    ? (value as never)[metadataItem.propertyName]
+                    : null) || []
                 ).forEach((item: never) => {
                   if (metadataItem.propertyName) {
                     arrayControl.push(formBuilder.control(item));
@@ -242,9 +255,13 @@ export function setValuesForControls<T = Record<string, unknown>>(
               }
             } else {
               try {
-                (value !== undefined
-                  ? (value as never)[metadataItem.propertyName] || []
-                  : []
+                (
+                  (Object.getOwnPropertyDescriptor(
+                    value || {},
+                    metadataItem.propertyName
+                  )
+                    ? (value as never)[metadataItem.propertyName]
+                    : null) || []
                 )
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   .forEach((item: any) => {
@@ -256,7 +273,7 @@ export function setValuesForControls<T = Record<string, unknown>>(
                           prop.propertyName &&
                           !itemKeys.includes(prop.propertyName)
                         ) {
-                          item[prop.propertyName] = '';
+                          item[prop.propertyName] = null;
                         }
                       });
                     }
@@ -313,7 +330,49 @@ export function setValidatorsToControls<T>(
               ) {
                 form.controls[metadataItem.propertyName].setAsyncValidators(
                   rootFormGroup.commonAsyncValidator
+                ); /*
+                form.controls[
+                  metadataItem.propertyName
+                ].updateValueAndValidity();*/
+              }
+
+              if (rootFormGroup.dynamicFormBuilderOptions.angularValidators) {
+                const { angularFormValidatorPath } = findControlPaths(
+                  form.controls[metadataItem.propertyName]
                 );
+                const angularValidators = lodashGet(
+                  rootFormGroup.dynamicFormBuilderOptions.angularValidators,
+                  angularFormValidatorPath
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                );
+                if (angularValidators) {
+                  let asyncValidators = [];
+                  if (angularValidators.asyncValidators) {
+                    asyncValidators = angularValidators.asyncValidators;
+                    if (typeof asyncValidators === 'function') {
+                      asyncValidators = [asyncValidators];
+                    }
+                  }
+                  let validators =
+                    angularValidators?.validators || angularValidators;
+                  if (typeof validators === 'function') {
+                    validators = [validators];
+                  }
+                  form.controls[metadataItem.propertyName].setAsyncValidators([
+                    ...asyncValidators,
+                    ...validators
+                      .filter(Boolean)
+                      .map(
+                        (validator: ValidatorFn) =>
+                          (control: AbstractControl) =>
+                            Promise.resolve(validator(control))
+                      ),
+                    rootFormGroup.commonAsyncValidator,
+                  ]); /*
+                  form.controls[
+                    metadataItem.propertyName
+                  ].updateValueAndValidity();*/
+                }
               }
             }
           } catch (err) {
@@ -354,6 +413,7 @@ export function setValidatorsToControls<T>(
                 !control.hasAsyncValidator(rootFormGroup.commonAsyncValidator)
               ) {
                 control.setAsyncValidators(rootFormGroup.commonAsyncValidator);
+                /* control.updateValueAndValidity(); */
               }
             });
             if (!rootFormGroup) {
@@ -367,6 +427,9 @@ export function setValidatorsToControls<T>(
               (
                 form.controls[metadataItem.propertyName] as DynamicFormArray
               ).setAsyncValidators(rootFormGroup.commonAsyncValidator);
+              /* (
+                form.controls[metadataItem.propertyName] as DynamicFormArray
+              ).updateValueAndValidity(); */
             }
           } catch (err) {
             console.log({ err, metadataItem, form });
@@ -427,7 +490,7 @@ export function setValidatorsToControls<T>(
                           );
                         }
                       } else {
-                        controlValue[prop.propertyName] = '';
+                        controlValue[prop.propertyName] = null;
                         if (
                           // eslint-disable-next-line @typescript-eslint/no-explicit-any
                           !(control as DynamicFormGroup<any, any>).controls[
@@ -463,6 +526,7 @@ export function setValidatorsToControls<T>(
                 !control.hasAsyncValidator(rootFormGroup.commonAsyncValidator)
               ) {
                 control.setAsyncValidators(rootFormGroup.commonAsyncValidator);
+                /* control.updateValueAndValidity(); */
               }
             });
             if (!rootFormGroup) {
@@ -476,6 +540,9 @@ export function setValidatorsToControls<T>(
               (
                 form.controls[metadataItem.propertyName] as DynamicFormArray
               ).setAsyncValidators(rootFormGroup.commonAsyncValidator);
+              /* (
+                form.controls[metadataItem.propertyName] as DynamicFormArray
+              ).updateValueAndValidity(); */
             }
           } catch (err) {
             console.log({ err, metadataItem, form });
@@ -523,19 +590,18 @@ export function validateAllFormFields(form: FormGroup) {
 
 function getMetadata(
   classType: ClassConstructor<unknown>,
-  classTransformOptions?: ClassTransformOptions
+  classTransformOptions?: DynamicClassTransformOptions,
+  isRoot?: boolean
 ): IDynamicControlMetadata {
   const classTransformerMetadataStorage =
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any)['classTransformerMetadataStorage'] || undefined;
+    getGlobal()['classTransformerMetadataStorage'] || undefined;
   if (!classTransformerMetadataStorage) {
     throw new Error(
       'classTransformerMetadataStorage not set in windows, please use the "class-transformer-global-storage" instead of "class-transformer"'
     );
   }
   const classValidatorMetadataStorage =
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any)['classValidatorMetadataStorage'] || undefined;
+    getGlobal()['classValidatorMetadataStorage'] || undefined;
   if (!classValidatorMetadataStorage) {
     throw new Error('classValidatorMetadataStorage not set in windows');
   }
@@ -550,7 +616,7 @@ function getMetadata(
   let multiTypes: any[] | null = null;
 
   // need for create all link for multi types
-  if (classTransformOptions) {
+  if (isRoot) {
     while (
       !prevMultiTypes ||
       !multiTypes ||
@@ -563,9 +629,13 @@ function getMetadata(
         .map((meta: any) =>
           Array.from(meta[1])
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            .filter((sub: any) => sub[1].options.discriminator)
+            .filter((sub: any) => {
+              return sub[1].options.discriminator;
+            })
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            .map((sub: any) => ({ ...sub[1], ...sub[1].options.discriminator }))
+            .map((sub: any) => {
+              return { ...sub[1], ...sub[1].options.discriminator };
+            })
         )
         .filter((arr) => arr.length > 0)
         .map((arr) =>
@@ -606,7 +676,9 @@ function getMetadata(
         .map((meta: any) =>
           Array.from(meta[1])
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            .filter((sub: any) => sub[1].options.discriminator)
+            .filter((sub: any) => {
+              return sub[1].options.discriminator;
+            })
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             .map((sub: any) => ({ ...sub[1], ...sub[1].options.discriminator }))
         )
@@ -660,12 +732,20 @@ function getMetadata(
     ...(ancestorsProperties.length > 0 ? ancestorsProperties[0] : []),
   ].filter(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (existsLimit: any, existsIndex: any, items: any) =>
-      existsIndex ===
-      items.findIndex(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (it: any) => it.propertyName === existsLimit.propertyName
-      )
+    (existsLimit: any, existsIndex: any, items: any) => {
+      return (
+        (classTransformOptions?.excludeGroups
+          ? !classTransformOptions?.excludeGroups.find((excludeGroup) =>
+              existsLimit?.options?.groups?.includes(excludeGroup)
+            )
+          : true) &&
+        existsIndex ===
+          items.findIndex(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (it: any) => it.propertyName === existsLimit.propertyName
+          )
+      );
+    }
   );
 
   properties.forEach(
@@ -682,7 +762,11 @@ function getMetadata(
       );
       if (propertyMetadata) {
         properties[index] = {
-          ...getMetadata(propertyMetadata.typeFunction()),
+          ...getMetadata(
+            propertyMetadata.typeFunction(),
+            classTransformOptions,
+            false
+          ),
           isArray: Array === propertyMetadata.reflectedType,
           propertyName: exposeMetadataItem.propertyName,
         };
@@ -697,7 +781,7 @@ function getMetadata(
     }
   );
 
-  return {
+  const metadata = {
     classType,
     properties,
     withAncestors:
@@ -706,6 +790,8 @@ function getMetadata(
     isArray: false,
     propertyName: null,
   };
+
+  return metadata;
 }
 
 function setupClassTransformMetadata<T = Record<string, unknown>>({
@@ -720,7 +806,8 @@ function setupClassTransformMetadata<T = Record<string, unknown>>({
   if (!defaultMetadata && classType) {
     dynamicForm.classTransformMetadata = getMetadata(
       classType,
-      dynamicForm.dynamicFormBuilderOptions.classTransformOptions
+      dynamicForm.dynamicFormBuilderOptions.classTransformOptions,
+      true
     );
   } else {
     dynamicForm.classTransformMetadata =
@@ -736,7 +823,7 @@ function setupDynamicFormBuilderOptions<T = Record<string, unknown>>({
   dynamicFormBuilderOptions,
 }: {
   dynamicForm: DynamicFormGroup<T, T>;
-  dynamicFormBuilderOptions: DynamicFormBuilderOptions | undefined;
+  dynamicFormBuilderOptions: DynamicFormBuilderOptions<T> | undefined;
 }) {
   if (!dynamicForm) {
     throw new Error('dynamicForm not set');
@@ -769,7 +856,7 @@ function createAllFormGroupChildrenControls<T = Record<string, unknown>>({
   formBuilder: FormBuilder;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rootFormGroup: DynamicFormGroup<any, any> | undefined;
-  dynamicFormBuilderOptions: DynamicFormBuilderOptions | undefined;
+  dynamicFormBuilderOptions: DynamicFormBuilderOptions<T> | undefined;
 }) {
   dynamicForm.classTransformMetadata.properties.forEach(
     (metadataItem, index) => {
@@ -849,7 +936,7 @@ function addDynamicTypedObjectAsFormArray<T = Record<string, unknown>>({
   formBuilder: FormBuilder;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rootFormGroup: DynamicFormGroup<any, any> | undefined;
-  dynamicFormBuilderOptions: DynamicFormBuilderOptions | undefined;
+  dynamicFormBuilderOptions: DynamicFormBuilderOptions<T> | undefined;
   dynamicForm: DynamicFormGroup<T, T>;
   index: number;
 }) {
@@ -930,7 +1017,7 @@ function addDynamicTypedObjectAsFormGroup<T = Record<string, unknown>>({
   formBuilder: FormBuilder;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rootFormGroup: DynamicFormGroup<any, any> | undefined;
-  dynamicFormBuilderOptions: DynamicFormBuilderOptions | undefined;
+  dynamicFormBuilderOptions: DynamicFormBuilderOptions<T> | undefined;
   dynamicForm: DynamicFormGroup<T, T>;
   index: number;
 }) {
@@ -946,7 +1033,7 @@ function addDynamicTypedObjectAsFormGroup<T = Record<string, unknown>>({
           all[cur.propertyName] = [];
         } else {
           if (!cur.classType || isPrimitiveClass(cur.classType)) {
-            all[cur.propertyName] = '';
+            all[cur.propertyName] = null;
           } else {
             all[cur.propertyName] = {};
           }
@@ -987,7 +1074,12 @@ function addDynamicPrimitiveObjectAsFormGroup<T = Record<string, unknown>>({
   if (!metadataItem.propertyName) {
     throw new Error('propertyName not set');
   }
-  const value = (defaultValue as never)[metadataItem.propertyName] || '';
+  const value = Object.getOwnPropertyDescriptor(
+    defaultValue,
+    metadataItem.propertyName
+  )
+    ? (defaultValue as never)[metadataItem.propertyName]
+    : undefined;
   const control = formBuilder.control(value) as DynamicFormControl;
   dynamicForm.addControl(metadataItem.propertyName, control);
   control.classTransformMetadata = metadataItem;
@@ -1010,7 +1102,7 @@ function addDynamicMethodsToRootFormGroup<T = Record<string, unknown>>({
   );
 
   dynamicForm.patchDynamicFormBuilderOptions = (
-    dynamicFormBuilderOptions: DynamicFormBuilderOptions
+    dynamicFormBuilderOptions: DynamicFormBuilderOptions<T>
   ) => {
     if (!dynamicForm) {
       throw new Error('rootFormGroup not set');
@@ -1020,7 +1112,7 @@ function addDynamicMethodsToRootFormGroup<T = Record<string, unknown>>({
       ...dynamicFormBuilderOptions,
     };
     setValidatorsToControls(formBuilder, dynamicForm);
-    dynamicForm.patchValue(dynamicForm.value);
+    dynamicForm.patchValue(dynamicForm.value, { emitEvent: false });
   };
 
   dynamicForm.getObject = () => {
@@ -1074,7 +1166,7 @@ function addDynamicMethodsToRootFormGroup<T = Record<string, unknown>>({
     dynamicForm.externalErrorsSubject.next(
       recursiveRemoveDynamicControlOptions(cloneDeep(externalErrors))
     );
-    dynamicForm.patchValue(dynamicForm.value);
+    dynamicForm.patchValue(dynamicForm.value, { emitEvent: false });
   };
 
   dynamicForm.getExternalErrors = () => {
@@ -1122,7 +1214,7 @@ function addDynamicMethodsToRootFormGroup<T = Record<string, unknown>>({
     },
   });
 
-  dynamicFormProxy.patchValue(dynamicFormProxy.value);
+  dynamicFormProxy.patchValue(dynamicFormProxy.value, { emitEvent: false });
   setValidatorsToControls(formBuilder, dynamicFormProxy, rootFormGroup);
   return dynamicFormProxy;
 }
@@ -1285,6 +1377,7 @@ function setDynamicControlValue<T>(
 function findControlPaths(
   control: DynamicFormProperties<unknown> | AbstractControl
 ) {
+  const angularFormValidatorPath: string[] = [];
   const inputPath: string[] = [];
   const errorsPath: string[] = [];
   let ctrl = control as DynamicFormProperties;
@@ -1293,17 +1386,26 @@ function findControlPaths(
       ctrl.classTransformMetadata?.propertyIndex?.toString() ||
       ctrl.classTransformMetadata?.propertyName ||
       null;
+    const parent = ctrl.parent as DynamicFormProperties;
     if (key !== null) {
       inputPath.push(key);
       errorsPath.push(key);
-      if (ctrl.parent?.parent) {
+      if (parent?.parent) {
         errorsPath.push('children');
       }
+      if (!parent?.classTransformMetadata?.isArray) {
+        angularFormValidatorPath.push(key);
+      }
     }
-    ctrl = ctrl.parent as DynamicFormProperties;
+    ctrl = parent;
   }
   const controlPath = inputPath.reverse().join('.');
-  return { inputPath, errorsPath, controlPath };
+  return {
+    inputPath,
+    errorsPath,
+    controlPath,
+    angularFormValidatorPath: angularFormValidatorPath.reverse().join('.'),
+  };
 }
 
 function setFormControlClassValidatorErrors<T>(
@@ -1376,8 +1478,11 @@ function setRootFormGroupClassValidatorErrors<T>(
       new BehaviorSubject<ShortValidationErrors>({});
   }
   rootFormGroup.customValidateErrors.next(
-    transformClassValidatorErrorsToShortValidationErrors(
-      rootFormGroup.classValidatorErrors
+    mergeErrors(
+      collectDynamicFormGroupErrors(rootFormGroup),
+      transformClassValidatorErrorsToShortValidationErrors(
+        rootFormGroup.classValidatorErrors
+      )
     )
   );
 }
@@ -1393,8 +1498,22 @@ function subscribeToRootFormGroupValueChanges<T>(
             if (!rootFormGroup) {
               throw Error('rootFormGroup not set');
             }
-
             rootFormGroup.commonAsyncValidatorFirstChanged = true;
+          }),
+          delay(100),
+          tap(() => {
+            if (!rootFormGroup) {
+              throw Error('rootFormGroup not set');
+            }
+
+            rootFormGroup.customValidateErrors.next(
+              mergeErrors(
+                collectDynamicFormGroupErrors(rootFormGroup),
+                transformClassValidatorErrorsToShortValidationErrors(
+                  rootFormGroup.classValidatorErrors
+                )
+              )
+            );
           }),
           catchError((err) => {
             console.log({ err, rootFormGroup });
@@ -1415,7 +1534,7 @@ function subscribeToGlobalDynamicFormBuilderOptionsChange<T>(
         .pipe(
           tap(() => {
             setValidatorsToControls(formBuilder, rootFormGroup);
-            rootFormGroup.patchValue(rootFormGroup.value);
+            rootFormGroup.patchValue(rootFormGroup.value, { emitEvent: false });
           }),
           catchError((err) => {
             console.log({ err, rootFormGroup });

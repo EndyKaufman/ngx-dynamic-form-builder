@@ -17,11 +17,11 @@
       [placeholder]="strings.regionNum"
     />
     <mat-error *ngIf="errors?.['regionNum']?.length">{{
-      errors?.['regionNum'][0]
+      errors?.['regionNum']
     }}</mat-error>
-    <!--mat-error *ngIf="nativeErrors?.regionNum?.required">
+    <mat-error *ngIf="form.get('regionNum')?.errors?.['required']">
       {{ 'region num should not be empty (native angular)' | transloco }}
-    </mat-error-->
+    </mat-error>
   </mat-form-field>
   <div class="full-width">
     <p>Form status: {{ form.status | json }}</p>

@@ -1,6 +1,6 @@
-import { ClassTransformOptions } from 'class-transformer-global-storage';
+import { DynamicClassTransformOptions } from '../types/types';
 
-export const DEFAULT_CLASS_TRANSFORM_OPTIONS: ClassTransformOptions = {
+export const DEFAULT_CLASS_TRANSFORM_OPTIONS: DynamicClassTransformOptions = {
   strategy: 'excludeAll',
 };
 
