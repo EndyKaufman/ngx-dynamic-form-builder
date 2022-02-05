@@ -152,7 +152,7 @@
     "lodash.get": "^4.4.2",
     "markdown-loader": "^6.0.0",
     "moment": "^2.29.1",
-    "ngx-markdown": "^13.0.0",
+    "ngx-markdown": "^13.1.0",
     "prismjs": "^1.26.0",
     "raw-loader": "^4.0.2",
     "reflect-metadata": "^0.1.13",
