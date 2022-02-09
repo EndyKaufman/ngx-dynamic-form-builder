@@ -37,6 +37,16 @@ describe('Check ValidateIf logic', () => {
       'have.text',
       `{
   "name": "dep name 1",
+  "groups": [
+    {
+      "id": 33,
+      "name": "group name 1"
+    },
+    {
+      "id": 44,
+      "name": "group name 2"
+    }
+  ],
   "company": {
     "name": "comp name 1",
     "country": "USA",
@@ -60,8 +70,8 @@ describe('Check ValidateIf logic', () => {
     {
       "type": "car",
       "transportNumber": "DMC-12",
-      "numberOfWheels": 4,
-      "numberOfTurbines": null
+      "numberOfTurbines": null,
+      "numberOfWheels": 4
     },
     {
       "type": "airplane",
@@ -139,6 +149,16 @@ describe('Check ValidateIf logic', () => {
       'have.text',
       `{
   "name": "dep name 1",
+  "groups": [
+    {
+      "id": 33,
+      "name": "group name 1"
+    },
+    {
+      "id": 44,
+      "name": "group name 2"
+    }
+  ],
   "company": {
     "name": "comp name 1",
     "country": "",
@@ -162,8 +182,8 @@ describe('Check ValidateIf logic', () => {
     {
       "type": "car",
       "transportNumber": "DMC-12",
-      "numberOfWheels": 4,
-      "numberOfTurbines": null
+      "numberOfTurbines": null,
+      "numberOfWheels": 4
     },
     {
       "type": "airplane",
@@ -225,6 +245,16 @@ describe('Check ValidateIf logic', () => {
       'have.text',
       `{
   "name": "dep name 1",
+  "groups": [
+    {
+      "id": 33,
+      "name": "group name 1"
+    },
+    {
+      "id": 44,
+      "name": "group name 2"
+    }
+  ],
   "company": {
     "name": "comp name 1",
     "country": "USA",
@@ -248,8 +278,8 @@ describe('Check ValidateIf logic', () => {
     {
       "type": "car",
       "transportNumber": "DMC-12",
-      "numberOfWheels": 4,
-      "numberOfTurbines": null
+      "numberOfTurbines": null,
+      "numberOfWheels": 4
     },
     {
       "type": "airplane",
@@ -272,6 +302,16 @@ describe('Check ValidateIf logic', () => {
       'have.text',
       `{
   "name": "dep name 1",
+  "groups": [
+    {
+      "id": 33,
+      "name": "group name 1"
+    },
+    {
+      "id": 44,
+      "name": "group name 2"
+    }
+  ],
   "company": {
     "name": "comp name 1",
     "country": "USA",
@@ -295,8 +335,8 @@ describe('Check ValidateIf logic', () => {
     {
       "type": "car",
       "transportNumber": "DMC-12",
-      "numberOfWheels": 4,
-      "numberOfTurbines": null
+      "numberOfTurbines": null,
+      "numberOfWheels": 4
     },
     {
       "type": "airplane",

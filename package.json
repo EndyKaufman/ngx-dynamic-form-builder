@@ -52,6 +52,7 @@
     "tsc:lint": "tsc --noEmit -p tsconfig.base.json",
     "lite-server": "lite-server -c bs-config.json",
     "prepare:code": "npm run rucken -- tools all",
+    "app-debug:serve": "nx serve debug",
     "app:dev-serve": "run-s lint:fix i18n:extract prepare:code && nx serve",
     "app:prod-serve": "run-s lint:fix i18n:extract prepare:code app:build lite-server",
     "app:build-app": "nx build demo --prod",

@@ -28,7 +28,7 @@
     ]
   },
   "cli": {
-    "defaultCollection": "@nrwl/workspace"
+    "defaultCollection": "@nrwl/angular"
   },
   "generators": {
     "@nrwl/angular:application": {
