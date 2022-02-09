@@ -1,0 +1,9 @@
+{
+  "serverRootTranslationsPath": "./apps/demo/src/assets/i18n/",
+  "langs": ["en"],
+  "serverScopedLibs": ["libs/ngx-dynamic-form-builder"],
+  "rootTranslationsPath": "./apps/demo/src/assets/i18n/",
+  "scopedLibs": ["libs/ngx-dynamic-form-builder"],
+  "clientRootTranslationsPath": "./apps/demo/src/assets/i18n/",
+  "clientScopedLibs": ["libs/ngx-dynamic-form-builder"]
+}
