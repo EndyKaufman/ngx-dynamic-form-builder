@@ -63,16 +63,16 @@ export class AsyncMustIncludeWordDep implements ValidatorConstraintInterface {
 
 export class Group {
   @Expose()
-  id!: number;
+  id?: number;
 
   @IsNotEmpty()
   @Expose()
-  name!: string;
+  name?: string;
 }
 
 export class Company {
   @Expose()
-  id!: number;
+  id?: number;
 
   @IsNotEmpty()
   @Expose()
@@ -91,7 +91,7 @@ export class Company {
   )
   @IsOptional()
   @Expose()
-  country!: string;
+  country?: string;
 
   @ValidateIf((object: Company) => Boolean(object.country))
   @IsNotEmpty()
@@ -106,7 +106,7 @@ export class Company {
   @Type(() => Boolean)
   @IsBoolean({ each: true })
   @Expose()
-  permissions!: boolean[];
+  permissions?: boolean[];
 
   @ValidateNested()
   @Type(() => Department)
@@ -114,11 +114,23 @@ export class Company {
   department?: Department | undefined;
 }
 
+export class PeopleAgeSubProp {
+  @IsNotEmpty()
+  @Expose()
+  subProp!: string;
+}
+
 export class PeopleAge {
   @IsNumberString()
   @IsNotEmpty()
   @Expose()
   age!: string;
+
+  @ValidateNested({ each: true })
+  @IsOptional()
+  @Type(() => PeopleAgeSubProp)
+  @Expose()
+  peopleAgeSubProps?: PeopleAgeSubProp[];
 }
 
 export enum TransportTypeEnum {
@@ -141,7 +153,7 @@ export class Car extends Transport {
   @IsEnum(TransportTypeEnum)
   @IsNotEmpty()
   @Expose()
-  override type?: TransportTypeEnum.car;
+  override type!: TransportTypeEnum.car;
 
   @IsNotEmpty()
   @IsNumber()
@@ -152,7 +164,7 @@ export class Airplane extends Transport {
   @IsEnum(TransportTypeEnum)
   @IsNotEmpty()
   @Expose()
-  override type?: TransportTypeEnum.airplane;
+  override type!: TransportTypeEnum.airplane;
 
   @IsNotEmpty()
   @IsNumber()
@@ -162,7 +174,7 @@ export class Airplane extends Transport {
 
 export class Department {
   @Expose()
-  id!: number;
+  id?: number;
 
   @IsNotEmpty()
   @Expose()
@@ -175,24 +187,24 @@ export class Department {
   @IsOptional()
   @Type(() => Group)
   @Expose()
-  groups!: Group[];
+  groups?: Group[];
 
   @ValidateNested()
   @Type(() => Company)
   @Expose()
-  company!: Company;
+  company?: Company;
 
   @IsOptional()
   @Type(() => Number)
   @IsNumber({}, { each: true })
   @Expose()
-  cabinets!: number[];
+  cabinets?: number[];
 
   @ValidateNested({ each: true })
   @IsOptional()
   @Type(() => PeopleAge)
   @Expose()
-  peopleAges!: PeopleAge[];
+  peopleAges?: PeopleAge[];
 
   @ValidateNested({ each: true })
   @IsOptional()
@@ -207,15 +219,15 @@ export class Department {
     keepDiscriminatorProperty: true,
   })
   @Expose()
-  transports!: (Airplane | Car)[];
+  transports?: (Airplane | Car)[];
 }
 
 @Component({
-  selector: 'new-api',
-  templateUrl: './new-api.component.html',
+  selector: 'ngx-dynamic-form-builder-root',
+  templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewApiComponent {
+export class AppComponent {
   form: DynamicFormGroup<Department>;
 
   TransportTypeEnum = TransportTypeEnum;
@@ -310,7 +322,7 @@ export class NewApiComponent {
         { id: 44, name: 'group name 2' },
       ],
       cabinets: [55, 66],
-      peopleAges: [{ age: '18' }],
+      peopleAges: [{ age: '18', peopleAgeSubProps: [{ subProp: 'sub' }] }],
       transports: [
         {
           type: TransportTypeEnum.car,

@@ -53,4 +53,36 @@ export class DynamicFormBuilder extends FormBuilder {
     });
     return form;
   }
+
+  childFormGroup<T = Record<string, unknown>>(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    rootFormGroup: DynamicFormGroup<any, any>,
+    classType: ClassConstructor<T> | null,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    controlsConfig?: { [key: string]: any }
+  ): DynamicFormGroup<T>;
+  childFormGroup<T = Record<string, unknown>>(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    rootFormGroup: DynamicFormGroup<any, any>,
+    classType: ClassConstructor<T> | null,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    controlsConfig: { [key: string]: any }
+  ): DynamicFormGroup<T>;
+  childFormGroup<T = Record<string, unknown>>(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    rootFormGroup: DynamicFormGroup<any, any>,
+    classType: ClassConstructor<T> | null,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    controlsConfig?: any
+  ): DynamicFormGroup<T> {
+    const defaultValue = controlsConfig || {};
+    const form = createFormControls<T>({
+      classType,
+      form: super.group({}),
+      formBuilder: this,
+      defaultValue,
+      rootFormGroup,
+    });
+    return form;
+  }
 }

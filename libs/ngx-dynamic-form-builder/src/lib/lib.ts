@@ -97,11 +97,16 @@ export function createFormControls<T = Record<string, unknown>>({
     });
   }
 
-  setupClassTransformMetadata<T>({
-    classType,
-    dynamicForm,
-    defaultMetadata: metadata,
-  });
+  if (dynamicFormBuilderOptions || rootFormGroup?.dynamicFormBuilderOptions) {
+    setupClassTransformMetadata<T>({
+      classType,
+      dynamicForm,
+      defaultMetadata: metadata,
+      dynamicFormBuilderOptions:
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        dynamicFormBuilderOptions || rootFormGroup!.dynamicFormBuilderOptions,
+    });
+  }
 
   createAllFormGroupChildrenControls<T>({
     dynamicForm,
@@ -228,9 +233,11 @@ export function setValuesForControls<T = Record<string, unknown>>(
             ] as FormArray;
             let formArrayLength = arrayControl.length;
 
-            while (formArrayLength !== 0) {
-              arrayControl.removeAt(0);
-              formArrayLength--;
+            if (Array.isArray(arrayControl)) {
+              while (formArrayLength !== 0) {
+                arrayControl.removeAt(0);
+                formArrayLength--;
+              }
             }
 
             if (
@@ -278,7 +285,20 @@ export function setValuesForControls<T = Record<string, unknown>>(
                       });
                     }
                     if (metadataItem.propertyName) {
-                      arrayControl.push(formBuilder.group(item));
+                      const control = createFormControls({
+                        classType: metadataItem.classType,
+                        formBuilder,
+                        metadata: metadataItem,
+                        defaultValue: item,
+                        rootFormGroup: form.root as DynamicFormGroup<
+                          unknown,
+                          unknown
+                        >,
+                        dynamicFormBuilderOptions: (
+                          form.root as DynamicFormGroup<unknown, unknown>
+                        ).dynamicFormBuilderOptions,
+                      });
+                      arrayControl.push(control);
                     }
                   });
               } catch (err) {
@@ -298,7 +318,7 @@ export function setValidatorsToControls<T>(
   rootFormGroup?: DynamicFormGroup<T>
 ) {
   if (!rootFormGroup) {
-    rootFormGroup = form;
+    rootFormGroup = form.root as DynamicFormGroup<T>;
   }
 
   addCommonAsyncValidatorToRootForm(rootFormGroup);
@@ -398,9 +418,13 @@ export function setValidatorsToControls<T>(
             throw new Error('commonAsyncValidator not set');
           }
           try {
-            (
+            const controls = (
               form.controls[metadataItem.propertyName] as DynamicFormArray
-            ).controls.forEach((control, propertyIndex) => {
+            ).controls;
+            (!Array.isArray(controls) && metadataItem.isArray
+              ? []
+              : controls
+            ).forEach((control, propertyIndex) => {
               (control as DynamicFormGroup).classTransformMetadata = {
                 ...metadataItem,
                 propertyIndex,
@@ -436,9 +460,13 @@ export function setValidatorsToControls<T>(
           }
         } else {
           try {
-            (
+            const controls = (
               form.controls[metadataItem.propertyName] as DynamicFormArray
-            ).controls.forEach((control, propertyIndex) => {
+            ).controls;
+            (!Array.isArray(controls) && metadataItem.isArray
+              ? []
+              : controls
+            ).forEach((control, propertyIndex) => {
               (control as DynamicFormGroup).classTransformMetadata = {
                 ...metadataItem,
                 propertyIndex,
@@ -798,15 +826,17 @@ function setupClassTransformMetadata<T = Record<string, unknown>>({
   defaultMetadata,
   classType,
   dynamicForm,
+  dynamicFormBuilderOptions,
 }: {
   defaultMetadata: IDynamicControlMetadata | undefined;
   classType: ClassConstructor<T> | null;
   dynamicForm: DynamicFormGroup<T, T>;
+  dynamicFormBuilderOptions: DynamicFormBuilderOptions<T>;
 }) {
   if (!defaultMetadata && classType) {
     dynamicForm.classTransformMetadata = getMetadata(
       classType,
-      dynamicForm.dynamicFormBuilderOptions.classTransformOptions,
+      dynamicFormBuilderOptions.classTransformOptions,
       true
     );
   } else {
@@ -867,7 +897,8 @@ function createAllFormGroupChildrenControls<T = Record<string, unknown>>({
           Object.getOwnPropertyDescriptor(
             defaultValue || {},
             metadataItem.propertyName
-          )
+          ) ||
+          metadataItem.isArray
         ) {
           if (!metadataItem.isArray) {
             if (

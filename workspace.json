@@ -1,6 +1,7 @@
 {
   "version": 2,
   "projects": {
+    "debug": "apps/debug",
     "demo": "apps/demo",
     "ngx-dynamic-form-builder": "libs/ngx-dynamic-form-builder"
   }
