@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/v2.1.0...v2.2.0) (2022-02-09)
+
+
+### Features
+
+* update deps ([e9da929](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/e9da9294415304cdc0c6ce629dfd3df2195e39a4))
+
+
+### Bug Fixes
+
+* add childFormGroup for work with nested FormArrays ([#192](https://github.com/EndyKaufman/ngx-dynamic-form-builder/issues/192)) ([c3bd0e2](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/c3bd0e228e68affdebffa34ca0245c66b46520fc))
+
 ## [2.1.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/v2.0.1...v2.1.0) (2022-01-30)
 
 ### Features
