@@ -233,8 +233,8 @@ export function setValuesForControls<T = Record<string, unknown>>(
             ] as DynamicFormArray;
 
             if (
-              arrayControl.classTransformMetadata.isArray &&
-              arrayControl.controls.length > 0
+              arrayControl?.classTransformMetadata?.isArray &&
+              arrayControl?.controls.length > 0
             ) {
               let formArrayLength = arrayControl.controls.length;
               while (formArrayLength !== 0) {
