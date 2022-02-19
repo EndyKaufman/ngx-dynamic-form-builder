@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/v2.2.0...v2.2.1) (2022-02-19)
+
+
+### Bug Fixes
+
+* add check type of array, check for DynamicFormArray ([6e115a5](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/6e115a55a5ebb21e7f4916b4690ab75b26c465c0))
+* setObject -- inconsistent behavior on FormArrays ([#195](https://github.com/EndyKaufman/ngx-dynamic-form-builder/issues/195)) ([767f540](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/767f5407ccd43f0f28fa4928550c5fd7666edc69))
+* the initial value of formArrayLength is unused, since it is always overwritten ([569726f](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/569726fb8f7f67579e5fc11f7c13c992e2864c5f))
+
 ## [2.2.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/v2.1.0...v2.2.0) (2022-02-09)
 
 ### Features
