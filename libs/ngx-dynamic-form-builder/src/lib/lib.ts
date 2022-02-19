@@ -230,10 +230,14 @@ export function setValuesForControls<T = Record<string, unknown>>(
           } else {
             const arrayControl = form.controls[
               metadataItem.propertyName
-            ] as FormArray;
+            ] as DynamicFormArray;
             let formArrayLength = arrayControl.length;
 
-            if (Array.isArray(arrayControl)) {
+            if (
+              arrayControl.classTransformMetadata.isArray &&
+              arrayControl.controls.length > 0
+            ) {
+              formArrayLength = arrayControl.controls.length;
               while (formArrayLength !== 0) {
                 arrayControl.removeAt(0);
                 formArrayLength--;
@@ -676,7 +680,7 @@ function getMetadata(
         )
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .reduce((all: any, cur: any) => [...all, ...cur], []);
-      multiTypes.forEach((multiType) =>
+      (multiTypes || []).forEach((multiType) =>
         multiType.types.forEach((type: { name: string }) =>
           plainToClass(
             multiType.classType,
@@ -721,7 +725,7 @@ function getMetadata(
         )
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .reduce((all: any, cur: any) => [...all, ...cur], []);
-      multiTypes.forEach((multiType) =>
+      (multiTypes || []).forEach((multiType) =>
         multiType.types.forEach((type: { name: string }) =>
           plainToClass(
             multiType.classType,

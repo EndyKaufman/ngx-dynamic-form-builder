@@ -157,6 +157,86 @@ describe('Check common logic', () => {
     );
   });
 
+  it('remove all errors after twice load default data', () => {
+    cy.get('.onLoadClick').click();
+    cy.wait(1000);
+    cy.get('.onLoadClick').click();
+    cy.wait(1000);
+
+    cy.get(
+      'body > app-root > new-api > form > fieldset > fieldset.name > span'
+    ).should('not.exist');
+
+    cy.get(
+      'body > app-root > new-api > form > fieldset > div > fieldset > fieldset.Jurisdiction > fieldset.House > span'
+    ).should('not.exist');
+
+    cy.get(
+      'body > app-root > new-api > form > fieldset > div > fieldset > fieldset.name > span'
+    ).should('not.exist');
+
+    cy.get('body > app-root > new-api > form > p:nth-child(2) > span').should(
+      'have.text',
+      '"VALID"'
+    );
+    cy.get('body > app-root > new-api > form > p:nth-child(3) > span').should(
+      'have.text',
+      `{
+  "name": "dep name 1",
+  "groups": [
+    {
+      "id": 33,
+      "name": "group name 1"
+    },
+    {
+      "id": 44,
+      "name": "group name 2"
+    }
+  ],
+  "company": {
+    "name": "comp name 1",
+    "country": "USA",
+    "state": "California",
+    "house": "221b",
+    "permissions": [
+      true,
+      false
+    ]
+  },
+  "cabinets": [
+    55,
+    66
+  ],
+  "peopleAges": [
+    {
+      "age": "18"
+    }
+  ],
+  "transports": [
+    {
+      "type": "car",
+      "transportNumber": "DMC-12",
+      "numberOfTurbines": null,
+      "numberOfWheels": 4
+    },
+    {
+      "type": "airplane",
+      "transportNumber": "Boeing 737",
+      "numberOfTurbines": 2,
+      "numberOfWheels": null
+    }
+  ]
+}`
+    );
+    cy.get('body > app-root > new-api > form > p:nth-child(4) > span').should(
+      'have.text',
+      `{}`
+    );
+    cy.get('body > app-root > new-api > form > p:nth-child(5) > span').should(
+      'have.text',
+      `{}`
+    );
+  });
   it('display errors after clear all inputs', () => {
     cy.get('.onClearClick').click();
     cy.wait(600);

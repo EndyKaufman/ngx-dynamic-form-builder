@@ -15,6 +15,13 @@
     "skipDefaultLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
+    "strictNullChecks": true,
+    "noImplicitOverride": true,
+    "strictPropertyInitialization": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "noImplicitAny": false,
     "paths": {
       "ngx-dynamic-form-builder": ["libs/ngx-dynamic-form-builder/src/index.ts"]
     }
