@@ -5,17 +5,17 @@ import {
   FormControl,
   FormGroup,
   ValidationErrors,
-  ValidatorFn
+  ValidatorFn,
 } from '@angular/forms';
 import {
   ClassConstructor,
   classToPlain,
-  plainToClass
+  plainToClass,
 } from 'class-transformer-global-storage';
 import {
   validate,
   validateSync,
-  ValidationError
+  ValidationError,
 } from 'class-validator-multi-lang';
 import cloneDeep from 'lodash.clonedeep';
 import lodashGet from 'lodash.get';
@@ -31,7 +31,7 @@ import {
   Observable,
   of,
   ReplaySubject,
-  tap
+  tap,
 } from 'rxjs';
 import { DEFAULT_CLASS_TRANSFORM_OPTIONS } from './constants/constants';
 import {
@@ -44,12 +44,12 @@ import {
   DynamicFormGroup,
   DynamicFormProperties,
   IDynamicControlMetadata,
-  ShortValidationErrors
+  ShortValidationErrors,
 } from './types/types';
 import { getGlobal } from './utils/get-global.util';
 import {
   getGlobalDynamicFormBuilderOptions,
-  getGlobalDynamicFormBuilderOptionsSubject
+  getGlobalDynamicFormBuilderOptionsSubject,
 } from './utils/global-dynamic-form-builder-options';
 import {
   collectDynamicFormGroupErrors,
@@ -60,7 +60,7 @@ import {
   replaceLastPropertyToDynamicControlOptionsByDotPath,
   setDynamicControlOptions,
   transformClassValidatorErrorsToShortValidationErrors,
-  transformValidationErrorsToClassValidatorErrors
+  transformValidationErrorsToClassValidatorErrors,
 } from './utils/utils';
 
 export function createFormControls<T = Record<string, unknown>>({
