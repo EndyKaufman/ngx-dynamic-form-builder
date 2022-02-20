@@ -154,7 +154,7 @@
     "markdown-loader": "^8.0.0",
     "moment": "^2.29.1",
     "ngx-markdown": "^13.1.0",
-    "prismjs": "^1.26.0",
+    "prismjs": "^1.27.0",
     "raw-loader": "^4.0.2",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~7.4.0",
