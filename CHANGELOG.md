@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.2](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/v2.2.1...v2.2.2) (2022-06-26)
+
+
+### Bug Fixes
+
+* lock versions of deps ([f61029b](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/f61029b283b84f5b7a46214b8db97bc1b895e4c7))
+
 ### [2.2.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/v2.2.0...v2.2.1) (2022-02-19)
 
 ### Bug Fixes
