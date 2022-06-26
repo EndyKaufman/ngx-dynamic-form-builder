@@ -21,18 +21,8 @@ import cloneDeep from 'lodash.clonedeep';
 import lodashGet from 'lodash.get';
 import mergeWith from 'lodash.mergewith';
 import lodashSet from 'lodash.set';
-import {
-  BehaviorSubject,
-  catchError,
-  debounceTime,
-  delay,
-  from,
-  map,
-  Observable,
-  of,
-  ReplaySubject,
-  tap,
-} from 'rxjs';
+import { BehaviorSubject, from, Observable, of, ReplaySubject } from 'rxjs';
+import { catchError, debounceTime, delay, map, tap } from 'rxjs/operators';
 import { DEFAULT_CLASS_TRANSFORM_OPTIONS } from './constants/constants';
 import {
   ClassValidatorErrors,

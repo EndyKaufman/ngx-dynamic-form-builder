@@ -40,20 +40,20 @@
     }
   ],
   "peerDependencies": {
-    "@angular/common": "~13.2.2",
-    "@angular/core": "~13.2.2",
+    "@angular/common": "13.2.2",
+    "@angular/core": "13.2.2",
     "class-transformer-global-storage": "0.4.1-1",
-    "class-validator-multi-lang": "^0.130.201",
-    "lodash.clonedeep": "^4.5.0",
-    "lodash.mergewith": "^4.6.2",
-    "lodash.set": "^4.3.2",
-    "lodash.get": "^4.4.2",
-    "validator": "^13.7.0",
-    "@types/validator": "^13.7.1",
-    "reflect-metadata": "^0.1.13"
+    "class-validator-multi-lang": "0.130.201",
+    "lodash.clonedeep": "4.5.0",
+    "lodash.mergewith": "4.6.2",
+    "lodash.set": "4.3.2",
+    "lodash.get": "4.4.2",
+    "validator": "13.7.0",
+    "@types/validator": "13.7.1",
+    "reflect-metadata": "0.1.13"
   },
   "dependencies": {
-    "tslib": "^2.0.0"
+    "tslib": "2.0.0"
   },
   "i18n": [
     {
