@@ -51,7 +51,7 @@
     "lint:fix": "npm run tsc:lint && nx workspace-lint --fix && nx run-many --target=lint --all --fix && nx format:write --all",
     "tsc:lint": "tsc --noEmit -p tsconfig.base.json",
     "lite-server": "lite-server -c bs-config.json",
-    "prepare:code": "npm run rucken -- prepare",
+    "prepare:code": "npm run rucken -- prepare --locales=en,ru",
     "app-debug:serve": "nx serve debug",
     "app:dev-serve": "run-s lint:fix i18n:extract prepare:code && nx serve",
     "app:prod-serve": "run-s lint:fix i18n:extract prepare:code app:build lite-server",
