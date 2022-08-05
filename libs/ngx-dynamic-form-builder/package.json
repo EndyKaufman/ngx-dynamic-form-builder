@@ -60,6 +60,16 @@
       "scope": "ngx-dynamic-form-builder",
       "path": "src/i18n",
       "strategy": "join"
+    },
+    {
+      "scope": "ngx-dynamic-form-builder-getText",
+      "path": "src/i18n/getText",
+      "strategy": "join"
+    },
+    {
+      "scope": "ngx-dynamic-form-builder-dictionary",
+      "path": "src/i18n/dictionary",
+      "strategy": "join"
     }
   ]
 }
