@@ -1,5 +1,6 @@
-module.exports = {
-  displayName: 'ngx-dynamic-form-builder',
+/* eslint-disable */
+export default {
+  displayName: 'debug',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
@@ -8,7 +9,7 @@ module.exports = {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  coverageDirectory: '../../coverage/libs/ngx-dynamic-form-builder',
+  coverageDirectory: '../../coverage/apps/debug',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
   },

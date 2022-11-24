@@ -39,7 +39,7 @@ import { TranslocoRootModule } from './transloco/transloco-root.module';
     NavbarModule.forRoot(),
     RouterModule.forRoot(AppRoutes, {
       preloadingStrategy: PreloadAllModules,
-      initialNavigation: 'enabled',
+      initialNavigation: 'enabledBlocking',
       relativeLinkResolution: 'legacy',
     }),
     ServiceWorkerModule.register('ngsw-worker.js', {

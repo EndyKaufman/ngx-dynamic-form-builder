@@ -4,5 +4,6 @@
     "debug": "apps/debug",
     "demo": "apps/demo",
     "ngx-dynamic-form-builder": "libs/ngx-dynamic-form-builder"
-  }
+  },
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }

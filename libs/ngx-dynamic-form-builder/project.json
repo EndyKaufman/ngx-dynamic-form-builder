@@ -1,12 +1,13 @@
 {
+  "name": "ngx-dynamic-form-builder",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
-  "root": "libs/ngx-dynamic-form-builder",
   "sourceRoot": "libs/ngx-dynamic-form-builder/src",
   "prefix": "ngx-dynamic-form-builder",
   "targets": {
     "build": {
       "executor": "@nrwl/angular:package",
-      "outputs": ["dist/libs/ngx-dynamic-form-builder"],
+      "outputs": ["{workspaceRoot}/dist/libs/ngx-dynamic-form-builder"],
       "options": {
         "project": "libs/ngx-dynamic-form-builder/ng-package.json"
       },
@@ -22,9 +23,9 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/ngx-dynamic-form-builder"],
+      "outputs": ["{workspaceRoot}/coverage/libs/ngx-dynamic-form-builder"],
       "options": {
-        "jestConfig": "libs/ngx-dynamic-form-builder/jest.config.js",
+        "jestConfig": "libs/ngx-dynamic-form-builder/jest.config.ts",
         "passWithNoTests": true
       }
     },

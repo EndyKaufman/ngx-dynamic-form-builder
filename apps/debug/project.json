@@ -1,6 +1,7 @@
 {
+  "name": "debug",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "root": "apps/debug",
   "sourceRoot": "apps/debug/src",
   "prefix": "ngx-dynamic-form-builder",
   "targets": {
@@ -92,9 +93,9 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/debug"],
+      "outputs": ["{workspaceRoot}/coverage/apps/debug"],
       "options": {
-        "jestConfig": "apps/debug/jest.config.js",
+        "jestConfig": "apps/debug/jest.config.ts",
         "passWithNoTests": true
       }
     }
