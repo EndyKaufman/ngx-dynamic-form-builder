@@ -9,7 +9,8 @@
       "executor": "@nrwl/angular:package",
       "outputs": ["{workspaceRoot}/dist/libs/ngx-dynamic-form-builder"],
       "options": {
-        "project": "libs/ngx-dynamic-form-builder/ng-package.json"
+        "project": "libs/ngx-dynamic-form-builder/ng-package.json",
+        "updateBuildableProjectDepsInPackageJson": false
       },
       "configurations": {
         "production": {
