@@ -2,7 +2,7 @@
 [![npm version](https://badge.fury.io/js/ngx-dynamic-form-builder.svg)](https://badge.fury.io/js/ngx-dynamic-form-builder)
 [![monthly downloads](https://badgen.net/npm/dm/ngx-dynamic-form-builder)](https://www.npmjs.com/package/ngx-dynamic-form-builder)
 
-[FormBuilder](https://angular.io/api/forms/FormBuilder) + [class-transformer-global-storage](https://github.com/petrzjunior/class-transformer) + [class-validator-multi-lang](https://github.com/endykaufman/class-validator-multi-lang) = dynamic form group builder for [Angular12+](https://angular.io)
+[FormBuilder](https://angular.io/api/forms/FormBuilder) + [class-transformer-global-storage](https://github.com/petrzjunior/class-transformer) + [class-validator-multi-lang](https://github.com/endykaufman/class-validator-multi-lang) = dynamic form group builder for [Angular](https://angular.io)
 
 ## Installation
 

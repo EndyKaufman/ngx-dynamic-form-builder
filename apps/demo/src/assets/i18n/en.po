@@ -5,8 +5,6 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2022-08-05T08:00:01.611Z\n"
-"PO-Revision-Date: 2022-08-05T08:00:01.611Z\n"
 
 msgid "Experimental: user panel"
 msgstr "Experimental: user panel"

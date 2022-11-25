@@ -40,7 +40,6 @@ import { TranslocoRootModule } from './transloco/transloco-root.module';
     RouterModule.forRoot(AppRoutes, {
       preloadingStrategy: PreloadAllModules,
       initialNavigation: 'enabledBlocking',
-      relativeLinkResolution: 'legacy',
     }),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,

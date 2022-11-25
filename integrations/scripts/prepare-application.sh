@@ -15,5 +15,5 @@ cd ./integrations/app/lib
 npm pack .
 cd ../
 npm install --save ./lib/ngx-dynamic-form-builder-0.0.0.tgz --force
-npm run build -- --prod
+npm run build
 cd ../../

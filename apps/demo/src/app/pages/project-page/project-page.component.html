@@ -7,8 +7,8 @@
   <ngx-docs-example
     title="FormArray and Steps: project panel"
     *ngIf="activatedStep$ | async as activatedStep"
-    [html]="sources[activatedStep]?.html"
-    [ts]="sources[activatedStep]?.ts"
+    [html]="sources[activatedStep].html"
+    [ts]="sources[activatedStep].ts"
     fxFlex.gt-sm="50"
     #doc
   >

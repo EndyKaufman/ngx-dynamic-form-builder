@@ -11,29 +11,30 @@ body {
 .mat-icon.mat-icon-no-color {
   padding-right: 5px;
 }
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
 .mat-tab-label-content,
 .mat-form-field-label {
   color: rgba(0, 0, 0, 0.87);
 }
-.mat-menu-item {
+.mat-mdc-menu-item {
   .mat-icon {
     svg {
       padding-bottom: 10px;
     }
   }
 }
-.mat-button,
-.mat-fab,
-.mat-icon-button,
-.mat-mini-fab,
-.mat-raised-button,
-.mat-menu-item {
+.mat-mdc-button,
+.mat-mdc-fab,
+.mat-mdc-icon-button,
+.mat-mdc-mini-fab,
+.mat-mdc-raised-button,
+.mat-mdc-menu-item {
   text-transform: uppercase;
   font-weight: 700;
 }
-.mat-table {
-  .mat-header-row,
-  .mat-row {
+.mat-mdc-table {
+  .mat-mdc-header-row,
+  .mat-mdc-row {
     padding: 0;
   }
 

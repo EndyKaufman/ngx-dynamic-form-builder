@@ -71,7 +71,7 @@
       *ngIf="!item.redirectTo"
       [routerLink]="[item.name]"
       mat-button
-      [class.active]="router?.isActive(item.url, true)"
+      [class.active]="router.isActive(item.url, true)"
     >
       <ng-container
         *ngTemplateOutlet="
@@ -99,7 +99,7 @@
       *ngIf="!item.redirectTo"
       [routerLink]="[item.name]"
       mat-icon-button
-      [class.active]="router?.isActive(item.url, true)"
+      [class.active]="router.isActive(item.url, true)"
     >
       <ng-container
         *ngTemplateOutlet="
@@ -128,7 +128,7 @@
     *ngIf="!item.redirectTo"
     [routerLink]="[item.name]"
     mat-menu-item
-    [class.active]="router?.isActive(item.url, true)"
+    [class.active]="router.isActive(item.url, true)"
   >
     <ng-container
       *ngTemplateOutlet="menuItemContent; context: { item: item }"

@@ -15,7 +15,7 @@
     <mat-tab-group>
       <mat-tab [label]="file.name" *ngFor="let file of files">
         <div
-          [innerHTML]="file.content | language: file.language | markdown"
+          [innerHTML]="file.content | language : file.language | markdown"
         ></div>
       </mat-tab>
     </mat-tab-group>

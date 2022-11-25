@@ -85,15 +85,12 @@
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
-        "lintFilePatterns": [
-          "apps/debug/src/**/*.ts",
-          "apps/debug/src/**/*.html"
-        ]
+        "lintFilePatterns": ["apps/debug/**/*.ts", "apps/debug/**/*.html"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/apps/debug"],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "apps/debug/jest.config.ts",
         "passWithNoTests": true

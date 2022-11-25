@@ -6,14 +6,14 @@
     <button
       mat-button
       (click)="switchActive('code')"
-      matTooltip="{{ view?.code?.tooltip }}"
+      matTooltip="{{ view.code.tooltip }}"
     >
       <mat-icon>code</mat-icon>
     </button>
     <button
       mat-button
       (click)="switchActive('debug')"
-      matTooltip="{{ view?.debug?.tooltip }}"
+      matTooltip="{{ view.debug.tooltip }}"
     >
       <mat-icon>bug_report</mat-icon>
     </button>
@@ -21,7 +21,7 @@
       *ngIf="launch"
       mat-button
       (click)="openLocation()"
-      matTooltip="{{ launch?.tooltip }}"
+      matTooltip="{{ launch.tooltip }}"
     >
       <mat-icon>launch</mat-icon>
     </button>
@@ -31,13 +31,13 @@
   <div class="ngx-docs-example-source" *ngIf="view?.code?.active === true">
     <mat-tab-group>
       <mat-tab label="HTML" *ngIf="html">
-        <div [innerHTML]="html | language: 'html' | markdown"></div>
+        <div [innerHTML]="html | language : 'html' | markdown"></div>
       </mat-tab>
       <mat-tab label="TS" *ngIf="ts">
-        <div [innerHTML]="ts | language: 'js' | markdown"></div>
+        <div [innerHTML]="ts | language : 'js' | markdown"></div>
       </mat-tab>
       <mat-tab label="CSS" *ngIf="css">
-        <div [innerHTML]="css | language: 'css' | markdown"></div>
+        <div [innerHTML]="css | language : 'css' | markdown"></div>
       </mat-tab>
     </mat-tab-group>
   </div>

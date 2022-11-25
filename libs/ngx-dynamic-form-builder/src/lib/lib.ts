@@ -974,7 +974,7 @@ function addDynamicTypedObjectAsFormArray<T = Record<string, unknown>>({
   const value: any[] =
     defaultArray && defaultArray.length > 0 ? defaultArray : [];
 
-  const control = formBuilder.array([]) as DynamicFormArray;
+  const control = formBuilder.array([]) as unknown as DynamicFormArray;
 
   value.forEach((item) => {
     const form = formBuilder.group(item);
@@ -1019,7 +1019,7 @@ function addDynamicPrimitiveObjectAsFormArray<T = Record<string, unknown>>({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const value: any[] =
     defaultArray && defaultArray.length > 0 ? defaultArray : [];
-  const control = formBuilder.array(value) as DynamicFormArray;
+  const control = formBuilder.array(value) as unknown as DynamicFormArray;
   // todo: incorrect work with addControl
   dynamicForm.setControl(metadataItem.propertyName, control);
   control.classTransformMetadata = metadataItem;

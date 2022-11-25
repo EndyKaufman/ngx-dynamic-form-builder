@@ -1,10 +1,10 @@
 .message-box {
   &.info-modal {
-    .mat-dialog-title {
+    .mat-mdc-dialog-title {
     }
   }
   &.error-modal {
-    .mat-dialog-title {
+    .mat-mdc-dialog-title {
       color: red;
     }
   }

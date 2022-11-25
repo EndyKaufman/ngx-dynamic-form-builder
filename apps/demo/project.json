@@ -11,7 +11,14 @@
       "options": {
         "allowedCommonJsDependencies": [
           "class-validator-multi-lang",
-          "validator"
+          "validator",
+          "lodash.set",
+          "lodash.mergewith",
+          "lodash.clonedeep",
+          "lodash.get",
+          "@ngneat/transloco-keys-manager/marker",
+          "@ngneat/transloco",
+          "moment"
         ],
         "outputPath": "dist/apps/demo",
         "index": "apps/demo/src/index.html",
