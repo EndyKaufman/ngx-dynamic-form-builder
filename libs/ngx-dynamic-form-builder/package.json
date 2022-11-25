@@ -1,77 +1,77 @@
 {
-    "name": "ngx-dynamic-form-builder",
-    "version": "2.2.2",
-    "description": "FormBuilder + class-transformer-global-storage + class-validator-multi-lang = dynamic form group builder for Angular",
-    "keywords": [
-        "form-builder",
-        "class-transformer",
-        "class-transformer-global-storage",
-        "class-validator",
-        "class-validator-multi-lang",
-        "auto",
-        "dynamic",
-        "formgroup",
-        "form",
-        "validator",
-        "validation",
-        "object",
-        "class",
-        "transformer",
-        "transform",
-        "builder",
-        "formarray",
-        "angular",
-        "angular12",
-        "angular13",
-        "angular14"
-    ],
-    "license": "MIT",
-    "author": "EndyKaufman <admin@site15.ru>",
-    "bugs": {
-        "url": "https://github.com/EndyKaufman/ngx-dynamic-form-builder/issues"
+  "name": "ngx-dynamic-form-builder",
+  "version": "2.3.0",
+  "description": "FormBuilder + class-transformer-global-storage + class-validator-multi-lang = dynamic form group builder for Angular",
+  "keywords": [
+    "form-builder",
+    "class-transformer",
+    "class-transformer-global-storage",
+    "class-validator",
+    "class-validator-multi-lang",
+    "auto",
+    "dynamic",
+    "formgroup",
+    "form",
+    "validator",
+    "validation",
+    "object",
+    "class",
+    "transformer",
+    "transform",
+    "builder",
+    "formarray",
+    "angular",
+    "angular12",
+    "angular13",
+    "angular14"
+  ],
+  "license": "MIT",
+  "author": "EndyKaufman <admin@site15.ru>",
+  "bugs": {
+    "url": "https://github.com/EndyKaufman/ngx-dynamic-form-builder/issues"
+  },
+  "homepage": "https://github.com/EndyKaufman/ngx-dynamic-form-builder",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EndyKaufman/ngx-dynamic-form-builder.git"
+  },
+  "maintainers": [
+    {
+      "name": "EndyKaufman",
+      "email": "admin@site15.ru"
+    }
+  ],
+  "peerDependencies": {
+    "@angular/common": "~15.0.1",
+    "@angular/core": "~15.0.1",
+    "class-transformer-global-storage": "0.4.1-1",
+    "class-validator-multi-lang": "0.130.201",
+    "lodash.clonedeep": "4.5.0",
+    "lodash.mergewith": "4.6.2",
+    "lodash.set": "4.3.2",
+    "lodash.get": "4.4.2",
+    "validator": "13.7.0",
+    "@types/validator": "13.7.1",
+    "reflect-metadata": "0.1.13"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "i18n": [
+    {
+      "scope": "ngx-dynamic-form-builder",
+      "path": "src/i18n",
+      "strategy": "join"
     },
-    "homepage": "https://github.com/EndyKaufman/ngx-dynamic-form-builder",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/EndyKaufman/ngx-dynamic-form-builder.git"
+    {
+      "scope": "ngx-dynamic-form-builder-getText",
+      "path": "src/i18n/getText",
+      "strategy": "join"
     },
-    "maintainers": [
-        {
-            "name": "EndyKaufman",
-            "email": "admin@site15.ru"
-        }
-    ],
-    "peerDependencies": {
-        "@angular/common": "~15.0.1",
-        "@angular/core": "~15.0.1",
-        "class-transformer-global-storage": "0.4.1-1",
-        "class-validator-multi-lang": "0.130.201",
-        "lodash.clonedeep": "4.5.0",
-        "lodash.mergewith": "4.6.2",
-        "lodash.set": "4.3.2",
-        "lodash.get": "4.4.2",
-        "validator": "13.7.0",
-        "@types/validator": "13.7.1",
-        "reflect-metadata": "0.1.13"
-    },
-    "dependencies": {
-        "tslib": "^2.3.0"
-    },
-    "i18n": [
-        {
-            "scope": "ngx-dynamic-form-builder",
-            "path": "src/i18n",
-            "strategy": "join"
-        },
-        {
-            "scope": "ngx-dynamic-form-builder-getText",
-            "path": "src/i18n/getText",
-            "strategy": "join"
-        },
-        {
-            "scope": "ngx-dynamic-form-builder-dictionary",
-            "path": "src/i18n/dictionary",
-            "strategy": "join"
-        }
-    ]
+    {
+      "scope": "ngx-dynamic-form-builder-dictionary",
+      "path": "src/i18n/dictionary",
+      "strategy": "join"
+    }
+  ]
 }
