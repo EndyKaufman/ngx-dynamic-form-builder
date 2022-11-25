@@ -1,0 +1,188 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"mime-version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+msgid "Experimental: user panel"
+msgstr "Experimental: user panel"
+
+msgid "Experimental: login panel"
+msgstr "Experimental: login panel"
+
+msgid "Experimental: registration panel"
+msgstr "Experimental: registration panel"
+
+msgid "Other files"
+msgstr "Other files"
+
+msgid "New API"
+msgstr "New API"
+
+msgid "region num should not be empty (native angular)"
+msgstr "region num should not be empty (native angular)"
+
+msgid "Login form"
+msgstr "Login form"
+
+msgid "Username"
+msgstr "Username"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Form status:"
+msgstr "Form status:"
+
+msgid "Form custom validate errors:"
+msgstr "Form custom validate errors:"
+
+msgid "Login user data:"
+msgstr "Login user data:"
+
+msgid "Login"
+msgstr "Login"
+
+msgid "username"
+msgstr "username"
+
+msgid "password"
+msgstr "password"
+
+msgid "Registration form"
+msgstr "Registration form"
+
+msgid "Confirm password"
+msgstr "Confirm password"
+
+msgid "Registration user data:"
+msgstr "Registration user data:"
+
+msgid "Registration"
+msgstr "Registration"
+
+msgid "rePassword"
+msgstr "rePassword"
+
+msgid "User form"
+msgstr "User form"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Date of birth"
+msgstr "Date of birth"
+
+msgid "date of birth is"
+msgstr "date of birth is"
+
+msgid "Department of user"
+msgstr "Department of user"
+
+msgid "Department name"
+msgstr "Department name"
+
+msgid "Company of department"
+msgstr "Company of department"
+
+msgid "Company name"
+msgstr "Company name"
+
+msgid "Company region num"
+msgstr "Company region num"
+
+msgid "Administrator"
+msgstr "Administrator"
+
+msgid "Staff"
+msgstr "Staff"
+
+msgid "Saved item:"
+msgstr "Saved item:"
+
+msgid "Load"
+msgstr "Load"
+
+msgid "Clear"
+msgstr "Clear"
+
+msgid "Save"
+msgstr "Save"
+
+msgid "email"
+msgstr "email"
+
+msgid "dateOfBirth"
+msgstr "dateOfBirth"
+
+msgid "Tasks max length = 3 (native angular)"
+msgstr "Tasks max length = 3 (native angular)"
+
+msgid "English"
+msgstr "English"
+
+msgid "Russian"
+msgstr "Русский"
+
+msgid "Experimental + transloco + i18n"
+msgstr "Experimental + transloco + i18n"
+
+msgid "must include word \"dep\" (async validate)"
+msgstr "must include word \"dep\" (async validate)"
+
+msgid "Id"
+msgstr "Id"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Region num"
+msgstr "Region num"
+
+msgid "The company name must be longer than 15"
+msgstr "The company name must be longer than 15"
+
+msgid "Company"
+msgstr "Company"
+
+msgid "company name"
+msgstr "company name"
+
+msgid "company region name"
+msgstr "company region name"
+
+msgid "department name"
+msgstr "department name"
+
+msgid ""
+"Tasks not initialized or min length = 1 and max length = 3, and all "
+"initialized tasks must be not empty"
+msgstr ""
+"Tasks not initialized or min length = 1 and max length = 3, and all "
+"initialized tasks must be not empty"
+
+msgid "Department"
+msgstr "Department"
+
+msgid "Only abc field"
+msgstr "Only abc field"
+
+msgid "it should match the cool 'abc' string"
+msgstr "it should match the cool 'abc' string"
+
+msgid "$constraint1 do not match to $property"
+msgstr "$constraint1 do not match to $property"
+
+msgid "Form native errors:"
+msgstr "Form native errors:"
+
+msgid "name"
+msgstr "name"
+
+msgid "regionNum"
+msgstr "regionNum"
+
+msgid "Group form"
+msgstr "Group form"

@@ -1,0 +1,189 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"mime-version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+
+msgid "Experimental: user panel"
+msgstr "Экспериментально: панель пользователя"
+
+msgid "Experimental: login panel"
+msgstr "Экспериментально: панель входа"
+
+msgid "Experimental: registration panel"
+msgstr "Экспериментально: регистрационная панель"
+
+msgid "Other files"
+msgstr "Другие файлы"
+
+msgid "New API"
+msgstr "Новое АПИ"
+
+msgid "region num should not be empty (native angular)"
+msgstr "номер региона не должен быть пустым (нативный angular)"
+
+msgid "Login form"
+msgstr "Форма входа"
+
+msgid "Username"
+msgstr "Имя пользователя"
+
+msgid "Password"
+msgstr "Пароль"
+
+msgid "Form status:"
+msgstr "Статус формы:"
+
+msgid "Form custom validate errors:"
+msgstr "Короткие ошибки класс валидатора:"
+
+msgid "Login user data:"
+msgstr "Данные пользователя для входа:"
+
+msgid "Login"
+msgstr "Авторизоваться"
+
+msgid "username"
+msgstr "имя пользователя"
+
+msgid "password"
+msgstr "пароль"
+
+msgid "Registration form"
+msgstr "Форма регистрации"
+
+msgid "Confirm password"
+msgstr "Подтвердите пароль"
+
+msgid "Registration user data:"
+msgstr "Регистрационные данные пользователя:"
+
+msgid "Registration"
+msgstr "Регистрация"
+
+msgid "rePassword"
+msgstr "повтор пароля"
+
+msgid "User form"
+msgstr "Пользователь"
+
+msgid "Email"
+msgstr "Эл. адрес"
+
+msgid "Date of birth"
+msgstr "Дата рождения"
+
+msgid "date of birth is"
+msgstr "дата рождения"
+
+msgid "Department of user"
+msgstr "Отдел"
+
+msgid "Department name"
+msgstr "Название отдела"
+
+msgid "Company of department"
+msgstr "Компания"
+
+msgid "Company name"
+msgstr "Название компании"
+
+msgid "Company region num"
+msgstr "Номер региона компании"
+
+msgid "Administrator"
+msgstr "Администратор"
+
+msgid "Staff"
+msgstr "Персонал"
+
+msgid "Saved item:"
+msgstr "Сохраненные данные:"
+
+msgid "Load"
+msgstr "Загрузить"
+
+msgid "Clear"
+msgstr "Очистить"
+
+msgid "Save"
+msgstr "Сохранить"
+
+msgid "email"
+msgstr "эл. адрес"
+
+msgid "dateOfBirth"
+msgstr "дата рождения"
+
+msgid "Tasks max length = 3 (native angular)"
+msgstr ""
+
+msgid "English"
+msgstr ""
+
+msgid "Russian"
+msgstr "Русский"
+
+msgid "Experimental + transloco + i18n"
+msgstr "Экспериментально + transloco + перевод"
+
+msgid "must include word \"dep\" (async validate)"
+msgstr "должен включать слово \"dep\" (асинхронная проверка)"
+
+msgid "Id"
+msgstr "Ид."
+
+msgid "Name"
+msgstr "Название"
+
+msgid "Region num"
+msgstr "Номер региона"
+
+msgid "The company name must be longer than 15"
+msgstr "Название компании должно быть длиннее 15"
+
+msgid "Company"
+msgstr "Компания"
+
+msgid "company name"
+msgstr "название компании"
+
+msgid "company region name"
+msgstr "регион компании"
+
+msgid "department name"
+msgstr "название отдела"
+
+msgid ""
+"Tasks not initialized or min length = 1 and max length = 3, and all "
+"initialized tasks must be not empty"
+msgstr ""
+"Задачи не инициализированы и минимальная длина = 1, а максимальная длина = "
+"3, и все созданные задачи не должны быть пустыми"
+
+msgid "Department"
+msgstr "Отдел"
+
+msgid "Only abc field"
+msgstr "Должно включать только abc"
+
+msgid "it should match the cool 'abc' string"
+msgstr "он должен соответствовать классной строке 'abc'"
+
+msgid "$constraint1 do not match to $property"
+msgstr "$constraint1 не равно $property"
+
+msgid "Form native errors:"
+msgstr "Нативные ошибки:"
+
+msgid "name"
+msgstr "название"
+
+msgid "regionNum"
+msgstr "номер региона"
+
+msgid "Group form"
+msgstr "Форма группы"
