@@ -4,10 +4,9 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [2.3.1](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/v2.3.0...v2.3.1) (2022-11-25)
 
-
 ### Bug Fixes
 
-* added support work in angular 15 and >=12 ([#213](https://github.com/EndyKaufman/ngx-dynamic-form-builder/issues/213)) ([15c2f02](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/15c2f0285e042dceff774968c31a8b7414bff315))
+- added support work in angular 15 and >=12 ([#213](https://github.com/EndyKaufman/ngx-dynamic-form-builder/issues/213)) ([15c2f02](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/15c2f0285e042dceff774968c31a8b7414bff315))
 
 ## [2.3.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/v2.2.2...v2.3.0) (2022-11-25)
 

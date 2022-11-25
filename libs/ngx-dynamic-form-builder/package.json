@@ -42,17 +42,15 @@
     }
   ],
   "peerDependencies": {
-    "@angular/common": "~15.0.1 || >=12.0.0",
-    "@angular/core": "~15.0.1 || >=12.0.0",
-    "class-transformer-global-storage": "0.4.1-1",
-    "class-validator-multi-lang": "0.130.201",
-    "lodash.clonedeep": "4.5.0",
-    "lodash.mergewith": "4.6.2",
-    "lodash.set": "4.3.2",
-    "lodash.get": "4.4.2",
-    "validator": "13.7.0",
-    "@types/validator": "13.7.1",
-    "reflect-metadata": "0.1.13"
+    "class-transformer-global-storage": ">=0.4.1-1",
+    "class-validator-multi-lang": ">=0.130.201",
+    "lodash.clonedeep": ">=4.5.0",
+    "lodash.mergewith": ">=4.6.2",
+    "lodash.set": ">=4.3.2",
+    "lodash.get": ">=4.4.2",
+    "validator": ">=13.7.0",
+    "@types/validator": ">=13.7.1",
+    "reflect-metadata": ">=0.1.13"
   },
   "dependencies": {
     "tslib": "^2.3.0"
