@@ -42,8 +42,8 @@
     }
   ],
   "peerDependencies": {
-    "@angular/common": "~15.0.1",
-    "@angular/core": "~15.0.1",
+    "@angular/common": "~15.0.1 || >=12.0.0",
+    "@angular/core": "~15.0.1 || >=12.0.0",
     "class-transformer-global-storage": "0.4.1-1",
     "class-validator-multi-lang": "0.130.201",
     "lodash.clonedeep": "4.5.0",
