@@ -137,7 +137,7 @@
     "@angular/material-moment-adapter": "~15.0.0",
     "@angular/platform-browser": "~15.0.1",
     "@angular/platform-browser-dynamic": "~15.0.1",
-    "@angular/pwa": "~15.0.1",
+    "@angular/pwa": "~15.1.2",
     "@angular/router": "~15.0.1",
     "@angular/service-worker": "~15.0.1",
     "@ngneat/transloco": "4.1.1",
