@@ -156,7 +156,6 @@
     "lodash.set": ">=4.3.2",
     "markdown-loader": "8.0.0",
     "moment": "2.29.4",
-    "ngx-dynamic-form-builder": "file:integrations/app/lib/ngx-dynamic-form-builder-0.0.0.tgz",
     "ngx-markdown": "16.0.0",
     "prismjs": "1.29.0",
     "raw-loader": "4.0.2",
