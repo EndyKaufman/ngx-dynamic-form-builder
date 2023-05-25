@@ -5,7 +5,6 @@ import { NewApiComponent } from './new-api.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  entryComponents: [NewApiComponent],
   exports: [NewApiComponent],
   declarations: [NewApiComponent],
 })

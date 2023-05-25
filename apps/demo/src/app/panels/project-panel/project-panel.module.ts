@@ -11,6 +11,7 @@ import { ProjectPanelCompleteComponent } from './project-panel-complete.componen
 import { ProjectPanelStep1Component } from './project-panel-step-1.component';
 import { ProjectPanelStep2Component } from './project-panel-step-2.component';
 import { ProjectPanelService } from './project-panel.service';
+import { MatIconModule } from '@angular/material/icon';
 @NgModule({
   imports: [
     SharedModule.forRoot(),
@@ -22,6 +23,7 @@ import { ProjectPanelService } from './project-panel.service';
     FlexLayoutModule,
     RouterModule,
     TranslocoModule,
+    MatIconModule,
   ],
   exports: [
     ProjectPanelStep1Component,

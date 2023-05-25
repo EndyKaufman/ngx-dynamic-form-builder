@@ -19,7 +19,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     FlexLayoutModule,
     MatDatepickerModule,
   ],
-  entryComponents: [UserPanelComponent],
   exports: [UserPanelComponent],
   declarations: [UserPanelComponent],
 })

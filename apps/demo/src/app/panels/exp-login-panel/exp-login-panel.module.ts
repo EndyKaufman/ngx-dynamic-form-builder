@@ -19,7 +19,6 @@ import { ExpLoginPanelComponent } from './exp-login-panel.component';
     FlexLayoutModule,
     TranslocoModule,
   ],
-  entryComponents: [ExpLoginPanelComponent],
   exports: [ExpLoginPanelComponent],
   declarations: [ExpLoginPanelComponent],
 })

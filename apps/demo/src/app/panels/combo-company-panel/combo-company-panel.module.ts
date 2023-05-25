@@ -19,7 +19,6 @@ import { ComboCompanyPanelComponent } from './combo-company-panel.component';
     FlexLayoutModule,
     TranslocoModule,
   ],
-  entryComponents: [ComboCompanyPanelComponent],
   exports: [ComboCompanyPanelComponent],
   declarations: [ComboCompanyPanelComponent],
 })

@@ -19,7 +19,6 @@ import { ExpRegistrationPanelComponent } from '../exp-registration-panel/exp-reg
     FlexLayoutModule,
     TranslocoModule,
   ],
-  entryComponents: [ExpRegistrationPanelComponent],
   exports: [ExpRegistrationPanelComponent],
   declarations: [ExpRegistrationPanelComponent],
 })

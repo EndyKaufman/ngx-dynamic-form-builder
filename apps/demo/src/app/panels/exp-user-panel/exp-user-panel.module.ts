@@ -21,7 +21,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     TranslocoModule,
     MatDatepickerModule,
   ],
-  entryComponents: [ExpUserPanelComponent],
   exports: [ExpUserPanelComponent],
   declarations: [ExpUserPanelComponent],
 })

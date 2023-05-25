@@ -19,7 +19,6 @@ import { I18nCompanyPanelComponent } from './i18n-company-panel.component';
     FlexLayoutModule,
     MatSelectModule,
   ],
-  entryComponents: [I18nCompanyPanelComponent],
   exports: [I18nCompanyPanelComponent],
   declarations: [I18nCompanyPanelComponent],
 })

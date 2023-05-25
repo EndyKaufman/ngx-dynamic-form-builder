@@ -43,19 +43,18 @@
           formControlName="description"
           placeholder="description"
         />
+        <button
+          matSuffix
+          mat-icon-button
+          (click)="getTasksArray().removeAt(i); form.refresh()"
+          color="warn"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
         <mat-error *ngIf="errors?.['tasks']?.[i]?.description as errorMessage">
           {{ errorMessage.join(', ') }}
         </mat-error>
       </mat-form-field>
-      <mat-action-list>
-        <button
-          mat-mini-fab
-          (click)="getTasksArray().removeAt(i); form.refresh()"
-          color="warn"
-        >
-          x
-        </button>
-      </mat-action-list>
     </mat-list-item>
   </mat-list>
   <div class="full-width">

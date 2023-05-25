@@ -16,7 +16,6 @@ import { SourceTabsComponent } from './source-tabs.component';
     MatButtonModule,
     FlexLayoutModule,
   ],
-  entryComponents: [SourceTabsComponent],
   exports: [SourceTabsComponent],
   declarations: [SourceTabsComponent],
 })

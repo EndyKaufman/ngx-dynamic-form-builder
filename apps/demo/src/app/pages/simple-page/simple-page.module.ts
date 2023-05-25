@@ -19,7 +19,6 @@ import { SimplePageRoutes } from './simple-page.routes';
     SourceTabsModule.forRoot(),
     MatIconModule,
   ],
-  entryComponents: [SimplePageComponent],
   exports: [SimplePageComponent],
   declarations: [SimplePageComponent],
 })

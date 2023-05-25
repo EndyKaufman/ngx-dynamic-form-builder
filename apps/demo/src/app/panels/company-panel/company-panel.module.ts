@@ -17,7 +17,6 @@ import { CompanyPanelComponent } from './company-panel.component';
     ReactiveFormsModule,
     FlexLayoutModule,
   ],
-  entryComponents: [CompanyPanelComponent],
   exports: [CompanyPanelComponent],
   declarations: [CompanyPanelComponent],
 })

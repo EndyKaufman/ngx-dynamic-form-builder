@@ -6,7 +6,7 @@
   "prefix": "ngx-dynamic-form-builder",
   "targets": {
     "build": {
-      "executor": "@nrwl/angular:package",
+      "executor": "@nx/angular:package",
       "outputs": ["{workspaceRoot}/dist/libs/ngx-dynamic-form-builder"],
       "options": {
         "project": "libs/ngx-dynamic-form-builder/ng-package.json",
@@ -23,7 +23,7 @@
       "defaultConfiguration": "production"
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/ngx-dynamic-form-builder"],
       "options": {
         "jestConfig": "libs/ngx-dynamic-form-builder/jest.config.ts",
@@ -31,7 +31,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": [
           "libs/ngx-dynamic-form-builder/src/**/*.ts",

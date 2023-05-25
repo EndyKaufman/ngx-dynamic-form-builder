@@ -89,11 +89,7 @@ export class AppModule {}
 company-panel.component.html
 
 ```html
-<form
-  [formGroup]="form"
-  *ngIf="form?.customValidateErrors | async as errors"
-  novalidate
->
+<form [formGroup]="form" *ngIf="form?.customValidateErrors | async as errors" novalidate>
   <input formControlName="name" placeholder="Name" />
   <p *ngIf="errors.name?.length">Error: {{errors.name[0]}}</p>
   <p>Form status: {{ form.status | json }}</p>
@@ -156,10 +152,7 @@ export class CompanyPanelComponent {
 custom-validators.ts
 
 ```typescript
-import {
-  ValidatorConstraintInterface,
-  ValidatorConstraint,
-} from 'class-validator-multi-lang';
+import { ValidatorConstraintInterface, ValidatorConstraint } from 'class-validator-multi-lang';
 
 @ValidatorConstraint()
 export class TextLengthMore15 implements ValidatorConstraintInterface {
@@ -184,8 +177,7 @@ this.form = this.fb.rootFormGroup(
   {
     classValidatorOptions: {
       messages: {
-        'The company name must be longer than 15':
-          'company name must be longer than 15 (translate on other language)',
+        'The company name must be longer than 15': 'company name must be longer than 15 (translate on other language)',
       },
     },
   }
@@ -198,8 +190,7 @@ set validation messages on runtime after for exists form group
 this.form.patchDynamicFormBuilderOptions({
   classValidatorOptions: {
     messages: {
-      'The company name must be longer than 15':
-        'company name must be longer than 15 (translate on other language)',
+      'The company name must be longer than 15': 'company name must be longer than 15 (translate on other language)',
     },
   },
 });
@@ -211,8 +202,7 @@ set translate property name in error
 this.form.patchDynamicFormBuilderOptions({
   classValidatorOptions: {
     titles: {
-      regionNum:
-        'number of region (translate property name in error on other language)',
+      regionNum: 'number of region (translate property name in error on other language)',
     },
   },
 });
@@ -224,12 +214,10 @@ set validation messages and properties name global for all instance of form grou
 setGlobalDynamicFormBuilderOptions({
   classValidatorOptions: {
     messages: {
-      'The company name must be longer than 15':
-        'company name must be longer than 15 (translate on other language)',
+      'The company name must be longer than 15': 'company name must be longer than 15 (translate on other language)',
     },
     titles: {
-      regionNum:
-        'number of region (translate property name in error on other language)',
+      regionNum: 'number of region (translate property name in error on other language)',
     },
   },
 });
@@ -242,11 +230,7 @@ The customValidateErrors property can be subscribed for cases in which your code
 company-panel.component.html
 
 ```html
-<form
-  [formGroup]="form"
-  *ngIf="form?.customValidateErrors | async as errors"
-  novalidate
->
+<form [formGroup]="form" *ngIf="form?.customValidateErrors | async as errors" novalidate>
   <input formControlName="name" placeholder="Name" />
   <p *ngIf="errors.name?.length">Error: {{errors.name[0]}}</p>
   <p>Form status: {{ form.status | json }}</p>
@@ -294,17 +278,12 @@ export class CompanyPanelComponent implements onDestroy {
       name: '',
     });
 
-    this.errorChangeSubscription = this.form.customValidateErrors.subscribe(
-      (allErrors) => {
-        console.log(`Errors changed: ${allErrors}`);
-      }
-    );
+    this.errorChangeSubscription = this.form.customValidateErrors.subscribe((allErrors) => {
+      console.log(`Errors changed: ${allErrors}`);
+    });
   }
   ngOnDestroy() {
-    if (
-      this.errorChangeSubscription != null &&
-      this.errorChangeSubscription.closed === false
-    ) {
+    if (this.errorChangeSubscription != null && this.errorChangeSubscription.closed === false) {
       this.errorChangeSubscription.unsubscribe();
     }
   }

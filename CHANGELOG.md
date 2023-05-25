@@ -4,10 +4,9 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [2.3.3](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/v2.3.2...v2.3.3) (2022-11-25)
 
-
 ### Bug Fixes
 
-* disable updateBuildableProjectDepsInPackageJson in angular lib ([4a9cf40](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/4a9cf40685731389316bb47ee036f9dd7bde140d))
+- disable updateBuildableProjectDepsInPackageJson in angular lib ([4a9cf40](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/4a9cf40685731389316bb47ee036f9dd7bde140d))
 
 ### [2.3.2](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/v2.3.1...v2.3.2) (2022-11-25)
 

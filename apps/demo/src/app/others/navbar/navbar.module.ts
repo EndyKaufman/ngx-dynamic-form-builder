@@ -22,7 +22,6 @@ import { NavbarComponent } from './navbar.component';
     NavbarLanguagesButtonsModule,
     TranslocoModule,
   ],
-  entryComponents: [NavbarComponent],
   exports: [NavbarComponent],
   declarations: [NavbarComponent],
 })

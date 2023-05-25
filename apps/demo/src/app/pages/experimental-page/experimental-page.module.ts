@@ -23,7 +23,6 @@ import { ExperimentalPageRoutes } from './experimental-page.routes';
     SourceTabsModule.forRoot(),
     TranslocoModule,
   ],
-  entryComponents: [ExperimentalPageComponent],
   exports: [ExperimentalPageComponent],
   declarations: [ExperimentalPageComponent],
 })

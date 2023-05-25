@@ -19,7 +19,6 @@ import { ProjectPageRoutes } from './project-page.routes';
     SourceTabsModule.forRoot(),
     MatIconModule,
   ],
-  entryComponents: [ProjectPageComponent],
   exports: [ProjectPageComponent],
   declarations: [ProjectPageComponent],
 })

@@ -19,7 +19,6 @@ import { ComboPageRoutes } from './combo-page.routes';
     SourceTabsModule.forRoot(),
     MatIconModule,
   ],
-  entryComponents: [ComboPageComponent],
   exports: [ComboPageComponent],
   declarations: [ComboPageComponent],
 })

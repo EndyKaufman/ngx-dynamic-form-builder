@@ -17,7 +17,6 @@ import { AdvancedPageRoutes } from './advanced-page.routes';
     RouterModule.forChild(AdvancedPageRoutes),
     SourceTabsModule.forRoot(),
   ],
-  entryComponents: [AdvancedPageComponent],
   exports: [AdvancedPageComponent],
   declarations: [AdvancedPageComponent],
 })

@@ -19,7 +19,6 @@ import { NewApiPageRoutes } from './new-api-page.routes';
     SourceTabsModule.forRoot(),
     TranslocoModule,
   ],
-  entryComponents: [NewApiPageComponent],
   exports: [NewApiPageComponent],
   declarations: [NewApiPageComponent],
 })

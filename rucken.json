@@ -1,0 +1,9 @@
+{
+  "workspace": {
+    "projects": {
+      "demo": "apps/demo",
+      "debug": "apps/debug",
+      "ngx-dynamic-form-builder": "libs/ngx-dynamic-form-builder"
+    }
+  }
+}

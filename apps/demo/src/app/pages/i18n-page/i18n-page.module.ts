@@ -19,7 +19,6 @@ import { I18nPageRoutes } from './i18n-page.routes';
     SourceTabsModule.forRoot(),
     MatIconModule,
   ],
-  entryComponents: [I18nPageComponent],
   exports: [I18nPageComponent],
   declarations: [I18nPageComponent],
 })

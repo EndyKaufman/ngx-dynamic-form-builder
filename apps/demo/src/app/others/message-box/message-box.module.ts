@@ -16,7 +16,6 @@ import { MessageBoxService } from './message-box.service';
     FlexLayoutModule,
   ],
   providers: [MessageBoxService],
-  entryComponents: [MessageBoxComponent],
   exports: [MessageBoxComponent],
   declarations: [MessageBoxComponent],
 })
