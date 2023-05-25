@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/v2.3.3...v2.4.0) (2023-05-25)
+
+
+### Features
+
+* update to Angular 16 and Nx 6 ([e0cc05f](https://github.com/EndyKaufman/ngx-dynamic-form-builder/commit/e0cc05fcf24f1c7a6ce54150a36dc4c5e08108ee))
+
 ### [2.3.3](https://github.com/EndyKaufman/ngx-dynamic-form-builder/compare/v2.3.2...v2.3.3) (2022-11-25)
 
 ### Bug Fixes
