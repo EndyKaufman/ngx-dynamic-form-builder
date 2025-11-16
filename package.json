@@ -140,7 +140,7 @@
     "@angular/pwa": "~16.0.2",
     "@angular/router": "~16.0.2",
     "@angular/service-worker": "~16.0.2",
-    "@ngneat/transloco": "4.1.1",
+    "@ngneat/transloco": "6.0.4",
     "@ngneat/transloco-keys-manager": "3.4.2",
     "@types/prismjs": "1.26.0",
     "@types/validator": ">=13.7.17",
